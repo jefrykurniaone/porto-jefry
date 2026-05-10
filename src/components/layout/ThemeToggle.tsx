@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { SunIcon, MoonIcon } from 'lucide-react';
 
 export default function ThemeToggle() {
-    const { theme, setTheme } = useTheme();
+    const { resolvedTheme, setTheme } = useTheme();
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => setMounted(true), []);
@@ -14,14 +14,14 @@ export default function ThemeToggle() {
 
     return (
         <button
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
             aria-label={
-                theme === 'dark'
+                resolvedTheme === 'dark'
                     ? 'Switch to light mode'
                     : 'Switch to dark mode'
             }
             className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'>
-            {theme === 'dark' ? (
+            {resolvedTheme === 'dark' ? (
                 <MoonIcon size={20} className='text-blue-400' />
             ) : (
                 <SunIcon size={20} className='text-yellow-500' />
