@@ -1,71 +1,71 @@
 {
-  "nav": {
-    "about": "Tentang",
-    "experience": "Pengalaman",
-    "education": "Pendidikan",
-    "skills": "Keahlian",
-    "projects": "Proyek",
-    "certifications": "Sertifikasi",
-    "contact": "Kontak"
-  },
-  "hero": {
-    "greeting": "Halo, Saya",
-    "name": "Jefry Kurniawan",
-    "title": "Software Developer",
-    "subtitle": "Backend Developer yang berspesialisasi dalam .NET (C#, VB.NET) dan SQL Server dengan pengalaman lebih dari 4 tahun membangun aplikasi berperforma tinggi.",
-    "cta_work": "Lihat Karya Saya",
-    "cta_cv": "Unduh CV",
-    "cta_contact": "Hubungi Saya"
-  },
-  "about": {
-    "title": "Tentang Saya",
-    "description": "Seorang Software Developer berdedikasi dengan pengalaman lebih dari empat tahun yang berspesialisasi dalam pengembangan .NET (VB.NET, C#) dan SQL Server. Saat ini bekerja sebagai Software Developer di Xtremax Indonesia, dengan pengalaman sebelumnya sebagai Staff Programmer di PT. Arkamaya dan .NET Developer di NawaData. Sangat terampil dalam manajemen database, optimasi query, dan pengembangan backend. Berkomitmen untuk menghadirkan solusi perangkat lunak yang efisien dan inovatif yang memenuhi standar kualitas tinggi dan mendukung tujuan bisnis.",
-    "contact_email": "Email",
-    "contact_phone": "Telepon",
-    "contact_linkedin": "LinkedIn"
-  },
-  "experience": {
-    "title": "Pengalaman Profesional",
-    "present": "Sekarang"
-  },
-  "education": {
-    "title": "Pendidikan",
-    "formal": "Pendidikan Formal",
-    "informal": "Pendidikan Informal",
-    "gpa": "IPK"
-  },
-  "skills": {
-    "title": "Keahlian Teknis"
-  },
-  "projects": {
-    "title": "Pengalaman Proyek"
-  },
-  "certifications": {
-    "title": "Sertifikasi",
-    "coding_id": {
-      "name": "Kelas Programmer .NET",
-      "issuer": "Coding.ID",
-      "period": "Nov 2019 – Jan 2020",
-      "description": "Menyelesaikan kursus pemrograman .NET intensif yang mencakup ASP.NET MVC, C#, dan Microsoft SQL Server."
+    "nav": {
+        "about": "Tentang",
+        "experience": "Pengalaman",
+        "education": "Pendidikan",
+        "skills": "Keahlian",
+        "projects": "Proyek",
+        "certifications": "Sertifikasi",
+        "contact": "Kontak"
+    },
+    "hero": {
+        "greeting": "Halo, Saya",
+        "name": "Jefry Kurniawan",
+        "title": "Software Developer",
+        "subtitle": "Backend Developer yang berspesialisasi dalam .NET (C#, VB.NET) dan SQL Server dengan pengalaman lebih dari 4 tahun membangun aplikasi berperforma tinggi.",
+        "cta_work": "Lihat Karya Saya",
+        "cta_cv": "Unduh CV",
+        "cta_contact": "Hubungi Saya"
+    },
+    "about": {
+        "title": "Tentang Saya",
+        "description": "Seorang Software Developer berdedikasi dengan pengalaman lebih dari empat tahun yang berspesialisasi dalam pengembangan .NET (VB.NET, C#) dan SQL Server. Saat ini bekerja sebagai Software Developer di Xtremax Indonesia, dengan pengalaman sebelumnya sebagai Staff Programmer di PT. Arkamaya dan .NET Developer di NawaData. Sangat terampil dalam manajemen database, optimasi query, dan pengembangan backend. Berkomitmen untuk menghadirkan solusi perangkat lunak yang efisien dan inovatif yang memenuhi standar kualitas tinggi dan mendukung tujuan bisnis.",
+        "contact_email": "Email",
+        "contact_phone": "Telepon",
+        "contact_linkedin": "LinkedIn"
+    },
+    "experience": {
+        "title": "Pengalaman Profesional",
+        "present": "Sekarang"
+    },
+    "education": {
+        "title": "Pendidikan",
+        "formal": "Pendidikan Formal",
+        "informal": "Pendidikan Informal",
+        "gpa": "IPK"
+    },
+    "skills": {
+        "title": "Keahlian Teknis"
+    },
+    "projects": {
+        "title": "Pengalaman Proyek"
+    },
+    "certifications": {
+        "title": "Sertifikasi",
+        "coding_id": {
+            "name": "Kelas Programmer .NET",
+            "issuer": "Coding.ID",
+            "period": "Nov 2019 – Jan 2020",
+            "description": "Menyelesaikan kursus pemrograman .NET intensif yang mencakup ASP.NET MVC, C#, dan Microsoft SQL Server."
+        }
+    },
+    "contact": {
+        "title": "Hubungi Saya",
+        "description": "Saya selalu terbuka untuk mendiskusikan peluang baru, proyek, atau sekadar mengobrol tentang teknologi.",
+        "email_label": "Kirim Email",
+        "phone_label": "Hubungi",
+        "linkedin_label": "Profil LinkedIn",
+        "github_label": "GitHub"
+    },
+    "footer": {
+        "built_with": "Dibangun dengan Next.js & Tailwind CSS",
+        "rights": "Semua hak dilindungi."
+    },
+    "theme": {
+        "toggle_dark": "Beralih ke mode gelap",
+        "toggle_light": "Beralih ke mode terang"
+    },
+    "lang": {
+        "switch": "Ganti bahasa"
     }
-  },
-  "contact": {
-    "title": "Hubungi Saya",
-    "description": "Saya selalu terbuka untuk mendiskusikan peluang baru, proyek, atau sekadar mengobrol tentang teknologi.",
-    "email_label": "Kirim Email",
-    "phone_label": "Hubungi",
-    "linkedin_label": "Profil LinkedIn",
-    "github_label": "GitHub"
-  },
-  "footer": {
-    "built_with": "Dibangun dengan Next.js & Tailwind CSS",
-    "rights": "Semua hak dilindungi."
-  },
-  "theme": {
-    "toggle_dark": "Beralih ke mode gelap",
-    "toggle_light": "Beralih ke mode terang"
-  },
-  "lang": {
-    "switch": "Ganti bahasa"
-  }
 }

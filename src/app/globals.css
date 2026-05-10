@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 @layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-  body {
-    @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-white;
-  }
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-white;
+    }
 }

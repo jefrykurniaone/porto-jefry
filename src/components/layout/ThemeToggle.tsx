@@ -1,28 +1,31 @@
-"use client";
+'use client';
 
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { SunIcon, MoonIcon } from "lucide-react";
+import { useTheme } from 'next-themes';
+import { useEffect, useState } from 'react';
+import { SunIcon, MoonIcon } from 'lucide-react';
 
 export default function ThemeToggle() {
-  const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
+    const { theme, setTheme } = useTheme();
+    const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), []);
+    useEffect(() => setMounted(true), []);
 
-  if (!mounted) return <div className="w-9 h-9" />;
+    if (!mounted) return <div className='w-9 h-9' />;
 
-  return (
-    <button
-      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      aria-label={theme === "dark" ? "Switch to light mode" : "Switch to dark mode"}
-      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-    >
-      {theme === "dark" ? (
-        <SunIcon size={20} className="text-yellow-400" />
-      ) : (
-        <MoonIcon size={20} className="text-gray-600" />
-      )}
-    </button>
-  );
+    return (
+        <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            aria-label={
+                theme === 'dark'
+                    ? 'Switch to light mode'
+                    : 'Switch to dark mode'
+            }
+            className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'>
+            {theme === 'dark' ? (
+                <MoonIcon size={20} className='text-blue-400' />
+            ) : (
+                <SunIcon size={20} className='text-yellow-500' />
+            )}
+        </button>
+    );
 }
