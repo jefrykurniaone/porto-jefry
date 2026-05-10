@@ -46,7 +46,10 @@ export default function Navbar() {
                         window.scrollTo({ top: 0, behavior: 'smooth' })
                     }
                     className='text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
-                    {'JK'}<span className='text-blue-600 dark:text-blue-400'>{'.'}</span>
+                    {'JK'}
+                    <span className='text-blue-600 dark:text-blue-400'>
+                        {'.'}
+                    </span>
                 </button>
 
                 {/* Desktop nav */}

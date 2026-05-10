@@ -14,7 +14,7 @@ export function generateStaticParams() {
 export const metadata: Metadata = {
     title: 'Jefry Kurniawan – Backend Developer & .NET Specialist',
     description:
-        'Portfolio of Jefry Kurniawan, a Backend Developer specializing in .NET (C#, VB.NET), SQL Server, and AI-powered application development with 4+ years of enterprise experience.',
+        'Portfolio of Jefry Kurniawan, a Backend Developer specializing in .NET (C#, VB.NET), SQL Server, and AI-powered application development with 5+ years of enterprise experience.',
 };
 
 export default async function LocaleLayout({

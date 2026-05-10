@@ -23,7 +23,16 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'Frontend',
-        skills: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'jQuery', 'AJAX'],
+        skills: [
+            'HTML',
+            'CSS',
+            'JavaScript',
+            'TypeScript',
+            'React',
+            'Next.js',
+            'jQuery',
+            'AJAX',
+        ],
     },
     {
         category: 'Database',
@@ -31,7 +40,13 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'AI & Emerging Tech',
-        skills: ['Python', 'Semantic Kernel', 'OpenAI API', 'Azure OpenAI', 'LLM Integration'],
+        skills: [
+            'Python',
+            'Semantic Kernel',
+            'OpenAI API',
+            'Azure OpenAI',
+            'LLM Integration',
+        ],
     },
     {
         category: 'CMS & Platforms',
@@ -39,6 +54,15 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'Tools & DevOps',
-        skills: ['Git', 'Docker', 'Swagger / OpenAPI', 'Postman', 'Azure VM', 'Azure DevOps', 'IIS', 'Katalon'],
+        skills: [
+            'Git',
+            'Docker',
+            'Swagger / OpenAPI',
+            'Postman',
+            'Azure VM',
+            'Azure DevOps',
+            'IIS',
+            'Katalon',
+        ],
     },
 ];
