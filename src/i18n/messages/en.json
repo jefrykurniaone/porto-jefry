@@ -1,0 +1,71 @@
+{
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "projects": "Projects",
+    "certifications": "Certifications",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "name": "Jefry Kurniawan",
+    "title": "Software Developer",
+    "subtitle": "Backend Developer specializing in .NET (C#, VB.NET) and SQL Server with 4+ years of experience building high-performance applications.",
+    "cta_work": "View My Work",
+    "cta_cv": "Download CV",
+    "cta_contact": "Contact Me"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "A dedicated Software Developer with over four years of experience specializing in .NET development (VB.NET, C#) and SQL Server. Currently working as a Software Developer at Xtremax Indonesia, with previous roles as Staff Programmer at PT. Arkamaya and .NET Developer at NawaData. Highly skilled in database management, query optimization, and backend development. Committed to delivering efficient and innovative software solutions that meet high-quality standards and support business objectives.",
+    "contact_email": "Email",
+    "contact_phone": "Phone",
+    "contact_linkedin": "LinkedIn"
+  },
+  "experience": {
+    "title": "Professional Experience",
+    "present": "Present"
+  },
+  "education": {
+    "title": "Education",
+    "formal": "Formal Education",
+    "informal": "Informal Education",
+    "gpa": "GPA"
+  },
+  "skills": {
+    "title": "Technical Skills"
+  },
+  "projects": {
+    "title": "Projects Experience"
+  },
+  "certifications": {
+    "title": "Certifications",
+    "coding_id": {
+      "name": ".NET Programmer Class",
+      "issuer": "Coding.ID",
+      "period": "Nov 2019 – Jan 2020",
+      "description": "Completed an intensive .NET programming course covering ASP.NET MVC, C#, and Microsoft SQL Server."
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "I'm always open to discussing new opportunities, projects, or just having a chat about technology.",
+    "email_label": "Email Me",
+    "phone_label": "Call Me",
+    "linkedin_label": "LinkedIn Profile",
+    "github_label": "GitHub"
+  },
+  "footer": {
+    "built_with": "Built with Next.js & Tailwind CSS",
+    "rights": "All rights reserved."
+  },
+  "theme": {
+    "toggle_dark": "Switch to dark mode",
+    "toggle_light": "Switch to light mode"
+  },
+  "lang": {
+    "switch": "Switch language"
+  }
+}
