@@ -20,10 +20,10 @@ export const metadata: Metadata = {
 export default async function LocaleLayout({
     children,
     params,
-}: {
+}: Readonly<{
     children: React.ReactNode;
     params: { locale: string };
-}) {
+}>) {
     const { locale } = params;
 
     if (!routing.locales.includes(locale as 'en' | 'id')) {

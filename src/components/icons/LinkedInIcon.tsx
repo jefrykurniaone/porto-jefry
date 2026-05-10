@@ -1,4 +1,4 @@
-export function LinkedInIcon({ size = 20 }: { size?: number }) {
+export function LinkedInIcon({ size = 20 }: Readonly<{ size?: number }>) {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
