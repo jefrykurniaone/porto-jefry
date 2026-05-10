@@ -12,9 +12,9 @@ export function generateStaticParams() {
 }
 
 export const metadata: Metadata = {
-    title: 'Jefry Kurniawan – Software Developer',
+    title: 'Jefry Kurniawan – Backend Developer & .NET Specialist',
     description:
-        'Portfolio of Jefry Kurniawan, a Software Developer specializing in .NET (C#, VB.NET) and SQL Server with 4+ years of experience.',
+        'Portfolio of Jefry Kurniawan, a Backend Developer specializing in .NET (C#, VB.NET), SQL Server, and AI-powered application development with 4+ years of enterprise experience.',
 };
 
 export default async function LocaleLayout({

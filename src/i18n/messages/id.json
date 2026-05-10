@@ -11,15 +11,15 @@
     "hero": {
         "greeting": "Halo, Saya",
         "name": "Jefry Kurniawan",
-        "title": "Software Developer",
-        "subtitle": "Backend Developer yang berspesialisasi dalam .NET (C#, VB.NET) dan SQL Server dengan pengalaman lebih dari 4 tahun membangun aplikasi berperforma tinggi.",
+        "title": "Backend Developer & Spesialis .NET",
+        "subtitle": "4+ tahun membangun aplikasi .NET enterprise, RESTful API, dan sistem berbasis data — dengan minat yang terus berkembang di pengembangan software berbasis AI.",
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
         "cta_contact": "Hubungi Saya"
     },
     "about": {
         "title": "Tentang Saya",
-        "description": "Seorang Software Developer berdedikasi dengan pengalaman lebih dari empat tahun yang berspesialisasi dalam pengembangan .NET (VB.NET, C#) dan SQL Server. Saat ini bekerja sebagai Software Developer di Xtremax Indonesia, dengan pengalaman sebelumnya sebagai Staff Programmer di PT. Arkamaya dan .NET Developer di NawaData. Sangat terampil dalam manajemen database, optimasi query, dan pengembangan backend. Berkomitmen untuk menghadirkan solusi perangkat lunak yang efisien dan inovatif yang memenuhi standar kualitas tinggi dan mendukung tujuan bisnis.",
+        "description": "Backend Developer berpengalaman dengan 4+ tahun keahlian dalam .NET (C#, VB.NET) dan Microsoft SQL Server, menghadirkan aplikasi tingkat produksi di sektor perbankan, asuransi, HR, dan pemerintahan. Saat ini membangun sistem backend berperforma tinggi dan RESTful API di PT Xtremax Teknologi Indonesia, dengan pengalaman sebelumnya memimpin tim teknis melalui siklus pengembangan perangkat lunak enterprise secara menyeluruh. Di luar keahlian .NET utama, saya terus memperluas wawasan teknis — membangun aplikasi full-stack dengan React dan Next.js, mengontainerisasi layanan dengan Docker, serta menjelajahi integrasi AI menggunakan Microsoft Semantic Kernel dan OpenAI API. Bersemangat dalam menulis kode yang bersih dan mudah dipelihara, serta merancang solusi perangkat lunak yang benar-benar memberikan nilai bisnis.",
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn"

@@ -11,15 +11,15 @@
     "hero": {
         "greeting": "Hi, I'm",
         "name": "Jefry Kurniawan",
-        "title": "Software Developer",
-        "subtitle": "Backend Developer specializing in .NET (C#, VB.NET) and SQL Server with 4+ years of experience building high-performance applications.",
+        "title": "Backend Developer & .NET Specialist",
+        "subtitle": "4+ years building enterprise .NET applications, RESTful APIs, and data-driven systems — with a growing passion for AI-powered software development.",
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
         "cta_contact": "Contact Me"
     },
     "about": {
         "title": "About Me",
-        "description": "A dedicated Software Developer with over four years of experience specializing in .NET development (VB.NET, C#) and SQL Server. Currently working as a Software Developer at Xtremax Indonesia, with previous roles as Staff Programmer at PT. Arkamaya and .NET Developer at NawaData. Highly skilled in database management, query optimization, and backend development. Committed to delivering efficient and innovative software solutions that meet high-quality standards and support business objectives.",
+        "description": "Results-driven Backend Developer with 4+ years of expertise in .NET (C#, VB.NET) and Microsoft SQL Server, delivering production-grade applications across banking, insurance, HR, and government sectors. Currently building high-performance backend systems and RESTful APIs at PT Xtremax Teknologi Indonesia, with prior experience leading technical teams through full enterprise software lifecycles. Beyond core .NET development, I continuously expand my technical horizon — building full-stack applications with React and Next.js, containerising services with Docker, and exploring AI integration using Microsoft Semantic Kernel and OpenAI APIs. Passionate about clean, maintainable code and software solutions that genuinely drive business value.",
         "contact_email": "Email",
         "contact_phone": "Phone",
         "contact_linkedin": "LinkedIn"

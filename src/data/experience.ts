@@ -124,8 +124,11 @@ export const experiences: ExperienceItem[] = [
         period: 'Feb 2020 – Nov 2022',
         location: 'Indonesia',
         bullets: [
-            'Coded high-quality programs that meet requirements on system design and follow best practices.',
-            'Automated testing using Katalon.',
+            'Developed and maintained multiple enterprise risk management applications (ORMS) for major financial institutions including Adira Insurance and BTPN, using VB.NET and ASP.NET Web Forms.',
+            'Designed and optimised complex SQL Server stored procedures, views, and SSIS ETL pipelines to support large-scale financial data processing.',
+            'Built rich regulatory and business intelligence reports with SSRS to meet compliance and stakeholder reporting requirements.',
+            'Automated end-to-end test scenarios using Katalon, improving test coverage and reducing manual QA effort.',
+            'Collaborated with business analysts to translate functional specification documents into robust technical implementations.',
         ],
         tech: [
             'VB.NET',

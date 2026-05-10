@@ -9,23 +9,29 @@ export const skillCategories: SkillCategory[] = [
         skills: [
             '.NET',
             '.NET Framework',
-            'ASP.NET',
+            '.NET 6 / 7 / 8',
             'ASP.NET MVC',
             'ASP.NET Web Forms',
-            'ASP.NET API',
+            'ASP.NET Web API',
+            'REST API Design',
             'C#',
             'VB.NET',
+            'Node.js',
             'PHP',
             'CodeIgniter',
         ],
     },
     {
         category: 'Frontend',
-        skills: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'jQuery', 'AJAX'],
+        skills: ['HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'jQuery', 'AJAX'],
     },
     {
         category: 'Database',
         skills: ['Microsoft SQL Server', 'MySQL', 'SSIS', 'SSRS'],
+    },
+    {
+        category: 'AI & Emerging Tech',
+        skills: ['Python', 'Semantic Kernel', 'OpenAI API', 'Azure OpenAI', 'LLM Integration'],
     },
     {
         category: 'CMS & Platforms',
@@ -33,6 +39,6 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'Tools & DevOps',
-        skills: ['Git', 'Katalon', 'IIS', 'Azure VM'],
+        skills: ['Git', 'Docker', 'Swagger / OpenAPI', 'Postman', 'Azure VM', 'Azure DevOps', 'IIS', 'Katalon'],
     },
 ];
