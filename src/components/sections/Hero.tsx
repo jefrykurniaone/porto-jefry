@@ -17,7 +17,7 @@ export default function Hero() {
                 <div className='mb-8 flex justify-center'>
                     <div className='w-32 h-32 rounded-full overflow-hidden ring-4 ring-blue-500/30 ring-offset-4 ring-offset-white dark:ring-offset-gray-950'>
                         <Image
-                            src='https://media.licdn.com/dms/image/v2/D5603AQELWVBQRd6ivg/profile-displayphoto-shrink_200_200/B56ZddNB5HHEAc-/0/1749615386851?e=2147483647&v=beta&t=ApbMdbl9LHZK2vTvyHLaFyPNovkuTbW4mHB8XfIvbAQ'
+                            src='/cv-photo.jpg'
                             alt='Jefry Kurniawan'
                             width={128}
                             height={128}
