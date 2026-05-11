@@ -5,6 +5,7 @@ import {
     View,
     StyleSheet,
     Link,
+    Image,
 } from '@react-pdf/renderer';
 import { experiences } from '@/data/experience';
 import { education } from '@/data/education';
@@ -36,6 +37,20 @@ const styles = StyleSheet.create({
         borderBottomWidth: 2,
         borderBottomColor: BLUE,
         paddingBottom: 10,
+    },
+    headerRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'flex-start',
+    },
+    headerLeft: {
+        flex: 1,
+        paddingRight: 10,
+    },
+    photoImage: {
+        width: 68,
+        height: 68,
+        borderRadius: 4,
     },
     name: {
         fontSize: 22,
@@ -272,10 +287,11 @@ interface Messages {
 
 interface CvDocumentProps {
     messages: Messages;
+    photoSrc?: string;
 }
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function CvDocument({ messages }: Readonly<CvDocumentProps>) {
+export default function CvDocument({ messages, photoSrc }: Readonly<CvDocumentProps>) {
     const recentProjects = projects.slice(0, MAX_PROJECTS);
     const formalEdu = education.filter((e) => e.type === 'formal');
     const informalEdu = education.filter((e) => e.type === 'informal');
@@ -289,22 +305,30 @@ export default function CvDocument({ messages }: Readonly<CvDocumentProps>) {
             <Page size='A4' style={styles.page}>
                 {/* ── Header ── */}
                 <View style={styles.headerSection}>
-                    <Text style={styles.name}>{messages.hero.name}</Text>
-                    <Text style={styles.titleText}>{messages.hero.title}</Text>
-                    <View style={styles.contactRow}>
-                        <Link
-                            style={styles.contactLink}
-                            src='mailto:jefrykurniaone@gmail.com'>
-                            jefrykurniaone@gmail.com
-                        </Link>
-                        <Text style={styles.contactItem}>|</Text>
-                        <Text style={styles.contactItem}>+62 821 26 229 978</Text>
-                        <Text style={styles.contactItem}>|</Text>
-                        <Link
-                            style={styles.contactLink}
-                            src='https://www.linkedin.com/in/jefry-kurniawan'>
-                            linkedin.com/in/jefry-kurniawan
-                        </Link>
+                    <View style={styles.headerRow}>
+                        <View style={styles.headerLeft}>
+                            <Text style={styles.name}>{messages.hero.name}</Text>
+                            <Text style={styles.titleText}>{messages.hero.title}</Text>
+                            <View style={styles.contactRow}>
+                                <Link
+                                    style={styles.contactLink}
+                                    src='mailto:jefrykurniaone@gmail.com'>
+                                    jefrykurniaone@gmail.com
+                                </Link>
+                                <Text style={styles.contactItem}>|</Text>
+                                <Text style={styles.contactItem}>+62 821 26 229 978</Text>
+                                <Text style={styles.contactItem}>|</Text>
+                                <Link
+                                    style={styles.contactLink}
+                                    src='https://www.linkedin.com/in/jefry-kurniawan'>
+                                    linkedin.com/in/jefry-kurniawan
+                                </Link>
+                            </View>
+                        </View>
+                        {photoSrc && (
+                            // eslint-disable-next-line jsx-a11y/alt-text -- react-pdf Image is a PDF primitive, not an HTML <img>
+                            <Image src={photoSrc} style={styles.photoImage} />
+                        )}
                     </View>
                 </View>
 
@@ -330,7 +354,7 @@ export default function CvDocument({ messages }: Readonly<CvDocumentProps>) {
                             </View>
                             <Text style={styles.expCompany}>{exp.company}</Text>
                             {exp.bullets.map((b) => (
-                                <View key={`${exp.company}-${b.slice(0, 30)}`} style={styles.bulletRow}>
+                                <View key={`${exp.company}-${b.slice(0, 30)}`} wrap={false} style={styles.bulletRow}>
                                     <Text style={styles.bullet}>•</Text>
                                     <Text style={styles.bulletText}>{b}</Text>
                                 </View>
@@ -404,7 +428,7 @@ export default function CvDocument({ messages }: Readonly<CvDocumentProps>) {
                     <Text style={styles.sectionTitle}>{messages.projects.title}</Text>
                     <View style={styles.projectsGrid}>
                         {recentProjects.map((proj) => (
-                            <View key={proj.name} style={styles.projectCard}>
+                            <View key={proj.name} wrap={false} style={styles.projectCard}>
                                 <Text style={styles.projectName}>{proj.name}</Text>
                                 <Text style={styles.projectMeta}>
                                     {proj.company} · {proj.period}
