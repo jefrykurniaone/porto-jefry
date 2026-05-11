@@ -5,12 +5,13 @@ import { type Messages } from './cv-types';
 
 interface ExperienceItemProps {
     exp: (typeof experiences)[number];
+    bullets: string[];
     presentLabel: string;
 }
 
-function ExperienceItem({ exp, presentLabel }: Readonly<ExperienceItemProps>) {
+function ExperienceItem({ exp, bullets, presentLabel }: Readonly<ExperienceItemProps>) {
     return (
-        <View key={`${exp.company}-${exp.role}`} style={styles.expItem}>
+        <View style={styles.expItem}>
             <View style={styles.expHeader}>
                 <Text style={styles.expRole}>{exp.role}</Text>
                 <Text style={styles.expPeriod}>
@@ -18,7 +19,7 @@ function ExperienceItem({ exp, presentLabel }: Readonly<ExperienceItemProps>) {
                 </Text>
             </View>
             <Text style={styles.expCompany}>{exp.company}</Text>
-            {exp.bullets.map((b) => (
+            {bullets.map((b) => (
                 <View
                     key={`${exp.company}-${b.slice(0, 30)}`}
                     wrap={false}
@@ -48,10 +49,11 @@ export default function CvExperience({ messages }: Readonly<CvExperienceProps>) 
     return (
         <View style={styles.section}>
             <Text style={styles.sectionTitle}>{messages.experience.title}</Text>
-            {experiences.map((exp) => (
+            {experiences.map((exp, i) => (
                 <ExperienceItem
                     key={`${exp.company}-${exp.role}`}
                     exp={exp}
+                    bullets={messages.experience.items[i]?.bullets ?? []}
                     presentLabel={messages.experience.present}
                 />
             ))}

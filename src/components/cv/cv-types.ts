@@ -7,7 +7,11 @@ export interface Messages {
         contact_phone: string;
         contact_linkedin: string;
     };
-    experience: { title: string; present: string };
+    experience: {
+        title: string;
+        present: string;
+        items: Array<{ bullets: string[] }>;
+    };
     education: { title: string; formal: string; informal: string; gpa: string };
     skills: { title: string };
     projects: { title: string };

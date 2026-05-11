@@ -26,7 +26,71 @@
     },
     "experience": {
         "title": "Pengalaman Profesional",
-        "present": "Sekarang"
+        "present": "Sekarang",
+        "items": [
+            {
+                "bullets": [
+                    "Merancang dan mengembangkan sistem backend untuk aplikasi dinamis dan berperforma tinggi, memastikan integrasi yang mulus dengan sistem front-end.",
+                    "Mengkustomisasi dan mengoptimalkan fitur Sitefinity CMS untuk menghadirkan solusi berkualitas tinggi bagi klien.",
+                    "Mengembangkan RESTful API dan mengintegrasikan layanan pihak ketiga untuk meningkatkan fungsionalitas website klien.",
+                    "Mengoptimalkan kueri SQL dan memastikan interaksi database yang efisien untuk volume data yang besar.",
+                    "Melakukan pengujian unit secara menyeluruh dan menyelesaikan masalah dengan cepat untuk menjaga stabilitas dan kualitas aplikasi.",
+                    "Bekerja sama dengan tim lintas fungsi untuk memenuhi kebutuhan proyek dan menghadirkan pengalaman pengguna yang luar biasa."
+                ]
+            },
+            {
+                "bullets": [
+                    "Membangun dan mengembangkan aplikasi perangkat lunak sesuai kebutuhan proyek, memastikan efisiensi, keamanan, dan kemudahan pemeliharaan.",
+                    "Melakukan pemeliharaan rutin dan memperbarui sistem yang ada untuk meningkatkan performa serta memastikan kompatibilitas dengan teknologi terkini.",
+                    "Melakukan pengujian unit, debugging, dan optimasi kode untuk memastikan aplikasi berjalan lancar dan bebas dari bug.",
+                    "Berkolaborasi dengan tim pengembang lain, baik internal maupun eksternal, untuk menciptakan solusi perangkat lunak berkualitas tinggi.",
+                    "Membuat dokumentasi teknis yang jelas dan detail untuk setiap aplikasi yang dikembangkan.",
+                    "Mengelola dan mengoptimalkan penggunaan database untuk penanganan data yang efisien serta mengembangkan kueri guna mendukung kebutuhan aplikasi.",
+                    "Menangani masalah teknis yang muncul selama pengembangan atau pemeliharaan dan memberikan solusi yang efektif dan cepat."
+                ]
+            },
+            {
+                "bullets": [
+                    "Memimpin tim pengembang dalam aspek teknis untuk memastikan proyek selesai tepat waktu dan sesuai anggaran.",
+                    "Mengorganisir pekerjaan teknis dengan memecahnya menjadi tugas-tugas dan mendistribusikannya kepada anggota tim.",
+                    "Membantu perencanaan proyek dan jadwal pelaksanaan dalam koordinasi dengan PM atau Product Owner.",
+                    "Membantu pembuatan desain sistem dalam koordinasi dengan BA.",
+                    "Membuat dokumen spesifikasi teknis bersama BA berdasarkan dokumen spesifikasi fungsional (FSD).",
+                    "Memimpin rapat desain teknis dan sesi breakdown teknologi.",
+                    "Melakukan code review pada pull/merge request menggunakan GIT.",
+                    "Memastikan praktik terbaik diterapkan dan diikuti oleh tim.",
+                    "Men-deploy aplikasi ke IIS pada server Development/Testing (Windows Server di Azure VM)."
+                ]
+            },
+            {
+                "bullets": [
+                    "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED (Requirement Elicitation Document).",
+                    "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
+                    "Memeriksa cacat perangkat lunak pada sistem yang sedang berjalan.",
+                    "Menguji dan memperbaiki masalah produksi pada sistem yang sedang berjalan.",
+                    "Menghadiri rapat dan menjelaskan breakdown teknis dari solusi yang diusulkan.",
+                    "Membuat dokumen panduan deployment."
+                ]
+            },
+            {
+                "bullets": [
+                    "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED.",
+                    "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
+                    "Memeriksa cacat perangkat lunak dan memperbaiki masalah produksi pada sistem yang sedang berjalan.",
+                    "Menghadiri rapat dan menjelaskan breakdown teknis dari solusi yang diusulkan.",
+                    "Membuat dokumen panduan deployment dan memperbarui laporan tugas harian."
+                ]
+            },
+            {
+                "bullets": [
+                    "Mengembangkan dan memelihara beberapa aplikasi manajemen risiko enterprise (ORMS) untuk lembaga keuangan besar termasuk Adira Insurance dan BTPN, menggunakan VB.NET dan ASP.NET Web Forms.",
+                    "Merancang dan mengoptimalkan stored procedure, view, dan pipeline SSIS ETL yang kompleks di SQL Server untuk mendukung pemrosesan data keuangan skala besar.",
+                    "Membangun laporan regulatory dan business intelligence yang komprehensif menggunakan SSRS untuk memenuhi persyaratan kepatuhan dan pelaporan stakeholder.",
+                    "Mengotomatiskan skenario pengujian end-to-end menggunakan Katalon, meningkatkan cakupan pengujian dan mengurangi upaya QA manual.",
+                    "Berkolaborasi dengan analis bisnis untuk menerjemahkan dokumen spesifikasi fungsional menjadi implementasi teknis yang handal."
+                ]
+            }
+        ]
     },
     "education": {
         "title": "Pendidikan",

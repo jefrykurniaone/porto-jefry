@@ -1,9 +1,17 @@
-import { useTranslations } from 'next-intl';
+'use client';
+
+import { useTranslations, useMessages } from 'next-intl';
 import { experiences } from '@/data/experience';
 import { BriefcaseIcon } from 'lucide-react';
 
+interface ExperienceMessages {
+    items: Array<{ bullets: string[] }>;
+}
+
 export default function Experience() {
     const t = useTranslations('experience');
+    const messages = useMessages();
+    const expItems = (messages.experience as unknown as ExperienceMessages).items;
 
     return (
         <section
@@ -18,7 +26,7 @@ export default function Experience() {
                     <div className='absolute left-4 md:left-8 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700' />
 
                     <div className='flex flex-col gap-10'>
-                        {experiences.map((exp) => (
+                        {experiences.map((exp, i) => (
                             <div
                                 key={`${exp.company}-${exp.period}`}
                                 className='relative flex gap-6 md:gap-10'>
@@ -50,7 +58,7 @@ export default function Experience() {
                                         {exp.company}
                                     </p>
                                     <ul className='space-y-1.5 mb-4'>
-                                        {exp.bullets.map((b) => (
+                                        {(expItems[i]?.bullets ?? []).map((b) => (
                                             <li
                                                 key={b}
                                                 className='text-gray-600 dark:text-gray-300 text-sm flex gap-2'>
