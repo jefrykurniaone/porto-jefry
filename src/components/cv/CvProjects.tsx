@@ -1,10 +1,10 @@
 import { View, Text } from '@react-pdf/renderer';
-import { projects } from '@/data/projects';
+import { projects, type ProjectItem } from '@/data/projects';
 import { styles, MAX_PROJECTS, MAX_TECH_TAGS } from './cv-styles';
 import { type Messages } from './cv-types';
 
 interface ProjectCardProps {
-    proj: (typeof projects)[number];
+    proj: ProjectItem;
 }
 
 function ProjectCard({ proj }: Readonly<ProjectCardProps>) {
@@ -31,34 +31,43 @@ function ProjectCard({ proj }: Readonly<ProjectCardProps>) {
     );
 }
 
+interface ProjectRowProps {
+    row: ProjectItem[];
+}
+
+function ProjectRow({ row }: Readonly<ProjectRowProps>) {
+    return (
+        <View wrap={false} style={styles.projectRow}>
+            {row.map((proj) => (
+                <ProjectCard key={proj.name} proj={proj} />
+            ))}
+            {/* Spacer to keep single-card rows from stretching full width */}
+            {row.length === 1 && <View style={{ flex: 1 }} />}
+        </View>
+    );
+}
+
 interface CvProjectsProps {
     messages: Pick<Messages, 'projects'>;
 }
 
 export default function CvProjects({ messages }: Readonly<CvProjectsProps>) {
     const recentProjects = projects.slice(0, MAX_PROJECTS);
-    const firstRow = recentProjects.slice(0, 2);
-    const remaining = recentProjects.slice(2);
+    const rows: ProjectItem[][] = [];
+    for (let i = 0; i < recentProjects.length; i += 2) {
+        rows.push(recentProjects.slice(i, i + 2));
+    }
 
     return (
         <View style={styles.section}>
             {/* Title + first row kept together to prevent orphaned heading */}
             <View wrap={false}>
                 <Text style={styles.sectionTitle}>{messages.projects.title}</Text>
-                <View style={styles.projectsGrid}>
-                    {firstRow.map((proj) => (
-                        <ProjectCard key={proj.name} proj={proj} />
-                    ))}
-                </View>
+                {rows[0] && <ProjectRow row={rows[0]} />}
             </View>
-            {/* Remaining project cards flow normally across pages */}
-            <View style={styles.projectsGrid}>
-                {remaining.map((proj) => (
-                    <View key={proj.name} wrap={false}>
-                        <ProjectCard proj={proj} />
-                    </View>
-                ))}
-            </View>
+            {rows.slice(1).map((row) => (
+                <ProjectRow key={row[0].name} row={row} />
+            ))}
         </View>
     );
 }

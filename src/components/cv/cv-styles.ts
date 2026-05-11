@@ -9,7 +9,7 @@ export const LIGHT_BG = '#F9FAFB';
 
 // ─── Layout Constants ─────────────────────────────────────────────────────────
 export const MAX_PROJECTS = 6;
-export const MAX_TECH_TAGS = 5;
+export const MAX_TECH_TAGS = 4;
 export const PHOTO_SIZE = 68;
 
 // ─── Contact Constants ────────────────────────────────────────────────────────
@@ -207,19 +207,18 @@ export const styles = StyleSheet.create({
         gap: 4,
     },
     // Projects
-    projectsGrid: {
+    projectRow: {
         flexDirection: 'row',
-        flexWrap: 'wrap',
         gap: 6,
+        marginBottom: 6,
     },
     projectCard: {
-        width: '48%',
+        flex: 1,
         backgroundColor: LIGHT_BG,
         borderWidth: 1,
         borderColor: BORDER,
         borderRadius: 4,
         padding: 7,
-        marginBottom: 2,
     },
     projectName: {
         fontSize: 9,
