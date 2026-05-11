@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
         width: 68,
         height: 68,
         borderRadius: 4,
+        objectFit: 'cover',
     },
     name: {
         fontSize: 22,
@@ -425,9 +426,31 @@ export default function CvDocument({ messages, photoSrc }: Readonly<CvDocumentPr
 
                 {/* ── Projects ── */}
                 <View style={styles.section}>
-                    <Text style={styles.sectionTitle}>{messages.projects.title}</Text>
+                    {/* Title + first row kept together to prevent orphaned heading */}
+                    <View wrap={false}>
+                        <Text style={styles.sectionTitle}>{messages.projects.title}</Text>
+                        <View style={styles.projectsGrid}>
+                            {recentProjects.slice(0, 2).map((proj) => (
+                                <View key={proj.name} style={styles.projectCard}>
+                                    <Text style={styles.projectName}>{proj.name}</Text>
+                                    <Text style={styles.projectMeta}>
+                                        {proj.company} · {proj.period}
+                                    </Text>
+                                    <View style={styles.tagRow}>
+                                        {proj.tech.slice(0, 5).map((tech) => (
+                                            <Text key={`${proj.name}-${tech}`} style={styles.tag}>{tech}</Text>
+                                        ))}
+                                        {proj.tech.length > 5 && (
+                                            <Text style={styles.tag}>+{proj.tech.length - 5}</Text>
+                                        )}
+                                    </View>
+                                </View>
+                            ))}
+                        </View>
+                    </View>
+                    {/* Remaining project cards flow normally across pages */}
                     <View style={styles.projectsGrid}>
-                        {recentProjects.map((proj) => (
+                        {recentProjects.slice(2).map((proj) => (
                             <View key={proj.name} wrap={false} style={styles.projectCard}>
                                 <Text style={styles.projectName}>{proj.name}</Text>
                                 <Text style={styles.projectMeta}>
