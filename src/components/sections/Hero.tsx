@@ -1,11 +1,12 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { ArrowDownIcon, DownloadIcon, MailIcon } from 'lucide-react';
 
 export default function Hero() {
     const t = useTranslations('hero');
+    const locale = useLocale();
 
     return (
         <section
@@ -52,7 +53,7 @@ export default function Hero() {
                         {t('cta_work')}
                     </button>
                     <a
-                        href='/jefry-cv.pdf'
+                        href={`/api/generate-cv?locale=${locale}`}
                         download='Jefry_Kurniawan_CV.pdf'
                         className='inline-flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors'>
                         <DownloadIcon size={18} />
