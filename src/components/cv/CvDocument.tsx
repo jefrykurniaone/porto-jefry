@@ -321,8 +321,8 @@ export default function CvDocument({ messages, photoSrc }: Readonly<CvDocumentPr
                                 <Text style={styles.contactItem}>|</Text>
                                 <Link
                                     style={styles.contactLink}
-                                    src='https://www.linkedin.com/in/jefry-kurniawan'>
-                                    linkedin.com/in/jefry-kurniawan
+                                    src='https://www.linkedin.com/in/jefrykurniaone/'>
+                                    linkedin.com/in/jefrykurniaone
                                 </Link>
                             </View>
                         </View>
