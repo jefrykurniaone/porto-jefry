@@ -15,7 +15,7 @@ const messagesMap: Record<SupportedLocale, typeof enMessages> = {
     id: idMessages,
 };
 
-const CV_PHOTO_PATH = join(process.cwd(), 'public', 'cv-photo.jpg');
+const CV_PHOTO_PATH = join(process.cwd(), 'public', 'cv-photo.png');
 
 function getPhotoSrc(): string | undefined {
     if (!existsSync(CV_PHOTO_PATH)) return undefined;
