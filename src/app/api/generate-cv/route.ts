@@ -15,12 +15,12 @@ const messagesMap: Record<SupportedLocale, typeof enMessages> = {
     id: idMessages,
 };
 
-const CV_PHOTO_PATH = join(process.cwd(), 'public', 'cv-photo.png');
+const CV_PHOTO_PATH = join(process.cwd(), 'public', 'cv-photo.webp');
 
 function getPhotoSrc(): string | undefined {
     if (!existsSync(CV_PHOTO_PATH)) return undefined;
     const data = readFileSync(CV_PHOTO_PATH).toString('base64');
-    return `data:image/jpeg;base64,${data}`;
+    return `data:image/webp;base64,${data}`;
 }
 
 export async function GET(request: NextRequest) {
