@@ -12,11 +12,13 @@ export const MAX_PROJECTS = 6;
 export const MAX_TECH_TAGS = 4;
 export const PHOTO_SIZE = 68;
 
-// ─── Contact Constants ────────────────────────────────────────────────────────
-export const CONTACT_EMAIL = 'jefrykurniaone@gmail.com';
-export const CONTACT_PHONE = '+62 821 26 229 978';
-export const LINKEDIN_URL = 'https://www.linkedin.com/in/jefrykurniaone/';
-export const LINKEDIN_DISPLAY = 'linkedin.com/in/jefrykurniaone';
+// ─── Contact Constants (re-exported from shared data) ────────────────────────
+export {
+    CONTACT_EMAIL,
+    CONTACT_PHONE_INTL as CONTACT_PHONE,
+    CONTACT_LINKEDIN_URL as LINKEDIN_URL,
+    CONTACT_LINKEDIN_DISPLAY as LINKEDIN_DISPLAY,
+} from '@/data/contact';
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 export const styles = StyleSheet.create({

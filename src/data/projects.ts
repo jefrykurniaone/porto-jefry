@@ -7,9 +7,23 @@ export interface ProjectItem {
 
 export const projects: ProjectItem[] = [
     {
+        name: 'HeritageSG Website Maintenance',
+        company: 'PT Xtremax Teknologi Indonesia',
+        period: 'Mar 2026 – Present',
+        tech: [
+            'Sitecore',
+            'C#',
+            '.NET Framework MVC',
+            'HTML',
+            'CSS',
+            'JavaScript',
+            'SQL Server',
+        ],
+    },
+    {
         name: 'Yellow Ribbon Singapore Website',
         company: 'PT Xtremax Teknologi Indonesia',
-        period: 'Nov 2022 – Aug 2023',
+        period: 'Jul 2025 – Present',
         tech: [
             'Sitefinity',
             'C#',

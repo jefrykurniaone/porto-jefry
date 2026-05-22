@@ -6,7 +6,8 @@
         "skills": "Keahlian",
         "projects": "Proyek",
         "certifications": "Sertifikasi",
-        "contact": "Kontak"
+        "contact": "Kontak",
+        "logo_label": "Kembali ke atas"
     },
     "hero": {
         "greeting": "Halo, Saya",
@@ -102,7 +103,8 @@
         "title": "Keahlian Teknis"
     },
     "projects": {
-        "title": "Pengalaman Proyek"
+        "title": "Pengalaman Proyek",
+        "present": "Sekarang"
     },
     "certifications": {
         "title": "Sertifikasi",

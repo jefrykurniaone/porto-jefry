@@ -1,6 +1,13 @@
 import { useTranslations } from 'next-intl';
 import { MailIcon, PhoneIcon } from 'lucide-react';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
+import {
+    CONTACT_EMAIL,
+    CONTACT_PHONE_HREF,
+    CONTACT_PHONE_DISPLAY,
+    CONTACT_LINKEDIN_URL,
+    CONTACT_LINKEDIN_HANDLE,
+} from '@/data/contact';
 
 export default function About() {
     const t = useTranslations('about');
@@ -17,24 +24,24 @@ export default function About() {
                     </p>
                     <div className='flex flex-wrap gap-6'>
                         <a
-                            href='mailto:jefrykurniaone@gmail.com'
+                            href={`mailto:${CONTACT_EMAIL}`}
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                             <MailIcon size={18} />
-                            <span>jefrykurniaone@gmail.com</span>
+                            <span>{CONTACT_EMAIL}</span>
                         </a>
                         <a
-                            href='tel:+6282126229978'
+                            href={CONTACT_PHONE_HREF}
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                             <PhoneIcon size={18} />
-                            <span>0821 26 229 978</span>
+                            <span>{CONTACT_PHONE_DISPLAY}</span>
                         </a>
                         <a
-                            href='https://www.linkedin.com/in/jefrykurniaone/'
+                            href={CONTACT_LINKEDIN_URL}
                             target='_blank'
                             rel='noopener noreferrer'
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                             <LinkedInIcon size={18} />
-                            <span>jefrykurniaone</span>
+                            <span>{CONTACT_LINKEDIN_HANDLE}</span>
                         </a>
                     </div>
                 </div>

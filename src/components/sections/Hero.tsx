@@ -4,16 +4,49 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { ArrowDownIcon, DownloadIcon, MailIcon } from 'lucide-react';
 
+interface HeroCtaButtonsProps {
+    locale: string;
+    ctaWork: string;
+    ctaCv: string;
+    ctaContact: string;
+}
+
+function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact }: Readonly<HeroCtaButtonsProps>) {
+    const scrollTo = (id: string) =>
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+    return (
+        <div className='flex flex-wrap justify-center gap-4'>
+            <button
+                onClick={() => scrollTo('projects')}
+                className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
+                <ArrowDownIcon size={18} />
+                {ctaWork}
+            </button>
+            <a
+                href={`/api/generate-cv?locale=${locale}`}
+                download='Jefry_Kurniawan_CV.pdf'
+                className='inline-flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors'>
+                <DownloadIcon size={18} />
+                {ctaCv}
+            </a>
+            <button
+                onClick={() => scrollTo('contact')}
+                className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
+                <MailIcon size={18} />
+                {ctaContact}
+            </button>
+        </div>
+    );
+}
+
 export default function Hero() {
     const t = useTranslations('hero');
     const locale = useLocale();
 
     return (
-        <section
-            id='hero'
-            className='min-h-screen flex items-center justify-center px-4 pt-16'>
+        <section id='hero' className='min-h-screen flex items-center justify-center px-4 pt-16'>
             <div className='max-w-3xl mx-auto text-center'>
-                {/* Profile photo */}
                 <div className='mb-8 flex justify-center'>
                     <div className='w-32 h-32 rounded-full overflow-hidden ring-4 ring-blue-500/30 ring-offset-4 ring-offset-white dark:ring-offset-gray-950'>
                         <Image
@@ -26,10 +59,7 @@ export default function Hero() {
                         />
                     </div>
                 </div>
-
-                <p className='text-blue-600 dark:text-blue-400 font-medium mb-2'>
-                    {t('greeting')}
-                </p>
+                <p className='text-blue-600 dark:text-blue-400 font-medium mb-2'>{t('greeting')}</p>
                 <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4'>
                     {t('name')}
                 </h1>
@@ -39,37 +69,12 @@ export default function Hero() {
                 <p className='text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto mb-10 leading-relaxed'>
                     {t('subtitle')}
                 </p>
-
-                {/* CTA Buttons */}
-                <div className='flex flex-wrap justify-center gap-4'>
-                    <button
-                        onClick={() =>
-                            document
-                                .getElementById('projects')
-                                ?.scrollIntoView({ behavior: 'smooth' })
-                        }
-                        className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
-                        <ArrowDownIcon size={18} />
-                        {t('cta_work')}
-                    </button>
-                    <a
-                        href={`/api/generate-cv?locale=${locale}`}
-                        download='Jefry_Kurniawan_CV.pdf'
-                        className='inline-flex items-center gap-2 px-6 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-700 dark:text-gray-300 font-medium rounded-xl transition-colors'>
-                        <DownloadIcon size={18} />
-                        {t('cta_cv')}
-                    </a>
-                    <button
-                        onClick={() =>
-                            document
-                                .getElementById('contact')
-                                ?.scrollIntoView({ behavior: 'smooth' })
-                        }
-                        className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
-                        <MailIcon size={18} />
-                        {t('cta_contact')}
-                    </button>
-                </div>
+                <HeroCtaButtons
+                    locale={locale}
+                    ctaWork={t('cta_work')}
+                    ctaCv={t('cta_cv')}
+                    ctaContact={t('cta_contact')}
+                />
             </div>
         </section>
     );
