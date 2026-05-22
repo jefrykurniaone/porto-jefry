@@ -2,15 +2,17 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+import { useTranslations } from 'next-intl';
 import { SunIcon, MoonIcon } from 'lucide-react';
 
 export default function ThemeToggle() {
     const { resolvedTheme, setTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
+    const [isMounted, setIsMounted] = useState(false);
+    const t = useTranslations('theme');
 
-    useEffect(() => setMounted(true), []);
+    useEffect(() => setIsMounted(true), []);
 
-    if (!mounted) return <div className='w-9 h-9' />;
+    if (!isMounted) return <div className='w-9 h-9' />;
 
     return (
         <button
@@ -19,8 +21,8 @@ export default function ThemeToggle() {
             }
             aria-label={
                 resolvedTheme === 'dark'
-                    ? 'Switch to light mode'
-                    : 'Switch to dark mode'
+                    ? t('toggle_light')
+                    : t('toggle_dark')
             }
             className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'>
             {resolvedTheme === 'dark' ? (

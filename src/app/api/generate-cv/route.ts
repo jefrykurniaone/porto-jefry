@@ -11,7 +11,7 @@ import idMessages from '@/i18n/messages/id.json';
 const SUPPORTED_LOCALES = ['en', 'id'] as const;
 type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
-const messagesMap: Record<SupportedLocale, typeof enMessages> = {
+const MESSAGES_MAP: Record<SupportedLocale, typeof enMessages> = {
     en: enMessages,
     id: idMessages,
 };
@@ -34,19 +34,24 @@ export async function GET(request: NextRequest) {
         ? (rawLocale as SupportedLocale)
         : 'en';
 
-    const messages = messagesMap[locale];
-    const photoSrc = await getPhotoSrc();
+    try {
+        const messages = MESSAGES_MAP[locale];
+        const photoSrc = await getPhotoSrc();
 
-    const buffer = await renderToBuffer(
-        createElement(CvDocument, { messages, photoSrc }) as ReactElement<DocumentProps>,
-    );
+        const buffer = await renderToBuffer(
+            createElement(CvDocument, { messages, photoSrc }) as ReactElement<DocumentProps>,
+        );
 
-    return new NextResponse(new Uint8Array(buffer), {
-        status: 200,
-        headers: {
-            'Content-Type': 'application/pdf',
-            'Content-Disposition': 'attachment; filename="Jefry_Kurniawan_CV.pdf"',
-            'Cache-Control': 'no-store',
-        },
-    });
+        return new NextResponse(new Uint8Array(buffer), {
+            status: 200,
+            headers: {
+                'Content-Type': 'application/pdf',
+                'Content-Disposition': 'attachment; filename="Jefry_Kurniawan_CV.pdf"',
+                'Cache-Control': 'no-store',
+            },
+        });
+    } catch (error) {
+        console.error('[generate-cv] Failed to render CV PDF', { locale, error });
+        return new NextResponse('Failed to generate CV', { status: 500 });
+    }
 }

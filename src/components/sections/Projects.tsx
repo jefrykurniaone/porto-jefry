@@ -1,9 +1,13 @@
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { projects } from '@/data/projects';
+import { translatePeriod } from '@/utils/translate-period';
 import { FolderIcon } from 'lucide-react';
+
+const MAX_TECH_VISIBLE = 6;
 
 export default function Projects() {
     const t = useTranslations('projects');
+    const locale = useLocale();
 
     return (
         <section id='projects' className='py-20 px-4'>
@@ -33,19 +37,19 @@ export default function Projects() {
                                 </div>
                             </div>
                             <p className='text-xs text-blue-600 dark:text-blue-400 font-medium mb-3'>
-                                {project.period}
+                                {translatePeriod(project.period.replace('Present', t('present')), locale)}
                             </p>
                             <div className='flex flex-wrap gap-1.5 mt-auto'>
-                                {project.tech.slice(0, 6).map((tech) => (
+                                {project.tech.slice(0, MAX_TECH_VISIBLE).map((tech) => (
                                     <span
                                         key={tech}
                                         className='text-xs px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300'>
                                         {tech}
                                     </span>
                                 ))}
-                                {project.tech.length > 6 && (
+                                {project.tech.length > MAX_TECH_VISIBLE && (
                                     <span className='text-xs px-2 py-0.5 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'>
-                                        +{project.tech.length - 6}
+                                        +{project.tech.length - MAX_TECH_VISIBLE}
                                     </span>
                                 )}
                             </div>
