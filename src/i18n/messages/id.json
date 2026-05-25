@@ -7,7 +7,9 @@
         "projects": "Proyek",
         "certifications": "Sertifikasi",
         "contact": "Kontak",
-        "logo_label": "Kembali ke atas"
+        "logo_label": "Kembali ke atas",
+        "toggle_menu": "Buka/tutup menu navigasi",
+        "skip_to_content": "Lewati ke konten utama"
     },
     "hero": {
         "greeting": "Halo, Saya",
@@ -16,7 +18,8 @@
         "subtitle": "5+ tahun membangun aplikasi .NET enterprise, RESTful API, dan sistem berbasis data — dengan minat yang terus berkembang di pengembangan software berbasis AI.",
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
-        "cta_contact": "Hubungi Saya"
+        "cta_contact": "Hubungi Saya",
+        "downloading_cv": "Membuat CV..."
     },
     "about": {
         "title": "Tentang Saya",
@@ -28,8 +31,8 @@
     "experience": {
         "title": "Pengalaman Profesional",
         "present": "Sekarang",
-        "items": [
-            {
+        "items": {
+            "xtremax-2025": {
                 "bullets": [
                     "Merancang dan mengembangkan sistem backend untuk aplikasi dinamis dan berperforma tinggi, memastikan integrasi yang mulus dengan sistem front-end.",
                     "Mengkustomisasi dan mengoptimalkan fitur Sitefinity CMS untuk menghadirkan solusi berkualitas tinggi bagi klien.",
@@ -39,7 +42,7 @@
                     "Bekerja sama dengan tim lintas fungsi untuk memenuhi kebutuhan proyek dan menghadirkan pengalaman pengguna yang luar biasa."
                 ]
             },
-            {
+            "arkamaya-2024": {
                 "bullets": [
                     "Membangun dan mengembangkan aplikasi perangkat lunak sesuai kebutuhan proyek, memastikan efisiensi, keamanan, dan kemudahan pemeliharaan.",
                     "Melakukan pemeliharaan rutin dan memperbarui sistem yang ada untuk meningkatkan performa serta memastikan kompatibilitas dengan teknologi terkini.",
@@ -50,7 +53,7 @@
                     "Menangani masalah teknis yang muncul selama pengembangan atau pemeliharaan dan memberikan solusi yang efektif dan cepat."
                 ]
             },
-            {
+            "nawa-lead-2024": {
                 "bullets": [
                     "Memimpin tim pengembang dalam aspek teknis untuk memastikan proyek selesai tepat waktu dan sesuai anggaran.",
                     "Mengorganisir pekerjaan teknis dengan memecahnya menjadi tugas-tugas dan mendistribusikannya kepada anggota tim.",
@@ -63,7 +66,7 @@
                     "Men-deploy aplikasi ke IIS pada server Development/Testing (Windows Server di Azure VM)."
                 ]
             },
-            {
+            "nawa-onerisk-2023": {
                 "bullets": [
                     "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED (Requirement Elicitation Document).",
                     "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
@@ -73,7 +76,7 @@
                     "Membuat dokumen panduan deployment."
                 ]
             },
-            {
+            "xtremax-2022": {
                 "bullets": [
                     "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED.",
                     "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
@@ -82,7 +85,7 @@
                     "Membuat dokumen panduan deployment dan memperbarui laporan tugas harian."
                 ]
             },
-            {
+            "nawa-2020": {
                 "bullets": [
                     "Mengembangkan dan memelihara beberapa aplikasi manajemen risiko enterprise (ORMS) untuk lembaga keuangan besar termasuk Adira Insurance dan BTPN, menggunakan VB.NET dan ASP.NET Web Forms.",
                     "Merancang dan mengoptimalkan stored procedure, view, dan pipeline SSIS ETL yang kompleks di SQL Server untuk mendukung pemrosesan data keuangan skala besar.",
@@ -91,7 +94,7 @@
                     "Berkolaborasi dengan analis bisnis untuk menerjemahkan dokumen spesifikasi fungsional menjadi implementasi teknis yang handal."
                 ]
             }
-        ]
+        }
     },
     "education": {
         "title": "Pendidikan",
@@ -100,7 +103,15 @@
         "gpa": "IPK"
     },
     "skills": {
-        "title": "Keahlian Teknis"
+        "title": "Keahlian Teknis",
+        "categories": {
+            "backend": "Backend",
+            "frontend": "Frontend",
+            "database": "Database",
+            "ai_emerging": "AI & Teknologi Terkini",
+            "cms_platforms": "CMS & Platform",
+            "tools_devops": "Alat & DevOps"
+        }
     },
     "projects": {
         "title": "Pengalaman Proyek",

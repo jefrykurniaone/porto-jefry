@@ -7,7 +7,9 @@
         "projects": "Projects",
         "certifications": "Certifications",
         "contact": "Contact",
-        "logo_label": "Back to top"
+        "logo_label": "Back to top",
+        "toggle_menu": "Toggle navigation menu",
+        "skip_to_content": "Skip to main content"
     },
     "hero": {
         "greeting": "Hi, I'm",
@@ -16,7 +18,8 @@
         "subtitle": "5+ years building enterprise .NET applications, RESTful APIs, and data-driven systems — with a growing passion for AI-powered software development.",
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
-        "cta_contact": "Contact Me"
+        "cta_contact": "Contact Me",
+        "downloading_cv": "Generating..."
     },
     "about": {
         "title": "About Me",
@@ -28,8 +31,8 @@
     "experience": {
         "title": "Professional Experience",
         "present": "Present",
-        "items": [
-            {
+        "items": {
+            "xtremax-2025": {
                 "bullets": [
                     "Designing and developing backend systems for dynamic, high-performance applications, ensuring seamless integration with front-end systems.",
                     "Customizing and optimizing Sitefinity CMS features to deliver high-quality client solutions.",
@@ -39,7 +42,7 @@
                     "Working with cross-functional teams to meet project requirements and deliver exceptional user experiences."
                 ]
             },
-            {
+            "arkamaya-2024": {
                 "bullets": [
                     "Building and developing software applications according to project needs, ensuring efficiency, security, and maintainability.",
                     "Performing routine maintenance and updating existing systems to improve performance and ensure compatibility with the latest technologies.",
@@ -50,7 +53,7 @@
                     "Addressing technical issues that arise during development or maintenance and providing effective and swift solutions."
                 ]
             },
-            {
+            "nawa-lead-2024": {
                 "bullets": [
                     "Managed teams of developers on technical aspects to ensure projects are delivered on time and within budget.",
                     "Organized technical work by breaking it down into tasks and distributing them to the rest of the team.",
@@ -63,7 +66,7 @@
                     "Deployed applications to IIS in Development/Testing Server (Windows Server in Azure VM)."
                 ]
             },
-            {
+            "nawa-onerisk-2023": {
                 "bullets": [
                     "Created functional specification documents in coordination with BA based on RED (Requirement Elicitation Document).",
                     "Developed, analyzed, and tested software that meets requirements on system design.",
@@ -73,7 +76,7 @@
                     "Created deployment guideline documents."
                 ]
             },
-            {
+            "xtremax-2022": {
                 "bullets": [
                     "Created functional specification documents in coordination with BA based on RED.",
                     "Developed, analyzed, and tested software meeting system design requirements.",
@@ -82,7 +85,7 @@
                     "Created deployment guideline documents and updated daily task reports."
                 ]
             },
-            {
+            "nawa-2020": {
                 "bullets": [
                     "Developed and maintained multiple enterprise risk management applications (ORMS) for major financial institutions including Adira Insurance and BTPN, using VB.NET and ASP.NET Web Forms.",
                     "Designed and optimised complex SQL Server stored procedures, views, and SSIS ETL pipelines to support large-scale financial data processing.",
@@ -91,7 +94,7 @@
                     "Collaborated with business analysts to translate functional specification documents into robust technical implementations."
                 ]
             }
-        ]
+        }
     },
     "education": {
         "title": "Education",
@@ -100,7 +103,15 @@
         "gpa": "GPA"
     },
     "skills": {
-        "title": "Technical Skills"
+        "title": "Technical Skills",
+        "categories": {
+            "backend": "Backend",
+            "frontend": "Frontend",
+            "database": "Database",
+            "ai_emerging": "AI & Emerging Tech",
+            "cms_platforms": "CMS & Platforms",
+            "tools_devops": "Tools & DevOps"
+        }
     },
     "projects": {
         "title": "Projects Experience",
