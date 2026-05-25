@@ -14,6 +14,7 @@
     "hero": {
         "greeting": "Halo, Saya",
         "name": "Jefry Kurniawan",
+        "photo_alt": "Jefry Kurniawan — foto profil",
         "title": "Backend Developer & Spesialis .NET",
         "subtitle": "5+ tahun membangun aplikasi .NET enterprise, RESTful API, dan sistem berbasis data — dengan minat yang terus berkembang di pengembangan software berbasis AI.",
         "cta_work": "Lihat Karya Saya",

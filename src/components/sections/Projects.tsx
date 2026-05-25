@@ -1,7 +1,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { projects } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
-import { FolderIcon } from 'lucide-react';
+import { ExternalLinkIcon, FolderIcon } from 'lucide-react';
 
 const MAX_TECH_VISIBLE = 6;
 
@@ -25,12 +25,25 @@ export default function Projects() {
                                     <FolderIcon
                                         size={18}
                                         className='text-blue-600 dark:text-blue-400'
+                                        aria-hidden='true'
                                     />
                                 </div>
-                                <div>
-                                    <h3 className='font-semibold text-gray-900 dark:text-white text-sm leading-snug'>
-                                        {project.name}
-                                    </h3>
+                                <div className='flex-1 min-w-0'>
+                                    <div className='flex items-start justify-between gap-2'>
+                                        <h3 className='font-semibold text-gray-900 dark:text-white text-sm leading-snug'>
+                                            {project.name}
+                                        </h3>
+                                        {project.url && (
+                                            <a
+                                                href={project.url}
+                                                target='_blank'
+                                                rel='noopener noreferrer'
+                                                aria-label={`${project.name} — external link`}
+                                                className='shrink-0 text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
+                                                <ExternalLinkIcon size={14} aria-hidden='true' />
+                                            </a>
+                                        )}
+                                    </div>
                                     <p className='text-xs text-gray-500 dark:text-gray-400 mt-0.5'>
                                         {project.company}
                                     </p>
@@ -39,6 +52,11 @@ export default function Projects() {
                             <p className='text-xs text-blue-600 dark:text-blue-400 font-medium mb-3'>
                                 {translatePeriod(project.period.replace('Present', t('present')), locale)}
                             </p>
+                            {project.description && (
+                                <p className='text-xs text-gray-600 dark:text-gray-300 mb-3 leading-relaxed'>
+                                    {project.description}
+                                </p>
+                            )}
                             <div className='flex flex-wrap gap-1.5 mt-auto'>
                                 {project.tech.slice(0, MAX_TECH_VISIBLE).map((tech) => (
                                     <span

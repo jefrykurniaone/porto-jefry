@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
@@ -38,10 +38,16 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
     );
 }
 
-function MobileNavLinks({ onNavClick, id }: Readonly<{ onNavClick: (key: string) => void; id?: string }>) {
+interface MobileNavLinksProps {
+    onNavClick: (key: string) => void;
+    id?: string;
+    menuRef?: React.RefObject<HTMLDivElement | null>;
+}
+
+function MobileNavLinks({ onNavClick, id, menuRef }: Readonly<MobileNavLinksProps>) {
     const t = useTranslations('nav');
     return (
-        <div id={id} className='md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 px-4 py-4'>
+        <div ref={menuRef} id={id} className='md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 px-4 py-4'>
             <ul className='flex flex-col gap-3'>
                 {NAV_KEYS.map((key) => (
                     <li key={key}>
@@ -62,6 +68,8 @@ export default function Navbar() {
     const t = useTranslations('nav');
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+    const toggleRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -69,10 +77,57 @@ export default function Navbar() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const scrollTo = (id: string) => {
+    // Focus trap for mobile menu
+    useEffect(() => {
+        if (!isOpen) return;
+
+        const menu = menuRef.current;
+        if (!menu) return;
+
+        const focusable = Array.from(
+            menu.querySelectorAll<HTMLElement>('a, button, [tabindex]:not([tabindex="-1"])')
+        );
+        focusable[0]?.focus();
+
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') {
+                setIsOpen(false);
+                toggleRef.current?.focus();
+                return;
+            }
+            if (e.key !== 'Tab' || focusable.length === 0) return;
+
+            const first = focusable[0];
+        const last = focusable.at(-1);
+
+            if (e.shiftKey) {
+                if (document.activeElement === first) {
+                    e.preventDefault();
+                    last?.focus();
+                }
+            } else if (document.activeElement === last) {
+                e.preventDefault();
+                first?.focus();
+            }
+        };
+
+        document.addEventListener('keydown', handleKeyDown);
+        return () => document.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen]);
+
+    // Return focus to toggle button when menu closes
+    useEffect(() => {
+        if (!isOpen) {
+            toggleRef.current?.focus();
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const scrollTo = useCallback((id: string) => {
         setIsOpen(false);
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    };
+        history.pushState(null, '', `#${id}`);
+    }, []);
 
     return (
         <header
@@ -84,7 +139,7 @@ export default function Navbar() {
             <nav className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between'>
                 <a
                     href='#hero'
-                    onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, '', location.pathname); }}
                     aria-label={t('logo_label')}
                     className='text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                     {'JK'}
@@ -95,17 +150,18 @@ export default function Navbar() {
                     <ThemeToggle />
                     <LanguageToggle />
                     <button
+                        ref={toggleRef}
                         type='button'
                         onClick={() => setIsOpen(!isOpen)}
                         className='md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
                         aria-label={t('toggle_menu')}
                         aria-expanded={isOpen}
                         aria-controls='mobile-nav-menu'>
-                        {isOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
+                        {isOpen ? <XIcon size={20} aria-hidden='true' /> : <MenuIcon size={20} aria-hidden='true' />}
                     </button>
                 </div>
             </nav>
-            {isOpen && <MobileNavLinks onNavClick={scrollTo} id='mobile-nav-menu' />}
+            {isOpen && <MobileNavLinks onNavClick={scrollTo} id='mobile-nav-menu' menuRef={menuRef} />}
         </header>
     );
 }

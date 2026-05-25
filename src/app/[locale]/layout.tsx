@@ -23,7 +23,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'hero' });
-    const BASE_URL = 'https://jefrykurniawan.vercel.app';
+    const BASE_URL = 'https://porto-jefry.vercel.app';
 
     return {
         title: `${t('name')} – ${t('title')}`,

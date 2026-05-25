@@ -25,22 +25,25 @@ export default function About() {
                     <div className='flex flex-wrap gap-6'>
                         <a
                             href={`mailto:${CONTACT_EMAIL}`}
+                            aria-label={t('contact_email')}
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
-                            <MailIcon size={18} />
+                            <MailIcon size={18} aria-hidden='true' />
                             <span>{CONTACT_EMAIL}</span>
                         </a>
                         <a
                             href={CONTACT_PHONE_HREF}
+                            aria-label={t('contact_phone')}
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
-                            <PhoneIcon size={18} />
+                            <PhoneIcon size={18} aria-hidden='true' />
                             <span>{CONTACT_PHONE_DISPLAY}</span>
                         </a>
                         <a
                             href={CONTACT_LINKEDIN_URL}
                             target='_blank'
                             rel='noopener noreferrer'
+                            aria-label={t('contact_linkedin')}
                             className='inline-flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
-                            <LinkedInIcon size={18} />
+                            <LinkedInIcon size={18} aria-hidden='true' />
                             <span>{CONTACT_LINKEDIN_HANDLE}</span>
                         </a>
                     </div>

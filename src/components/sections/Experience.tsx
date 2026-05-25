@@ -54,7 +54,11 @@ export default function Experience() {
     const t = useTranslations('experience');
     const locale = useLocale();
     const messages = useMessages();
-    const expItems = (messages.experience as { items: Record<string, { bullets: string[] }> }).items;
+
+    interface ExperienceMessages {
+        items: Record<string, { bullets: string[] }>;
+    }
+    const expItems = (messages.experience as unknown as ExperienceMessages).items;
 
     return (
         <section id='experience' className='py-20 px-4 bg-gray-50 dark:bg-gray-900/50'>

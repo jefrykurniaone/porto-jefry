@@ -3,6 +3,8 @@ export interface ProjectItem {
     company: string;
     period: string;
     tech: string[];
+    description?: string;
+    url?: string;
 }
 
 export const projects: ProjectItem[] = [

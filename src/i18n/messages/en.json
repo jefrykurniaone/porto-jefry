@@ -14,6 +14,7 @@
     "hero": {
         "greeting": "Hi, I'm",
         "name": "Jefry Kurniawan",
+        "photo_alt": "Jefry Kurniawan — profile photo",
         "title": "Backend Developer & .NET Specialist",
         "subtitle": "5+ years building enterprise .NET applications, RESTful APIs, and data-driven systems — with a growing passion for AI-powered software development.",
         "cta_work": "View My Work",

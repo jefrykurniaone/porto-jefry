@@ -19,6 +19,11 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
     const scrollTo = (id: string) =>
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
 
+    const scrollToWithHash = (id: string) => {
+        scrollTo(id);
+        history.pushState(null, '', `#${id}`);
+    };
+
     const handleDownload = async () => {
         if (isDownloading) return;
         setIsDownloading(true);
@@ -44,9 +49,9 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
         <div className='flex flex-wrap justify-center gap-4'>
             <a
                 href='#projects'
-                onClick={(e) => { e.preventDefault(); scrollTo('projects'); }}
+                onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
                 className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
-                <ArrowDownIcon size={18} />
+                <ArrowDownIcon size={18} aria-hidden='true' />
                 {ctaWork}
             </a>
             <button
@@ -61,16 +66,16 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
                     </>
                 ) : (
                     <>
-                        <DownloadIcon size={18} />
+                        <DownloadIcon size={18} aria-hidden='true' />
                         {ctaCv}
                     </>
                 )}
             </button>
             <a
                 href='#contact'
-                onClick={(e) => { e.preventDefault(); scrollTo('contact'); }}
+                onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
                 className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
-                <MailIcon size={18} />
+                <MailIcon size={18} aria-hidden='true' />
                 {ctaContact}
             </a>
         </div>
@@ -88,7 +93,7 @@ export default function Hero() {
                     <div className='w-32 h-32 rounded-full overflow-hidden ring-4 ring-blue-500/30 ring-offset-4 ring-offset-white dark:ring-offset-gray-950'>
                         <Image
                             src='/cv-photo.webp'
-                            alt={t('name')}
+                            alt={t('photo_alt')}
                             width={128}
                             height={128}
                             className='w-full h-full object-cover'

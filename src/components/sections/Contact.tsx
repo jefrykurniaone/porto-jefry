@@ -1,5 +1,5 @@
 import { useTranslations } from 'next-intl';
-import { MailIcon, PhoneIcon } from 'lucide-react';
+import { Github, MailIcon, PhoneIcon } from 'lucide-react';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
     CONTACT_EMAIL,
@@ -7,6 +7,8 @@ import {
     CONTACT_PHONE_DISPLAY,
     CONTACT_LINKEDIN_URL,
     CONTACT_LINKEDIN_DISPLAY,
+    CONTACT_GITHUB_URL,
+    CONTACT_GITHUB_DISPLAY,
 } from '@/data/contact';
 
 interface ContactLinkItem {
@@ -41,21 +43,28 @@ export default function Contact() {
             label: t('email_label'),
             href: `mailto:${CONTACT_EMAIL}`,
             value: CONTACT_EMAIL,
-            icon: <MailIcon size={20} />,
+            icon: <MailIcon size={20} aria-hidden='true' />,
             isExternal: false,
         },
         {
             label: t('phone_label'),
             href: CONTACT_PHONE_HREF,
             value: CONTACT_PHONE_DISPLAY,
-            icon: <PhoneIcon size={20} />,
+            icon: <PhoneIcon size={20} aria-hidden='true' />,
             isExternal: false,
         },
         {
             label: t('linkedin_label'),
             href: CONTACT_LINKEDIN_URL,
             value: CONTACT_LINKEDIN_DISPLAY,
-            icon: <LinkedInIcon size={20} />,
+            icon: <LinkedInIcon size={20} aria-hidden='true' />,
+            isExternal: true,
+        },
+        {
+            label: t('github_label'),
+            href: CONTACT_GITHUB_URL,
+            value: CONTACT_GITHUB_DISPLAY,
+            icon: <Github size={20} aria-hidden='true' />,
             isExternal: true,
         },
     ];
@@ -69,7 +78,7 @@ export default function Contact() {
                 <p className='text-gray-600 dark:text-gray-300 text-lg mb-12 max-w-2xl mx-auto'>
                     {t('description')}
                 </p>
-                <div className='grid sm:grid-cols-3 gap-5'>
+                <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-5'>
                     {links.map((link) => (
                         <ContactCard key={link.href} {...link} />
                     ))}

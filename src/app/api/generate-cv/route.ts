@@ -107,6 +107,6 @@ export async function GET(req: NextRequest) {
         return new NextResponse(pdfArray, { status: 200, headers: buildPdfHeaders() });
     } catch (error) {
         console.error('[generate-cv] Failed to render CV PDF', { locale, error });
-        return new NextResponse('Failed to generate CV', { status: 500 });
+        return new NextResponse('Internal Server Error', { status: 500 });
     }
 }
