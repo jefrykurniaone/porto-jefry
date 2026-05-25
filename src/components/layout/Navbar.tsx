@@ -73,9 +73,9 @@ export default function Navbar() {
     const hasMountedRef = useRef(false);
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const handleScroll = () => setIsScrolled(globalThis.scrollY > 20);
+        globalThis.addEventListener('scroll', handleScroll);
+        return () => globalThis.removeEventListener('scroll', handleScroll);
     }, []);
 
     // Focus trap for mobile menu
@@ -138,7 +138,7 @@ export default function Navbar() {
             <nav className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between'>
                 <a
                     href='#hero'
-                    onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, '', location.pathname); }}
+                    onClick={(e) => { e.preventDefault(); globalThis.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, '', location.pathname); }}
                     aria-label={t('logo_label')}
                     className='text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                     {'JK'}
