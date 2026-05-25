@@ -10,14 +10,16 @@ export default function BackToTop() {
     const observerRef = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
-        const footer = document.getElementById('site-footer');
-        if (!footer) return;
+        const about = document.getElementById('about');
+        if (!about) return;
 
         observerRef.current = new IntersectionObserver(
-            ([entry]) => setVisible(entry.isIntersecting),
-            { threshold: 0.1 },
+            ([entry]) => {
+                setVisible(entry.isIntersecting || entry.boundingClientRect.top < 0);
+            },
+            { threshold: 0 },
         );
-        observerRef.current.observe(footer);
+        observerRef.current.observe(about);
 
         return () => {
             observerRef.current?.disconnect();
