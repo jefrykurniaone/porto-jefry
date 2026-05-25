@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
@@ -12,13 +12,21 @@ vi.mock('next/image', () => ({
     ),
 }));
 
+let fetchMock: ReturnType<typeof vi.fn>;
+
 beforeEach(() => {
-    global.fetch = vi.fn().mockResolvedValue({
+    fetchMock = vi.fn().mockResolvedValue({
         ok: true,
         blob: () => Promise.resolve(new Blob()),
     });
-    global.URL.createObjectURL = vi.fn(() => 'blob:mock');
-    global.URL.revokeObjectURL = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
+    vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+});
+
+afterEach(() => {
+    vi.unstubAllGlobals();
+    vi.restoreAllMocks();
 });
 
 function renderHero() {
@@ -48,8 +56,7 @@ describe('Hero', () => {
     it('renders hero photo with alt text', () => {
         renderHero();
         const img = screen.getByRole('img');
-        expect(img).toHaveAttribute('alt');
-        expect(img.getAttribute('alt')!.length).toBeGreaterThan(0);
+        expect(img.getAttribute('alt')).toBeTruthy();
     });
 
     it('clicking the CV button triggers download', async () => {
@@ -58,7 +65,8 @@ describe('Hero', () => {
         const btns = screen.getAllByRole('button');
         const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
         expect(cvBtn).toBeDefined();
-        await user.click(cvBtn!);
-        expect(global.fetch).toHaveBeenCalled();
+        if (!cvBtn) return;
+        await user.click(cvBtn);
+        expect(fetchMock).toHaveBeenCalled();
     });
 });
