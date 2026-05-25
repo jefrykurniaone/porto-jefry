@@ -27,6 +27,7 @@ function renderBackToTop() {
 
 describe('BackToTop', () => {
     let aboutEl: HTMLDivElement;
+    let scrollToMock: ReturnType<typeof vi.fn>;
 
     beforeEach(() => {
         aboutEl = document.createElement('div');
@@ -34,19 +35,14 @@ describe('BackToTop', () => {
         Object.defineProperty(aboutEl, 'offsetTop', { configurable: true, value: 500 });
         document.body.appendChild(aboutEl);
 
-        Object.defineProperty(globalThis, 'scrollY', {
-            configurable: true,
-            writable: true,
-            value: 0,
-        });
-        Object.defineProperty(globalThis, 'scrollTo', {
-            configurable: true,
-            value: vi.fn(),
-        });
+        vi.stubGlobal('scrollY', 0);
+        scrollToMock = vi.fn();
+        vi.stubGlobal('scrollTo', scrollToMock);
     });
 
     afterEach(() => {
-        document.body.removeChild(aboutEl);
+        aboutEl.remove();
+        vi.unstubAllGlobals();
     });
 
     it('renders a button with aria-label', () => {
@@ -63,11 +59,7 @@ describe('BackToTop', () => {
     it('button becomes visible after scrolling past About section', () => {
         renderBackToTop();
         act(() => {
-            Object.defineProperty(globalThis, 'scrollY', {
-                configurable: true,
-                writable: true,
-                value: 600,
-            });
+            vi.stubGlobal('scrollY', 600);
             globalThis.dispatchEvent(new Event('scroll'));
         });
         const btn = screen.getByRole('button');
@@ -77,15 +69,11 @@ describe('BackToTop', () => {
     it('clicking the button calls scrollTo', async () => {
         renderBackToTop();
         act(() => {
-            Object.defineProperty(globalThis, 'scrollY', {
-                configurable: true,
-                writable: true,
-                value: 600,
-            });
+            vi.stubGlobal('scrollY', 600);
             globalThis.dispatchEvent(new Event('scroll'));
         });
         const user = userEvent.setup();
         await user.click(screen.getByRole('button'));
-        expect(globalThis.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+        expect(scrollToMock).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
     });
 });
