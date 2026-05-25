@@ -8,7 +8,7 @@ import CvSkills from './CvSkills';
 import CvProjects from './CvProjects';
 import CvCertifications from './CvCertifications';
 
-export default function CvDocument({ messages, photoSrc }: Readonly<CvDocumentProps>) {
+export default function CvDocument({ messages, photoSrc, locale = 'en' }: Readonly<CvDocumentProps>) {
     return (
         <Document
             title={`${messages.hero.name} - CV`}
@@ -21,7 +21,7 @@ export default function CvDocument({ messages, photoSrc }: Readonly<CvDocumentPr
                     <Text style={styles.sectionTitle}>{messages.about.title}</Text>
                     <Text style={styles.summaryText}>{messages.about.description}</Text>
                 </View>
-                <CvExperience messages={messages} />
+                <CvExperience messages={messages} locale={locale} />
                 <CvEducation messages={messages} />
                 <CvSkills messages={messages} />
                 <CvProjects messages={messages} />

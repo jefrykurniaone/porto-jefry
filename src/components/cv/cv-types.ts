@@ -10,11 +10,11 @@ export interface Messages {
     experience: {
         title: string;
         present: string;
-        items: Array<{ bullets: string[] }>;
+        items: Record<string, { bullets: string[] }>;
     };
     education: { title: string; formal: string; informal: string; gpa: string };
     skills: { title: string };
-    projects: { title: string };
+    projects: { title: string; present: string };
     certifications: {
         title: string;
         coding_id: { name: string; issuer: string; period: string; description: string };
@@ -24,4 +24,5 @@ export interface Messages {
 export interface CvDocumentProps {
     messages: Messages;
     photoSrc?: string;
+    locale?: string;
 }

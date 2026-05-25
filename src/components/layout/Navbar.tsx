@@ -26,29 +26,31 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
         <ul className='hidden md:flex items-center gap-6'>
             {NAV_KEYS.map((key) => (
                 <li key={key}>
-                    <button
-                        onClick={() => onNavClick(key)}
+                    <a
+                        href={`#${key}`}
+                        onClick={(e) => { e.preventDefault(); onNavClick(key); }}
                         className='text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors capitalize'>
                         {t(key)}
-                    </button>
+                    </a>
                 </li>
             ))}
         </ul>
     );
 }
 
-function MobileNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
+function MobileNavLinks({ onNavClick, id }: Readonly<{ onNavClick: (key: string) => void; id?: string }>) {
     const t = useTranslations('nav');
     return (
-        <div className='md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 px-4 py-4'>
+        <div id={id} className='md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 px-4 py-4'>
             <ul className='flex flex-col gap-3'>
                 {NAV_KEYS.map((key) => (
                     <li key={key}>
-                        <button
-                            onClick={() => onNavClick(key)}
+                        <a
+                            href={`#${key}`}
+                            onClick={(e) => { e.preventDefault(); onNavClick(key); }}
                             className='w-full text-left py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors capitalize'>
                             {t(key)}
-                        </button>
+                        </a>
                     </li>
                 ))}
             </ul>
@@ -80,26 +82,30 @@ export default function Navbar() {
                     : 'bg-transparent'
             }`}>
             <nav className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between'>
-                <button
-                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                <a
+                    href='#hero'
+                    onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                     aria-label={t('logo_label')}
                     className='text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
                     {'JK'}
                     <span className='text-blue-600 dark:text-blue-400'>{'.'}</span>
-                </button>
+                </a>
                 <DesktopNavLinks onNavClick={scrollTo} />
                 <div className='flex items-center gap-2'>
                     <ThemeToggle />
                     <LanguageToggle />
                     <button
+                        type='button'
                         onClick={() => setIsOpen(!isOpen)}
                         className='md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
-                        aria-label='Toggle menu'>
+                        aria-label={t('toggle_menu')}
+                        aria-expanded={isOpen}
+                        aria-controls='mobile-nav-menu'>
                         {isOpen ? <XIcon size={20} /> : <MenuIcon size={20} />}
                     </button>
                 </div>
             </nav>
-            {isOpen && <MobileNavLinks onNavClick={scrollTo} />}
+            {isOpen && <MobileNavLinks onNavClick={scrollTo} id='mobile-nav-menu' />}
         </header>
     );
 }

@@ -5,7 +5,7 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
     {
-        category: 'Backend',
+        category: 'backend',
         skills: [
             '.NET',
             '.NET Framework',
@@ -22,7 +22,7 @@ export const skillCategories: SkillCategory[] = [
         ],
     },
     {
-        category: 'Frontend',
+        category: 'frontend',
         skills: [
             'HTML',
             'CSS',
@@ -35,11 +35,11 @@ export const skillCategories: SkillCategory[] = [
         ],
     },
     {
-        category: 'Database',
+        category: 'database',
         skills: ['Microsoft SQL Server', 'MySQL', 'SSIS', 'SSRS'],
     },
     {
-        category: 'AI & Emerging Tech',
+        category: 'ai_emerging',
         skills: [
             'Python',
             'Semantic Kernel',
@@ -49,11 +49,11 @@ export const skillCategories: SkillCategory[] = [
         ],
     },
     {
-        category: 'CMS & Platforms',
+        category: 'cms_platforms',
         skills: ['Sitefinity'],
     },
     {
-        category: 'Tools & DevOps',
+        category: 'tools_devops',
         skills: [
             'Git',
             'Docker',
