@@ -19,7 +19,11 @@ export default function Certifications() {
                             key={cert.id}
                             className='p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex gap-4'>
                             <div className='p-3 rounded-xl bg-yellow-50 dark:bg-yellow-950/50 shrink-0 h-fit'>
-                                <AwardIcon size={24} className='text-yellow-500' aria-hidden='true' />
+                                <AwardIcon
+                                    size={24}
+                                    className='text-yellow-500'
+                                    aria-hidden='true'
+                                />
                             </div>
                             <div>
                                 <h3 className='font-semibold text-gray-900 dark:text-white'>

@@ -20,7 +20,9 @@ function buildCsp(nonce: string): string {
 
 export default function middleware(request: NextRequest) {
     const intlResponse = intlMiddleware(request);
-    const nonce = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('base64');
+    const nonce = Buffer.from(
+        crypto.getRandomValues(new Uint8Array(16)),
+    ).toString('base64');
     const csp = buildCsp(nonce);
 
     // For redirects: just attach CSP and return — layout is not rendered
@@ -34,7 +36,9 @@ export default function middleware(request: NextRequest) {
     const requestHeaders = new Headers(request.headers);
     requestHeaders.set('x-nonce', nonce);
 
-    const response = NextResponse.next({ request: { headers: requestHeaders } });
+    const response = NextResponse.next({
+        request: { headers: requestHeaders },
+    });
     response.headers.set('Content-Security-Policy', csp);
 
     // Forward internal Next.js headers from intl middleware (rewrites, locale cookie, etc.)
