@@ -5,9 +5,11 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import BackToTop from '@/components/layout/BackToTop';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
+import { BASE_URL } from '@/utils/constants';
 import '@/app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,7 +25,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'hero' });
-    const BASE_URL = 'https://porto-jefry.vercel.app';
 
     return {
         title: `${t('name')} – ${t('title')}`,
@@ -69,6 +70,7 @@ export default async function LocaleLayout({
                         <Navbar />
                         <main id='main-content'>{children}</main>
                         <Footer />
+                        <BackToTop />
                     </ThemeProvider>
                 </NextIntlClientProvider>
                 <Analytics />

@@ -17,7 +17,7 @@
 
 | Phase | Title | Goal | Status |
 |---|---|---|---|
-| 02 | Code Quality + Back-to-Top | Fix 6 info items; add back-to-top button | � Planned |
+| 02 | Code Quality + Back-to-Top | Fix 6 info items; add back-to-top button | ✅ Complete |
 | 03 | Test Suite (Vitest + RTL) | Install Vitest, write tests, reach 80%+ coverage | 🔲 Not started |
 | 04 | CI Pipeline (GitHub Actions) | Lint + typecheck + test + build on every PR | 🔲 Not started |
 

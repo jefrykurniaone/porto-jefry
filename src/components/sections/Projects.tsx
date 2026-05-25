@@ -18,7 +18,7 @@ export default function Projects() {
                 <div className='grid sm:grid-cols-2 lg:grid-cols-3 gap-5'>
                     {projects.map((project) => (
                         <div
-                            key={project.name}
+                            key={project.id}
                             className='flex flex-col p-5 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-blue-200 dark:hover:border-blue-800 hover:shadow-md transition-all duration-200'>
                             <div className='flex items-start gap-3 mb-3'>
                                 <div className='p-2 rounded-lg bg-blue-100 dark:bg-blue-950 shrink-0'>
