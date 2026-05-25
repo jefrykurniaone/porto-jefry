@@ -5,10 +5,6 @@ import { experiences, type ExperienceItem } from '@/data/experience';
 import { translatePeriod } from '@/utils/translate-period';
 import { BriefcaseIcon } from 'lucide-react';
 
-interface ExperienceMessages {
-    items: Array<{ bullets: string[] }>;
-}
-
 interface ExperienceCardProps {
     exp: ExperienceItem;
     bullets: string[];
@@ -58,7 +54,7 @@ export default function Experience() {
     const t = useTranslations('experience');
     const locale = useLocale();
     const messages = useMessages();
-    const expItems = (messages.experience as unknown as ExperienceMessages).items;
+    const expItems = (messages.experience as { items: Record<string, { bullets: string[] }> }).items;
 
     return (
         <section id='experience' className='py-20 px-4 bg-gray-50 dark:bg-gray-900/50'>
@@ -69,11 +65,11 @@ export default function Experience() {
                 <div className='relative'>
                     <div className='absolute left-4 md:left-8 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700' />
                     <div className='flex flex-col gap-10'>
-                        {experiences.map((exp, i) => (
+                        {experiences.map((exp) => (
                             <ExperienceCard
-                                key={`${exp.company}-${exp.period}`}
+                                key={exp.id}
                                 exp={exp}
-                                bullets={expItems[i]?.bullets ?? []}
+                                bullets={expItems[exp.id]?.bullets ?? []}
                                 presentLabel={t('present')}
                                 locale={locale}
                             />

@@ -97,7 +97,7 @@ export async function GET(req: NextRequest) {
         const photoSrc = await getPhotoSrc();
 
         const buffer = await renderToBuffer(
-            createElement(CvDocument, { messages, photoSrc }) as ReactElement<DocumentProps>,
+            createElement(CvDocument, { messages, photoSrc, locale }) as ReactElement<DocumentProps>,
         );
 
         // Copy into a fresh ArrayBuffer-backed Uint8Array (TypeScript 5.x BodyInit compatibility)
