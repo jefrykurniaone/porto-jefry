@@ -1,28 +1,26 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { ArrowUpIcon } from 'lucide-react';
 
 export default function BackToTop() {
     const t = useTranslations('nav');
     const [visible, setVisible] = useState(false);
-    const observerRef = useRef<IntersectionObserver | null>(null);
 
     useEffect(() => {
         const about = document.getElementById('about');
         if (!about) return;
 
-        observerRef.current = new IntersectionObserver(
-            ([entry]) => {
-                setVisible(entry.isIntersecting || entry.boundingClientRect.top < 0);
-            },
-            { threshold: 0 },
-        );
-        observerRef.current.observe(about);
+        const handleScroll = () => {
+            setVisible(window.scrollY >= about.offsetTop);
+        };
+
+        handleScroll();
+        window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
-            observerRef.current?.disconnect();
+            window.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
