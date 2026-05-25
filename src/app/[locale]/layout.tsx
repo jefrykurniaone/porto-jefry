@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import BackToTop from '@/components/layout/BackToTop';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
@@ -69,6 +70,7 @@ export default async function LocaleLayout({
                         <Navbar />
                         <main id='main-content'>{children}</main>
                         <Footer />
+                        <BackToTop />
                     </ThemeProvider>
                 </NextIntlClientProvider>
                 <Analytics />
