@@ -8,6 +8,7 @@ import Footer from '@/components/layout/Footer';
 import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
+import { BASE_URL } from '@/utils/constants';
 import '@/app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -23,7 +24,6 @@ export async function generateMetadata({
 }): Promise<Metadata> {
     const { locale } = await params;
     const t = await getTranslations({ locale, namespace: 'hero' });
-    const BASE_URL = 'https://porto-jefry.vercel.app';
 
     return {
         title: `${t('name')} – ${t('title')}`,
