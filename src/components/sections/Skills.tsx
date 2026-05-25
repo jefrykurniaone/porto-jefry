@@ -18,7 +18,7 @@ export default function Skills() {
                             key={cat.category}
                             className='p-5 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800'>
                             <h3 className='font-semibold text-gray-900 dark:text-white mb-3 text-sm uppercase tracking-wider'>
-                                {cat.category}
+                                {t(`categories.${cat.category}`)}
                             </h3>
                             <div className='flex flex-wrap gap-2'>
                                 {cat.skills.map((skill) => (
