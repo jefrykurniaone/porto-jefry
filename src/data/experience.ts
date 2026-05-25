@@ -1,4 +1,5 @@
 export interface ExperienceItem {
+    id: string;
     company: string;
     role: string;
     period: string;
@@ -8,6 +9,7 @@ export interface ExperienceItem {
 
 export const experiences: ExperienceItem[] = [
     {
+        id: 'xtremax-2025',
         company: 'PT Xtremax Teknologi Indonesia',
         role: 'Software Developer I - Backend',
         period: 'Jul 2025 – Present',
@@ -15,6 +17,7 @@ export const experiences: ExperienceItem[] = [
         tech: ['C#', '.NET', 'Sitefinity', 'SQL Server', 'RESTful API'],
     },
     {
+        id: 'arkamaya-2024',
         company: 'PT Arkamaya',
         role: 'Staff Programmer',
         period: 'Dec 2024 – Jul 2025',
@@ -32,6 +35,7 @@ export const experiences: ExperienceItem[] = [
         ],
     },
     {
+        id: 'nawa-lead-2024',
         company: 'PT Nawa Data Solutions',
         role: 'Technical Lead',
         period: 'Jan 2024 – Jul 2024',
@@ -46,6 +50,7 @@ export const experiences: ExperienceItem[] = [
         ],
     },
     {
+        id: 'nawa-onerisk-2023',
         company: 'PT Nawa Data Solutions',
         role: '.NET Developer – OneRisk Engineer',
         period: 'Oct 2023 – Jan 2024',
@@ -60,6 +65,7 @@ export const experiences: ExperienceItem[] = [
         ],
     },
     {
+        id: 'xtremax-2022',
         company: 'PT Xtremax Teknologi Indonesia',
         role: 'Associate Software Engineer (.NET)',
         period: 'Nov 2022 – Aug 2023',
@@ -75,6 +81,7 @@ export const experiences: ExperienceItem[] = [
         ],
     },
     {
+        id: 'nawa-2020',
         company: 'PT Nawa Data Solutions',
         role: '.NET Developer',
         period: 'Feb 2020 – Nov 2022',
