@@ -13,7 +13,7 @@
 | Branch | `main` |
 | Commits ahead of origin | 7 (not yet pushed) |
 | Last completed phase | Phase 01 — Fix All Concerns ✅ |
-| Next phase | Phase 02 — Code Quality + Back-to-Top |
+| Next phase | Phase 02 — Code Quality + Back-to-Top (PLAN.md ready) |
 | Build status | ✅ Clean (`npm run build`, `tsc --noEmit`) |
 | Test suite | ❌ Not yet set up |
 | CI pipeline | ❌ Not yet set up |
