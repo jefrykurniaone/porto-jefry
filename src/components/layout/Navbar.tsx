@@ -99,7 +99,7 @@ export default function Navbar() {
             if (e.key !== 'Tab' || focusable.length === 0) return;
 
             const first = focusable[0];
-        const last = focusable.at(-1);
+            const last = focusable.at(-1);
 
             if (e.shiftKey) {
                 if (document.activeElement === first) {

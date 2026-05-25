@@ -1,4 +1,5 @@
 export interface ProjectItem {
+    id: string;
     name: string;
     company: string;
     period: string;
@@ -9,6 +10,7 @@ export interface ProjectItem {
 
 export const projects: ProjectItem[] = [
     {
+        id: 'heritagesg-website-maintenance',
         name: 'HeritageSG Website Maintenance',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Mar 2026 – Present',
@@ -23,6 +25,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'yellow-ribbon-singapore-website',
         name: 'Yellow Ribbon Singapore Website',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Jul 2025 – Present',
@@ -37,6 +40,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'public-service-commission-website',
         name: 'Public Service Commission Website',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Nov 2022 – Aug 2023',
@@ -51,6 +55,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'agency-for-science-technology-and-research',
         name: 'Agency for Science, Technology and Research',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Feb 2023 – Aug 2023',
@@ -65,6 +70,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'defense-science-and-technology-agency',
         name: 'Defense Science and Technology Agency',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Mar 2023 – Aug 2023',
@@ -79,6 +85,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'unpacking-direction-ttlc',
         name: 'Unpacking Direction TTLC',
         company: 'PT Arkamaya',
         period: 'Dec 2024 – Jul 2025',
@@ -95,6 +102,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'sustainability-tam-event-management',
         name: 'Sustainability TAM (Event Management)',
         company: 'PT Arkamaya',
         period: 'Dec 2024 – Jul 2025',
@@ -112,6 +120,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'hris-job-tomori',
         name: 'HRIS JOB Tomori',
         company: 'PT Arkamaya',
         period: 'Dec 2024 – Jul 2025',
@@ -130,6 +139,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'trainer-tdk-framework-tmmin',
         name: 'Trainer TDK Framework TMMIN',
         company: 'PT Arkamaya',
         period: 'Dec 2024 – Jul 2025',
@@ -145,6 +155,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'rbbr-super-bank',
         name: 'RBBR Super Bank',
         company: 'PT Nawa Data Solutions',
         period: 'Oct 2023 – Jul 2024',
@@ -161,6 +172,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'oprisk-super-bank',
         name: 'OPRISK Super Bank',
         company: 'PT Nawa Data Solutions',
         period: 'May 2024 – Jul 2024',
@@ -177,6 +189,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'orms-adira-insurance',
         name: 'ORMS Adira Insurance',
         company: 'PT Nawa Data Solutions',
         period: 'Feb 2020 – Nov 2022',
@@ -193,6 +206,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'orms-btpn',
         name: 'ORMS BTPN',
         company: 'PT Nawa Data Solutions',
         period: 'Feb 2020 – Nov 2022',
@@ -209,6 +223,7 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'nawa-point-web-application',
         name: 'Nawa Point Web Application',
         company: 'Coding.ID',
         period: 'Jan 2020',

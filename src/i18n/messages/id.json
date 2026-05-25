@@ -9,7 +9,8 @@
         "contact": "Kontak",
         "logo_label": "Kembali ke atas",
         "toggle_menu": "Buka/tutup menu navigasi",
-        "skip_to_content": "Lewati ke konten utama"
+        "skip_to_content": "Lewati ke konten utama",
+        "back_to_top": "Kembali ke atas"
     },
     "hero": {
         "greeting": "Halo, Saya",

@@ -9,7 +9,8 @@
         "contact": "Contact",
         "logo_label": "Back to top",
         "toggle_menu": "Toggle navigation menu",
-        "skip_to_content": "Skip to main content"
+        "skip_to_content": "Skip to main content",
+        "back_to_top": "Back to top"
     },
     "hero": {
         "greeting": "Hi, I'm",
