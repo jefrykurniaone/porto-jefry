@@ -3,6 +3,4 @@ export interface CertificationItem {
     id: string;
 }
 
-export const certifications: CertificationItem[] = [
-    { id: 'coding_id' },
-];
+export const certifications: CertificationItem[] = [{ id: 'coding_id' }];

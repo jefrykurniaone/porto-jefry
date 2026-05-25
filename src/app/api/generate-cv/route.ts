@@ -13,7 +13,10 @@ const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5;
 
 // Module-level rate-limit store (resets on cold start)
-const rateLimitStore = new Map<string, { count: number; windowStart: number }>();
+const rateLimitStore = new Map<
+    string,
+    { count: number; windowStart: number }
+>();
 
 function checkRateLimit(ip: string): boolean {
     const now = Date.now();
@@ -52,7 +55,9 @@ async function getPhotoSrc(): Promise<string | undefined> {
         await access(CV_PHOTO_PATH, constants.R_OK);
         const raw = await readFile(CV_PHOTO_PATH);
         // @react-pdf/renderer only supports JPEG and PNG — convert to JPEG via sharp
-        const jpeg = await sharp(raw).jpeg({ quality: JPEG_QUALITY }).toBuffer();
+        const jpeg = await sharp(raw)
+            .jpeg({ quality: JPEG_QUALITY })
+            .toBuffer();
         cachedPhotoSrc = `data:image/jpeg;base64,${jpeg.toString('base64')}`;
     } catch {
         // File absent or unreadable — proceed without photo
@@ -75,7 +80,9 @@ export async function GET(req: NextRequest) {
     const { searchParams } = req.nextUrl;
     const rawLocale = searchParams.get('locale') ?? 'en';
 
-    const locale: SupportedLocale = SUPPORTED_LOCALES.includes(rawLocale as SupportedLocale)
+    const locale: SupportedLocale = SUPPORTED_LOCALES.includes(
+        rawLocale as SupportedLocale,
+    )
         ? (rawLocale as SupportedLocale)
         : 'en';
 
@@ -90,7 +97,10 @@ export async function GET(req: NextRequest) {
 
     const cached = CV_BUFFER_CACHE.get(locale);
     if (cached) {
-        return new NextResponse(cached, { status: 200, headers: buildPdfHeaders() });
+        return new NextResponse(cached, {
+            status: 200,
+            headers: buildPdfHeaders(),
+        });
     }
 
     try {
@@ -98,16 +108,26 @@ export async function GET(req: NextRequest) {
         const photoSrc = await getPhotoSrc();
 
         const buffer = await renderToBuffer(
-            createElement(CvDocument, { messages, photoSrc, locale }) as ReactElement<DocumentProps>,
+            createElement(CvDocument, {
+                messages,
+                photoSrc,
+                locale,
+            }) as ReactElement<DocumentProps>,
         );
 
         // Copy into a fresh ArrayBuffer-backed Uint8Array (TypeScript 5.x BodyInit compatibility)
         const pdfArray = new Uint8Array(buffer.length);
         pdfArray.set(buffer);
         CV_BUFFER_CACHE.set(locale, pdfArray);
-        return new NextResponse(pdfArray, { status: 200, headers: buildPdfHeaders() });
+        return new NextResponse(pdfArray, {
+            status: 200,
+            headers: buildPdfHeaders(),
+        });
     } catch (error) {
-        console.error('[generate-cv] Failed to render CV PDF', { locale, error });
+        console.error('[generate-cv] Failed to render CV PDF', {
+            locale,
+            error,
+        });
         return new NextResponse('Internal Server Error', { status: 500 });
     }
 }

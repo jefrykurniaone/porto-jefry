@@ -20,7 +20,13 @@ interface ContactLinkItem {
     isExternal: boolean;
 }
 
-function ContactCard({ label, href, value, icon, isExternal }: Readonly<ContactLinkItem>) {
+function ContactCard({
+    label,
+    href,
+    value,
+    icon,
+    isExternal,
+}: Readonly<ContactLinkItem>) {
     return (
         <a
             href={href}
@@ -30,8 +36,12 @@ function ContactCard({ label, href, value, icon, isExternal }: Readonly<ContactL
             <span className='p-3 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform'>
                 {icon}
             </span>
-            <span className='font-medium text-gray-900 dark:text-white text-sm'>{label}</span>
-            <span className='text-xs text-gray-500 dark:text-gray-400 break-all'>{value}</span>
+            <span className='font-medium text-gray-900 dark:text-white text-sm'>
+                {label}
+            </span>
+            <span className='text-xs text-gray-500 dark:text-gray-400 break-all'>
+                {value}
+            </span>
         </a>
     );
 }
