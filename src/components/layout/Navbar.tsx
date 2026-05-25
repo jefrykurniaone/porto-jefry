@@ -41,7 +41,7 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
 interface MobileNavLinksProps {
     onNavClick: (key: string) => void;
     id?: string;
-    menuRef?: React.RefObject<HTMLDivElement | null>;
+    menuRef?: React.RefObject<HTMLDivElement>;
 }
 
 function MobileNavLinks({ onNavClick, id, menuRef }: Readonly<MobileNavLinksProps>) {

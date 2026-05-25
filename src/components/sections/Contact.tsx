@@ -1,5 +1,6 @@
 import { useTranslations } from 'next-intl';
-import { Github, MailIcon, PhoneIcon } from 'lucide-react';
+import { MailIcon, PhoneIcon } from 'lucide-react';
+import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
     CONTACT_EMAIL,
@@ -64,7 +65,7 @@ export default function Contact() {
             label: t('github_label'),
             href: CONTACT_GITHUB_URL,
             value: CONTACT_GITHUB_DISPLAY,
-            icon: <Github size={20} aria-hidden='true' />,
+            icon: <GitHubIcon size={20} aria-hidden='true' />,
             isExternal: true,
         },
     ];

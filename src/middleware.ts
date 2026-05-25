@@ -1,7 +1,6 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import createIntlMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
-import { randomBytes } from 'node:crypto';
 
 const intlMiddleware = createIntlMiddleware(routing);
 
@@ -21,7 +20,7 @@ function buildCsp(nonce: string): string {
 
 export default function middleware(request: NextRequest) {
     const intlResponse = intlMiddleware(request);
-    const nonce = randomBytes(16).toString('base64');
+    const nonce = Buffer.from(crypto.getRandomValues(new Uint8Array(16))).toString('base64');
     const csp = buildCsp(nonce);
 
     // For redirects: just attach CSP and return — layout is not rendered
@@ -39,11 +38,11 @@ export default function middleware(request: NextRequest) {
     response.headers.set('Content-Security-Policy', csp);
 
     // Forward internal Next.js headers from intl middleware (rewrites, locale cookie, etc.)
-    for (const [key, value] of intlResponse.headers.entries()) {
+    intlResponse.headers.forEach((value, key) => {
         if (key.startsWith('x-middleware-') || key.startsWith('set-cookie')) {
             response.headers.set(key, value);
         }
-    }
+    });
     for (const cookie of intlResponse.cookies.getAll()) {
         response.cookies.set(cookie);
     }
