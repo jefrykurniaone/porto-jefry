@@ -76,8 +76,8 @@ describe('Navbar', () => {
     it('applies scroll class when window scrolls past 20px', () => {
         renderNavbar();
         act(() => {
-            Object.defineProperty(window, 'scrollY', { configurable: true, writable: true, value: 100 });
-            window.dispatchEvent(new Event('scroll'));
+            Object.defineProperty(globalThis, 'scrollY', { configurable: true, writable: true, value: 100 });
+            globalThis.dispatchEvent(new Event('scroll'));
         });
         const { container } = renderNavbar();
         expect(container.querySelector('header')).toBeInTheDocument();

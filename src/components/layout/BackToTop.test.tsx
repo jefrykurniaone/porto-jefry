@@ -34,12 +34,12 @@ describe('BackToTop', () => {
         Object.defineProperty(aboutEl, 'offsetTop', { configurable: true, value: 500 });
         document.body.appendChild(aboutEl);
 
-        Object.defineProperty(window, 'scrollY', {
+        Object.defineProperty(globalThis, 'scrollY', {
             configurable: true,
             writable: true,
             value: 0,
         });
-        Object.defineProperty(window, 'scrollTo', {
+        Object.defineProperty(globalThis, 'scrollTo', {
             configurable: true,
             value: vi.fn(),
         });
@@ -63,29 +63,29 @@ describe('BackToTop', () => {
     it('button becomes visible after scrolling past About section', () => {
         renderBackToTop();
         act(() => {
-            Object.defineProperty(window, 'scrollY', {
+            Object.defineProperty(globalThis, 'scrollY', {
                 configurable: true,
                 writable: true,
                 value: 600,
             });
-            window.dispatchEvent(new Event('scroll'));
+            globalThis.dispatchEvent(new Event('scroll'));
         });
         const btn = screen.getByRole('button');
         expect(btn.className).toContain('opacity-100');
     });
 
-    it('clicking the button calls window.scrollTo', async () => {
+    it('clicking the button calls scrollTo', async () => {
         renderBackToTop();
         act(() => {
-            Object.defineProperty(window, 'scrollY', {
+            Object.defineProperty(globalThis, 'scrollY', {
                 configurable: true,
                 writable: true,
                 value: 600,
             });
-            window.dispatchEvent(new Event('scroll'));
+            globalThis.dispatchEvent(new Event('scroll'));
         });
         const user = userEvent.setup();
         await user.click(screen.getByRole('button'));
-        expect(window.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
+        expect(globalThis.scrollTo).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
     });
 });

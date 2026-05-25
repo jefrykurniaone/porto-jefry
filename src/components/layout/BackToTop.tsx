@@ -13,19 +13,19 @@ export default function BackToTop() {
         if (!about) return;
 
         const handleScroll = () => {
-            setVisible(window.scrollY >= about.offsetTop);
+            setVisible(globalThis.scrollY >= about.offsetTop);
         };
 
         handleScroll();
-        window.addEventListener('scroll', handleScroll, { passive: true });
+        globalThis.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
-            window.removeEventListener('scroll', handleScroll);
+            globalThis.removeEventListener('scroll', handleScroll);
         };
     }, []);
 
     const handleClick = () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        globalThis.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
     return (
