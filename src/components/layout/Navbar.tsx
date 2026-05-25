@@ -70,6 +70,7 @@ export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const toggleRef = useRef<HTMLButtonElement>(null);
+    const hasMountedRef = useRef(false);
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -115,13 +116,11 @@ export default function Navbar() {
         return () => document.removeEventListener('keydown', handleKeyDown);
     }, [isOpen]);
 
-    // Return focus to toggle button when menu closes
+    // Return focus to toggle button when menu closes (skip initial mount)
     useEffect(() => {
-        if (!isOpen) {
-            toggleRef.current?.focus();
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (!hasMountedRef.current) { hasMountedRef.current = true; return; }
+        if (!isOpen) toggleRef.current?.focus();
+    }, [isOpen]);
 
     const scrollTo = useCallback((id: string) => {
         setIsOpen(false);

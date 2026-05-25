@@ -7,12 +7,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
         {
             url: `${BASE_URL}/en`,
             lastModified: new Date(),
-            alternates: { languages: { id: `${BASE_URL}/id` } },
+            alternates: { languages: { id: `${BASE_URL}/id`, 'x-default': `${BASE_URL}/en` } },
         },
         {
             url: `${BASE_URL}/id`,
             lastModified: new Date(),
-            alternates: { languages: { en: `${BASE_URL}/en` } },
+            alternates: { languages: { en: `${BASE_URL}/en`, 'x-default': `${BASE_URL}/en` } },
         },
     ];
 }

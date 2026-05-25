@@ -58,7 +58,8 @@ export default function Experience() {
     interface ExperienceMessages {
         items: Record<string, { bullets: string[] }>;
     }
-    const expItems = (messages.experience as unknown as ExperienceMessages).items;
+    const expMessages = messages.experience as unknown as ExperienceMessages;
+    const expItems = expMessages?.items ?? {};
 
     return (
         <section id='experience' className='py-20 px-4 bg-gray-50 dark:bg-gray-900/50'>

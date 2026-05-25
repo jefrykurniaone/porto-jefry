@@ -79,7 +79,8 @@ export async function GET(req: NextRequest) {
         ? (rawLocale as SupportedLocale)
         : 'en';
 
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ?? 'unknown';
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+    if (!ip) return new NextResponse('Bad Request', { status: 400 });
     if (!checkRateLimit(ip)) {
         return new NextResponse('Too Many Requests', {
             status: 429,
