@@ -22,15 +22,15 @@
 
 | # | Task | File(s) | Wave |
 |---|------|---------|------|
-| 1 | Create `constants.ts` with `BASE_URL` and `LAST_MODIFIED_DATE` | `src/utils/constants.ts` | 1 |
-| 2 | Add `engines` field to `package.json` | `package.json` | 1 |
-| 3 | Fix `const last` indentation in `Navbar.tsx` | `src/components/layout/Navbar.tsx` | 1 |
-| 4 | Add `id` field to `ProjectItem` interface + all 13 data items | `src/data/projects.ts` | 1 |
-| 5 | Add `id="site-footer"` to Footer; add `nav.back_to_top` i18n keys | `src/components/layout/Footer.tsx`, `src/i18n/messages/en.json`, `src/i18n/messages/id.json` | 1 |
-| 6 | Consume `BASE_URL` in `sitemap.ts` and `[locale]/layout.tsx` | `src/app/sitemap.ts`, `src/app/[locale]/layout.tsx` | 2 |
-| 7 | Use `key={project.id}` in `Projects.tsx`; wrap Hero hash with `encodeURIComponent` | `src/components/sections/Projects.tsx`, `src/components/sections/Hero.tsx` | 2 |
-| 8 | Create `BackToTop.tsx` Client Component | `src/components/layout/BackToTop.tsx` | 2 |
-| 9 | Mount `<BackToTop />` in locale layout | `src/app/[locale]/layout.tsx` | 3 |
+| 1 | Create `constants.ts` with `BASE_URL` and `LAST_MODIFIED_DATE` | `src/utils/constants.ts` | 1 | ✅ |
+| 2 | Add `engines` field to `package.json` | `package.json` | 1 | ✅ |
+| 3 | Fix `const last` indentation in `Navbar.tsx` | `src/components/layout/Navbar.tsx` | 1 | ✅ |
+| 4 | Add `id` field to `ProjectItem` interface + all 13 data items | `src/data/projects.ts` | 1 | ✅ |
+| 5 | Add `id="site-footer"` to Footer; add `nav.back_to_top` i18n keys | `src/components/layout/Footer.tsx`, `src/i18n/messages/en.json`, `src/i18n/messages/id.json` | 1 | ✅ |
+| 6 | Consume `BASE_URL` in `sitemap.ts` and `[locale]/layout.tsx` | `src/app/sitemap.ts`, `src/app/[locale]/layout.tsx` | 2 | ✅ |
+| 7 | Use `key={project.id}` in `Projects.tsx`; wrap Hero hash with `encodeURIComponent` | `src/components/sections/Projects.tsx`, `src/components/sections/Hero.tsx` | 2 | ✅ |
+| 8 | Create `BackToTop.tsx` Client Component | `src/components/layout/BackToTop.tsx` | 2 | ✅ |
+| 9 | Mount `<BackToTop />` in locale layout | `src/app/[locale]/layout.tsx` | 3 | ✅ |
 
 **Wave 1** (tasks 1–5): independent — no inter-task dependencies, can be applied in any order.
 **Wave 2** (tasks 6–8): depends on Wave 1 artifacts (`constants.ts`, `ProjectItem.id`, `Footer.id`, `nav.back_to_top` i18n keys).
