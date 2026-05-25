@@ -40,5 +40,6 @@ next-env.d.ts
 _tmp_backup/
 
 # github copilot / GSD workflow configs (local only)
-.github/
+.github/*
+!.github/workflows/
 .planning/
