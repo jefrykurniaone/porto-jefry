@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
 import Hero from './Hero';
@@ -49,5 +50,15 @@ describe('Hero', () => {
         const img = screen.getByRole('img');
         expect(img).toHaveAttribute('alt');
         expect(img.getAttribute('alt')!.length).toBeGreaterThan(0);
+    });
+
+    it('clicking the CV button triggers download', async () => {
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        expect(cvBtn).toBeDefined();
+        await user.click(cvBtn!);
+        expect(global.fetch).toHaveBeenCalled();
     });
 });

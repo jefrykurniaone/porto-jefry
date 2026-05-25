@@ -29,3 +29,18 @@ describe('ThemeToggle', () => {
         expect(btn).toHaveAttribute('aria-label');
     });
 });
+
+describe('ThemeToggle (dark mode)', () => {
+    it('renders with dark resolvedTheme', async () => {
+        vi.doMock('next-themes', () => ({
+            useTheme: () => ({ resolvedTheme: 'dark', setTheme: vi.fn() }),
+        }));
+        render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <ThemeToggle />
+            </NextIntlClientProvider>,
+        );
+        const btn = await screen.findByRole('button');
+        expect(btn).toBeInTheDocument();
+    });
+});

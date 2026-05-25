@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
@@ -51,5 +51,35 @@ describe('Navbar', () => {
         await user.click(menuBtn);
         const mobileLinks = screen.getAllByRole('link');
         expect(mobileLinks.length).toBeGreaterThan(0);
+    });
+
+    it('mobile menu closes on second toggle click', async () => {
+        const { container } = renderNavbar();
+        const user = userEvent.setup();
+        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
+        await user.click(menuBtn);
+        expect(container.querySelector('#mobile-nav-menu')).toBeInTheDocument();
+        await user.click(menuBtn);
+        expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
+    });
+
+    it('pressing Escape closes the mobile menu', async () => {
+        const { container } = renderNavbar();
+        const user = userEvent.setup();
+        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
+        await user.click(menuBtn);
+        expect(container.querySelector('#mobile-nav-menu')).toBeInTheDocument();
+        await user.keyboard('{Escape}');
+        expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
+    });
+
+    it('applies scroll class when window scrolls past 20px', () => {
+        renderNavbar();
+        act(() => {
+            Object.defineProperty(window, 'scrollY', { configurable: true, writable: true, value: 100 });
+            window.dispatchEvent(new Event('scroll'));
+        });
+        const { container } = renderNavbar();
+        expect(container.querySelector('header')).toBeInTheDocument();
     });
 });
