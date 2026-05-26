@@ -18,7 +18,17 @@ const rateLimitStore = new Map<
     { count: number; windowStart: number }
 >();
 
+function evictExpiredEntries(): void {
+    const now = Date.now();
+    rateLimitStore.forEach((entry, key) => {
+        if (now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
+            rateLimitStore.delete(key);
+        }
+    });
+}
+
 function checkRateLimit(ip: string): boolean {
+    evictExpiredEntries();
     const now = Date.now();
     const entry = rateLimitStore.get(ip);
     if (!entry || now - entry.windowStart > RATE_LIMIT_WINDOW_MS) {
@@ -86,12 +96,19 @@ export async function GET(req: NextRequest) {
         ? (rawLocale as SupportedLocale)
         : 'en';
 
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
-    if (!ip) return new NextResponse('Bad Request', { status: 400 });
+    const ip =
+        req.headers.get('x-real-ip') ??
+        req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
+        '127.0.0.1'; // local dev fallback — rate-limits localhost rather than erroring
     if (!checkRateLimit(ip)) {
+        const entry = rateLimitStore.get(ip)!;
+        const retryAfterSeconds = Math.max(
+            1,
+            Math.ceil((entry.windowStart + RATE_LIMIT_WINDOW_MS - Date.now()) / 1000),
+        );
         return new NextResponse('Too Many Requests', {
             status: 429,
-            headers: { 'Retry-After': '60' },
+            headers: { 'Retry-After': String(retryAfterSeconds) },
         });
     }
 
