@@ -7,7 +7,6 @@
         "npm": ">=8.0.0"
     },
     "scripts": {
-        "prepare": "git config core.hooksPath .githooks || true",
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
