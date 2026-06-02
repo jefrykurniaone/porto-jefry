@@ -73,9 +73,19 @@ export default function Navbar() {
     const hasMountedRef = useRef(false);
 
     useEffect(() => {
-        const handleScroll = () => setIsScrolled(globalThis.scrollY > 20);
-        globalThis.addEventListener('scroll', handleScroll);
-        return () => globalThis.removeEventListener('scroll', handleScroll);
+        let ticking = false;
+        const onScroll = () => {
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(() => {
+                    setIsScrolled(globalThis.scrollY > 20);
+                    ticking = false;
+                });
+            }
+        };
+        const opts = { passive: true } as AddEventListenerOptions;
+        globalThis.addEventListener('scroll', onScroll, opts);
+        return () => globalThis.removeEventListener('scroll', onScroll, opts);
     }, []);
 
     // Focus trap for mobile menu

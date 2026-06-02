@@ -73,13 +73,26 @@ describe('Navbar', () => {
         expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
     });
 
-    it('applies scroll class when window scrolls past 20px', () => {
+    it('applies scroll class when window scrolls past 20px and uses passive listener without warnings', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         renderNavbar();
+        const header = document.querySelector('header') as HTMLElement;
+        expect(header).toBeInTheDocument();
+        // initially transparent
+        expect(header.className).toContain('bg-transparent');
+
         act(() => {
             Object.defineProperty(globalThis, 'scrollY', { configurable: true, writable: true, value: 100 });
             globalThis.dispatchEvent(new Event('scroll'));
         });
-        const { container } = renderNavbar();
-        expect(container.querySelector('header')).toBeInTheDocument();
+
+        // wait for animation frame where rAF-based update runs
+        await act(async () => {
+            await new Promise((resolve) => requestAnimationFrame(resolve));
+        });
+
+        expect(header.className).not.toContain('bg-transparent');
+        expect(warnSpy).not.toHaveBeenCalled();
+        warnSpy.mockRestore();
     });
 });
