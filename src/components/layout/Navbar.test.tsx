@@ -103,7 +103,9 @@ describe('Navbar', () => {
 
         const section = document.createElement('div');
         section.id = 'projects';
-        (section as any).scrollIntoView = vi.fn();
+        const sectionEl = section as HTMLElement;
+        const scrollSpy = vi.fn();
+        Object.defineProperty(sectionEl, 'scrollIntoView', { value: scrollSpy, configurable: true });
         document.body.appendChild(section);
 
         const pushSpy = vi.spyOn(history, 'pushState');
@@ -111,10 +113,11 @@ describe('Navbar', () => {
         const user = userEvent.setup();
         await user.click(projectsLink!);
 
-        expect((section as any).scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(scrollSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
         expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
 
         section.remove();
+        scrollSpy.mockRestore();
         pushSpy.mockRestore();
     });
 });
