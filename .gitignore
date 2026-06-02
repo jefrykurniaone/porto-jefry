@@ -42,4 +42,3 @@ _tmp_backup/
 # github copilot / GSD workflow configs (local only)
 .github/*
 !.github/workflows/
-.planning/
