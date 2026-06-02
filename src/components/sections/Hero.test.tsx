@@ -69,4 +69,26 @@ describe('Hero', () => {
         await user.click(cvBtn);
         expect(fetchMock).toHaveBeenCalled();
     });
+
+    it('internal links use plain #id and trigger smooth scroll with pushState', async () => {
+        renderHero();
+        const projectsLink = document.querySelector('a[href="#projects"]') as HTMLAnchorElement | null;
+        expect(projectsLink).toBeTruthy();
+
+        const section = document.createElement('div');
+        section.id = 'projects';
+        (section as any).scrollIntoView = vi.fn();
+        document.body.appendChild(section);
+
+        const pushSpy = vi.spyOn(history, 'pushState');
+
+        const user = userEvent.setup();
+        await user.click(projectsLink!);
+
+        expect((section as any).scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
+
+        section.remove();
+        pushSpy.mockRestore();
+    });
 });

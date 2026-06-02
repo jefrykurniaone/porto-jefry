@@ -95,4 +95,26 @@ describe('Navbar', () => {
         expect(warnSpy).not.toHaveBeenCalled();
         warnSpy.mockRestore();
     });
+
+    it('clicking a nav link scrolls to the section and updates hash', async () => {
+        const { container } = renderNavbar();
+        const projectsLink = container.querySelector('a[href="#projects"]') as HTMLAnchorElement | null;
+        expect(projectsLink).toBeTruthy();
+
+        const section = document.createElement('div');
+        section.id = 'projects';
+        (section as any).scrollIntoView = vi.fn();
+        document.body.appendChild(section);
+
+        const pushSpy = vi.spyOn(history, 'pushState');
+
+        const user = userEvent.setup();
+        await user.click(projectsLink!);
+
+        expect((section as any).scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
+
+        section.remove();
+        pushSpy.mockRestore();
+    });
 });

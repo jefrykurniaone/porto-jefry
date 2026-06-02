@@ -21,7 +21,7 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
 
     const scrollToWithHash = (id: string) => {
         scrollTo(id);
-        history.pushState(null, '', `#${encodeURIComponent(id)}`);
+        history.pushState(null, '', `#${id}`);
     };
 
     const handleDownload = async () => {
