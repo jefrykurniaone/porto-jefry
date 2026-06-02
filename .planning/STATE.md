@@ -4,7 +4,7 @@ status: planning
 progress:
   total_phases: 4
   completed_phases: 0
-  total_plans: 0
+  total_plans: 1
   completed_plans: 0
   percent: 0
 ---
@@ -21,7 +21,7 @@ See: .planning/PROJECT.md (updated 2026-06-02)
 ## Current Position
 
 Phase: 1 of 4 (Quick Bug Fixes)
-Plan: 0 of TBD in current phase
+Plan: 1 of TBD in current phase
 Status: Ready to plan
 Last activity: 2026-06-02T23:01:17.663+07:00 — Phase 1 context gathered
 
