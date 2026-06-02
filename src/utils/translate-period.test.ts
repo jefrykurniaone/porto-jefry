@@ -29,4 +29,16 @@ describe('translatePeriod', () => {
     it('handles period string with no month names', () => {
         expect(translatePeriod('2020 – 2022', 'id')).toBe('2020 – 2022');
     });
+
+    it('does not replace month substrings inside longer words (overlap edge case)', () => {
+        // "Maybe" contains "May" — should not be partially replaced
+        expect(translatePeriod('Maybe 2020', 'id')).toBe('Maybe 2020');
+        // "December" contains "Dec" — should not be partially replaced
+        expect(translatePeriod('December 2020', 'id')).toBe('December 2020');
+    });
+
+    it('replaces month tokens when they are standalone or adjacent to punctuation', () => {
+        expect(translatePeriod('May, 2020', 'id')).toBe('Mei, 2020');
+        expect(translatePeriod('May 2020 – May 2021', 'id')).toBe('Mei 2020 – Mei 2021');
+    });
 });
