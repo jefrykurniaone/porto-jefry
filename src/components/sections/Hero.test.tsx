@@ -77,7 +77,8 @@ describe('Hero', () => {
 
         const section = document.createElement('div');
         section.id = 'projects';
-        (section as any).scrollIntoView = vi.fn();
+        const sectionEl = section as HTMLElement & { scrollIntoView: (options?: { behavior?: string }) => void };
+        sectionEl.scrollIntoView = vi.fn();
         document.body.appendChild(section);
 
         const pushSpy = vi.spyOn(history, 'pushState');
@@ -85,7 +86,7 @@ describe('Hero', () => {
         const user = userEvent.setup();
         await user.click(projectsLink!);
 
-        expect((section as any).scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(sectionEl.scrollIntoView).toHaveBeenCalledWith({ behavior: 'smooth' });
         expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
 
         section.remove();
