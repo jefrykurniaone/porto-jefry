@@ -7,6 +7,22 @@ const intlMiddleware = createIntlMiddleware(routing);
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
 function buildCsp(nonce: string): string {
+    const isDev = process.env.NODE_ENV === 'development';
+    
+    // Development: relaxed CSP to allow hot reload and eval
+    if (isDev) {
+        return [
+            "default-src 'self'",
+            `script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://va.vercel-scripts.com`,
+            `style-src 'self' 'unsafe-inline' 'nonce-${nonce}' https://fonts.googleapis.com`,
+            "font-src 'self' https://fonts.gstatic.com",
+            "img-src 'self' data: blob:",
+            "connect-src 'self' https://vitals.vercel-insights.com ws: wss:",
+            "frame-ancestors 'none'",
+        ].join('; ');
+    }
+    
+    // Production: strict CSP
     return [
         "default-src 'self'",
         `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com`,
