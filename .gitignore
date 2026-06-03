@@ -39,6 +39,8 @@ yarn-error.log*
 next-env.d.ts
 _tmp_backup/
 
-# github copilot / GSD workflow configs (local only)
+# github copilot / GSD workflow configs
 .github/*
 !.github/workflows/
+!.github/copilot-instructions.md
+!.github/agents/
