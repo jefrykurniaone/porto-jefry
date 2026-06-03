@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: in_progress
-stopped_at: Ad-hoc CSP hotfixes complete (PR #21 + #22 + #23) — 03-01 + 03-02 learnings extracted; Phase 3 formal execution pending (SEC-01 + SEC-02 remainder)
-last_updated: "2026-06-03T18:57:00.000+08:00"
-last_activity: 2026-06-03
+stopped_at: Phase 5 (SGDS Migration) context gathered — ready for /gsd-plan-phase 5. Phase 3 & 4 deferred to Phase 6 & 7.
+last_updated: "2026-06-04T00:00:00.000+08:00"
+last_activity: 2026-06-04
 progress:
-  total_phases: 4
+  total_phases: 5
   completed_phases: 2
   total_plans: 5
   completed_plans: 5
-  percent: 50
+  percent: 40
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-02)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
-**Current focus:** Phase 3 — Security Hardening
+**Current focus:** Phase 5 — SGDS Migration (priority; Phase 3 & 4 deferred)
 
 ## Current Position
 
-Phase: 2 of 4 (UX Polish) — Complete
-Plan: 4 of 4 in Phase 2 (Complete)
-Status: Phase 2 complete, Phase 3 ready to plan
-Last activity: 2026-06-03
+Phase: 5 of 5 active (SGDS Migration) — Context gathered, ready to plan
+Plan: 0 of 5 in Phase 5
+Status: Phase 5 context complete; next: /gsd-plan-phase 5
+Last activity: 2026-06-04
 
-Progress: [█████░░░░░] 50%
+Progress: [████░░░░░░] 40%
 
 ## Performance Metrics
 
@@ -79,10 +79,13 @@ None yet.
 
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
-| *(none)* | | | |
+| Security | Phase 3 Security Hardening (SEC-01, SEC-02) | Deferred → Phase 6 | 2026-06-04 |
+| Code Quality | Phase 4 Code Quality & Type Safety | Deferred → Phase 7 | 2026-06-04 |
+| SGDS | Masthead component — may not fit personal portfolio | Evaluate in Phase 5 | 2026-06-04 |
+| SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
 
 ## Session Continuity
 
-Last session: 2026-06-03T17:23:03.327+08:00
-Stopped at: Phase 2 complete — all 4 plans done; 02-04-SUMMARY written
-Resume file: .planning/phases/02-ux-polish/02-04-SUMMARY.md
+Last session: 2026-06-04T00:00:00.000+08:00
+Stopped at: Phase 5 context gathered — decisions captured, ROADMAP updated, CONTEXT.md written
+Resume file: .planning/phases/05-sgds-migration/05-CONTEXT.md

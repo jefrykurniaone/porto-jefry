@@ -2,20 +2,21 @@
 
 ## Overview
 
-Improvement and hardening milestone for an existing, deployed personal portfolio (https://porto-jefry.vercel.app). Four phases progress from low-risk quick fixes through UX polish, security hardening, and finally type-safety / code-quality improvements — each phase independently shippable via PR.
+Improvement and hardening milestone for an existing, deployed personal portfolio (https://porto-jefry.vercel.app). Phases progress from low-risk quick fixes through UX polish, SGDS component migration (showcase for GovTech applications), security hardening, and type-safety / code-quality improvements — each phase independently shippable via PR.
 
 ## Phases
 
 **Phase Numbering:**
-- Integer phases (1, 2, 3, 4): Planned milestone work
+- Integer phases (1, 2, 3, 4, 5, 6, 7): Planned milestone work
 - Decimal phases (e.g., 2.1): Urgent insertions (marked with INSERTED)
 
 Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
-- [ ] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
-- [ ] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and upgrade to distributed rate limiting
-- [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants
+- [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
+- [ ] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and upgrade to distributed rate limiting `[DEFERRED → Phase 6]`
+- [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]`
+- [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
 
 ## Phase Details
 
@@ -51,7 +52,19 @@ Plans:
 - [x] 02-03-PLAN.md — Custom error boundary page (locale-aware)
 - [x] 02-04-PLAN.md — Verify ThemeToggle CLS fix (verification only)
 
-### Phase 3: Security Hardening
+### Phase 5: SGDS Migration ⭐ (CURRENT PRIORITY)
+**Goal**: All portfolio UI components are migrated to SGDS web components; Tailwind CSS is upgraded to v4; dark mode uses SGDS theming exclusively; portfolio serves as a live demonstration of SGDS expertise for GovTech applications
+**Depends on**: Phase 2 (complete)
+**Requirements**: SGDS-01 (foundation setup), SGDS-02 (layout components), SGDS-03 (section components part 1), SGDS-04 (section components part 2), SGDS-05 (testing & polish)
+**Success Criteria** (what must be TRUE):
+  1. `@govtechsg/sgds-web-component` installed; Tailwind upgraded to v4; SGDS CSS imported in correct order (`themes/day.css` → `sgds.css` → `utility.css`)
+  2. `next-themes` removed; dark mode controlled by `.sgds-night-theme` class on `<html>`; toggle persists in localStorage
+  3. All section components (Hero, About, Experience, Education, Skills, Projects, Certifications, Contact) use `<sgds-*>` web components where SGDS equivalents exist
+  4. Layout components (Navbar, Footer) migrated to SGDS; custom components (Timeline, BackToTop) styled with `sgds:` utility classes
+  5. All test files rewritten for SGDS components; 80% coverage maintained; `npm run build` + `npm run lint` + `npx tsc --noEmit` all pass
+**Plans**: 5 plans
+
+### Phase 3: Security Hardening [DEFERRED → Phase 6]
 **Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances
 **Depends on**: Phase 2
 **Requirements**: SEC-01, SEC-02, SEC-03
@@ -61,9 +74,9 @@ Plans:
   3. Rate limit state is stored in Upstash Redis or Vercel KV — two concurrent serverless instances enforce a shared 5 req/min limit correctly
 **Plans**: TBD
 
-### Phase 4: Code Quality & Type Safety
+### Phase 4: Code Quality & Type Safety [DEFERRED → Phase 7]
 **Goal**: The codebase passes strict type checks without workarounds, stale metadata is automated, and linting enforces structural quality rules
-**Depends on**: Phase 3
+**Depends on**: Phase 3 (or can run after Phase 5)
 **Requirements**: TYPE-01, TYPE-02, QUAL-01, QUAL-02, QUAL-03
 **Success Criteria** (what must be TRUE):
   1. `ExperienceMessages` is a top-level exported interface — no `as unknown as` or double-cast in the Experience component and TypeScript strict mode reports zero errors
@@ -75,11 +88,12 @@ Plans:
 
 ## Progress
 
-**Execution Order:** 1 → 2 → 3 → 4
+**Execution Order:** 1 → 2 → 5 → [6 (was 3)] → [7 (was 4)]
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
-| 3. Security Hardening | 0/TBD | Not started | - |
-| 4. Code Quality & Type Safety | 0/TBD | Not started | - |
+| 5. SGDS Migration | 0/5 | 🎯 Current priority | - |
+| 3. Security Hardening | 0/TBD | ⏸️ Deferred (Phase 6) | - |
+| 4. Code Quality & Type Safety | 0/TBD | ⏸️ Deferred (Phase 7) | - |
