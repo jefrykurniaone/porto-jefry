@@ -46,10 +46,10 @@ Decimal phases appear between their surrounding integers in numeric order.
 **UI hint**: yes
 
 Plans:
-- [ ] 02-01-PLAN.md — CV download error feedback with inline banner
-- [ ] 02-02-PLAN.md — Custom 404 page (locale-aware)
-- [ ] 02-03-PLAN.md — Custom error boundary page (locale-aware)
-- [ ] 02-04-PLAN.md — Verify ThemeToggle CLS fix (verification only)
+- [x] 02-01-PLAN.md — CV download error feedback with inline banner
+- [x] 02-02-PLAN.md — Custom 404 page (locale-aware)
+- [x] 02-03-PLAN.md — Custom error boundary page (locale-aware)
+- [x] 02-04-PLAN.md — Verify ThemeToggle CLS fix (verification only)
 
 ### Phase 3: Security Hardening
 **Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances
@@ -80,6 +80,6 @@ Plans:
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
-| 2. UX Polish | 0/TBD | Not started | - |
+| 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 3. Security Hardening | 0/TBD | Not started | - |
 | 4. Code Quality & Type Safety | 0/TBD | Not started | - |
