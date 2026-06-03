@@ -220,4 +220,38 @@ describe('Hero', () => {
 
         setTimeoutSpy.mockRestore();
     });
+
+    it('shows error banner when CV download fails, then auto-dismisses', async () => {
+        const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
+        
+        const failedFetch = vi.fn().mockResolvedValue({ 
+            ok: false, 
+            status: 500,
+            blob: () => Promise.reject(new Error('HTTP 500'))
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        
+        // Click CV download button
+        const buttons = screen.getAllByRole('button');
+        const cvButton = buttons.find(b => /cv|unduh/i.test(b.textContent ?? ''));
+        await user.click(cvButton!);
+
+        // Wait for error banner to appear
+        const banner = await screen.findByRole('alert');
+        expect(banner).toBeInTheDocument();
+        expect(banner).toHaveTextContent(/failed.*generate.*cv.*http.*500/i);
+        expect(banner).toHaveAttribute('aria-live', 'polite');
+
+        // Verify AlertCircle icon is present
+        const icon = banner.querySelector('svg');
+        expect(icon).toBeInTheDocument();
+
+        // Verify setTimeout was called with 5000ms for auto-dismiss
+        expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
+
+        setTimeoutSpy.mockRestore();
+    });
 });
