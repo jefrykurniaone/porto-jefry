@@ -26,6 +26,7 @@ describe('LanguageToggle', () => {
     it('renders a button', () => {
         renderLanguageToggle();
         expect(screen.getByRole('button')).toBeInTheDocument();
+        expect(screen.getByRole('button')).toHaveAttribute('type', 'button');
     });
 
     it('button has an accessible aria-label', () => {

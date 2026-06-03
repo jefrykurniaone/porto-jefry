@@ -73,13 +73,51 @@ describe('Navbar', () => {
         expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
     });
 
-    it('applies scroll class when window scrolls past 20px', () => {
+    it('applies scroll class when window scrolls past 20px and uses passive listener without warnings', async () => {
+        const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         renderNavbar();
+        const header = document.querySelector('header') as HTMLElement;
+        expect(header).toBeInTheDocument();
+        // initially transparent
+        expect(header.className).toContain('bg-transparent');
+
         act(() => {
             Object.defineProperty(globalThis, 'scrollY', { configurable: true, writable: true, value: 100 });
             globalThis.dispatchEvent(new Event('scroll'));
         });
+
+        // wait for animation frame where rAF-based update runs
+        await act(async () => {
+            await new Promise((resolve) => requestAnimationFrame(resolve));
+        });
+
+        expect(header.className).not.toContain('bg-transparent');
+        expect(warnSpy).not.toHaveBeenCalled();
+        warnSpy.mockRestore();
+    });
+
+    it('clicking a nav link scrolls to the section and updates hash', async () => {
         const { container } = renderNavbar();
-        expect(container.querySelector('header')).toBeInTheDocument();
+        const projectsLink = container.querySelector('a[href="#projects"]') as HTMLAnchorElement | null;
+        expect(projectsLink).toBeTruthy();
+
+        const section = document.createElement('div');
+        section.id = 'projects';
+        const sectionEl = section as HTMLElement;
+        const scrollSpy = vi.fn();
+        Object.defineProperty(sectionEl, 'scrollIntoView', { value: scrollSpy, configurable: true });
+        document.body.appendChild(section);
+
+        const pushSpy = vi.spyOn(history, 'pushState');
+
+        const user = userEvent.setup();
+        await user.click(projectsLink!);
+
+        expect(scrollSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
+
+        section.remove();
+        scrollSpy.mockRestore();
+        pushSpy.mockRestore();
     });
 });
