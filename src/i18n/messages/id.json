@@ -21,7 +21,8 @@
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
         "cta_contact": "Hubungi Saya",
-        "downloading_cv": "Membuat CV..."
+        "downloading_cv": "Membuat CV...",
+        "cv_error": "Gagal membuat CV (HTTP {status}). Silakan coba lagi nanti."
     },
     "notFound": {
         "title": "Halaman Tidak Ditemukan",

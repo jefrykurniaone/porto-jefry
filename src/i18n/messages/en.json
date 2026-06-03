@@ -21,7 +21,8 @@
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
         "cta_contact": "Contact Me",
-        "downloading_cv": "Generating..."
+        "downloading_cv": "Generating...",
+        "cv_error": "Failed to generate CV (HTTP {status}). Please try again later."
     },
     "notFound": {
         "title": "Page Not Found",

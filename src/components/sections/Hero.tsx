@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { ArrowDownIcon, DownloadIcon, MailIcon } from 'lucide-react';
+import { ArrowDownIcon, DownloadIcon, MailIcon, AlertCircle } from 'lucide-react';
 
 interface HeroCtaButtonsProps {
     locale: string;
@@ -55,39 +55,50 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t 
     };
 
     return (
-        <div className='flex flex-wrap justify-center gap-4'>
-            <a
-                href='#projects'
-                onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
-                className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
-                <ArrowDownIcon size={18} aria-hidden='true' />
-                {ctaWork}
-            </a>
-            <button
-                type='button'
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className='inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 text-white font-medium rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
-                {isDownloading ? (
-                    <>
-                        <span className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent' />
-                        {ctaDownloading}
-                    </>
-                ) : (
-                    <>
-                        <DownloadIcon size={18} aria-hidden='true' />
-                        {ctaCv}
-                    </>
-                )}
-            </button>
-            <a
-                href='#contact'
-                onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
-                className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
-                <MailIcon size={18} aria-hidden='true' />
-                {ctaContact}
-            </a>
-        </div>
+        <>
+            <div className='flex flex-wrap justify-center gap-4'>
+                <a
+                    href='#projects'
+                    onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
+                    className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
+                    <ArrowDownIcon size={18} aria-hidden='true' />
+                    {ctaWork}
+                </a>
+                <button
+                    type='button'
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                    className='inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 text-white font-medium rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
+                    {isDownloading ? (
+                        <>
+                            <span className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent' />
+                            {ctaDownloading}
+                        </>
+                    ) : (
+                        <>
+                            <DownloadIcon size={18} aria-hidden='true' />
+                            {ctaCv}
+                        </>
+                    )}
+                </button>
+                <a
+                    href='#contact'
+                    onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
+                    className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
+                    <MailIcon size={18} aria-hidden='true' />
+                    {ctaContact}
+                </a>
+            </div>
+            {errorMessage && (
+                <div 
+                    role='alert' 
+                    aria-live='polite' 
+                    className='mt-4 flex items-start gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'>
+                    <AlertCircle size={20} aria-hidden='true' className='flex-shrink-0 mt-0.5' />
+                    <p className='text-base'>{errorMessage}</p>
+                </div>
+            )}
+        </>
     );
 }
 
