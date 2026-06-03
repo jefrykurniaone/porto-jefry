@@ -14,7 +14,7 @@ function buildCsp(nonce: string): string {
         return [
             "default-src 'self'",
             `script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://va.vercel-scripts.com`,
-            `style-src 'self' 'unsafe-inline' 'nonce-${nonce}' https://fonts.googleapis.com`,
+            `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
             "font-src 'self' https://fonts.gstatic.com",
             "img-src 'self' data: blob:",
             "connect-src 'self' https://vitals.vercel-insights.com ws: wss:",
@@ -25,8 +25,8 @@ function buildCsp(nonce: string): string {
     // Production: strict CSP
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com`,
-        `style-src 'self' 'unsafe-inline' 'nonce-${nonce}' https://fonts.googleapis.com`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-11sbnEG5y+j0um9W3sr9rXc9EniWVZtsPUtyIDRfsik=' https://va.vercel-scripts.com`,
+        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
         "font-src 'self' https://fonts.gstatic.com",
         "img-src 'self' data: blob:",
         "connect-src 'self' https://vitals.vercel-insights.com",
