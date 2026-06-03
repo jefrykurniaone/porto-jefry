@@ -25,7 +25,7 @@ function buildCsp(nonce: string): string {
     // Production: strict CSP
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-11sbnEG5y+j0um9W3sr9rXc9EniWVZtsPUtyIDRfsik=' https://va.vercel-scripts.com`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-1lsbnEG5y+jDum9W3sr9rXc9EniVVZtsPUtyiDRfsik=' https://va.vercel-scripts.com`,
         `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
         "font-src 'self' https://fonts.gstatic.com",
         "img-src 'self' data: blob:",
