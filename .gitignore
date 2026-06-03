@@ -38,3 +38,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 _tmp_backup/
+
+# Claude Code agent runtime
+.agents/
+
+# Claude Code local settings
+.claude/settings.local.json
