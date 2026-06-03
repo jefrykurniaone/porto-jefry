@@ -3,11 +3,12 @@ phase: 3
 phase_name: "Security Hardening"
 project: "porto-jefry"
 generated: "2026-06-03T18:06:33+08:00"
+updated: "2026-06-03T18:55:00+08:00"
 counts:
-  decisions: 3
-  lessons: 4
-  patterns: 2
-  surprises: 3
+  decisions: 5
+  lessons: 7
+  patterns: 4
+  surprises: 5
 missing_artifacts:
   - "03-VERIFICATION.md"
   - "03-UAT.md"
@@ -15,7 +16,7 @@ missing_artifacts:
 
 # Phase 3 Learnings: Security Hardening
 
-> Note: These learnings are extracted from the **03-01 ad-hoc CSP hotfix** (pre-dates formal Phase 3 execution). Full Phase 3 learnings will be appended after SEC-01 and the remainder of SEC-02 are completed.
+> These learnings cover two ad-hoc CSP hotfix sessions (03-01 and 03-02) that pre-date formal Phase 3 execution. Full Phase 3 learnings will be appended after SEC-01 and the remainder of SEC-02 are completed.
 
 ---
 
@@ -134,3 +135,116 @@ The third console error — "A listener indicated an asynchronous response by re
 
 **Impact:** Zero impact on the site. Time spent confirming this was not our code: ~2 minutes. It's worth recognizing this pattern early to avoid chasing it as a real bug.  
 **Source:** 03-01-PLAN.md
+
+---
+
+---
+
+## 03-02 Ad-hoc CSP Hash Fix (PRs #22 + #23)
+
+*Extracted from session artifacts: plan.md, checkpoint 001-planning-csp-error-fixes.md*  
+*Date: 2026-06-03 | Duration: ~30 minutes*
+
+> Two more CSP console errors remained after PR #21. Root cause investigation confirmed (a) `'unsafe-inline'` in `style-src` was silently ignored because the nonce was also present, and (b) the ThemeProvider nonce wiring from PR #21 had no effect because `headers().get('x-nonce')` returns null at runtime on Vercel.
+
+---
+
+## Decisions
+
+### Nonce Should Not Appear in `style-src`
+Removed `'nonce-${nonce}'` from `style-src` entirely (both dev and prod CSP branches). The nonce was originally added speculatively to allow potential future nonce-tagged inline styles, but per CSP Level 2+ spec, a nonce in `style-src` silently ignores `'unsafe-inline'` — breaking all inline `style="..."` attributes, including `style="color:transparent"` from `next/image`.
+
+**Rationale:** CSS inline styles cannot execute code; `'unsafe-inline'` for `style-src` is an acceptable and standard choice. The nonce mechanism is only meaningful for `script-src`. Mixing both in `style-src` is a CSP spec trap that causes silent failures.  
+**Source:** session plan.md (Root Cause 2)
+
+---
+
+### Use Script Hash When Nonce Propagation Is Unreliable
+When `headers().get('x-nonce')` returns null in the layout at runtime (even though middleware sets `x-nonce`), the correct fallback is to add the inline script's SHA-256 hash to `script-src`. This eliminates the dependency on nonce propagation working correctly and is fully compliant with CSP Level 2+ `'strict-dynamic'`.
+
+**Rationale:** Debugging why `headers().get('x-nonce')` returns null involves Vercel infrastructure internals and/or `next-intl` middleware forwarding edge cases — an investigation with uncertain outcome. The hash approach is deterministic, independently verifiable, and requires zero infrastructure changes.  
+**Source:** session plan.md (Fix 2), session checkpoint
+
+---
+
+## Lessons
+
+### Passing Nonce Prop to ThemeProvider Is Insufficient If the Header Is Null
+PR #21 "fixed" the ThemeProvider script issue by adding `nonce={nonce}` prop. But confirmed from production HTML inspection: the `<script>` tag still had **no nonce attribute** after PR #21. The fix was architecturally correct but did not work because `(await headers()).get('x-nonce')` returns null at runtime — so `nonce={undefined}` was passed and `next-themes` correctly omits the attribute when the prop is `undefined`.
+
+**Context:** The fix was complete at the code level; the gap was in the runtime environment. Production HTML inspection is the only reliable way to verify this — reading the source code alone is insufficient.  
+**Source:** session checkpoint (Root Cause 2 analysis)
+
+---
+
+### CSP Spec Trap: Nonce in `style-src` Silently Ignores `'unsafe-inline'`
+Per CSP Level 2+: if `style-src` contains a nonce source (e.g., `'nonce-abc123'`), browsers silently ignore `'unsafe-inline'` in that directive — even when both are explicitly listed. This means `style="color:transparent"` from `next/image` (present on every `<img>` tag) was being blocked in production, even though `'unsafe-inline'` appeared in the policy.
+
+**Context:** The browser error message explicitly says "Note that 'unsafe-inline' is ignored if a nonce is present" — but the diagnostic hint is easily missed. Always check the browser error hint text carefully.  
+**Source:** session checkpoint (Root Cause 1 analysis), CSP Level 2+ spec
+
+---
+
+### Script Hashes Must Be Computed Programmatically, Never Read from Screenshots
+The initial script hash extracted from a browser error screenshot (`sha256-11sbnEG5y+j0um9W3sr9rXc9EniWVZtsPUtyIDRfsik=`) had 4 OCR misread characters. This caused the fix in PR #22 to fail and required a corrective PR #23. The correct approach is to fetch the production HTML, extract the script, and compute SHA-256 directly with code.
+
+**Context:** Base64 strings are OCR-hostile — characters commonly misread: `l` ↔ `1`, `VV` ↔ `W`, `I` ↔ `i`, `0` ↔ `O`. Any base64 value read from a screenshot must be considered untrustworthy.  
+**Source:** PR #23 commit message, session verification step
+
+---
+
+## Patterns
+
+### Verify Any CSP Hash via Programmatic Computation
+When a browser error provides a hash for an inline script, never copy it directly from a screenshot. Instead:
+
+```js
+// Node.js: fetch production HTML and compute hash
+const https = require('https');
+let html = '';
+https.get('https://your-site.com', res => {
+  res.on('data', d => html += d);
+  res.on('end', () => {
+    const m = html.match(/<script>(PATTERN_HERE[\s\S]*?)<\/script>/);
+    const hash = require('crypto').createHash('sha256').update(m[1], 'utf8').digest('base64');
+    console.log('sha256-' + hash);
+  });
+});
+```
+
+**When to use:** Any time you need to add a CSP hash for an inline script and the source is from a screenshot or manual observation rather than direct source code access.
+
+---
+
+### Separate Nonce Strategy for `script-src` vs `style-src`
+In a Next.js app with per-request nonces:
+- **`script-src`**: Use nonce + `'strict-dynamic'` + individual script hashes for inline scripts you can't nonce
+- **`style-src`**: Use `'unsafe-inline'` **without** nonce — Next.js/image and third-party libraries inject inline styles that cannot be nonce-tagged
+
+Mixing nonce into `style-src` breaks inline style handling silently. The security risk of `'unsafe-inline'` in `style-src` is minimal (CSS cannot execute JS).
+
+**When to use:** Any Next.js app using per-request nonce CSP middleware.  
+**Source:** session plan.md, CSP spec
+
+---
+
+## Surprises
+
+### `headers().get('x-nonce')` Returns Null on Vercel Despite Middleware Setting It
+Middleware sets `x-nonce` via:
+```ts
+requestHeaders.set('x-nonce', nonce);
+NextResponse.next({ request: { headers: requestHeaders } });
+```
+This is the documented Next.js pattern for nonce propagation. Yet `(await headers()).get('x-nonce')` returns null in the locale layout at runtime on Vercel production. The root cause is unresolved (possible causes: Vercel infrastructure stripping custom request headers, `next-intl` middleware header forwarding interference). The hash-based fix works around this reliably.
+
+**Impact:** The ThemeProvider nonce wiring added in PR #21 was effectively a no-op in production. The PR was architecturally sound but the environment did not cooperate.  
+**Source:** session checkpoint
+
+---
+
+### OCR of Base64 from Screenshots Is Unreliable Enough to Ship a Broken Fix
+The original hash read from the browser error screenshot contained 4 wrong characters. The fix deployed in PR #22 failed in production because the hash in the CSP header didn't match the actual script hash. A corrective PR #23 was required. Total extra time: ~10 minutes.
+
+**Impact:** Two PRs instead of one. Lesson: programmatic verification of any value read from a screenshot is non-optional.  
+**Source:** PR #22 → PR #23 sequence
