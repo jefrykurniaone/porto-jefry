@@ -92,6 +92,16 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 | `useMessages()` + double cast for Experience bullets | Workaround for untyped AbstractIntlMessages | ⚠️ Revisit |
 | Manual LAST_MODIFIED_DATE constant | Simple but requires manual updates | ⚠️ Revisit |
 
+## Invariants
+
+### Comprehensive test coverage provides execution confidence
+Test coverage exceeding thresholds (80%+ lines/functions/statements, 65%+ branches) across all components provides immediate confidence that existing implementations are correct and protected against regression. Co-located tests with behavior-focused assertions enable rapid verification without re-implementation.
+
+**Implication:** Before assuming code needs changes, verify test coverage first. High coverage with passing tests often indicates requirements are already met.
+
+**Sources:** Phase 1  
+**Promoted:** 2026-06-03
+
 ## Evolution
 
 This document evolves at phase transitions and milestone boundaries.

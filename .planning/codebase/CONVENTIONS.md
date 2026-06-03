@@ -204,3 +204,28 @@ Used sparingly to suppress SonarQube false positives with an explanation:
 - **`React.ImgHTMLAttributes<HTMLImageElement>`** for typed HTML attribute spreads in mocks.
 - **No `any`** — prefer `unknown` or specific union types.
 - **Path alias `@/*`** resolves to `./src/*` (configured in `tsconfig.json` `paths`).
+
+---
+
+## Workflow Patterns
+
+### Verification-first execution
+When implementing bug fixes or correctness improvements, start with comprehensive verification before attempting changes. This pattern prevents unnecessary refactoring and validates that existing code meets requirements.
+
+**Workflow:**
+1. Read plan requirements and acceptance criteria
+2. Manually inspect source files at specific lines to confirm implementation details
+3. Run verification commands (lint, typecheck, test, coverage)
+4. Document findings with file paths and line numbers
+5. Only proceed with changes if verification reveals gaps
+
+**When to use:** At the start of execution for phases involving bug fixes, correctness improvements, or requirement validation. Particularly valuable when the time between issue identification and implementation execution is long enough that fixes may have already been applied.
+
+**Benefits:**
+- Prevents duplicate work when fixes are already present
+- Validates existing implementations against requirements
+- Completes verification phases in minutes instead of hours
+- Provides confidence through test coverage analysis
+
+**Sources:** Phase 1  
+**Promoted:** 2026-06-03

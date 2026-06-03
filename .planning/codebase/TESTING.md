@@ -338,3 +338,29 @@ describe('BackToTop (no #about element)', () => {
     it('renders without crashing when #about is not in DOM', () => { ... });
 });
 ```
+
+---
+
+## Acceptance Gates
+
+### Verification command sequence
+Run the canonical verification suite as the final acceptance gate for any phase completion. These commands must pass before considering work done:
+
+```bash
+# 1. Lint check (zero warnings/errors required)
+npm run lint
+
+# 2. Type check (strict mode)
+npx tsc --noEmit
+
+# 3. Test suite (all tests must pass)
+npm run test
+
+# 4. Coverage thresholds (must meet 80/80/80/65)
+npm run test:coverage
+```
+
+**When to use:** Before creating PR, before marking phase complete, and in CI pipeline. The sequence (lint → typecheck → test → build) must pass without warnings or errors.
+
+**Sources:** Phase 1  
+**Promoted:** 2026-06-03
