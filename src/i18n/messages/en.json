@@ -21,7 +21,13 @@
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
         "cta_contact": "Contact Me",
-        "downloading_cv": "Generating..."
+        "downloading_cv": "Generating...",
+        "cv_error": "Failed to generate CV (HTTP {status}). Please try again later."
+    },
+    "notFound": {
+        "title": "Page Not Found",
+        "message": "The page you're looking for doesn't exist or has been moved.",
+        "returnHome": "Return Home"
     },
     "about": {
         "title": "About Me",
@@ -146,5 +152,11 @@
     },
     "lang": {
         "switch": "Switch language"
+    },
+    "error": {
+        "title": "Something Went Wrong",
+        "message": "An unexpected error occurred. Please try refreshing the page.",
+        "tryAgain": "Try Again",
+        "returnHome": "Return Home"
     }
 }

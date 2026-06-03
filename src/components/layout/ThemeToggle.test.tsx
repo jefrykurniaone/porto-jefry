@@ -17,11 +17,6 @@ function renderThemeToggle() {
 }
 
 describe('ThemeToggle', () => {
-    it('renders the server-side placeholder', () => {
-        renderThemeToggle();
-        expect(screen.getByTestId('theme-toggle-placeholder')).toBeInTheDocument();
-    });
-
     it('renders the toggle button after mount', async () => {
         renderThemeToggle();
         const btn = await screen.findByRole('button');

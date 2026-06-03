@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { ArrowDownIcon, DownloadIcon, MailIcon } from 'lucide-react';
+import { ArrowDownIcon, DownloadIcon, MailIcon, AlertCircle } from 'lucide-react';
 
 interface HeroCtaButtonsProps {
     locale: string;
@@ -11,10 +11,12 @@ interface HeroCtaButtonsProps {
     ctaCv: string;
     ctaContact: string;
     ctaDownloading: string;
+    t: (key: string, values?: Record<string, string | number>) => string;
 }
 
-function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: Readonly<HeroCtaButtonsProps>) {
+function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t }: Readonly<HeroCtaButtonsProps>) {
     const [isDownloading, setIsDownloading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const scrollTo = (id: string) =>
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
@@ -27,6 +29,7 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
     const handleDownload = async () => {
         if (isDownloading) return;
         setIsDownloading(true);
+        setErrorMessage(null); // Clear any previous error
         try {
             const res = await fetch(`/api/generate-cv?${new URLSearchParams({ locale })}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -38,6 +41,12 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
             link.click();
             URL.revokeObjectURL(url);
         } catch (err) {
+            // Extract HTTP status code from error message
+            const statusMatch = err instanceof Error ? err.message.match(/HTTP (\d+)/) : null;
+            const status = statusMatch ? statusMatch[1] : 'unknown';
+            setErrorMessage(t('cv_error', { status }));
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => setErrorMessage(null), 5000);
             // eslint-disable-next-line no-console
             console.error('[CV Download] failed:', err);
         } finally {
@@ -46,39 +55,50 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading }: 
     };
 
     return (
-        <div className='flex flex-wrap justify-center gap-4'>
-            <a
-                href='#projects'
-                onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
-                className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
-                <ArrowDownIcon size={18} aria-hidden='true' />
-                {ctaWork}
-            </a>
-            <button
-                type='button'
-                onClick={handleDownload}
-                disabled={isDownloading}
-                className='inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 text-white font-medium rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
-                {isDownloading ? (
-                    <>
-                        <span className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent' />
-                        {ctaDownloading}
-                    </>
-                ) : (
-                    <>
-                        <DownloadIcon size={18} aria-hidden='true' />
-                        {ctaCv}
-                    </>
-                )}
-            </button>
-            <a
-                href='#contact'
-                onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
-                className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
-                <MailIcon size={18} aria-hidden='true' />
-                {ctaContact}
-            </a>
-        </div>
+        <>
+            <div className='flex flex-wrap justify-center gap-4'>
+                <a
+                    href='#projects'
+                    onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
+                    className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
+                    <ArrowDownIcon size={18} aria-hidden='true' />
+                    {ctaWork}
+                </a>
+                <button
+                    type='button'
+                    onClick={handleDownload}
+                    disabled={isDownloading}
+                    className='inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 text-white font-medium rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
+                    {isDownloading ? (
+                        <>
+                            <span className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent' />
+                            {ctaDownloading}
+                        </>
+                    ) : (
+                        <>
+                            <DownloadIcon size={18} aria-hidden='true' />
+                            {ctaCv}
+                        </>
+                    )}
+                </button>
+                <a
+                    href='#contact'
+                    onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
+                    className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
+                    <MailIcon size={18} aria-hidden='true' />
+                    {ctaContact}
+                </a>
+            </div>
+            {errorMessage && (
+                <div 
+                    role='alert' 
+                    aria-live='polite' 
+                    className='mt-4 flex items-start gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'>
+                    <AlertCircle size={20} aria-hidden='true' className='flex-shrink-0 mt-0.5' />
+                    <p className='text-base'>{errorMessage}</p>
+                </div>
+            )}
+        </>
     );
 }
 
@@ -117,6 +137,7 @@ export default function Hero() {
                     ctaCv={t('cta_cv')}
                     ctaContact={t('cta_contact')}
                     ctaDownloading={t('downloading_cv')}
+                    t={t}
                 />
             </div>
         </section>

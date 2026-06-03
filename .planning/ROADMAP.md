@@ -42,8 +42,14 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Navigating to a non-existent URL shows the branded `not-found.tsx` page in the correct locale instead of the Next.js default
   3. An unexpected runtime error surfaces the branded `error.tsx` fallback page (locale-aware) instead of a blank/default crash page
   4. ThemeToggle renders its icon immediately on hydration — no icon pop-in or layout shift (CLS = 0 for the toggle)
-**Plans**: TBD
+**Plans**: 4 plans in 1 wave
 **UI hint**: yes
+
+Plans:
+- [ ] 02-01-PLAN.md — CV download error feedback with inline banner
+- [ ] 02-02-PLAN.md — Custom 404 page (locale-aware)
+- [ ] 02-03-PLAN.md — Custom error boundary page (locale-aware)
+- [ ] 02-04-PLAN.md — Verify ThemeToggle CLS fix (verification only)
 
 ### Phase 3: Security Hardening
 **Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances

@@ -21,7 +21,13 @@
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
         "cta_contact": "Hubungi Saya",
-        "downloading_cv": "Membuat CV..."
+        "downloading_cv": "Membuat CV...",
+        "cv_error": "Gagal membuat CV (HTTP {status}). Silakan coba lagi nanti."
+    },
+    "notFound": {
+        "title": "Halaman Tidak Ditemukan",
+        "message": "Halaman yang Anda cari tidak ada atau telah dipindahkan.",
+        "returnHome": "Kembali ke Beranda"
     },
     "about": {
         "title": "Tentang Saya",
@@ -146,5 +152,11 @@
     },
     "lang": {
         "switch": "Ganti bahasa"
+    },
+    "error": {
+        "title": "Terjadi Kesalahan",
+        "message": "Terjadi kesalahan yang tidak terduga. Silakan coba muat ulang halaman.",
+        "tryAgain": "Coba Lagi",
+        "returnHome": "Kembali ke Beranda"
     }
 }
