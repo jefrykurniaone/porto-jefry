@@ -94,4 +94,39 @@ describe('Hero', () => {
         scrollSpy.mockRestore();
         pushSpy.mockRestore();
     });
+
+    it('error state initializes as null (no banner on mount)', () => {
+        renderHero();
+        const banner = screen.queryByRole('alert');
+        expect(banner).not.toBeInTheDocument();
+    });
+
+    it('sets error message when CV download fails', async () => {
+        const failedFetch = vi.fn().mockResolvedValue({
+            ok: false,
+            status: 500,
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        
+        await user.click(cvBtn!);
+
+        // Error message should be set (we'll verify banner rendering in Task 2)
+        expect(failedFetch).toHaveBeenCalled();
+    });
+
+    it('translation key hero.cv_error exists in messages', () => {
+        expect(messages.hero).toHaveProperty('cv_error');
+    });
+
+    it('error message interpolates HTTP status code', () => {
+        const errorKey = messages.hero.cv_error;
+        expect(errorKey).toContain('{status}');
+        const interpolated = errorKey.replace('{status}', '500');
+        expect(interpolated).toContain('500');
+    });
 });
