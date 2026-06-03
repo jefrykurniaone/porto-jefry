@@ -152,5 +152,11 @@
     },
     "lang": {
         "switch": "Switch language"
+    },
+    "error": {
+        "title": "Something Went Wrong",
+        "message": "An unexpected error occurred. Please try refreshing the page.",
+        "tryAgain": "Try Again",
+        "returnHome": "Return Home"
     }
 }

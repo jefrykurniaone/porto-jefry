@@ -152,5 +152,11 @@
     },
     "lang": {
         "switch": "Ganti bahasa"
+    },
+    "error": {
+        "title": "Terjadi Kesalahan",
+        "message": "Terjadi kesalahan yang tidak terduga. Silakan coba muat ulang halaman.",
+        "tryAgain": "Coba Lagi",
+        "returnHome": "Kembali ke Beranda"
     }
 }
