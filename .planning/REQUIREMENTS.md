@@ -9,10 +9,10 @@ Requirements for the current improvement milestone. Each maps to roadmap phases.
 
 ### Quick Fixes
 
-- [ ] **FIX-01**: `LanguageToggle` and `ThemeToggle` buttons have `type="button"` attribute
-- [ ] **FIX-02**: Navbar scroll event listener is registered with `{ passive: true }`
-- [ ] **FIX-03**: `translatePeriod` regex uses word-boundary anchors (`\b`) to prevent partial matches
-- [ ] **FIX-04**: Hash encoding is consistent between Hero (`encodeURIComponent`) and Navbar (plain `#id`) — standardize on plain `#id`
+- [x] **FIX-01**: `LanguageToggle` and `ThemeToggle` buttons have `type="button"` attribute
+- [x] **FIX-02**: Navbar scroll event listener is registered with `{ passive: true }`
+- [x] **FIX-03**: `translatePeriod` regex uses word-boundary anchors (`\b`) to prevent partial matches
+- [x] **FIX-04**: Hash encoding is consistent between Hero (`encodeURIComponent`) and Navbar (plain `#id`) — standardize on plain `#id`
 
 ### UX Polish
 
@@ -80,10 +80,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| FIX-01 | Phase 1 — Quick Bug Fixes | Pending |
-| FIX-02 | Phase 1 — Quick Bug Fixes | Pending |
-| FIX-03 | Phase 1 — Quick Bug Fixes | Pending |
-| FIX-04 | Phase 1 — Quick Bug Fixes | Pending |
+| FIX-01 | Phase 1 — Quick Bug Fixes | ✅ Complete |
+| FIX-02 | Phase 1 — Quick Bug Fixes | ✅ Complete |
+| FIX-03 | Phase 1 — Quick Bug Fixes | ✅ Complete |
+| FIX-04 | Phase 1 — Quick Bug Fixes | ✅ Complete |
 | UX-01 | Phase 2 — UX Polish | Pending |
 | UX-02 | Phase 2 — UX Polish | Pending |
 | UX-03 | Phase 2 — UX Polish | Pending |
@@ -101,8 +101,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 - v1 requirements: 16 total
 - Mapped to phases: 16
 - Unmapped: 0 ✓
+- Completed: 4 (25%)
 - Roadmap written: 2026-06-02
 
 ---
 *Requirements defined: 2026-06-02*
-*Last updated: 2026-06-02 after initial definition*
+*Last updated: 2026-06-03 after Phase 1 completion*
