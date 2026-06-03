@@ -1,12 +1,11 @@
 'use client';
 
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import { FileQuestion } from 'lucide-react';
 
 export default function NotFound() {
   const t = useTranslations('notFound');
-  const locale = useLocale();
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
@@ -22,7 +21,7 @@ export default function NotFound() {
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
           {t('message')}
         </p>
-        <Link href={`/${locale}`}>
+        <Link href="/">
           <button 
             type="button"
             className="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"

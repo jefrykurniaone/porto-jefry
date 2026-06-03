@@ -3,15 +3,6 @@ import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import NotFound from './not-found';
 
-// Mock next-intl hooks
-vi.mock('next-intl', async () => {
-  const actual = await vi.importActual('next-intl');
-  return {
-    ...actual,
-    useLocale: vi.fn(() => 'en'),
-  };
-});
-
 // Mock @/i18n/routing
 vi.mock('@/i18n/routing', () => ({
   Link: ({ children, href }: { children: React.ReactNode; href: string }) => (
@@ -66,16 +57,9 @@ describe('NotFound Component', () => {
     expect(button).toBeInTheDocument();
   });
 
-  it('should have button link to /en using Link from @/i18n/routing', () => {
+  it('should have button link to / using Link from @/i18n/routing', () => {
     const { container } = renderNotFound();
-    const link = container.querySelector('a[href="/en"]');
-    expect(link).toBeInTheDocument();
-  });
-
-  it('should use useLocale to get current locale', () => {
-    const { container } = renderNotFound();
-    // Verify the link includes the locale (proves useLocale was called)
-    const link = container.querySelector('a[href="/en"]');
+    const link = container.querySelector('a[href="/"]');
     expect(link).toBeInTheDocument();
   });
 });
