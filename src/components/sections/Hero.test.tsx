@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
@@ -128,5 +128,96 @@ describe('Hero', () => {
         expect(errorKey).toContain('{status}');
         const interpolated = errorKey.replace('{status}', '500');
         expect(interpolated).toContain('500');
+    });
+
+    it('does not render error banner when errorMessage is null', () => {
+        renderHero();
+        const banner = screen.queryByRole('alert');
+        expect(banner).not.toBeInTheDocument();
+    });
+
+    it('renders error banner with role=alert when error occurs', async () => {
+        const failedFetch = vi.fn().mockResolvedValue({
+            ok: false,
+            status: 500,
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        
+        await user.click(cvBtn!);
+
+        await waitFor(() => {
+            const banner = screen.getByRole('alert');
+            expect(banner).toBeInTheDocument();
+        });
+    });
+
+    it('error banner has aria-live=polite for screen readers', async () => {
+        const failedFetch = vi.fn().mockResolvedValue({
+            ok: false,
+            status: 403,
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        
+        await user.click(cvBtn!);
+
+        await waitFor(() => {
+            const banner = screen.getByRole('alert');
+            expect(banner).toHaveAttribute('aria-live', 'polite');
+        });
+    });
+
+    it('error banner contains error message text with HTTP status', async () => {
+        const failedFetch = vi.fn().mockResolvedValue({
+            ok: false,
+            status: 404,
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        
+        await user.click(cvBtn!);
+
+        await waitFor(() => {
+            const banner = screen.getByRole('alert');
+            expect(banner).toHaveTextContent(/failed.*generate.*cv.*http.*404/i);
+        });
+    });
+
+    it('sets 5-second auto-dismiss timer when error occurs', async () => {
+        const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
+        
+        const failedFetch = vi.fn().mockResolvedValue({
+            ok: false,
+            status: 500,
+        });
+        vi.stubGlobal('fetch', failedFetch);
+
+        renderHero();
+        const user = userEvent.setup();
+        const btns = screen.getAllByRole('button');
+        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
+        
+        await user.click(cvBtn!);
+
+        // Wait for error state to be set
+        await screen.findByRole('alert');
+
+        // Verify setTimeout was called with 5000ms
+        expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
+
+        setTimeoutSpy.mockRestore();
     });
 });
