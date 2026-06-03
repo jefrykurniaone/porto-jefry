@@ -77,3 +77,5 @@ From `.github/copilot-instructions.md`:
 - No empty catch blocks; log errors with context.
 - Accessibility: semantic HTML, `alt` text on images, keyboard navigation, WCAG AA contrast (4.5:1).
 - Git: feature branches (`feat/`, `fix/`, `chore/`, `hotfix/`), Conventional Commits, no direct push to `main`.
+- Each GSD phase gets its own branch (branching_strategy: "phase" in `.planning/config.json`). Branch name uses the phase slug.
+- After PR merge: delete only the remote branch (`git push origin --delete <branch>`). Never delete the local branch.
