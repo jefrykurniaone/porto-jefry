@@ -12,16 +12,15 @@ export default function BackToTop() {
         const about = document.getElementById('about');
         if (!about) return;
 
-        const handleScroll = () => {
-            setVisible(globalThis.scrollY >= about.offsetTop);
-        };
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                setVisible(!entry.isIntersecting && entry.boundingClientRect.top < 0);
+            },
+            { threshold: 0 },
+        );
 
-        handleScroll();
-        globalThis.addEventListener('scroll', handleScroll, { passive: true });
-
-        return () => {
-            globalThis.removeEventListener('scroll', handleScroll);
-        };
+        observer.observe(about);
+        return () => observer.disconnect();
     }, []);
 
     const handleClick = () => {
