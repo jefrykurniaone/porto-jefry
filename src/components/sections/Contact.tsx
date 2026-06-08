@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-import { MailIcon, PhoneIcon } from 'lucide-react';
 import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
@@ -32,16 +31,20 @@ function ContactCard({
             href={href}
             target={isExternal ? '_blank' : undefined}
             rel={isExternal ? 'noopener noreferrer' : undefined}
-            className='flex flex-col items-center gap-3 p-6 rounded-xl bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800 hover:border-blue-300 dark:hover:border-blue-700 hover:shadow-md transition-all duration-200 group'>
-            <span className='p-3 rounded-xl bg-blue-100 dark:bg-blue-950 text-blue-600 dark:text-blue-400 group-hover:scale-110 transition-transform'>
-                {icon}
-            </span>
-            <span className='font-medium text-gray-900 dark:text-white text-sm'>
-                {label}
-            </span>
-            <span className='text-xs text-gray-500 dark:text-gray-400 break-all'>
-                {value}
-            </span>
+            className='sgds:block sgds:no-underline group'>
+            <sgds-card suppressHydrationWarning>
+                <div slot='title' className='sgds:flex sgds:flex-col sgds:items-center sgds:gap-component-xs'>
+                    <span className='sgds:text-primary group-hover:sgds:scale-110 sgds:transition-transform'>
+                        {icon}
+                    </span>
+                    <span className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
+                        {label}
+                    </span>
+                </div>
+                <span slot='description' className='sgds:text-body-md sgds:text-muted sgds:text-center sgds:break-all'>
+                    {value}
+                </span>
+            </sgds-card>
         </a>
     );
 }
@@ -54,44 +57,46 @@ export default function Contact() {
             label: t('email_label'),
             href: `mailto:${CONTACT_EMAIL}`,
             value: CONTACT_EMAIL,
-            icon: <MailIcon size={20} aria-hidden='true' />,
+            icon: <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />,
             isExternal: false,
         },
         {
             label: t('phone_label'),
             href: CONTACT_PHONE_HREF,
             value: CONTACT_PHONE_DISPLAY,
-            icon: <PhoneIcon size={20} aria-hidden='true' />,
+            icon: <sgds-icon name='phone' aria-hidden='true' suppressHydrationWarning />,
             isExternal: false,
         },
         {
             label: t('linkedin_label'),
             href: CONTACT_LINKEDIN_URL,
             value: CONTACT_LINKEDIN_DISPLAY,
-            icon: <LinkedInIcon size={20} aria-hidden='true' />,
+            icon: <LinkedInIcon size={24} aria-hidden='true' />,
             isExternal: true,
         },
         {
             label: t('github_label'),
             href: CONTACT_GITHUB_URL,
             value: CONTACT_GITHUB_DISPLAY,
-            icon: <GitHubIcon size={20} aria-hidden='true' />,
+            icon: <GitHubIcon size={24} aria-hidden='true' />,
             isExternal: true,
         },
     ];
 
     return (
-        <section id='contact' className='py-20 px-4'>
-            <div className='max-w-4xl mx-auto text-center'>
-                <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-4'>
+        <section id='contact' className='sgds:py-layout-lg sgds:bg-default'>
+            <div className='sgds-container sgds:text-center'>
+                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md'>
                     {t('title')}
                 </h2>
-                <p className='text-gray-600 dark:text-gray-300 text-lg mb-12 max-w-2xl mx-auto'>
+                <p className='sgds:text-body-md sgds:text-muted sgds:max-w-2xl sgds:mx-auto sgds:mb-layout-md sgds:leading-xs'>
                     {t('description')}
                 </p>
-                <div className='grid sm:grid-cols-2 lg:grid-cols-4 gap-5'>
+                <div className='sgds-grid'>
                     {links.map((link) => (
-                        <ContactCard key={link.href} {...link} />
+                        <div key={link.href} className='sgds-col-12 sm:sgds-col-6 lg:sgds-col-3'>
+                            <ContactCard {...link} />
+                        </div>
                     ))}
                 </div>
             </div>

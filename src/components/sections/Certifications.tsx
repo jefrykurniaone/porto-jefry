@@ -1,44 +1,35 @@
 import { useTranslations } from 'next-intl';
-import { AwardIcon } from 'lucide-react';
 import { certifications } from '@/data/certifications';
 
 export default function Certifications() {
     const t = useTranslations('certifications');
 
     return (
-        <section
-            id='certifications'
-            className='py-20 px-4 bg-gray-50 dark:bg-gray-900/50'>
-            <div className='max-w-4xl mx-auto'>
-                <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center'>
+        <section id='certifications' className='sgds:py-layout-lg sgds:bg-alternate'>
+            <div className='sgds-container'>
+                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
                     {t('title')}
                 </h2>
-                <div className='max-w-md mx-auto flex flex-col gap-4'>
+                <div className='sgds:max-w-md sgds:mx-auto sgds:flex sgds:flex-col sgds:gap-layout-sm'>
                     {certifications.map((cert) => (
-                        <div
-                            key={cert.id}
-                            className='p-6 rounded-xl bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 flex gap-4'>
-                            <div className='p-3 rounded-xl bg-yellow-50 dark:bg-yellow-950/50 shrink-0 h-fit'>
-                                <AwardIcon
-                                    size={24}
-                                    className='text-yellow-500'
-                                    aria-hidden='true'
-                                />
-                            </div>
-                            <div>
-                                <h3 className='font-semibold text-gray-900 dark:text-white'>
-                                    {t(`${cert.id}.name`)}
-                                </h3>
-                                <p className='text-blue-600 dark:text-blue-400 text-sm font-medium'>
-                                    {t(`${cert.id}.issuer`)}
-                                </p>
-                                <p className='text-gray-500 dark:text-gray-400 text-sm mt-0.5'>
-                                    {t(`${cert.id}.period`)}
-                                </p>
-                                <p className='text-gray-600 dark:text-gray-300 text-sm mt-2'>
-                                    {t(`${cert.id}.description`)}
-                                </p>
-                            </div>
+                        <div key={cert.id}>
+                            <sgds-card suppressHydrationWarning>
+                                <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default sgds:flex sgds:items-center sgds:gap-component-xs'>
+                                    <sgds-icon name='shield-tick' aria-hidden='true' suppressHydrationWarning />
+                                    <span>{t(`${cert.id}.name`)}</span>
+                                </span>
+                                <span slot='description'>
+                                    <p className='sgds:text-label-sm sgds:text-primary sgds:font-semibold sgds:mb-component-xs'>
+                                        {t(`${cert.id}.issuer`)}
+                                    </p>
+                                    <p className='sgds:text-label-sm sgds:text-muted sgds:mb-component-xs'>
+                                        {t(`${cert.id}.period`)}
+                                    </p>
+                                    <p className='sgds:text-body-md sgds:text-body-default sgds:leading-xs'>
+                                        {t(`${cert.id}.description`)}
+                                    </p>
+                                </span>
+                            </sgds-card>
                         </div>
                     ))}
                 </div>
