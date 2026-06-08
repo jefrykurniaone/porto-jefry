@@ -11,6 +11,7 @@ import { Inter } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/utils/constants';
+import SgdsLibraryLoader from '@/app/sgds';
 import '@/app/globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -62,6 +63,7 @@ export default async function LocaleLayout({
     return (
         <html lang={locale} suppressHydrationWarning>
             <body className={inter.className}>
+                <SgdsLibraryLoader />
                 <NextIntlClientProvider messages={messages}>
                     <ThemeProvider attribute='class' defaultTheme='system' enableSystem nonce={nonce}>
                         <a
