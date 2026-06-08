@@ -62,7 +62,16 @@ Plans:
   3. All section components (Hero, About, Experience, Education, Skills, Projects, Certifications, Contact) use `<sgds-*>` web components where SGDS equivalents exist
   4. Layout components (Navbar, Footer) migrated to SGDS; custom components (Timeline, BackToTop) styled with `sgds:` utility classes
   5. All test files rewritten for SGDS components; 80% coverage maintained; `npm run build` + `npm run lint` + `npx tsc --noEmit` all pass
-**Plans**: 5 plans
+**Plans**: 7 plans in 5 waves
+
+Plans:
+- [x] 05-01-PLAN.md — SGDS foundation build pipeline and test harness
+- [x] 05-02-PLAN.md — React 18 direct SGDS validation checkpoint
+- [x] 05-03-PLAN.md — SGDS theme ownership and ThemeToggle migration
+- [x] 05-04-PLAN.md — SGDS layout chrome and truthful footer checkpoint
+- [x] 05-05-PLAN.md — Hero/About/Experience/Education SGDS section migration
+- [x] 05-06-PLAN.md — Skills/Projects/Certifications/Contact SGDS section migration
+- [x] 05-07-PLAN.md — SGDS fallback polish, source audit, and final verification
 
 ### Phase 3: Security Hardening [DEFERRED → Phase 6]
 **Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances
@@ -94,6 +103,6 @@ Plans:
 |-------|----------------|--------|-----------|
 | 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
-| 5. SGDS Migration | 0/5 | 🎯 Current priority | - |
+| 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | 0/TBD | ⏸️ Deferred (Phase 6) | - |
 | 4. Code Quality & Type Safety | 0/TBD | ⏸️ Deferred (Phase 7) | - |

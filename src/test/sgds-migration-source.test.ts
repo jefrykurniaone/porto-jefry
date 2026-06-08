@@ -126,10 +126,6 @@ function readSource(relativePath: string): string {
     return readFileSync(resolve(ROOT, relativePath), 'utf-8');
 }
 
-function isExceptionFile(file: string, exceptionFile: string): boolean {
-    return file === exceptionFile || file.startsWith(exceptionFile);
-}
-
 /* ------------------------------------------------------------------ */
 /*  Tests                                                              */
 /* ------------------------------------------------------------------ */
