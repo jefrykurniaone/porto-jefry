@@ -179,7 +179,31 @@ describe('SGDS foundation setup', () => {
         });
     });
 
-    /* Test 7: Source assertions — no next-themes in owned files after removal */
+    /* Test 7: Final dependency assertion — no lucide-react */
+    describe('lucide-react removal', () => {
+        const pkg = readSource('package.json');
+        const lock = readSource('package-lock.json');
+        const hook = readSource('src/hooks/useSgdsTheme.ts');
+
+        it('package.json has no lucide-react dependency', () => {
+            expect(pkg).not.toContain('lucide-react');
+        });
+
+        it('package-lock.json has no lucide-react entry', () => {
+            expect(lock).not.toContain('"node_modules/lucide-react"');
+        });
+
+        it('useSgdsTheme.ts contains sgds-night-theme class string', () => {
+            expect(hook).toContain("'sgds-night-theme'");
+        });
+
+        it('useSgdsTheme.ts toggles sgds-night-theme via classList.toggle', () => {
+            expect(hook).toContain('classList.toggle(');
+            expect(hook).toContain("NIGHT_CLASS, theme === 'night'");
+        });
+    });
+
+    /* Test 8: Source assertions — no next-themes in owned files after removal */
     describe('no next-themes in owned theme source', () => {
         const pkg = readSource('package.json');
         const layout = readSource('src/app/[locale]/layout.tsx');
