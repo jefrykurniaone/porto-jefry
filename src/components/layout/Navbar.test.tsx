@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
@@ -138,7 +138,7 @@ describe('Navbar', () => {
         const header = container.querySelector('header');
         expect(header).toBeInTheDocument();
         // Should not contain "dark:" in any className
-        const allElements = container.querySelectorAll('*');
+        const allElements = Array.from(container.querySelectorAll('*'));
         for (const el of allElements) {
             if (el.className && typeof el.className === 'string') {
                 expect(el.className).not.toContain('dark:');
