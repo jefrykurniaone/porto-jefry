@@ -48,23 +48,16 @@ describe('BackToTop (no #about element)', () => {
     beforeEach(setupIOmock);
     afterEach(() => vi.unstubAllGlobals());
 
-    it('renders without crashing when #about is not in DOM', () => {
+    it('renders nothing when #about is not in DOM (observer never fires)', () => {
         render(
             <NextIntlClientProvider locale="en" messages={messages}>
                 <BackToTop />
             </NextIntlClientProvider>,
         );
-        expect(screen.getByRole('button')).toBeInTheDocument();
+        // When no #about, observer isn't created, visible stays false → null render
+        expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 });
-
-function renderBackToTop() {
-    return render(
-        <NextIntlClientProvider locale="en" messages={messages}>
-            <BackToTop />
-        </NextIntlClientProvider>,
-    );
-}
 
 describe('BackToTop', () => {
     let aboutEl: HTMLDivElement;
@@ -85,40 +78,57 @@ describe('BackToTop', () => {
         vi.unstubAllGlobals();
     });
 
-    it('renders a button with aria-label', () => {
-        renderBackToTop();
-        expect(screen.getByRole('button')).toHaveAttribute('aria-label');
+    it('renders nothing while hidden (no button in DOM when visible=false)', () => {
+        render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
+        expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
-    it('button is hidden (opacity-0) on initial render', () => {
-        renderBackToTop();
-        expect(screen.getByRole('button').className).toContain('opacity-0');
-    });
-
-    it('button is hidden when About is below viewport (not yet scrolled to)', () => {
-        renderBackToTop();
-        // About is below viewport: isIntersecting=false, top > 0
-        triggerIO(false, 300);
-        expect(screen.getByRole('button').className).toContain('opacity-0');
+    it('button is not tabbable while hidden (no element rendered)', () => {
+        const { container } = render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
+        // No button exists in the DOM while hidden (conditional render returns null)
+        expect(container.innerHTML).toBe('');
+        // Could also verify no button in the rendered output
+        expect(container.querySelector('button')).not.toBeInTheDocument();
     });
 
     it('button becomes visible when About is above viewport (scrolled past)', () => {
-        renderBackToTop();
-        // About is above viewport: isIntersecting=false, top < 0
+        render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
+        // About is above viewport → visible becomes true → button renders
         triggerIO(false, -200);
-        expect(screen.getByRole('button').className).toContain('opacity-100');
+        expect(screen.getByRole('button')).toBeInTheDocument();
+        expect(screen.getByRole('button')).toHaveAttribute('aria-label');
     });
 
-    it('button hides again when user scrolls back up to About section', () => {
-        renderBackToTop();
-        triggerIO(false, -200); // scrolled past
-        expect(screen.getByRole('button').className).toContain('opacity-100');
-        triggerIO(true, 0); // About back in view
-        expect(screen.getByRole('button').className).toContain('opacity-0');
+    it('button is hidden again when About comes back into view', () => {
+        render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
+        triggerIO(false, -200); // scrolled past → visible
+        expect(screen.getByRole('button')).toBeInTheDocument();
+        triggerIO(true, 0); // back in view → hidden
+        expect(screen.queryByRole('button')).not.toBeInTheDocument();
     });
 
-    it('clicking the button calls scrollTo', async () => {
-        renderBackToTop();
+    it('clicking the visible button calls scrollTo', async () => {
+        render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
         triggerIO(false, -200);
         const user = userEvent.setup();
         await user.click(screen.getByRole('button'));
@@ -126,9 +136,12 @@ describe('BackToTop', () => {
     });
 
     it('observer is disconnected on unmount', () => {
-        const { unmount } = renderBackToTop();
+        const { unmount } = render(
+            <NextIntlClientProvider locale="en" messages={messages}>
+                <BackToTop />
+            </NextIntlClientProvider>,
+        );
         unmount();
         expect(ioDisconnect).toHaveBeenCalled();
     });
 });
-
