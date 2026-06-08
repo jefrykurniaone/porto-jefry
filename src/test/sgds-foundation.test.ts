@@ -184,6 +184,8 @@ describe('SGDS foundation setup', () => {
         const pkg = readSource('package.json');
         const layout = readSource('src/app/[locale]/layout.tsx');
         const toggleSource = readSource('src/components/layout/ThemeToggle.client.tsx');
+        const toggleWrapper = readSource('src/components/layout/ThemeToggle.tsx');
+        const toggleTest = readSource('src/components/layout/ThemeToggle.test.tsx');
 
         it('package.json has no next-themes dependency', () => {
             expect(pkg).not.toContain('next-themes');
@@ -193,12 +195,52 @@ describe('SGDS foundation setup', () => {
             expect(layout).not.toContain('ThemeProvider');
         });
 
+        it('layout.tsx has no next-themes import', () => {
+            expect(layout).not.toContain('next-themes');
+        });
+
         it('ThemeToggle.client.tsx has no useTheme import', () => {
             expect(toggleSource).not.toContain('useTheme');
         });
 
         it('ThemeToggle.client.tsx has no next-themes import', () => {
             expect(toggleSource).not.toContain('next-themes');
+        });
+
+        it('ThemeToggle.tsx has no next-themes import', () => {
+            expect(toggleWrapper).not.toContain('next-themes');
+        });
+
+        it('ThemeToggle.tsx has no useTheme import', () => {
+            expect(toggleWrapper).not.toContain('useTheme');
+        });
+
+        it('ThemeToggle.test.tsx has no next-themes mock', () => {
+            expect(toggleTest).not.toContain('next-themes');
+        });
+
+        it('ThemeToggle.test.tsx has no useTheme', () => {
+            expect(toggleTest).not.toContain('useTheme');
+        });
+
+        it('ThemeToggle.test.tsx has no ThemeProvider', () => {
+            expect(toggleTest).not.toContain('ThemeProvider');
+        });
+
+        it('layout.tsx skip link uses sgds: utilities', () => {
+            expect(layout).toContain('sgds:sr-only');
+        });
+
+        it('layout.tsx skip link has no bare Tailwind sr-only class', () => {
+            expect(layout).not.toContain("className='sr-only");
+        });
+
+        it('layout.tsx has pre-hydration theme script', () => {
+            expect(layout).toContain("localStorage.getItem('sgds-theme')");
+        });
+
+        it('layout.tsx pre-hydration script uses nonce', () => {
+            expect(layout).toContain('nonce={nonce}');
         });
     });
 });
