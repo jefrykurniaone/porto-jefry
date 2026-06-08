@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { ArrowUpIcon } from 'lucide-react';
 
 export default function BackToTop() {
     const t = useTranslations('nav');
@@ -27,22 +26,17 @@ export default function BackToTop() {
         globalThis.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    if (!visible) return null;
+
     return (
         <button
             type='button'
             onClick={handleClick}
             aria-label={t('back_to_top')}
-            className={[
-                'fixed bottom-6 right-6 z-50',
-                'flex items-center justify-center',
-                'w-10 h-10 rounded-full',
-                'bg-blue-600 dark:bg-blue-500 text-white shadow-md',
-                'hover:bg-blue-700 dark:hover:bg-blue-600 focus-visible:outline-none',
-                'focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:ring-offset-2',
-                'transition-opacity duration-300',
-                visible ? 'opacity-100' : 'opacity-0 pointer-events-none',
-            ].join(' ')}>
-            <ArrowUpIcon size={18} aria-hidden='true' />
+            className='sgds:fixed sgds:bottom-6 sgds:right-6 sgds:z-50 sgds:flex sgds:items-center sgds:justify-center sgds:rounded-full sgds:bg-primary sgds:text-white sgds:shadow-md hover:sgds:bg-primary-dark focus-visible:sgds:outline-none focus-visible:sgds:ring-2 focus-visible:sgds:ring-primary focus-visible:sgds:ring-offset-2'
+            style={{ width: '44px', height: '44px', minWidth: '44px', minHeight: '44px' }}
+        >
+            <sgds-icon name="arrow-up" suppressHydrationWarning />
         </button>
     );
 }
