@@ -1,12 +1,14 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@govtechsg/sgds-web-component/themes/day.css';
+@import '@govtechsg/sgds-web-component/themes/night.css';
+@import '@govtechsg/sgds-web-component/css/sgds.css';
+@import '@govtechsg/sgds-web-component/css/utility.css';
 
 @layer base {
     html {
         scroll-behavior: smooth;
     }
     body {
-        @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-white;
+        background: var(--sgds-bg-default);
+        color: var(--sgds-color-default);
     }
 }

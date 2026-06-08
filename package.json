@@ -16,7 +16,7 @@
         "test:coverage": "vitest run --coverage"
     },
     "dependencies": {
-        "@govtechsg/sgds-web-component": "^3.20.0",
+        "@govtechsg/sgds-web-component": "^3.21.0",
         "@react-pdf/renderer": "^4.5.1",
         "@vercel/analytics": "^2.0.1",
         "lucide-react": "^1.14.0",
@@ -28,6 +28,7 @@
         "sharp": "^0.34.5"
     },
     "devDependencies": {
+        "@tailwindcss/postcss": "^4.3.0",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.2",
         "@testing-library/user-event": "^14.6.1",
@@ -39,8 +40,8 @@
         "eslint": "^8",
         "eslint-config-next": "14.2.35",
         "jsdom": "^29.1.1",
-        "postcss": "^8",
-        "tailwindcss": "^3.4.1",
+        "postcss": "^8.5.15",
+        "tailwindcss": "^4.3.0",
         "typescript": "^5",
         "vite-tsconfig-paths": "^6.1.1",
         "vitest": "^4.1.7"
