@@ -2,34 +2,31 @@
 
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
-import { FileQuestion } from 'lucide-react';
 
 export default function NotFound() {
-  const t = useTranslations('notFound');
+    const t = useTranslations('notFound');
 
-  return (
-    <div className="min-h-screen flex items-center justify-center px-4">
-      <div className="text-center max-w-md">
-        <FileQuestion 
-          size={64} 
-          className="mx-auto mb-6 text-gray-400 dark:text-gray-500" 
-          aria-hidden="true"
-        />
-        <h1 className="text-4xl font-semibold mb-4 text-gray-900 dark:text-white">
-          {t('title')}
-        </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          {t('message')}
-        </p>
-        <Link href="/">
-          <button 
-            type="button"
-            className="px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl transition-colors"
-          >
-            {t('returnHome')}
-          </button>
-        </Link>
-      </div>
-    </div>
-  );
+    return (
+        <div className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:px-4 sgds:bg-default'>
+            <div className='sgds:text-center'>
+                <sgds-icon
+                    name='question-circle'
+                    aria-hidden='true'
+                    suppressHydrationWarning
+                    style={{ width: '64px', height: '64px' }}
+                />
+                <h1 className='sgds:text-heading-lg sgds:font-semibold sgds:mt-4 sgds:mb-4 sgds:text-default'>
+                    {t('title')}
+                </h1>
+                <p className='sgds:text-body-md sgds:text-muted sgds:mb-8'>
+                    {t('message')}
+                </p>
+                <Link href='/'>
+                    <sgds-button type='button' suppressHydrationWarning>
+                        {t('returnHome')}
+                    </sgds-button>
+                </Link>
+            </div>
+        </div>
+    );
 }
