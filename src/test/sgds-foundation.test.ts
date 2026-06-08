@@ -1,6 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { renderHook, act } from '@testing-library/react';
+import { useSgdsTheme } from '@/hooks/useSgdsTheme';
 
 const ROOT = process.cwd();
 
@@ -135,6 +137,68 @@ describe('SGDS foundation setup', () => {
             expect(setup).toContain('afterEach');
             expect(setup).toContain('sgds-night-theme');
             expect(setup).toContain('localStorage.clear');
+        });
+    });
+
+    /* Test 6: Hook behavior — useSgdsTheme initialises and toggles correctly */
+    describe('useSgdsTheme hook behavior', () => {
+        beforeEach(() => {
+            localStorage.clear();
+            document.documentElement.classList.remove('sgds-night-theme');
+        });
+
+        it('initialises to day when storage is empty', () => {
+            const { result } = renderHook(() => useSgdsTheme());
+            expect(result.current.theme).toBe('day');
+            expect(document.documentElement.classList.contains('sgds-night-theme')).toBe(false);
+        });
+
+        it('initialises to day when storage contains invalid value', () => {
+            localStorage.setItem('sgds-theme', 'invalid');
+            const { result } = renderHook(() => useSgdsTheme());
+            expect(result.current.theme).toBe('day');
+        });
+
+        it('toggleTheme changes day to night, persists night, and adds sgds-night-theme', () => {
+            const { result } = renderHook(() => useSgdsTheme());
+            act(() => { result.current.toggleTheme(); });
+            expect(result.current.theme).toBe('night');
+            expect(localStorage.getItem('sgds-theme')).toBe('night');
+            expect(document.documentElement.classList.contains('sgds-night-theme')).toBe(true);
+        });
+
+        it('toggleTheme changes night to day, persists day, and removes sgds-night-theme', () => {
+            localStorage.setItem('sgds-theme', 'night');
+            document.documentElement.classList.add('sgds-night-theme');
+            const { result } = renderHook(() => useSgdsTheme());
+            expect(result.current.theme).toBe('night');
+            act(() => { result.current.toggleTheme(); });
+            expect(result.current.theme).toBe('day');
+            expect(localStorage.getItem('sgds-theme')).toBe('day');
+            expect(document.documentElement.classList.contains('sgds-night-theme')).toBe(false);
+        });
+    });
+
+    /* Test 7: Source assertions — no next-themes in owned files after removal */
+    describe('no next-themes in owned theme source', () => {
+        const pkg = readSource('package.json');
+        const layout = readSource('src/app/[locale]/layout.tsx');
+        const toggleSource = readSource('src/components/layout/ThemeToggle.client.tsx');
+
+        it('package.json has no next-themes dependency', () => {
+            expect(pkg).not.toContain('next-themes');
+        });
+
+        it('layout.tsx has no ThemeProvider import', () => {
+            expect(layout).not.toContain('ThemeProvider');
+        });
+
+        it('ThemeToggle.client.tsx has no useTheme import', () => {
+            expect(toggleSource).not.toContain('useTheme');
+        });
+
+        it('ThemeToggle.client.tsx has no next-themes import', () => {
+            expect(toggleSource).not.toContain('next-themes');
         });
     });
 });
