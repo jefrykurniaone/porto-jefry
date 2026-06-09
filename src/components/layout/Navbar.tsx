@@ -1,10 +1,9 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTranslations } from 'next-intl';
 import ThemeToggle from './ThemeToggle';
 import LanguageToggle from './LanguageToggle';
-import { MenuIcon, XIcon } from 'lucide-react';
 
 const NAV_KEYS = [
     'about',
@@ -23,18 +22,21 @@ interface NavLinksProps {
 function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
     const t = useTranslations('nav');
     return (
-        <ul className='hidden md:flex items-center gap-6'>
+        <>
             {NAV_KEYS.map((key) => (
-                <li key={key}>
-                    <a
-                        href={`#${key}`}
-                        onClick={(e) => { e.preventDefault(); onNavClick(key); }}
-                        className='text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors capitalize'>
-                        {t(key)}
-                    </a>
-                </li>
+                <React.Fragment key={key}>
+                    <sgds-mainnav-item className='sgds:hidden sgds:md:block' suppressHydrationWarning>
+                        <a
+                            href={`#${key}`}
+                            onClick={(e) => { e.preventDefault(); onNavClick(key); }}
+                            className='sgds:capitalize'
+                        >
+                            {t(key)}
+                        </a>
+                    </sgds-mainnav-item>
+                </React.Fragment>
             ))}
-        </ul>
+        </>
     );
 }
 
@@ -47,14 +49,19 @@ interface MobileNavLinksProps {
 function MobileNavLinks({ onNavClick, id, menuRef }: Readonly<MobileNavLinksProps>) {
     const t = useTranslations('nav');
     return (
-        <div ref={menuRef} id={id} className='md:hidden bg-white dark:bg-gray-950 border-t border-gray-100 dark:border-gray-800 px-4 py-4'>
-            <ul className='flex flex-col gap-3'>
+        <div
+            ref={menuRef}
+            id={id}
+            className='sgds:border-t sgds:border-divider sgds:px-4 sgds:py-4'
+        >
+            <ul className='sgds:flex sgds:flex-col sgds:gap-3'>
                 {NAV_KEYS.map((key) => (
                     <li key={key}>
                         <a
                             href={`#${key}`}
                             onClick={(e) => { e.preventDefault(); onNavClick(key); }}
-                            className='w-full text-left py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors capitalize'>
+                            className='sgds:block sgds:w-full sgds:py-2 sgds:text-body-md sgds:text-default sgds:no-underline sgds:capitalize'
+                        >
                             {t(key)}
                         </a>
                     </li>
@@ -140,36 +147,31 @@ export default function Navbar() {
 
     return (
         <header
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+            className={`sgds:fixed sgds:top-0 sgds:left-0 sgds:right-0 sgds:z-50 sgds:transition-all sgds:duration-300 ${
                 isScrolled
-                    ? 'bg-white/90 dark:bg-gray-950/90 backdrop-blur-md shadow-sm'
-                    : 'bg-transparent'
+                    ? 'sgds:bg-surface-raised/90 sgds:backdrop-blur-md sgds:shadow-sm'
+                    : 'sgds:bg-transparent'
             }`}>
-            <nav className='max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between'>
-                <a
-                    href='#hero'
-                    onClick={(e) => { e.preventDefault(); globalThis.scrollTo({ top: 0, behavior: 'smooth' }); history.pushState(null, '', location.pathname); }}
-                    aria-label={t('logo_label')}
-                    className='text-lg font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors'>
-                    {'JK'}
-                    <span className='text-blue-600 dark:text-blue-400'>{'.'}</span>
-                </a>
+            <sgds-mainnav expand="always" suppressHydrationWarning>
+                <strong slot="brand" className='sgds:text-heading-sm sgds:font-semibold'>JK</strong>
                 <DesktopNavLinks onNavClick={scrollTo} />
-                <div className='flex items-center gap-2'>
+                <div slot="end" className='sgds:flex sgds:items-center sgds:gap-component-sm'>
                     <ThemeToggle />
                     <LanguageToggle />
                     <button
                         ref={toggleRef}
-                        type='button'
+                        type="button"
                         onClick={() => setIsOpen(!isOpen)}
-                        className='md:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'
+                        className='sgds:md:hidden sgds:flex sgds:items-center sgds:justify-center sgds:rounded-sm sgds:border-0 sgds:bg-transparent sgds:cursor-pointer'
+                        style={{ minWidth: '44px', minHeight: '44px' }}
                         aria-label={t('toggle_menu')}
                         aria-expanded={isOpen}
-                        aria-controls='mobile-nav-menu'>
-                        {isOpen ? <XIcon size={20} aria-hidden='true' /> : <MenuIcon size={20} aria-hidden='true' />}
+                        aria-controls="mobile-nav-menu"
+                    >
+                        <sgds-icon name={isOpen ? 'cross' : 'menu'} suppressHydrationWarning />
                     </button>
                 </div>
-            </nav>
+            </sgds-mainnav>
             {isOpen && <MobileNavLinks onNavClick={scrollTo} id='mobile-nav-menu' menuRef={menuRef} />}
         </header>
     );

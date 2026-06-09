@@ -1,12 +1,218 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import '@govtechsg/sgds-web-component/themes/day.css';
+@import '@govtechsg/sgds-web-component/themes/night.css';
+@import '@govtechsg/sgds-web-component/css/sgds.css';
+@import '@govtechsg/sgds-web-component/css/utility.css';
 
 @layer base {
     html {
         scroll-behavior: smooth;
     }
     body {
-        @apply bg-white text-gray-900 dark:bg-gray-950 dark:text-white;
+        background: var(--sgds-bg-default);
+        color: var(--sgds-color-default);
+    }
+
+    .readable-muted {
+        color: color-mix(in srgb, var(--sgds-color-default) 72%, var(--sgds-bg-default));
+    }
+
+    .site-footer {
+        padding: var(--sgds-spacer-6) 0;
+    }
+
+    /* ── Button improvements ── */
+    sgds-button::part(button) {
+        border-radius: var(--sgds-border-radius-md) !important;
+        font-weight: 600 !important;
+        padding: var(--sgds-spacer-7) var(--sgds-spacer-8) !important;
+        transition: all 0.2s ease !important;
+    }
+    sgds-button:not([variant])::part(button) {
+        box-shadow: var(--sgds-elevation-surface-1);
+    }
+    sgds-button:not([variant]):hover::part(button) {
+        box-shadow: var(--sgds-elevation-surface-3);
+    }
+
+    .hero-download-button {
+        display: inline-flex;
+    }
+
+    .hero-download-button sgds-button::part(button) {
+        box-sizing: border-box !important;
+        height: 2.75rem !important;
+        min-height: 2.75rem !important;
+        min-width: 10.5rem !important;
+        padding: 0.625rem 1rem !important;
+    }
+
+    .hero-content {
+        max-width: 64rem;
+    }
+
+    .hero-subtitle {
+        max-width: 56rem;
+    }
+
+    .hero-cta-group {
+        gap: 0.75rem;
+    }
+
+    .hero-cta-link {
+        box-sizing: border-box;
+        gap: 0.5rem !important;
+        height: 3rem;
+        min-height: 3rem;
+        width: 9.25rem;
+        padding: 0.625rem 0.75rem;
+        border-radius: var(--sgds-border-radius-md);
+        box-shadow: var(--sgds-elevation-surface-1);
+        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .hero-cta-link:hover {
+        box-shadow: var(--sgds-elevation-surface-3);
+    }
+
+    .hero-cta-link-primary {
+        background: var(--sgds-primary-bg-default);
+        color: var(--sgds-color-fixed-light);
+    }
+
+    .hero-cta-link-primary:hover {
+        background: var(--sgds-primary-surface-emphasis);
+    }
+
+    .hero-cta-link-outline {
+        border: 1px solid var(--sgds-primary-border-color-default);
+        color: var(--sgds-primary-color-default);
+    }
+
+    .hero-cta-link-outline:hover {
+        background: var(--sgds-primary-surface-muted);
+    }
+
+    /* ── Card improvements ── */
+    sgds-card {
+        box-shadow: var(--sgds-elevation-surface-1);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+        border-radius: var(--sgds-border-radius-md);
+        height: auto;
+        display: block;
+    }
+    sgds-card::part(body) {
+        padding: var(--sgds-spacer-7);
+    }
+    sgds-card::part(description) {
+        padding-bottom: var(--sgds-spacer-3);
+    }
+
+    sgds-card.compact-card::part(body),
+    .experience-card-wrapper sgds-card::part(body),
+    .skill-card-wrapper sgds-card::part(body) {
+        padding: var(--sgds-spacer-6);
+    }
+    sgds-card:hover {
+        box-shadow: var(--sgds-elevation-surface-3);
+        transform: translateY(-2px);
+    }
+
+    /* Make cards fill grid cells */
+    sgds-grid>div>sgds-card,
+    .sgds-grid>div>sgds-card {
+        height: 100%;
+    }
+
+    /* ── Badge improvements ── */
+    sgds-badge {
+        border-radius: var(--sgds-border-radius-sm);
+        padding: var(--sgds-spacer-2) var(--sgds-spacer-3);
+    }
+
+    /* ── Icon improvements ── */
+    sgds-icon {
+        vertical-align: middle;
+    }
+
+    /* ── Section spacing ── */
+    section {
+        scroll-margin-top: 5rem;
+    }
+
+    /* ── Timeline improvements ── */
+    .timeline-rail {
+        position: absolute;
+        left: 1.25rem;
+        top: 1.25rem;
+        bottom: 1.25rem;
+        width: 2px;
+        background: var(--sgds-border-color-emphasis);
+        opacity: 0.45;
+    }
+
+    .timeline-shell {
+        max-width: 60rem;
+    }
+
+    .timeline-list {
+        gap: var(--sgds-spacer-7);
+    }
+
+    .timeline-item {
+        gap: var(--sgds-spacer-6);
+    }
+
+    .timeline-dot {
+        width: 2.5rem;
+        height: 2.5rem;
+        border: 2px solid var(--sgds-border-color-emphasis);
+        background: var(--sgds-surface-raised);
+        color: var(--sgds-primary-color-default);
+        box-shadow: 0 0 0 0.25rem var(--sgds-bg-default);
+    }
+
+    .experience-bullet-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding-left: 0;
+        list-style: none;
+    }
+
+    .experience-bullet-item {
+        gap: 0.75rem;
+    }
+
+    .experience-badge-list,
+    .skill-badge-list {
+        gap: 0.75rem;
+    }
+    @media (min-width: 768px) {
+        .timeline-rail {
+            left: 1.5rem;
+        }
+
+        .timeline-dot {
+            width: 3rem;
+            height: 3rem;
+        }
+    }
+
+    @media (max-width: 512px) {
+        .hero-cta-group,
+        .hero-cta-link,
+        .hero-download-button,
+        .hero-download-button sgds-button {
+            width: 100%;
+        }
+
+        .hero-download-button sgds-button::part(button) {
+            width: 100% !important;
+        }
+    }
+
+    /* ── Hero text balance ── */
+    .hero-name {
+        text-wrap: balance;
     }
 }

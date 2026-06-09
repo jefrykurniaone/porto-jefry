@@ -15,12 +15,16 @@ export default function LanguageToggle() {
     };
 
     return (
-        <button
+        <sgds-button
             type="button"
+            variant="outline"
+            tone="neutral"
+            size="sm"
             onClick={toggleLocale}
             aria-label={t('switch')}
-            className='px-3 py-1.5 rounded-lg text-sm font-medium border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'>
+            suppressHydrationWarning
+        >
             {locale === 'en' ? 'EN' : 'ID'}
-        </button>
+        </sgds-button>
     );
 }

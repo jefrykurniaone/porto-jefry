@@ -1,36 +1,18 @@
 'use client';
 
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
+import { useSgdsTheme } from '@/hooks/useSgdsTheme';
 import { useTranslations } from 'next-intl';
-import { SunIcon, MoonIcon } from 'lucide-react';
 
 export default function ThemeToggleClient() {
-    const { resolvedTheme, setTheme } = useTheme();
-    const [isMounted, setIsMounted] = useState(false);
+    const { theme, toggleTheme } = useSgdsTheme();
     const t = useTranslations('theme');
 
-    useEffect(() => setIsMounted(true), []);
-
-    if (!isMounted) return <div className='w-9 h-9' aria-hidden="true" />;
-
     return (
-        <button
-            type="button"
-            onClick={() =>
-                setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')
-            }
-            aria-label={
-                resolvedTheme === 'dark'
-                    ? t('toggle_light')
-                    : t('toggle_dark')
-            }
-            className='p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors'>
-            {resolvedTheme === 'dark' ? (
-                <MoonIcon size={20} className='text-blue-400' />
-            ) : (
-                <SunIcon size={20} className='text-yellow-500' />
-            )}
-        </button>
+        <sgds-icon-button
+            name={theme === 'night' ? 'sun' : 'moon'}
+            aria-label={theme === 'night' ? t('toggle_light') : t('toggle_dark')}
+            onClick={toggleTheme}
+            style={{ minWidth: '44px', minHeight: '44px' }}
+        />
     );
 }

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
-import { ArrowDownIcon, DownloadIcon, MailIcon, AlertCircle } from 'lucide-react';
 
 interface HeroCtaButtonsProps {
     locale: string;
@@ -29,7 +28,7 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t 
     const handleDownload = async () => {
         if (isDownloading) return;
         setIsDownloading(true);
-        setErrorMessage(null); // Clear any previous error
+        setErrorMessage(null);
         try {
             const res = await fetch(`/api/generate-cv?${new URLSearchParams({ locale })}`);
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -41,11 +40,9 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t 
             link.click();
             URL.revokeObjectURL(url);
         } catch (err) {
-            // Extract HTTP status code from error message
             const statusMatch = err instanceof Error ? err.message.match(/HTTP (\d+)/) : null;
             const status = statusMatch ? statusMatch[1] : 'unknown';
             setErrorMessage(t('cv_error', { status }));
-            // Auto-dismiss after 5 seconds
             setTimeout(() => setErrorMessage(null), 5000);
             // eslint-disable-next-line no-console
             console.error('[CV Download] failed:', err);
@@ -56,47 +53,43 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t 
 
     return (
         <>
-            <div className='flex flex-wrap justify-center gap-4'>
+            <div className='hero-cta-group sgds:flex sgds:flex-wrap sgds:justify-center sgds:items-center'>
                 <a
                     href='#projects'
                     onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
-                    className='inline-flex items-center gap-2 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-xl transition-colors'>
-                    <ArrowDownIcon size={18} aria-hidden='true' />
+                    className='hero-cta-link hero-cta-link-primary sgds:inline-flex sgds:items-center sgds:justify-center sgds:gap-sm sgds:font-semibold sgds:text-white sgds:no-underline'>
+                    <sgds-icon name='arrow-down' aria-hidden='true' suppressHydrationWarning />
                     {ctaWork}
                 </a>
-                <button
-                    type='button'
-                    onClick={handleDownload}
-                    disabled={isDownloading}
-                    className='inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-700 dark:bg-white dark:hover:bg-gray-200 dark:text-gray-900 text-white font-medium rounded-xl transition-colors disabled:opacity-60 disabled:cursor-not-allowed'>
-                    {isDownloading ? (
-                        <>
-                            <span className='h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent dark:border-gray-900 dark:border-t-transparent' />
+                {isDownloading ? (
+                    <span className='hero-download-button'>
+                        <sgds-button type='button' loading suppressHydrationWarning>
                             {ctaDownloading}
-                        </>
-                    ) : (
-                        <>
-                            <DownloadIcon size={18} aria-hidden='true' />
+                        </sgds-button>
+                    </span>
+                ) : (
+                    <span className='hero-download-button'>
+                        <sgds-button type='button' onClick={handleDownload} suppressHydrationWarning>
+                            <sgds-icon slot='start' name='download' aria-hidden='true' suppressHydrationWarning />
                             {ctaCv}
-                        </>
-                    )}
-                </button>
+                        </sgds-button>
+                    </span>
+                )}
                 <a
                     href='#contact'
                     onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
-                    className='inline-flex items-center gap-2 px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-950 font-medium rounded-xl transition-colors'>
-                    <MailIcon size={18} aria-hidden='true' />
+                    className='hero-cta-link hero-cta-link-outline sgds:inline-flex sgds:items-center sgds:justify-center sgds:gap-sm sgds:font-semibold sgds:text-primary sgds:no-underline'>
+                    <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
                     {ctaContact}
                 </a>
             </div>
             {errorMessage && (
-                <div 
-                    role='alert' 
-                    aria-live='polite' 
-                    className='mt-4 flex items-start gap-2 px-4 py-2 rounded-lg bg-red-50 dark:bg-red-950 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'>
-                    <AlertCircle size={20} aria-hidden='true' className='flex-shrink-0 mt-0.5' />
-                    <p className='text-base'>{errorMessage}</p>
-                </div>
+                <sgds-alert variant='danger' show suppressHydrationWarning>
+                    <sgds-icon slot='icon' name='exclamation-circle-fill' aria-hidden='true' suppressHydrationWarning />
+                    <p role='alert' aria-live='polite' className='sgds:mb-0'>
+                        {errorMessage}
+                    </p>
+                </sgds-alert>
             )}
         </>
     );
@@ -107,28 +100,30 @@ export default function Hero() {
     const locale = useLocale();
 
     return (
-        <section id='hero' className='min-h-screen flex items-center justify-center px-4 pt-16'>
-            <div className='max-w-3xl mx-auto text-center'>
-                <div className='mb-8 flex justify-center'>
-                    <div className='w-32 h-32 rounded-full overflow-hidden ring-4 ring-blue-500/30 ring-offset-4 ring-offset-white dark:ring-offset-gray-950'>
+        <section id='hero' className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:bg-default'>
+            <div className='sgds-container hero-content sgds:text-center sgds:py-layout-lg'>
+                <div className='sgds:mb-xl sgds:flex sgds:justify-center'>
+                    <div className='sgds:w-32 sgds:h-32 sgds:rounded-full sgds:overflow-hidden sgds:ring-4 sgds:ring-primary sgds:ring-offset-4'>
                         <Image
                             src='/cv-photo.webp'
                             alt={t('photo_alt')}
                             width={128}
                             height={128}
-                            className='w-full h-full object-cover'
+                            className='sgds:w-full sgds:h-full sgds:object-cover'
                             priority
                         />
                     </div>
                 </div>
-                <p className='text-blue-600 dark:text-blue-400 font-medium mb-2'>{t('greeting')}</p>
-                <h1 className='text-4xl sm:text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-4'>
+                <p className='sgds:text-primary sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
+                    {t('greeting')}
+                </p>
+                <h1 className='sgds:text-display-md sgds:font-semibold sgds:leading-2-xl sgds:tracking-tighter sgds:text-display-default sgds:mb-component-sm hero-name'>
                     {t('name')}
                 </h1>
-                <h2 className='text-xl sm:text-2xl font-semibold text-gray-500 dark:text-gray-400 mb-6'>
+                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-muted sgds:mb-component-md'>
                     {t('title')}
                 </h2>
-                <p className='text-gray-600 dark:text-gray-300 text-lg max-w-2xl mx-auto mb-10 leading-relaxed'>
+                <p className='hero-subtitle sgds:text-body-md sgds:text-muted sgds:mx-auto sgds:mb-xl sgds:leading-xs'>
                     {t('subtitle')}
                 </p>
                 <HeroCtaButtons

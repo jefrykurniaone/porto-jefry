@@ -5,10 +5,6 @@ import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
 import Navbar from './Navbar';
 
-vi.mock('next-themes', () => ({
-    useTheme: () => ({ resolvedTheme: 'light', setTheme: vi.fn() }),
-}));
-
 vi.mock('@/i18n/routing', () => ({
     useRouter: () => ({ replace: vi.fn() }),
     usePathname: () => '/',
@@ -27,53 +23,70 @@ describe('Navbar', () => {
         renderNavbar();
     });
 
-    it('renders a nav element', () => {
+    it('renders sgds-mainnav custom element', () => {
         const { container } = renderNavbar();
-        expect(container.querySelector('nav')).toBeInTheDocument();
+        expect(container.querySelector('sgds-mainnav')).toBeInTheDocument();
     });
 
-    it('renders navigation links for desktop', () => {
-        renderNavbar();
-        const links = screen.getAllByRole('link');
-        expect(links.length).toBeGreaterThan(0);
+    it('renders desktop nav items as sgds-mainnav-item', () => {
+        const { container } = renderNavbar();
+        const items = container.querySelectorAll('sgds-mainnav-item');
+        expect(items.length).toBeGreaterThan(0);
     });
 
-    it('mobile menu toggle button exists', async () => {
+    it('brand slot displays JK', () => {
+        const { container } = renderNavbar();
+        const brand = container.querySelector('[slot="brand"]');
+        expect(brand).toBeInTheDocument();
+        expect(brand?.textContent).toContain('JK');
+    });
+
+    it('renders desktop navigation links with translated text', () => {
         renderNavbar();
-        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
-        expect(menuBtn).toBeInTheDocument();
+        expect(screen.getByText('About')).toBeInTheDocument();
+        expect(screen.getByText('Projects')).toBeInTheDocument();
+        expect(screen.getByText('Contact')).toBeInTheDocument();
+    });
+
+    it('mobile menu toggle button exists with aria-label', () => {
+        renderNavbar();
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        expect(toggleBtn).toBeInTheDocument();
+        expect(toggleBtn).toHaveAttribute('aria-expanded', 'false');
+        expect(toggleBtn).toHaveAttribute('aria-controls', 'mobile-nav-menu');
     });
 
     it('mobile menu opens on toggle click', async () => {
         renderNavbar();
         const user = userEvent.setup();
-        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
-        await user.click(menuBtn);
-        const mobileLinks = screen.getAllByRole('link');
-        expect(mobileLinks.length).toBeGreaterThan(0);
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
+        expect(toggleBtn).toHaveAttribute('aria-expanded', 'true');
+        const mobileNav = document.getElementById('mobile-nav-menu');
+        expect(mobileNav).toBeInTheDocument();
     });
 
     it('mobile menu closes on second toggle click', async () => {
-        const { container } = renderNavbar();
+        renderNavbar();
         const user = userEvent.setup();
-        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
-        await user.click(menuBtn);
-        expect(container.querySelector('#mobile-nav-menu')).toBeInTheDocument();
-        await user.click(menuBtn);
-        expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
+        expect(document.getElementById('mobile-nav-menu')).toBeInTheDocument();
+        await user.click(toggleBtn);
+        expect(document.getElementById('mobile-nav-menu')).not.toBeInTheDocument();
     });
 
     it('pressing Escape closes the mobile menu', async () => {
-        const { container } = renderNavbar();
+        renderNavbar();
         const user = userEvent.setup();
-        const menuBtn = await screen.findByRole('button', { name: /menu|open|close|toggle/i });
-        await user.click(menuBtn);
-        expect(container.querySelector('#mobile-nav-menu')).toBeInTheDocument();
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
+        expect(document.getElementById('mobile-nav-menu')).toBeInTheDocument();
         await user.keyboard('{Escape}');
-        expect(container.querySelector('#mobile-nav-menu')).not.toBeInTheDocument();
+        expect(document.getElementById('mobile-nav-menu')).not.toBeInTheDocument();
     });
 
-    it('applies scroll class when window scrolls past 20px and uses passive listener without warnings', async () => {
+    it('applies scroll class when window scrolls past 20px and uses passive listener', async () => {
         const warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
         renderNavbar();
         const header = document.querySelector('header') as HTMLElement;
@@ -86,7 +99,6 @@ describe('Navbar', () => {
             globalThis.dispatchEvent(new Event('scroll'));
         });
 
-        // wait for animation frame where rAF-based update runs
         await act(async () => {
             await new Promise((resolve) => requestAnimationFrame(resolve));
         });
@@ -98,14 +110,13 @@ describe('Navbar', () => {
 
     it('clicking a nav link scrolls to the section and updates hash', async () => {
         const { container } = renderNavbar();
-        const projectsLink = container.querySelector('a[href="#projects"]') as HTMLAnchorElement | null;
+        const projectsLink = container.querySelector('sgds-mainnav-item a[href="#projects"]') as HTMLAnchorElement | null;
         expect(projectsLink).toBeTruthy();
 
         const section = document.createElement('div');
         section.id = 'projects';
-        const sectionEl = section as HTMLElement;
         const scrollSpy = vi.fn();
-        Object.defineProperty(sectionEl, 'scrollIntoView', { value: scrollSpy, configurable: true });
+        Object.defineProperty(section, 'scrollIntoView', { value: scrollSpy, configurable: true });
         document.body.appendChild(section);
 
         const pushSpy = vi.spyOn(history, 'pushState');
@@ -119,5 +130,19 @@ describe('Navbar', () => {
         section.remove();
         scrollSpy.mockRestore();
         pushSpy.mockRestore();
+    });
+
+    it('has no next-themes mocks or dark: utilities in source', () => {
+        const { container } = renderNavbar();
+        // No useTheme mock needed - component renders without it
+        const header = container.querySelector('header');
+        expect(header).toBeInTheDocument();
+        // Should not contain "dark:" in any className
+        const allElements = Array.from(container.querySelectorAll('*'));
+        for (const el of allElements) {
+            if (el.className && typeof el.className === 'string') {
+                expect(el.className).not.toContain('dark:');
+            }
+        }
     });
 });

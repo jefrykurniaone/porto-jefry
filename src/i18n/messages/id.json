@@ -143,7 +143,7 @@
         "github_label": "GitHub"
     },
     "footer": {
-        "built_with": "Dibangun dengan Next.js & Tailwind CSS",
+        "built_with": "Dibangun dengan Next.js dan SGDS",
         "rights": "Semua hak dilindungi."
     },
     "theme": {

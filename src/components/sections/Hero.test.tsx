@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
+import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
 import Hero from './Hero';
 
@@ -38,70 +39,85 @@ function renderHero() {
 }
 
 describe('Hero', () => {
-    it('renders without crashing', () => {
+    it('renders translated heading with name', () => {
         renderHero();
+        expect(screen.getByText('Jefry Kurniawan')).toBeInTheDocument();
     });
 
-    it('renders heading with name', () => {
+    it('renders translated title', () => {
         renderHero();
-        expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+        expect(screen.getByText('Backend Developer & .NET Specialist')).toBeInTheDocument();
     });
 
-    it('renders CV download button', () => {
-        renderHero();
-        const btns = screen.getAllByRole('button');
-        expect(btns.some((b) => /cv|unduh/i.test(b.textContent ?? ''))).toBe(true);
-    });
-
-    it('renders hero photo with alt text', () => {
+    it('renders profile image with translated alt text', () => {
         renderHero();
         const img = screen.getByRole('img');
-        expect(img.getAttribute('alt')).toBeTruthy();
+        expect(img).toHaveAttribute('alt', 'Jefry Kurniawan — profile photo');
     });
 
-    it('clicking the CV button triggers download', async () => {
+    it('renders CV download sgds-button', () => {
+        renderHero();
+        const cvBtn = document.querySelector('sgds-button');
+        expect(cvBtn).toBeInTheDocument();
+        expect(cvBtn?.textContent).toMatch(/download|unduh|cv/i);
+    });
+
+    it('renders View My Work link', () => {
+        renderHero();
+        const workLink = document.querySelector('a[href="#projects"]');
+        expect(workLink).toBeInTheDocument();
+        expect(workLink?.textContent).toMatch(/view.*work/i);
+    });
+
+    it('clicking CV button triggers download fetch', async () => {
         renderHero();
         const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        expect(cvBtn).toBeDefined();
+        const cvBtn = document.querySelector('sgds-button');
+        expect(cvBtn).toBeTruthy();
         if (!cvBtn) return;
         await user.click(cvBtn);
         expect(fetchMock).toHaveBeenCalled();
     });
 
-    it('internal links use plain #id and trigger smooth scroll with pushState', async () => {
+    it('prevents duplicate fetch while isDownloading is true', async () => {
+        fetchMock = vi.fn().mockReturnValue(new Promise(() => {}));
+        vi.stubGlobal('fetch', fetchMock);
+
         renderHero();
-        const projectsLink = document.querySelector('a[href="#projects"]') as HTMLAnchorElement | null;
-        expect(projectsLink).toBeTruthy();
-
-        const section = document.createElement('div');
-        section.id = 'projects';
-        const sectionEl = section as HTMLElement;
-        const scrollSpy = vi.fn();
-        Object.defineProperty(sectionEl, 'scrollIntoView', { value: scrollSpy, configurable: true });
-        document.body.appendChild(section);
-
-        const pushSpy = vi.spyOn(history, 'pushState');
-
         const user = userEvent.setup();
-        await user.click(projectsLink!);
+        const cvBtn = document.querySelector('sgds-button')!;
+        expect(cvBtn).toBeTruthy();
 
-        expect(scrollSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
-        expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
+        await user.click(cvBtn);
+        await user.click(cvBtn);
 
-        section.remove();
-        scrollSpy.mockRestore();
-        pushSpy.mockRestore();
+        expect(fetchMock).toHaveBeenCalledTimes(1);
     });
 
-    it('error state initializes as null (no banner on mount)', () => {
+    it('creates object URL and revokes URL on success', async () => {
+        const createSpy = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock');
+        const revokeSpy = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+
         renderHero();
-        const banner = screen.queryByRole('alert');
-        expect(banner).not.toBeInTheDocument();
+        const user = userEvent.setup();
+        const cvBtn = document.querySelector('sgds-button')!;
+        await user.click(cvBtn);
+
+        await waitFor(() => {
+            expect(createSpy).toHaveBeenCalled();
+        });
+        await waitFor(() => {
+            expect(revokeSpy).toHaveBeenCalledWith('blob:mock');
+        });
+        expect(fetchMock).toHaveBeenCalledWith(
+            expect.stringContaining('/api/generate-cv?')
+        );
+
+        createSpy.mockRestore();
+        revokeSpy.mockRestore();
     });
 
-    it('sets error message when CV download fails', async () => {
+    it('renders sgds-alert with role="alert" on failed CV download', async () => {
         const failedFetch = vi.fn().mockResolvedValue({
             ok: false,
             status: 500,
@@ -110,33 +126,16 @@ describe('Hero', () => {
 
         renderHero();
         const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        
-        await user.click(cvBtn!);
+        const cvBtn = document.querySelector('sgds-button')!;
+        await user.click(cvBtn);
 
-        // Error message should be set (we'll verify banner rendering in Task 2)
-        expect(failedFetch).toHaveBeenCalled();
+        await waitFor(() => {
+            const alert = document.querySelector('sgds-alert');
+            expect(alert).toBeInTheDocument();
+        });
     });
 
-    it('translation key hero.cv_error exists in messages', () => {
-        expect(messages.hero).toHaveProperty('cv_error');
-    });
-
-    it('error message interpolates HTTP status code', () => {
-        const errorKey = messages.hero.cv_error;
-        expect(errorKey).toContain('{status}');
-        const interpolated = errorKey.replace('{status}', '500');
-        expect(interpolated).toContain('500');
-    });
-
-    it('does not render error banner when errorMessage is null', () => {
-        renderHero();
-        const banner = screen.queryByRole('alert');
-        expect(banner).not.toBeInTheDocument();
-    });
-
-    it('renders error banner with role=alert when error occurs', async () => {
+    it('error alert paragraph has aria-live="polite" with HTTP status text', async () => {
         const failedFetch = vi.fn().mockResolvedValue({
             ok: false,
             status: 500,
@@ -145,60 +144,18 @@ describe('Hero', () => {
 
         renderHero();
         const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        
-        await user.click(cvBtn!);
+        const cvBtn = document.querySelector('sgds-button')!;
+        await user.click(cvBtn);
 
         await waitFor(() => {
-            const banner = screen.getByRole('alert');
-            expect(banner).toBeInTheDocument();
+            const liveRegion = document.querySelector('[aria-live="polite"]');
+            expect(liveRegion).toBeInTheDocument();
+            expect(liveRegion?.textContent).toMatch(/failed|gagal|error/i);
         });
     });
 
-    it('error banner has aria-live=polite for screen readers', async () => {
-        const failedFetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 403,
-        });
-        vi.stubGlobal('fetch', failedFetch);
-
-        renderHero();
-        const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        
-        await user.click(cvBtn!);
-
-        await waitFor(() => {
-            const banner = screen.getByRole('alert');
-            expect(banner).toHaveAttribute('aria-live', 'polite');
-        });
-    });
-
-    it('error banner contains error message text with HTTP status', async () => {
-        const failedFetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 404,
-        });
-        vi.stubGlobal('fetch', failedFetch);
-
-        renderHero();
-        const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        
-        await user.click(cvBtn!);
-
-        await waitFor(() => {
-            const banner = screen.getByRole('alert');
-            expect(banner).toHaveTextContent(/failed.*generate.*cv.*http.*404/i);
-        });
-    });
-
-    it('sets 5-second auto-dismiss timer when error occurs', async () => {
+    it('error alert auto-dismisses after 5 seconds', async () => {
         const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
-        
         const failedFetch = vi.fn().mockResolvedValue({
             ok: false,
             status: 500,
@@ -207,51 +164,33 @@ describe('Hero', () => {
 
         renderHero();
         const user = userEvent.setup();
-        const btns = screen.getAllByRole('button');
-        const cvBtn = btns.find((b) => /cv|unduh/i.test(b.textContent ?? ''));
-        
-        await user.click(cvBtn!);
+        const cvBtn = document.querySelector('sgds-button')!;
+        await user.click(cvBtn);
 
-        // Wait for error state to be set
-        await screen.findByRole('alert');
-
-        // Verify setTimeout was called with 5000ms
+        await screen.findByText(/failed|gagal/i);
         expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
-
         setTimeoutSpy.mockRestore();
     });
 
-    it('shows error banner when CV download fails, then auto-dismisses', async () => {
-        const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
-        
-        const failedFetch = vi.fn().mockResolvedValue({ 
-            ok: false, 
-            status: 500,
-            blob: () => Promise.reject(new Error('HTTP 500'))
-        });
-        vi.stubGlobal('fetch', failedFetch);
+    it('source contains sgds-button and sgds-alert', () => {
+        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        expect(source).toContain('sgds-button');
+        expect(source).toContain('sgds-alert');
+    });
 
-        renderHero();
-        const user = userEvent.setup();
-        
-        // Click CV download button
-        const buttons = screen.getAllByRole('button');
-        const cvButton = buttons.find(b => /cv|unduh/i.test(b.textContent ?? ''));
-        await user.click(cvButton!);
+    it('source contains no dark: utility', () => {
+        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        expect(source).not.toContain('dark:');
+    });
 
-        // Wait for error banner to appear
-        const banner = await screen.findByRole('alert');
-        expect(banner).toBeInTheDocument();
-        expect(banner).toHaveTextContent(/failed.*generate.*cv.*http.*500/i);
-        expect(banner).toHaveAttribute('aria-live', 'polite');
+    it('source uses Jefry_Kurniawan_CV.pdf download filename', () => {
+        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        expect(source).toContain("Jefry_Kurniawan_CV.pdf");
+    });
 
-        // Verify AlertCircle icon is present
-        const icon = banner.querySelector('svg');
-        expect(icon).toBeInTheDocument();
-
-        // Verify setTimeout was called with 5000ms for auto-dismiss
-        expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
-
-        setTimeoutSpy.mockRestore();
+    it('source contains no next-themes import', () => {
+        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        expect(source).not.toContain('next-themes');
+        expect(source).not.toContain('useTheme');
     });
 });

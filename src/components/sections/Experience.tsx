@@ -3,7 +3,6 @@
 import { useTranslations, useMessages, useLocale } from 'next-intl';
 import { experiences, type ExperienceItem } from '@/data/experience';
 import { translatePeriod } from '@/utils/translate-period';
-import { BriefcaseIcon } from 'lucide-react';
 
 interface ExperienceCardProps {
     exp: ExperienceItem;
@@ -23,54 +22,64 @@ function ExperienceCard({
         locale,
     );
     return (
-        <div className='relative flex gap-6 md:gap-10'>
-            <div className='shrink-0 z-10 flex items-start'>
-                <div className='w-8 h-8 md:w-16 md:h-16 rounded-full bg-blue-100 dark:bg-blue-950 flex items-center justify-center border-2 border-white dark:border-gray-950'>
-                    <BriefcaseIcon
-                        size={14}
-                        className='text-blue-600 dark:text-blue-400 md:hidden'
+        <div className='timeline-item sgds:relative sgds:flex'>
+            <div className='sgds:shrink-0 sgds:z-10 sgds:flex sgds:items-start'>
+                <div className='timeline-dot sgds:rounded-full sgds:flex sgds:items-center sgds:justify-center'>
+                    <sgds-icon
+                        name='briefcase'
+                        aria-hidden='true'
+                        suppressHydrationWarning
+                        className='sgds:md:sr-only'
                     />
-                    <BriefcaseIcon
-                        size={20}
-                        className='text-blue-600 dark:text-blue-400 hidden md:block'
+                    <sgds-icon
+                        name='briefcase'
+                        aria-hidden='true'
+                        suppressHydrationWarning
+                        className='sgds:sr-only sgds:md:not-sr-only'
                     />
                 </div>
             </div>
-            <div className='flex-1 pb-2'>
-                <div className='flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-1'>
-                    <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>
-                        {exp.role}
-                    </h3>
-                    <span className='text-sm text-blue-600 dark:text-blue-400 font-medium shrink-0'>
-                        {period}
-                    </span>
-                </div>
-                <p className='text-gray-500 dark:text-gray-400 font-medium mb-3'>
-                    {exp.company}
-                </p>
-                <ul className='space-y-1.5 mb-4'>
-                    {bullets.map((b) => (
-                        <li
-                            key={b}
-                            className='text-gray-600 dark:text-gray-300 text-sm flex gap-2'>
-                            <span className='text-blue-500 mt-1.5 shrink-0'>
-                                •
-                            </span>
-                            <span>{b}</span>
-                        </li>
-                    ))}
-                </ul>
-                {exp.tech && (
-                    <div className='flex flex-wrap gap-2'>
-                        {exp.tech.map((tech) => (
-                            <span
-                                key={tech}
-                                className='text-xs px-2.5 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 font-medium'>
-                                {tech}
-                            </span>
-                        ))}
+            <div className='experience-card-wrapper sgds:flex-1'>
+                <sgds-card className='compact-card' suppressHydrationWarning>
+                    <div slot='title' className='sgds:flex sgds:flex-col sgds:sm:flex-row sgds:sm:items-center sgds:sm:justify-between sgds:gap-component-xs'>
+                        <h3 className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
+                            {exp.role}
+                        </h3>
+                        <span className='sgds:text-label-sm sgds:text-primary sgds:font-semibold sgds:shrink-0'>
+                            {period}
+                        </span>
                     </div>
-                )}
+                    <div slot='description'>
+                        <p className='readable-muted sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
+                            {exp.company}
+                        </p>
+                        {bullets.length > 0 && (
+                            <ul className='experience-bullet-list sgds:mb-lg'>
+                                {bullets.map((b) => (
+                                    <li
+                                        key={b}
+                                        className='experience-bullet-item readable-muted sgds:text-body-md sgds:flex'>
+                                        <span className='sgds:text-primary sgds:mt-1.5 sgds:shrink-0'>
+                                            •
+                                        </span>
+                                        <span>{b}</span>
+                                    </li>
+                                ))}
+                            </ul>
+                        )}
+                        {exp.tech && (
+                            <div className='experience-badge-list sgds:flex sgds:flex-wrap'>
+                                {exp.tech.map((tech) => (
+                                    <span key={tech}>
+                                        <sgds-badge outlined suppressHydrationWarning>
+                                            {tech}
+                                        </sgds-badge>
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </sgds-card>
             </div>
         </div>
     );
@@ -90,14 +99,15 @@ export default function Experience() {
     return (
         <section
             id='experience'
-            className='py-20 px-4 bg-gray-50 dark:bg-gray-900/50'>
-            <div className='max-w-4xl mx-auto'>
-                <h2 className='text-3xl font-bold text-gray-900 dark:text-white mb-12 text-center'>
+            className='sgds:py-layout-lg sgds:bg-default'>
+            <div className='sgds-container'>
+                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
                     {t('title')}
                 </h2>
-                <div className='relative'>
-                    <div className='absolute left-4 md:left-8 top-0 bottom-0 w-px bg-gray-200 dark:bg-gray-700' />
-                    <div className='flex flex-col gap-10'>
+                <div className='timeline-shell sgds:relative sgds:mx-auto'>
+                    {/* Timeline rail — custom per D-07 */}
+                    <div className='timeline-rail' />
+                    <div className='timeline-list sgds:flex sgds:flex-col'>
                         {experiences.map((exp) => (
                             <ExperienceCard
                                 key={exp.id}
