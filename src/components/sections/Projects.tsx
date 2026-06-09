@@ -16,7 +16,7 @@ export default function Projects() {
                 </h2>
                 <div className='sgds-grid'>
                     {projects.map((project) => (
-                        <div key={project.id} className='sgds-col-12 sm:sgds-col-6 lg:sgds-col-4'>
+                        <div key={project.id} className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
                             <sgds-card suppressHydrationWarning>
                                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default sgds:flex sgds:items-center sgds:justify-between sgds:gap-component-xs'>
                                     <span>{project.name}</span>
@@ -31,7 +31,7 @@ export default function Projects() {
                                         </a>
                                     )}
                                 </span>
-                                <span slot='description'>
+                                <div slot='description'>
                                     <p className='sgds:text-label-sm sgds:text-muted sgds:font-semibold sgds:mb-component-xs'>
                                         {project.company}
                                     </p>
@@ -59,7 +59,7 @@ export default function Projects() {
                                             </span>
                                         )}
                                     </div>
-                                </span>
+                                </div>
                             </sgds-card>
                         </div>
                     ))}

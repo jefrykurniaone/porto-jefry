@@ -12,22 +12,20 @@ export default function Skills() {
                 </h2>
                 <div className='sgds-grid'>
                     {skillCategories.map((cat) => (
-                        <div key={cat.category} className='sgds-col-12 sm:sgds-col-6 lg:sgds-col-4'>
-                            <sgds-card suppressHydrationWarning>
+                        <div key={cat.category} className='skill-card-wrapper sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
+                            <sgds-card className='compact-card skill-card' suppressHydrationWarning>
                                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
                                     {t(`categories.${cat.category}`)}
                                 </span>
-                                <span slot='description'>
-                                    <div className='sgds:flex sgds:flex-wrap sgds:gap-component-xs'>
-                                        {cat.skills.map((skill) => (
-                                            <span key={skill}>
-                                                <sgds-badge outlined suppressHydrationWarning>
-                                                    {skill}
-                                                </sgds-badge>
-                                            </span>
-                                        ))}
-                                    </div>
-                                </span>
+                                <div slot='description' className='skill-badge-list sgds:flex sgds:flex-wrap'>
+                                    {cat.skills.map((skill) => (
+                                        <span key={skill}>
+                                            <sgds-badge outlined suppressHydrationWarning>
+                                                {skill}
+                                            </sgds-badge>
+                                        </span>
+                                    ))}
+                                </div>
                             </sgds-card>
                         </div>
                     ))}

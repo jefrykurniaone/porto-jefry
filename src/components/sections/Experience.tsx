@@ -22,26 +22,26 @@ function ExperienceCard({
         locale,
     );
     return (
-        <div className='sgds:relative sgds:flex sgds:gap-layout-md'>
+        <div className='timeline-item sgds:relative sgds:flex'>
             <div className='sgds:shrink-0 sgds:z-10 sgds:flex sgds:items-start'>
-                <div className='sgds:w-8 sgds:h-8 md:sgds:w-16 md:sgds:h-16 sgds:rounded-full sgds:bg-primary-subtle sgds:flex sgds:items-center sgds:justify-center sgds:border-2 sgds:border-default'>
+                <div className='timeline-dot sgds:rounded-full sgds:flex sgds:items-center sgds:justify-center'>
                     <sgds-icon
                         name='briefcase'
                         aria-hidden='true'
                         suppressHydrationWarning
-                        className='md:sgds:sr-only'
+                        className='sgds:md:sr-only'
                     />
                     <sgds-icon
                         name='briefcase'
                         aria-hidden='true'
                         suppressHydrationWarning
-                        className='sgds:sr-only md:sgds:not-sr-only'
+                        className='sgds:sr-only sgds:md:not-sr-only'
                     />
                 </div>
             </div>
-            <div className='sgds:flex-1 sgds:pb-component-sm'>
-                <sgds-card suppressHydrationWarning>
-                    <div slot='title' className='sgds:flex sgds:flex-col sm:sgds:flex-row sm:sgds:items-center sm:sgds:justify-between sgds:gap-component-xs'>
+            <div className='experience-card-wrapper sgds:flex-1'>
+                <sgds-card className='compact-card' suppressHydrationWarning>
+                    <div slot='title' className='sgds:flex sgds:flex-col sgds:sm:flex-row sgds:sm:items-center sgds:sm:justify-between sgds:gap-component-xs'>
                         <h3 className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
                             {exp.role}
                         </h3>
@@ -49,16 +49,16 @@ function ExperienceCard({
                             {period}
                         </span>
                     </div>
-                    <span slot='description'>
-                        <p className='sgds:text-muted sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
+                    <div slot='description'>
+                        <p className='readable-muted sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
                             {exp.company}
                         </p>
                         {bullets.length > 0 && (
-                            <ul className='sgds:space-y-component-xs sgds:mb-component-md'>
+                            <ul className='experience-bullet-list sgds:mb-lg'>
                                 {bullets.map((b) => (
                                     <li
                                         key={b}
-                                        className='sgds:text-body-md sgds:text-muted sgds:flex sgds:gap-component-xs'>
+                                        className='experience-bullet-item readable-muted sgds:text-body-md sgds:flex'>
                                         <span className='sgds:text-primary sgds:mt-1.5 sgds:shrink-0'>
                                             •
                                         </span>
@@ -68,7 +68,7 @@ function ExperienceCard({
                             </ul>
                         )}
                         {exp.tech && (
-                            <div className='sgds:flex sgds:flex-wrap sgds:gap-component-xs'>
+                            <div className='experience-badge-list sgds:flex sgds:flex-wrap'>
                                 {exp.tech.map((tech) => (
                                     <span key={tech}>
                                         <sgds-badge outlined suppressHydrationWarning>
@@ -78,7 +78,7 @@ function ExperienceCard({
                                 ))}
                             </div>
                         )}
-                    </span>
+                    </div>
                 </sgds-card>
             </div>
         </div>
@@ -104,10 +104,10 @@ export default function Experience() {
                 <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
                     {t('title')}
                 </h2>
-                <div className='sgds:relative sgds:max-w-3xl sgds:mx-auto'>
+                <div className='timeline-shell sgds:relative sgds:mx-auto'>
                     {/* Timeline rail — custom per D-07 */}
-                    <div className='sgds:absolute sgds:left-4 md:sgds:left-8 sgds:top-0 sgds:bottom-0 sgds:w-px sgds:bg-border-default' />
-                    <div className='sgds:flex sgds:flex-col sgds:gap-layout-md'>
+                    <div className='timeline-rail' />
+                    <div className='timeline-list sgds:flex sgds:flex-col'>
                         {experiences.map((exp) => (
                             <ExperienceCard
                                 key={exp.id}

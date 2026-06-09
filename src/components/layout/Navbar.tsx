@@ -25,7 +25,7 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
         <>
             {NAV_KEYS.map((key) => (
                 <React.Fragment key={key}>
-                    <sgds-mainnav-item className='sgds:hidden md:sgds:block' suppressHydrationWarning>
+                    <sgds-mainnav-item className='sgds:hidden sgds:md:block' suppressHydrationWarning>
                         <a
                             href={`#${key}`}
                             onClick={(e) => { e.preventDefault(); onNavClick(key); }}
@@ -162,7 +162,7 @@ export default function Navbar() {
                         ref={toggleRef}
                         type="button"
                         onClick={() => setIsOpen(!isOpen)}
-                        className='md:sgds:hidden sgds:flex sgds:items-center sgds:justify-center sgds:rounded-sm sgds:border-0 sgds:bg-transparent sgds:cursor-pointer'
+                        className='sgds:md:hidden sgds:flex sgds:items-center sgds:justify-center sgds:rounded-sm sgds:border-0 sgds:bg-transparent sgds:cursor-pointer'
                         style={{ minWidth: '44px', minHeight: '44px' }}
                         aria-label={t('toggle_menu')}
                         aria-expanded={isOpen}

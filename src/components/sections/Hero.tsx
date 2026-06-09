@@ -53,28 +53,32 @@ function HeroCtaButtons({ locale, ctaWork, ctaCv, ctaContact, ctaDownloading, t 
 
     return (
         <>
-            <div className='sgds:flex sgds:flex-wrap sgds:justify-center sgds:gap-layout-sm'>
+            <div className='hero-cta-group sgds:flex sgds:flex-wrap sgds:justify-center sgds:items-center'>
                 <a
                     href='#projects'
                     onClick={(e) => { e.preventDefault(); scrollToWithHash('projects'); }}
-                    className='sgds:inline-flex sgds:items-center sgds:gap-component-sm sgds:rounded-sm sgds:bg-primary sgds:px-component-lg sgds:py-component-md sgds:text-body-md sgds:font-semibold sgds:text-white sgds:no-underline hover:sgds:bg-primary-hover'>
+                    className='hero-cta-link hero-cta-link-primary sgds:inline-flex sgds:items-center sgds:justify-center sgds:gap-sm sgds:font-semibold sgds:text-white sgds:no-underline'>
                     <sgds-icon name='arrow-down' aria-hidden='true' suppressHydrationWarning />
                     {ctaWork}
                 </a>
                 {isDownloading ? (
-                    <sgds-button type='button' loading suppressHydrationWarning>
-                        {ctaDownloading}
-                    </sgds-button>
+                    <span className='hero-download-button'>
+                        <sgds-button type='button' loading suppressHydrationWarning>
+                            {ctaDownloading}
+                        </sgds-button>
+                    </span>
                 ) : (
-                    <sgds-button type='button' onClick={handleDownload} suppressHydrationWarning>
-                        <sgds-icon slot='start' name='download' aria-hidden='true' suppressHydrationWarning />
-                        {ctaCv}
-                    </sgds-button>
+                    <span className='hero-download-button'>
+                        <sgds-button type='button' onClick={handleDownload} suppressHydrationWarning>
+                            <sgds-icon slot='start' name='download' aria-hidden='true' suppressHydrationWarning />
+                            {ctaCv}
+                        </sgds-button>
+                    </span>
                 )}
                 <a
                     href='#contact'
                     onClick={(e) => { e.preventDefault(); scrollToWithHash('contact'); }}
-                    className='sgds:inline-flex sgds:items-center sgds:gap-component-sm sgds:rounded-sm sgds:border sgds:border-primary sgds:px-component-lg sgds:py-component-md sgds:text-body-md sgds:font-semibold sgds:text-primary sgds:no-underline hover:sgds:bg-surface-hover'>
+                    className='hero-cta-link hero-cta-link-outline sgds:inline-flex sgds:items-center sgds:justify-center sgds:gap-sm sgds:font-semibold sgds:text-primary sgds:no-underline'>
                     <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
                     {ctaContact}
                 </a>
@@ -97,8 +101,8 @@ export default function Hero() {
 
     return (
         <section id='hero' className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:bg-default'>
-            <div className='sgds-container sgds:text-center sgds:py-layout-xl'>
-                <div className='sgds:mb-layout-md sgds:flex sgds:justify-center'>
+            <div className='sgds-container hero-content sgds:text-center sgds:py-layout-lg'>
+                <div className='sgds:mb-xl sgds:flex sgds:justify-center'>
                     <div className='sgds:w-32 sgds:h-32 sgds:rounded-full sgds:overflow-hidden sgds:ring-4 sgds:ring-primary sgds:ring-offset-4'>
                         <Image
                             src='/cv-photo.webp'
@@ -113,13 +117,13 @@ export default function Hero() {
                 <p className='sgds:text-primary sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
                     {t('greeting')}
                 </p>
-                <h1 className='sgds:text-display-md sgds:font-semibold sgds:leading-2-xl sgds:tracking-tighter sgds:text-display-default sgds:mb-component-sm'>
+                <h1 className='sgds:text-display-md sgds:font-semibold sgds:leading-2-xl sgds:tracking-tighter sgds:text-display-default sgds:mb-component-sm hero-name'>
                     {t('name')}
                 </h1>
                 <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-muted sgds:mb-component-md'>
                     {t('title')}
                 </h2>
-                <p className='sgds:text-body-md sgds:text-muted sgds:max-w-2xl sgds:mx-auto sgds:mb-layout-md sgds:leading-xs'>
+                <p className='hero-subtitle sgds:text-body-md sgds:text-muted sgds:mx-auto sgds:mb-xl sgds:leading-xs'>
                     {t('subtitle')}
                 </p>
                 <HeroCtaButtons

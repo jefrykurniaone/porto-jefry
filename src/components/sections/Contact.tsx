@@ -34,16 +34,16 @@ function ContactCard({
             className='sgds:block sgds:no-underline group'>
             <sgds-card suppressHydrationWarning>
                 <div slot='title' className='sgds:flex sgds:flex-col sgds:items-center sgds:gap-component-xs'>
-                    <span className='sgds:text-primary group-hover:sgds:scale-110 sgds:transition-transform'>
+                    <div className='sgds:text-primary group-hover:sgds:scale-110 sgds:transition-transform'>
                         {icon}
-                    </span>
+                    </div>
                     <span className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
                         {label}
                     </span>
                 </div>
-                <span slot='description' className='sgds:text-body-md sgds:text-muted sgds:text-center sgds:break-all'>
+                <div slot='description' className='sgds:text-body-md sgds:text-muted sgds:text-center sgds:break-all'>
                     {value}
-                </span>
+                </div>
             </sgds-card>
         </a>
     );
@@ -94,7 +94,7 @@ export default function Contact() {
                 </p>
                 <div className='sgds-grid'>
                     {links.map((link) => (
-                        <div key={link.href} className='sgds-col-12 sm:sgds-col-6 lg:sgds-col-3'>
+                        <div key={link.href} className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-3'>
                             <ContactCard {...link} />
                         </div>
                     ))}

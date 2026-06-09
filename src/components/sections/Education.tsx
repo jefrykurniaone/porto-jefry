@@ -10,12 +10,12 @@ interface EducationCardProps {
 
 function EducationCard({ edu, gpaLabel, locale }: Readonly<EducationCardProps>) {
     return (
-        <div className='sgds-col-12 sm:sgds-col-6'>
+        <div className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
             <sgds-card suppressHydrationWarning>
                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
                     {edu.institution}
                 </span>
-                <span slot='description'>
+                <div slot='description'>
                     <p className='sgds:text-label-sm sgds:text-primary sgds:font-semibold sgds:mb-component-xs'>
                         {translatePeriod(edu.period, locale)}
                     </p>
@@ -27,7 +27,7 @@ function EducationCard({ edu, gpaLabel, locale }: Readonly<EducationCardProps>) 
                             {gpaLabel}: {edu.gpa}
                         </p>
                     )}
-                </span>
+                </div>
             </sgds-card>
         </div>
     );
