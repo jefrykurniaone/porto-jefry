@@ -78,10 +78,14 @@ Plans:
 **Depends on**: Phase 2
 **Requirements**: SEC-01, SEC-02, SEC-03
 **Success Criteria** (what must be TRUE):
-  1. `/api/generate-cv` reads client IP exclusively from `req.ip` (Vercel-injected) — spoofed `x-real-ip` / `x-forwarded-for` headers have no effect on rate-limit identity
-  2. CSP `style-src` directive no longer lists `https://fonts.googleapis.com` — Google Fonts is absent from the policy and the site renders correctly with self-hosted fonts
-  3. Rate limit state is stored in Upstash Redis or Vercel KV — two concurrent serverless instances enforce a shared 5 req/min limit correctly
-**Plans**: TBD
+  1. `/api/generate-cv` reads client IP exclusively from `ipAddress(req)` (@vercel/functions, reads the Vercel-injected `x-real-ip`) -- spoofed `x-forwarded-for` headers have no effect on rate-limit identity (CONTEXT supersedes the prior `req.ip` wording: D-02)
+  2. CSP `style-src` no longer lists `https://fonts.googleapis.com` and `font-src` no longer lists `https://fonts.gstatic.com`; the prod `script-src` theme-init hash matches the live SGDS script (D-05, D-06, D-08)
+  3. SEC-03 (distributed rate limiting) is formally closed as **accepted-risk** -- the in-memory per-instance limiter stays, documented in route.ts and REQUIREMENTS.md (CONTEXT supersedes the prior Upstash/Vercel KV wording: D-12)
+**Plans**: 2 plans in 1 wave
+
+Plans:
+- [ ] 03-02-PLAN.md -- SEC-01 trusted IP via ipAddress() + SEC-03 accepted-risk documentation
+- [ ] 03-03-PLAN.md -- SEC-02 post-SGDS CSP re-audit (remove Google Fonts, recompute theme-init hash) + middleware tests
 
 ### Phase 4: Code Quality & Type Safety [DEFERRED → Phase 7]
 **Goal**: The codebase passes strict type checks without workarounds, stale metadata is automated, and linting enforces structural quality rules
@@ -104,5 +108,5 @@ Plans:
 | 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
-| 3. Security Hardening | 0/TBD | ⏸️ Deferred (Phase 6) | - |
+| 3. Security Hardening | 0/2 | Planned | - |
 | 4. Code Quality & Type Safety | 0/TBD | ⏸️ Deferred (Phase 7) | - |
