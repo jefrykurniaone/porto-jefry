@@ -26,14 +26,14 @@ export default function About() {
                             <a
                                 href={`mailto:${CONTACT_EMAIL}`}
                                 aria-label={t('contact_email')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:no-underline'>
+                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
                                 <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
                                 <span>{CONTACT_EMAIL}</span>
                             </a>
                             <a
                                 href={CONTACT_PHONE_HREF}
                                 aria-label={t('contact_phone')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:no-underline'>
+                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
                                 <sgds-icon name='phone' aria-hidden='true' suppressHydrationWarning />
                                 <span>{CONTACT_PHONE_DISPLAY}</span>
                             </a>
@@ -42,7 +42,7 @@ export default function About() {
                                 target='_blank'
                                 rel='noopener noreferrer'
                                 aria-label={t('contact_linkedin')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:no-underline'>
+                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
                                 <LinkedInIcon size={18} aria-hidden='true' />
                                 <span>{CONTACT_LINKEDIN_HANDLE}</span>
                             </a>

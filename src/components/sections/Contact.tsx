@@ -34,7 +34,7 @@ function ContactCard({
             className='sgds:block sgds:no-underline group'>
             <sgds-card suppressHydrationWarning>
                 <div slot='title' className='sgds:flex sgds:flex-col sgds:items-center sgds:gap-component-xs'>
-                    <div className='sgds:text-primary group-hover:sgds:scale-110 sgds:transition-transform'>
+                    <div className='sgds:text-primary'>
                         {icon}
                     </div>
                     <span className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>

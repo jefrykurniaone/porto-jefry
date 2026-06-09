@@ -12,7 +12,7 @@ export default function Certifications() {
                 </h2>
                 <div className='sgds-grid'>
                     {certifications.map((cert) => (
-                        <div key={cert.id} className='sgds-col-4 sgds-col-sm-center-6 sgds-col-lg-center-6'>
+                        <div key={cert.id} className='tidy-grid-item sgds-col-4 sgds-col-sm-center-6 sgds-col-lg-center-6'>
                             <sgds-card suppressHydrationWarning>
                                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default sgds:flex sgds:items-center sgds:gap-component-xs'>
                                     <sgds-icon name='shield-tick' aria-hidden='true' suppressHydrationWarning />

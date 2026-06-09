@@ -153,7 +153,7 @@ export default function Navbar() {
                     : 'sgds:bg-transparent'
             }`}>
             <sgds-mainnav expand="always" suppressHydrationWarning>
-                <strong slot="brand" className='sgds:text-heading-sm sgds:font-semibold'>JK</strong>
+                <strong slot="brand" className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>JK</strong>
                 <DesktopNavLinks onNavClick={scrollTo} />
                 <div slot="end" className='sgds:flex sgds:items-center sgds:gap-component-sm'>
                     <ThemeToggle />

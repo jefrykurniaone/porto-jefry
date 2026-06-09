@@ -10,7 +10,7 @@ interface EducationCardProps {
 
 function EducationCard({ edu, gpaLabel, locale }: Readonly<EducationCardProps>) {
     return (
-        <div className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
+        <div className='tidy-grid-item sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
             <sgds-card suppressHydrationWarning>
                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
                     {edu.institution}
