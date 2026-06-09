@@ -103,7 +103,7 @@ export default function Hero() {
         <section id='hero' className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:bg-default'>
             <div className='sgds-container hero-content sgds:text-center sgds:py-layout-lg'>
                 <div className='sgds:mb-xl sgds:flex sgds:justify-center'>
-                    <div className='sgds:w-32 sgds:h-32 sgds:rounded-full sgds:overflow-hidden sgds:ring-4 sgds:ring-primary sgds:ring-offset-4'>
+                    <div className='sgds:w-32 sgds:h-32 sgds:rounded-full sgds:overflow-hidden sgds:ring-2 sgds:ring-primary sgds:ring-offset-4'>
                         <Image
                             src='/cv-photo.webp'
                             alt={t('photo_alt')}

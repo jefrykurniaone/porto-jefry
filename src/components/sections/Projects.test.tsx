@@ -61,24 +61,13 @@ describe('Projects', () => {
             });
     });
 
-    it('renders MAX_TECH_VISIBLE visible tech badges per project', () => {
-        renderProjects();
-        // First project has 7 tech items; MAX_TECH_VISIBLE = 6, so 6 badges + 1 overflow
-        const badges = document.querySelectorAll('sgds-badge');
-        const totalTech = projects.reduce((sum, p) => {
-            const visible = Math.min(p.tech.length, 6);
-            return sum + visible + (p.tech.length > 6 ? 1 : 0);
-        }, 0);
-        expect(badges.length).toBe(totalTech);
-    });
-
-    it('shows overflow count when tech exceeds MAX_TECH_VISIBLE', () => {
-        renderProjects();
-        const overflowProjects = projects.filter((p) => p.tech.length > 6);
-        const overflowBadges = screen.getAllByText(/^\+\d+$/);
-        expect(overflowBadges.length).toBe(overflowProjects.length);
-        // HRIS JOB Tomori has 11 tech: +5 overflow — unique value
-        expect(screen.getByText('+5')).toBeInTheDocument();
+    it('renders all tech as plain text per project', () => {
+        const { container } = renderProjects();
+        projects.forEach((project) => {
+            project.tech.forEach((tech) => {
+                expect(container.textContent).toContain(tech);
+            });
+        });
     });
 
     it('renders sgds-card for each project', () => {
@@ -92,14 +81,10 @@ describe('Projects', () => {
         expect(source).toContain('sgds-card');
     });
 
-    it('source contains sgds-badge', () => {
+    it('source uses TechList and no sgds-badge', () => {
         const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('sgds-badge');
-    });
-
-    it('source contains MAX_TECH_VISIBLE', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('MAX_TECH_VISIBLE');
+        expect(source).toContain('TechList');
+        expect(source).not.toContain('sgds-badge');
     });
 
     it('source contains noopener noreferrer for external links', () => {

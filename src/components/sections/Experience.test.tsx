@@ -50,22 +50,16 @@ describe('Experience', () => {
         expect(cards.length).toBeGreaterThan(0);
     });
 
-    it('renders sgds-badge for technology tags', () => {
-        renderExperience();
-        const badges = document.querySelectorAll('sgds-badge');
-        expect(badges.length).toBeGreaterThan(0);
+    it('renders technology stack as plain text from data', () => {
+        const { container } = renderExperience();
+        expect(container.textContent).toContain('C#');
     });
 
-    it('renders technology badge text from data', () => {
-        renderExperience();
-        const badges = screen.getAllByText('C#');
-        expect(badges.length).toBeGreaterThan(0);
-    });
-
-    it('source contains sgds-card and sgds-badge', () => {
+    it('source contains sgds-card and uses TechList for tech', () => {
         const source = fs.readFileSync('src/components/sections/Experience.tsx', 'utf-8');
         expect(source).toContain('sgds-card');
-        expect(source).toContain('sgds-badge');
+        expect(source).toContain('TechList');
+        expect(source).not.toContain('sgds-badge');
     });
 
     it('source contains no dark: utility', () => {

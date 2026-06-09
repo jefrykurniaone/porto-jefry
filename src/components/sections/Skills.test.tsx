@@ -30,11 +30,11 @@ describe('Skills', () => {
         expect(screen.getByText('Tools & DevOps')).toBeInTheDocument();
     });
 
-    it('renders skill badges for each category', () => {
-        renderSkills();
+    it('renders all skill names as text for each category', () => {
+        const { container } = renderSkills();
         skillCategories.forEach((cat) => {
             cat.skills.forEach((skill) => {
-                expect(screen.getByText(skill)).toBeInTheDocument();
+                expect(container.textContent).toContain(skill);
             });
         });
     });
@@ -45,27 +45,15 @@ describe('Skills', () => {
         expect(cards.length).toBe(skillCategories.length);
     });
 
-    it('renders sgds-badge for skill tags', () => {
-        renderSkills();
-        const badges = document.querySelectorAll('sgds-badge');
-        expect(badges.length).toBeGreaterThan(0);
-    });
-
-    it('renders all skill names as badge text content', () => {
-        renderSkills();
-        const badges = document.querySelectorAll('sgds-badge');
-        const totalSkills = skillCategories.reduce((sum, cat) => sum + cat.skills.length, 0);
-        expect(badges.length).toBe(totalSkills);
-    });
-
     it('source contains sgds-card', () => {
         const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
         expect(source).toContain('sgds-card');
     });
 
-    it('source contains sgds-badge', () => {
+    it('source uses TechList and no sgds-badge', () => {
         const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
-        expect(source).toContain('sgds-badge');
+        expect(source).toContain('TechList');
+        expect(source).not.toContain('sgds-badge');
     });
 
     it('source imports skillCategories from data', () => {

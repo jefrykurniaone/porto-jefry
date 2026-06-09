@@ -3,6 +3,37 @@
 @import '@govtechsg/sgds-web-component/css/sgds.css';
 @import '@govtechsg/sgds-web-component/css/utility.css';
 
+/* ── Monochrome accent ──
+   Override the SGDS purple product-primary palette with neutral grays. Every
+   downstream token (sgds:text-primary, sgds:ring-primary, buttons, hero CTAs)
+   then reads near-black in day / light-gray in night. Kept unlayered and after
+   the @imports so it wins the cascade over the theme files. */
+:root {
+    --sgds-product-primary-100: #f3f3f3;
+    --sgds-product-primary-200: #e0e0e0;
+    --sgds-product-primary-300: #c6c6c6;
+    --sgds-product-primary-400: #8a8a8a;
+    --sgds-product-primary-500: #6b6b6b;
+    --sgds-product-primary-600: #1a1a1a; /* day: primary text + surface */
+    --sgds-product-primary-700: #1a1a1a; /* day: primary button fill */
+    --sgds-product-primary-800: #0e0e0e;
+    --sgds-product-primary-900: #0e0e0e;
+
+    /* Links default to blue (independent of primary) — neutralise them too. */
+    --sgds-link-color-default: #1a1a1a;
+    --sgds-link-color-emphasis: #4a4a4a;
+}
+
+:root.sgds-night-theme {
+    --sgds-product-primary-300: #ededed; /* night: primary color-emphasis */
+    --sgds-product-primary-400: #dfdfdf; /* night: accent text + outline border */
+    --sgds-product-primary-600: #4a4a4a; /* night: button fill (visible on near-black) */
+    --sgds-product-primary-700: #5c5c5c; /* night: button hover fill */
+
+    --sgds-link-color-default: #dfdfdf;
+    --sgds-link-color-emphasis: #f3f3f3;
+}
+
 @layer base {
     html {
         scroll-behavior: smooth;
@@ -27,11 +58,8 @@
         padding: var(--sgds-spacer-7) var(--sgds-spacer-8) !important;
         transition: all 0.2s ease !important;
     }
-    sgds-button:not([variant])::part(button) {
-        box-shadow: var(--sgds-elevation-surface-1);
-    }
     sgds-button:not([variant]):hover::part(button) {
-        box-shadow: var(--sgds-elevation-surface-3);
+        opacity: 0.9;
     }
 
     .hero-download-button {
@@ -66,12 +94,11 @@
         width: 9.25rem;
         padding: 0.625rem 0.75rem;
         border-radius: var(--sgds-border-radius-md);
-        box-shadow: var(--sgds-elevation-surface-1);
-        transition: background-color 0.2s ease, box-shadow 0.2s ease;
+        transition: background-color 0.2s ease, opacity 0.2s ease;
     }
 
     .hero-cta-link:hover {
-        box-shadow: var(--sgds-elevation-surface-3);
+        opacity: 0.9;
     }
 
     .hero-cta-link-primary {
@@ -92,41 +119,24 @@
         background: var(--sgds-primary-surface-muted);
     }
 
-    /* ── Card improvements ── */
+    /* ── Flat cards (minimalist: borderless, transparent, no shadow) ──
+       --sgds-surface-default → transparent blends the card into its section bg;
+       --sgds-border-color-muted → transparent drops the shadow-DOM default border
+       (both custom properties inherit into the card's shadow DOM). Body padding
+       is zeroed so content aligns to grid gaps + hairline dividers. */
     sgds-card {
-        box-shadow: var(--sgds-elevation-surface-1);
-        transition: box-shadow 0.2s ease, transform 0.2s ease;
-        border-radius: var(--sgds-border-radius-md);
+        box-shadow: none;
+        border-radius: 0;
         height: auto;
         display: block;
+        --sgds-surface-default: transparent;
+        --sgds-border-color-muted: transparent;
     }
     sgds-card::part(body) {
-        padding: var(--sgds-spacer-7);
+        padding: 0;
     }
     sgds-card::part(description) {
-        padding-bottom: var(--sgds-spacer-3);
-    }
-
-    sgds-card.compact-card::part(body),
-    .experience-card-wrapper sgds-card::part(body),
-    .skill-card-wrapper sgds-card::part(body) {
-        padding: var(--sgds-spacer-6);
-    }
-    sgds-card:hover {
-        box-shadow: var(--sgds-elevation-surface-3);
-        transform: translateY(-2px);
-    }
-
-    /* Make cards fill grid cells */
-    sgds-grid>div>sgds-card,
-    .sgds-grid>div>sgds-card {
-        height: 100%;
-    }
-
-    /* ── Badge improvements ── */
-    sgds-badge {
-        border-radius: var(--sgds-border-radius-sm);
-        padding: var(--sgds-spacer-2) var(--sgds-spacer-3);
+        padding-bottom: 0;
     }
 
     /* ── Icon improvements ── */
@@ -139,42 +149,31 @@
         scroll-margin-top: 5rem;
     }
 
-    /* ── Timeline improvements ── */
-    .timeline-rail {
-        position: absolute;
-        left: 1.25rem;
-        top: 1.25rem;
-        bottom: 1.25rem;
-        width: 2px;
-        background: var(--sgds-border-color-emphasis);
-        opacity: 0.45;
-    }
-
+    /* ── Experience timeline (flat: hairline dividers, no rail/dots) ── */
     .timeline-shell {
         max-width: 60rem;
     }
 
     .timeline-list {
-        gap: var(--sgds-spacer-7);
+        gap: 0;
     }
 
     .timeline-item {
-        gap: var(--sgds-spacer-6);
+        padding: var(--sgds-spacer-8) 0;
     }
 
-    .timeline-dot {
-        width: 2.5rem;
-        height: 2.5rem;
-        border: 2px solid var(--sgds-border-color-emphasis);
-        background: var(--sgds-surface-raised);
-        color: var(--sgds-primary-color-default);
-        box-shadow: 0 0 0 0.25rem var(--sgds-bg-default);
+    .timeline-item:first-child {
+        padding-top: 0;
+    }
+
+    .timeline-item + .timeline-item {
+        border-top: 1px solid color-mix(in srgb, var(--sgds-color-default) 12%, transparent);
     }
 
     .experience-bullet-list {
         display: flex;
         flex-direction: column;
-        gap: 0.75rem;
+        gap: 0.5rem;
         padding-left: 0;
         list-style: none;
     }
@@ -183,19 +182,18 @@
         gap: 0.75rem;
     }
 
-    .experience-badge-list,
-    .skill-badge-list {
-        gap: 0.75rem;
+    .tech-list {
+        line-height: var(--sgds-line-height-md);
     }
-    @media (min-width: 768px) {
-        .timeline-rail {
-            left: 1.5rem;
-        }
 
-        .timeline-dot {
-            width: 3rem;
-            height: 3rem;
-        }
+    /* ── Tidy grid items (flat: hairline top-border per cell) ── */
+    .tidy-grid-item {
+        padding-top: var(--sgds-spacer-6);
+        border-top: 1px solid color-mix(in srgb, var(--sgds-color-default) 12%, transparent);
+    }
+
+    .sgds-grid {
+        row-gap: var(--sgds-spacer-8);
     }
 
     @media (max-width: 512px) {

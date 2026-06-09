@@ -1,8 +1,7 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { projects } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
-
-const MAX_TECH_VISIBLE = 6;
+import { TechList } from '@/components/ui/TechList';
 
 export default function Projects() {
     const t = useTranslations('projects');
@@ -16,7 +15,7 @@ export default function Projects() {
                 </h2>
                 <div className='sgds-grid'>
                     {projects.map((project) => (
-                        <div key={project.id} className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
+                        <div key={project.id} className='tidy-grid-item sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
                             <sgds-card suppressHydrationWarning>
                                 <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default sgds:flex sgds:items-center sgds:justify-between sgds:gap-component-xs'>
                                     <span>{project.name}</span>
@@ -43,22 +42,7 @@ export default function Projects() {
                                             {project.description}
                                         </p>
                                     )}
-                                    <div className='sgds:flex sgds:flex-wrap sgds:gap-component-xs'>
-                                        {project.tech.slice(0, MAX_TECH_VISIBLE).map((tech) => (
-                                            <span key={tech}>
-                                                <sgds-badge outlined suppressHydrationWarning>
-                                                    {tech}
-                                                </sgds-badge>
-                                            </span>
-                                        ))}
-                                        {project.tech.length > MAX_TECH_VISIBLE && (
-                                            <span key='overflow'>
-                                                <sgds-badge outlined suppressHydrationWarning>
-                                                    +{project.tech.length - MAX_TECH_VISIBLE}
-                                                </sgds-badge>
-                                            </span>
-                                        )}
-                                    </div>
+                                    <TechList items={project.tech} />
                                 </div>
                             </sgds-card>
                         </div>
