@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
 - [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
-- [ ] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk
+- [x] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk (completed 2026-06-10)
 - [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]`
 - [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
 
@@ -101,7 +101,7 @@ Plans:
 Plans:
 
 - [x] 03-02-PLAN.md -- SEC-01 trusted IP via ipAddress() + SEC-03 accepted-risk documentation
-- [ ] 03-03-PLAN.md -- SEC-02 post-SGDS CSP re-audit (remove Google Fonts, recompute theme-init hash) + middleware tests
+- [x] 03-03-PLAN.md -- SEC-02 post-SGDS CSP re-audit (remove Google Fonts, recompute theme-init hash) + middleware tests
 
 ### Phase 4: Code Quality & Type Safety [DEFERRED → Phase 7]
 
@@ -127,5 +127,5 @@ Plans:
 | 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
-| 3. Security Hardening | 2/3 | In Progress|  |
+| 3. Security Hardening | 3/3 | Complete   | 2026-06-10 |
 | 4. Code Quality & Type Safety | 0/TBD | ⏸️ Deferred (Phase 7) | - |
