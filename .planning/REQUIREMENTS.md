@@ -25,7 +25,7 @@ Requirements for the current improvement milestone. Each maps to roadmap phases.
 
 - [ ] **SEC-01**: Rate limiting uses platform-provided `req.ip` instead of untrusted `x-real-ip` / `x-forwarded-for` headers
 - [ ] **SEC-02**: CSP `style-src` no longer includes `https://fonts.googleapis.com` (fonts are self-hosted via next/font)
-- [ ] **SEC-03**: In-memory rate limiter replaced with Upstash Redis / Vercel KV for distributed rate limiting across serverless instances
+- [x] **SEC-03**: In-memory rate limiter — distributed rate limiting (Upstash Redis / Vercel KV) formally closed as **accepted-risk**. Rationale: per-instance Map is adequate for portfolio scale; CV PDF is module-cached per locale (CV_BUFFER_CACHE) so the expensive render path runs at most once per instance. Reopen if Analytics shows sustained abuse. *(Closed 2026-06-10)*
 
 ### Type Safety
 
@@ -90,7 +90,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-04 | Phase 2 — UX Polish | Pending |
 | SEC-01 | Phase 3 — Security Hardening | Pending |
 | SEC-02 | Phase 3 — Security Hardening | Pending |
-| SEC-03 | Phase 3 — Security Hardening | Pending |
+| SEC-03 | Phase 3 — Security Hardening | Closed (accepted-risk) |
 | TYPE-01 | Phase 4 — Code Quality & Type Safety | Pending |
 | TYPE-02 | Phase 4 — Code Quality & Type Safety | Pending |
 | QUAL-01 | Phase 4 — Code Quality & Type Safety | Pending |
