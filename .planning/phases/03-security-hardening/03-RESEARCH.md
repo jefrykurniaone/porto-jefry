@@ -554,7 +554,9 @@ In the Security section, update SEC-03 from `[ ]` to `[x]` and add accepted-risk
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
+
+> RESOLVED: Use the BASE_URL constant from src/utils/constants.ts (https://porto-jefry.vercel.app) as the production URL in the CF-1 hash re-verification script.
 
 1. **Production domain for hash verification**
    - What we know: The site is deployed on Vercel. The domain used in the hash re-verification curl command needs to be the correct production URL.

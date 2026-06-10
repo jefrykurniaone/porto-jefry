@@ -1,8 +1,8 @@
 ---
 phase: 3
 slug: security-hardening
-status: draft
-nyquist_compliant: false
+status: approved
+nyquist_compliant: true
 wave_0_complete: false
 created: 2026-06-10
 ---
@@ -84,11 +84,13 @@ documenting code comment exists at `rateLimitStore` and that `REQUIREMENTS.md` m
 
 ## Validation Sign-Off
 
-- [ ] All tasks have an `<automated>` verify command or a Wave 0 test-file dependency
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers both new test files (route + middleware)
-- [ ] No watch-mode flags in any verify command
-- [ ] Feedback latency < 10 s for the quick command
-- [ ] `nyquist_compliant: true` set in frontmatter (after planner binds task IDs)
+- [x] All tasks have an `<automated>` verify command or a Wave 0 test-file dependency *(03-03 Task 3 is the D-10 human-verify checkpoint — the single allowed manual exception)*
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers both new test files (route + middleware) — Task 1 of 03-02 and 03-03
+- [x] No watch-mode flags in any verify command (all use `vitest run`)
+- [x] Feedback latency < 10 s for the quick command
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+> `wave_0_complete` stays `false` until execution writes `route.test.ts` + `middleware.test.ts` (Task 1 of each plan); execute-phase flips it after Wave 0 lands.
+
+**Approval:** approved 2026-06-10 (plan-checker passed, adversarial decision-coverage 15/15)
