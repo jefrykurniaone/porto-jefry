@@ -30,6 +30,9 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - ✓ Security headers (CSP, X-Frame-Options, nonce-based scripts) — existing
 - ✓ Vercel Analytics integration — existing
 - ✓ Unit test coverage ≥80% (Vitest + Testing Library) — existing
+- ✓ Rate-limit identity from trusted `ipAddress(req)` only; spoofed `x-forwarded-for` has no effect (SEC-01) — Phase 3
+- ✓ CSP tightened: unused Google Fonts domains removed; theme-init script hash recomputed and verified against the live script (SEC-02) — Phase 3
+- ✓ In-memory rate limiter formally closed as accepted-risk (per-instance Map adequate at portfolio scale; CV PDF module-cached) (SEC-03) — Phase 3
 
 ### Active
 
@@ -42,12 +45,9 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - [ ] Fix ThemeToggle layout shift (CLS) during hydration
 - [ ] Automate LAST_MODIFIED_DATE from git at build time
 - [ ] Improve ExperienceMessages type safety (remove `as unknown as` cast)
-- [ ] Security: validate IP headers properly (use platform-provided `req.ip`)
-- [ ] Security: remove unused `fonts.googleapis.com` from CSP style-src
 - [ ] Add ESLint SonarJS plugin for code quality enforcement
 - [ ] Extract shared tech stacks in projects.ts as named constants
 - [ ] Fix translatePeriod regex (add word-boundary anchors)
-- [ ] Security: replace in-memory rate limiter with distributed store (Upstash Redis/Vercel KV)
 
 ### Out of Scope
 
@@ -120,4 +120,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-02 after initialization*
+*Last updated: 2026-06-11 after Phase 3 (security-hardening) completion*
