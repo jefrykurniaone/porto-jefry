@@ -6,7 +6,7 @@ const intlMiddleware = createIntlMiddleware(routing);
 
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
-function buildCsp(nonce: string): string {
+export function buildCsp(nonce: string): string {
     const isDev = process.env.NODE_ENV === 'development';
     
     // Development: relaxed CSP to allow hot reload and eval
