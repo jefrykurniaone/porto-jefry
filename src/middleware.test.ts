@@ -11,11 +11,8 @@ describe('buildCsp — SEC-02 CSP re-audit', () => {
     });
 
     afterEach(() => {
-        if (originalNodeEnv === undefined) {
-            delete process.env.NODE_ENV;
-        } else {
-            (process.env as Record<string, string>).NODE_ENV = originalNodeEnv;
-        }
+        // Restore NODE_ENV; cast to mutable to work around TypeScript read-only declaration
+        (process.env as Record<string, string | undefined>).NODE_ENV = originalNodeEnv;
     });
 
     describe('SEC-02-a: fonts.googleapis.com must NOT appear in any branch', () => {

@@ -14,20 +14,20 @@ export function buildCsp(nonce: string): string {
         return [
             "default-src 'self'",
             `script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://va.vercel-scripts.com`,
-            `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-            "font-src 'self' https://fonts.gstatic.com",
+            `style-src 'self' 'unsafe-inline'`,
+            "font-src 'self'",
             "img-src 'self' data: blob:",
             "connect-src 'self' https://vitals.vercel-insights.com ws: wss:",
             "frame-ancestors 'none'",
         ].join('; ');
     }
-    
-    // Production: strict CSP
+
+    // Production: strict CSP — hash authorizes theme-init inline script (x-nonce is null on Vercel at runtime)
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-1lsbnEG5y+jDum9W3sr9rXc9EniVVZtsPUtyiDRfsik=' https://va.vercel-scripts.com`,
-        `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-        "font-src 'self' https://fonts.gstatic.com",
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc=' https://va.vercel-scripts.com`,
+        `style-src 'self' 'unsafe-inline'`,
+        "font-src 'self'",
         "img-src 'self' data: blob:",
         "connect-src 'self' https://vitals.vercel-insights.com",
         "frame-ancestors 'none'",
