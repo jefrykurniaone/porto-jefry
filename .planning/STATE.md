@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: "03-03 Task 3 — awaiting D-10 deploy+hash-verify checkpoint"
-last_updated: "2026-06-11T00:23:00.000Z"
-last_activity: "2026-06-11 -- 03-03 Tasks 1+2 committed (SEC-02 CSP re-audit); awaiting human D-10 verification"
+status: verifying
+stopped_at: "Phase 03 complete — awaiting Phase 05 planning"
+last_updated: "2026-06-10T18:04:25.378Z"
+last_activity: 2026-06-10
 progress:
   total_phases: 5
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 8
-  completed_plans: 14
-  percent: 40
+  completed_plans: 15
+  percent: 60
 ---
 
 # Project State
@@ -21,22 +21,22 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-02)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
-**Current focus:** Phase 03 — security-hardening
+**Current focus:** Phase 03 complete — next: Phase 05 (sgds-migration)
 
 ## Current Position
 
-Phase: 03 (security-hardening) — EXECUTING
-Plan: 3 of 3 (03-03, Tasks 1+2 complete — Task 3 checkpoint:human-verify)
-Status: Awaiting D-10 deploy+hash-verify checkpoint
-Last activity: 2026-06-11 -- 03-03 Tasks 1+2 committed; SEC-02 CSP tightened; awaiting human deploy + hash check
+Phase: 05
+Plan: Not started
+Status: Phase 03 complete (3/3 plans; verified 3/3 must-haves; 1 post-merge UAT item tracked in 03-HUMAN-UAT.md)
+Last activity: 2026-06-11 -- Phase 03 security-hardening completed
 
-Progress: [████░░░░░░] 40%
+Progress: [██████░░░░] 60%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 5
+- Total plans completed: 8
 - Phase 1: 1 plan (00:03:02)
 - Phase 2: 4 plans
 
@@ -46,6 +46,7 @@ Progress: [████░░░░░░] 40%
 |-------|-------|-------|----------|
 | Phase 1 — Quick Bug Fixes | 1 | 00:03:02 | 00:03:02 |
 | Phase 2 — UX Polish | 4 | ~2h | ~30m |
+| 03 | 3 | - | - |
 
 **Recent Trend:**
 
