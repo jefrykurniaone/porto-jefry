@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
 - [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
-- [ ] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and upgrade to distributed rate limiting `[DEFERRED → Phase 6]`
+- [ ] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk
 - [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]`
 - [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
 
@@ -86,7 +86,7 @@ Plans:
 - [x] 05-06-PLAN.md — Skills/Projects/Certifications/Contact SGDS section migration
 - [x] 05-07-PLAN.md — SGDS fallback polish, source audit, and final verification
 
-### Phase 3: Security Hardening [DEFERRED → Phase 6]
+### Phase 3: Security Hardening
 
 **Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances
 **Depends on**: Phase 2
