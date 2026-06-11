@@ -19,6 +19,7 @@
         "@govtechsg/sgds-web-component": "^3.21.0",
         "@react-pdf/renderer": "^4.5.1",
         "@vercel/analytics": "^2.0.1",
+        "@vercel/functions": "^3.7.0",
         "next": "14.2.35",
         "next-intl": "^4.11.1",
         "react": "^18",

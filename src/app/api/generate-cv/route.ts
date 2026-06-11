@@ -5,6 +5,7 @@ import { access, readFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
+import { ipAddress } from '@vercel/functions';
 import CvDocument from '@/components/cv/CvDocument';
 import enMessages from '@/i18n/messages/en.json';
 import idMessages from '@/i18n/messages/id.json';
@@ -12,7 +13,13 @@ import idMessages from '@/i18n/messages/id.json';
 const RATE_LIMIT_WINDOW_MS = 60_000; // 1 minute
 const RATE_LIMIT_MAX_REQUESTS = 5;
 
-// Module-level rate-limit store (resets on cold start)
+// Rate-limit store: in-memory Map, resets on cold start.
+// Accepted risk (SEC-03): distributed limiting (e.g., Upstash Redis) is not implemented.
+// Rationale: portfolio-scale traffic is low; CV PDF is module-cached per locale
+// (CV_BUFFER_CACHE), so the expensive render path runs at most once per instance
+// lifetime — the per-instance limit guards the only costly operation adequately.
+// Revisit if Vercel Analytics shows sustained abusive traffic to this endpoint.
+// Tracking: REQUIREMENTS.md SEC-03 (closed, accepted-risk).
 const rateLimitStore = new Map<
     string,
     { count: number; windowStart: number }
@@ -96,10 +103,7 @@ export async function GET(req: NextRequest) {
         ? (rawLocale as SupportedLocale)
         : 'en';
 
-    const ip =
-        req.headers.get('x-real-ip') ??
-        req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ??
-        '127.0.0.1'; // local dev fallback — rate-limits localhost rather than erroring
+    const ip = ipAddress(req) ?? '127.0.0.1';
     if (!checkRateLimit(ip)) {
         const entry = rateLimitStore.get(ip)!;
         const retryAfterSeconds = Math.max(

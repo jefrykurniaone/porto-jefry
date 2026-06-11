@@ -23,9 +23,9 @@ Requirements for the current improvement milestone. Each maps to roadmap phases.
 
 ### Security
 
-- [ ] **SEC-01**: Rate limiting uses platform-provided `req.ip` instead of untrusted `x-real-ip` / `x-forwarded-for` headers
-- [ ] **SEC-02**: CSP `style-src` no longer includes `https://fonts.googleapis.com` (fonts are self-hosted via next/font)
-- [ ] **SEC-03**: In-memory rate limiter replaced with Upstash Redis / Vercel KV for distributed rate limiting across serverless instances
+- [x] **SEC-01**: Rate-limit identity derives only from `ipAddress(req)` (@vercel/functions, reads the Vercel-injected `x-real-ip`) with a `127.0.0.1` dev fallback — a client-supplied `x-forwarded-for` can no longer change the rate-limit bucket (D-02). *(Completed 2026-06-11)*
+- [x] **SEC-02**: CSP `style-src` no longer includes `https://fonts.googleapis.com` and `font-src` no longer includes `https://fonts.gstatic.com` (fonts self-hosted via next/font); prod `script-src` theme-init hash recomputed to the SGDS-era `sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc=` and verified against the live script (D-05, D-06, D-08). *(Completed 2026-06-11)*
+- [x] **SEC-03**: In-memory rate limiter — distributed rate limiting (Upstash Redis / Vercel KV) formally closed as **accepted-risk**. Rationale: per-instance Map is adequate for portfolio scale; CV PDF is module-cached per locale (CV_BUFFER_CACHE) so the expensive render path runs at most once per instance. Reopen if Analytics shows sustained abuse. *(Closed 2026-06-10)*
 
 ### Type Safety
 
@@ -88,9 +88,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | UX-02 | Phase 2 — UX Polish | Pending |
 | UX-03 | Phase 2 — UX Polish | Pending |
 | UX-04 | Phase 2 — UX Polish | Pending |
-| SEC-01 | Phase 3 — Security Hardening | Pending |
-| SEC-02 | Phase 3 — Security Hardening | Pending |
-| SEC-03 | Phase 3 — Security Hardening | Pending |
+| SEC-01 | Phase 3 — Security Hardening | ✅ Complete |
+| SEC-02 | Phase 3 — Security Hardening | ✅ Complete |
+| SEC-03 | Phase 3 — Security Hardening | Closed (accepted-risk) |
 | TYPE-01 | Phase 4 — Code Quality & Type Safety | Pending |
 | TYPE-02 | Phase 4 — Code Quality & Type Safety | Pending |
 | QUAL-01 | Phase 4 — Code Quality & Type Safety | Pending |
@@ -101,9 +101,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 - v1 requirements: 16 total
 - Mapped to phases: 16
 - Unmapped: 0 ✓
-- Completed: 4 (25%)
+- Completed: 7 (44%) — FIX-01..04, SEC-01, SEC-02, plus SEC-03 closed as accepted-risk
 - Roadmap written: 2026-06-02
 
 ---
 *Requirements defined: 2026-06-02*
-*Last updated: 2026-06-03 after Phase 1 completion*
+*Last updated: 2026-06-11 after Phase 3 (security-hardening) completion*
