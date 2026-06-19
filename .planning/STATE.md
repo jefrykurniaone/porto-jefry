@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-06-19T18:25:37.326Z"
-last_activity: 2026-06-20 -- Phase 04 plan 02 complete (QUAL-01 automated)
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-06-20T13:33:33Z"
+last_activity: 2026-06-20 -- Phase 04 plan 05 complete (QUAL-02: Navbar/Hero/Contact function-length refactor via hooks)
 progress:
   total_phases: 5
   completed_phases: 3
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-06-02)
 ## Current Position
 
 Phase: 04 (code-quality-type-safety-deferred-phase-7) — EXECUTING
-Plan: 5 of 6
+Plan: 6 of 6
 Status: Ready to execute
-Last activity: 2026-06-20 -- Phase 04 plan 02 complete (QUAL-01 automated)
+Last activity: 2026-06-20 -- Phase 04 plan 05 complete (QUAL-02: Navbar/Hero/Contact function-length refactor via hooks)
 
 Progress: [██████░░░░] 60%
 
@@ -58,6 +58,7 @@ Progress: [██████░░░░] 60%
 | Phase 04-code-quality-type-safety-deferred-phase-7 P02 | 3min | 2 tasks | 3 files |
 | Phase 04-code-quality-type-safety-deferred-phase-7 P03 | 5min | 1 tasks | 1 files |
 | Phase 04-code-quality-type-safety-deferred-phase-7 P04 | 3min | 2 tasks | 4 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P05 | 7min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -73,6 +74,7 @@ Recent decisions affecting current work:
 - `LAST_MODIFIED_DATE` is now automated via `scripts/gen-build-meta.mjs` prebuild codegen (git log -1 --format=%cs)
 - [Phase ?]: Use t.raw('items') as ExperienceMessages['items'] for typed access to structured next-intl message subtrees — single direct assertion replaces prior useMessages()+as unknown as double cast
 - [Phase ?]: In-file private sub-component extraction (Readonly<Props>) is the established pattern for meeting 40-line function limit
+- [Phase 04 Plan 05]: Custom hooks (use-focus-trap, use-scrolled, use-cv-download) follow kebab-case filenames per project convention; plain module functions (buildContactLinks) used when no state/effects needed
 
 ### Pending Todos
 
