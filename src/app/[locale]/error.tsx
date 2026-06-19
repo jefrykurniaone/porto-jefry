@@ -9,6 +9,32 @@ interface ErrorProps {
     reset: () => void;
 }
 
+interface ErrorActionsProps {
+    reset: () => void;
+    locale: string;
+    tryAgainLabel: string;
+    returnHomeLabel: string;
+}
+
+function ErrorActions({ reset, locale, tryAgainLabel, returnHomeLabel }: Readonly<ErrorActionsProps>) {
+    return (
+        <div className='sgds:flex sgds:gap-layout-sm sgds:justify-center'>
+            <sgds-button type='button' onClick={reset} suppressHydrationWarning>
+                {tryAgainLabel}
+            </sgds-button>
+            <Link href={`/${locale}`}>
+                <sgds-button
+                    type='button'
+                    variant='outline'
+                    suppressHydrationWarning
+                >
+                    {returnHomeLabel}
+                </sgds-button>
+            </Link>
+        </div>
+    );
+}
+
 export default function Error({ error, reset }: ErrorProps) {
     const t = useTranslations('error');
     const locale = useLocale();
@@ -34,20 +60,12 @@ export default function Error({ error, reset }: ErrorProps) {
                 <p className='sgds:text-body-md sgds:text-muted sgds:mb-8'>
                     {t('message')}
                 </p>
-                <div className='sgds:flex sgds:gap-layout-sm sgds:justify-center'>
-                    <sgds-button type='button' onClick={reset} suppressHydrationWarning>
-                        {t('tryAgain')}
-                    </sgds-button>
-                    <Link href={`/${locale}`}>
-                        <sgds-button
-                            type='button'
-                            variant='outline'
-                            suppressHydrationWarning
-                        >
-                            {t('returnHome')}
-                        </sgds-button>
-                    </Link>
-                </div>
+                <ErrorActions
+                    reset={reset}
+                    locale={locale}
+                    tryAgainLabel={t('tryAgain')}
+                    returnHomeLabel={t('returnHome')}
+                />
             </div>
         </div>
     );
