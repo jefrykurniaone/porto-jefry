@@ -117,13 +117,17 @@ Plans:
   5. Shared tech stacks in `src/data/projects.ts` are extracted as named `TECH_*` constants — no string arrays duplicated across project entries, and the file stays under 300 lines
 
 **Plans**: 6 plans in 2 waves
+Plans:
+**Wave 1**
 
-Plans:
 - [ ] 04-01-PLAN.md — Experience type safety: exported ExperienceMessages interface + useTranslations typed access (TYPE-01, TYPE-02)
 - [ ] 04-02-PLAN.md — Build-time LAST_MODIFIED_DATE codegen from git commit date (QUAL-01)
 - [ ] 04-03-PLAN.md — Extract duplicate tech stacks into TECH_* constants in projects.ts (QUAL-03)
 - [ ] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
 - [ ] 04-05-PLAN.md — Function-length refactors via hooks: Navbar, Hero, Contact (QUAL-02)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
 - [ ] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
 
 ## Progress
