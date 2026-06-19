@@ -5,6 +5,10 @@ import { experiences, type ExperienceItem } from '@/data/experience';
 import { translatePeriod } from '@/utils/translate-period';
 import { TechList } from '@/components/ui/TechList';
 
+export interface ExperienceMessages {
+    items: Record<string, { bullets: string[] }>;
+}
+
 interface ExperienceCardProps {
     exp: ExperienceItem;
     bullets: string[];
@@ -63,9 +67,6 @@ export default function Experience() {
     const locale = useLocale();
     const messages = useMessages();
 
-    interface ExperienceMessages {
-        items: Record<string, { bullets: string[] }>;
-    }
     const expMessages = messages.experience as unknown as ExperienceMessages;
     const expItems = expMessages?.items ?? {};
 
