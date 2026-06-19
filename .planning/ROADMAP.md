@@ -116,7 +116,15 @@ Plans:
   4. `eslint-plugin-sonarjs` (or equivalent) is installed and active — `npm run lint` fails on max-lines, max-lines-per-function, and no-nested-template-literals violations
   5. Shared tech stacks in `src/data/projects.ts` are extracted as named `TECH_*` constants — no string arrays duplicated across project entries, and the file stays under 300 lines
 
-**Plans**: TBD
+**Plans**: 6 plans in 2 waves
+
+Plans:
+- [ ] 04-01-PLAN.md — Experience type safety: exported ExperienceMessages interface + useTranslations typed access (TYPE-01, TYPE-02)
+- [ ] 04-02-PLAN.md — Build-time LAST_MODIFIED_DATE codegen from git commit date (QUAL-01)
+- [ ] 04-03-PLAN.md — Extract duplicate tech stacks into TECH_* constants in projects.ts (QUAL-03)
+- [ ] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
+- [ ] 04-05-PLAN.md — Function-length refactors via hooks: Navbar, Hero, Contact (QUAL-02)
+- [ ] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
 
 ## Progress
 
