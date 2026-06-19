@@ -35,7 +35,7 @@ Requirements for the current improvement milestone. Each maps to roadmap phases.
 ### Code Quality
 
 - [x] **QUAL-01**: `LAST_MODIFIED_DATE` is derived from `git log` at build time (or replaced with `new Date()`)
-- [ ] **QUAL-02**: `eslint-plugin-sonarjs` (or equivalent) added to `.eslintrc.json` for max-lines, max-lines-per-function, and no-nested-template-literals rules
+- [x] **QUAL-02**: `eslint-plugin-sonarjs` (or equivalent) added to `.eslintrc.json` for max-lines, max-lines-per-function, and no-nested-template-literals rules
 - [x] **QUAL-03**: Shared tech stacks in `src/data/projects.ts` extracted as named constants to prevent duplication and stay under 300-line limit
 
 ## v2 Requirements
@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | TYPE-01 | Phase 4 — Code Quality & Type Safety | Complete |
 | TYPE-02 | Phase 4 — Code Quality & Type Safety | Complete |
 | QUAL-01 | Phase 4 — Code Quality & Type Safety | Complete |
-| QUAL-02 | Phase 4 — Code Quality & Type Safety | Pending |
+| QUAL-02 | Phase 4 — Code Quality & Type Safety | Complete |
 | QUAL-03 | Phase 4 — Code Quality & Type Safety | Complete |
 
 **Coverage:**

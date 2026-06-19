@@ -123,7 +123,7 @@ Plans:
 - [x] 04-01-PLAN.md — Experience type safety: exported ExperienceMessages interface + useTranslations typed access (TYPE-01, TYPE-02)
 - [x] 04-02-PLAN.md — Build-time LAST_MODIFIED_DATE codegen from git commit date (QUAL-01)
 - [x] 04-03-PLAN.md — Extract duplicate tech stacks into TECH_* constants in projects.ts (QUAL-03)
-- [ ] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
+- [x] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
 - [ ] 04-05-PLAN.md — Function-length refactors via hooks: Navbar, Hero, Contact (QUAL-02)
 
 **Wave 2** *(blocked on Wave 1 completion)*
@@ -140,4 +140,4 @@ Plans:
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | 3/3 | Complete    | 2026-06-10 |
-| 4. Code Quality & Type Safety | 3/6 | In Progress|  |
+| 4. Code Quality & Type Safety | 4/6 | In Progress|  |
