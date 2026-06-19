@@ -29,8 +29,8 @@ Requirements for the current improvement milestone. Each maps to roadmap phases.
 
 ### Type Safety
 
-- [ ] **TYPE-01**: `ExperienceMessages` is a top-level exported interface (not defined inline inside a function body)
-- [ ] **TYPE-02**: Experience bullets accessed via `useTranslations` namespace drilling instead of `useMessages()` + double cast
+- [x] **TYPE-01**: `ExperienceMessages` is a top-level exported interface (not defined inline inside a function body)
+- [x] **TYPE-02**: Experience bullets accessed via `useTranslations` namespace drilling instead of `useMessages()` + double cast
 
 ### Code Quality
 
@@ -91,13 +91,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | SEC-01 | Phase 3 — Security Hardening | ✅ Complete |
 | SEC-02 | Phase 3 — Security Hardening | ✅ Complete |
 | SEC-03 | Phase 3 — Security Hardening | Closed (accepted-risk) |
-| TYPE-01 | Phase 4 — Code Quality & Type Safety | Pending |
-| TYPE-02 | Phase 4 — Code Quality & Type Safety | Pending |
+| TYPE-01 | Phase 4 — Code Quality & Type Safety | Complete |
+| TYPE-02 | Phase 4 — Code Quality & Type Safety | Complete |
 | QUAL-01 | Phase 4 — Code Quality & Type Safety | Pending |
 | QUAL-02 | Phase 4 — Code Quality & Type Safety | Pending |
 | QUAL-03 | Phase 4 — Code Quality & Type Safety | Pending |
 
 **Coverage:**
+
 - v1 requirements: 16 total
 - Mapped to phases: 16
 - Unmapped: 0 ✓
