@@ -8,6 +8,42 @@ import {
     CONTACT_LINKEDIN_HANDLE,
 } from '@/data/contact';
 
+interface AboutContactLinksProps {
+    emailLabel: string;
+    phoneLabel: string;
+    linkedinLabel: string;
+}
+
+function AboutContactLinks({ emailLabel, phoneLabel, linkedinLabel }: Readonly<AboutContactLinksProps>) {
+    return (
+        <div slot='footer' className='sgds:flex sgds:flex-wrap sgds:gap-layout-sm'>
+            <a
+                href={`mailto:${CONTACT_EMAIL}`}
+                aria-label={emailLabel}
+                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
+                <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
+                <span>{CONTACT_EMAIL}</span>
+            </a>
+            <a
+                href={CONTACT_PHONE_HREF}
+                aria-label={phoneLabel}
+                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
+                <sgds-icon name='phone' aria-hidden='true' suppressHydrationWarning />
+                <span>{CONTACT_PHONE_DISPLAY}</span>
+            </a>
+            <a
+                href={CONTACT_LINKEDIN_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label={linkedinLabel}
+                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
+                <LinkedInIcon size={18} aria-hidden='true' />
+                <span>{CONTACT_LINKEDIN_HANDLE}</span>
+            </a>
+        </div>
+    );
+}
+
 export default function About() {
     const t = useTranslations('about');
 
@@ -22,31 +58,11 @@ export default function About() {
                         <span slot='description' className='sgds:text-body-md sgds:text-body-default sgds:leading-xs'>
                             {t('description')}
                         </span>
-                        <div slot='footer' className='sgds:flex sgds:flex-wrap sgds:gap-layout-sm'>
-                            <a
-                                href={`mailto:${CONTACT_EMAIL}`}
-                                aria-label={t('contact_email')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                                <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
-                                <span>{CONTACT_EMAIL}</span>
-                            </a>
-                            <a
-                                href={CONTACT_PHONE_HREF}
-                                aria-label={t('contact_phone')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                                <sgds-icon name='phone' aria-hidden='true' suppressHydrationWarning />
-                                <span>{CONTACT_PHONE_DISPLAY}</span>
-                            </a>
-                            <a
-                                href={CONTACT_LINKEDIN_URL}
-                                target='_blank'
-                                rel='noopener noreferrer'
-                                aria-label={t('contact_linkedin')}
-                                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                                <LinkedInIcon size={18} aria-hidden='true' />
-                                <span>{CONTACT_LINKEDIN_HANDLE}</span>
-                            </a>
-                        </div>
+                        <AboutContactLinks
+                            emailLabel={t('contact_email')}
+                            phoneLabel={t('contact_phone')}
+                            linkedinLabel={t('contact_linkedin')}
+                        />
                     </sgds-card>
                 </div>
             </div>
