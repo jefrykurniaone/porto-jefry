@@ -8,6 +8,7 @@
     },
     "scripts": {
         "dev": "next dev",
+        "prebuild": "node scripts/gen-build-meta.mjs",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
