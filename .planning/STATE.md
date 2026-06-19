@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-06-19T18:03:32.216Z"
-last_activity: 2026-06-19 -- Phase 04 execution started
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-06-20T18:07:46Z"
+last_activity: 2026-06-20 -- Phase 04 plan 02 complete (QUAL-01 automated)
 progress:
   total_phases: 5
   completed_phases: 3
@@ -26,9 +26,9 @@ See: .planning/PROJECT.md (updated 2026-06-02)
 ## Current Position
 
 Phase: 04 (code-quality-type-safety-deferred-phase-7) — EXECUTING
-Plan: 2 of 6
+Plan: 3 of 6
 Status: Ready to execute
-Last activity: 2026-06-19 -- Phase 04 execution started
+Last activity: 2026-06-20 -- Phase 04 plan 02 complete (QUAL-01 automated)
 
 Progress: [██████░░░░] 60%
 
@@ -55,6 +55,7 @@ Progress: [██████░░░░] 60%
 
 *Updated after each plan completion*
 | Phase 04-code-quality-type-safety-deferred-phase-7 P01 | 3min | 2 tasks | 2 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P02 | 3min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -67,7 +68,7 @@ Recent decisions affecting current work:
 - **Phase 2 Plan 4**: Server-side ThemeToggle placeholder removed (caused white-dot bug). CLS prevention now via `isMounted` guard in client component — same CLS=0 outcome, different mechanism.
 - In-memory rate limiter is serverless-unsafe → Phase 3 replaces with Upstash Redis / Vercel KV
 - `useMessages()` + double cast for Experience bullets is a known workaround → Phase 4 eliminates it
-- Manual `LAST_MODIFIED_DATE` constant requires manual updates → Phase 4 automates via git at build time
+- `LAST_MODIFIED_DATE` is now automated via `scripts/gen-build-meta.mjs` prebuild codegen (git log -1 --format=%cs)
 - [Phase ?]: Use t.raw('items') as ExperienceMessages['items'] for typed access to structured next-intl message subtrees — single direct assertion replaces prior useMessages()+as unknown as double cast
 
 ### Pending Todos
