@@ -47,7 +47,7 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 
 **Plans**: 3
 
-- [ ] 06-01-PLAN.md — Contrast & readability: `--sgds-color-muted` token override (UI-05)
+- [x] 06-01-PLAN.md — Contrast & readability: `--sgds-color-muted` token override (UI-05)
 - [ ] 06-02-PLAN.md — Hero CTA rebalance: equal-sized, no-wrap buttons (UI-06)
 - [ ] 06-03-PLAN.md — Toggle redesign: theme slider + language EN|ID pill (UI-07)
 
@@ -99,6 +99,6 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 | 5. SGDS Migration | v1.3 | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | v1.3 | 3/3 | ✅ Complete | 2026-06-10 |
 | 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
-| 6. Look & Feel Polish | v1.4 | 0/3 | 🔵 Planned | — |
+| 6. Look & Feel Polish | v1.4 | 1/3 | In Progress|  |
 | 7. Information Architecture | v1.4 | 0/1 | 🔵 Planned | — |
 | 8. International Content Overhaul | v1.4 | 0/2 | 🔵 Planned | — |
