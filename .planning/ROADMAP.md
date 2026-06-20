@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
 - [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
 - [x] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk (completed 2026-06-10)
-- [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]`
+- [x] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]` (completed 2026-06-20)
 - [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
 
 ## Phase Details
@@ -128,7 +128,7 @@ Plans:
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
-- [ ] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
+- [x] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
 
 ## Progress
 
@@ -140,4 +140,4 @@ Plans:
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | 3/3 | Complete    | 2026-06-10 |
-| 4. Code Quality & Type Safety | 5/6 | In Progress|  |
+| 4. Code Quality & Type Safety | 6/6 | Complete   | 2026-06-20 |
