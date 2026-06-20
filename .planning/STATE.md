@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
 status: in-progress
-stopped_at: Phase 07 complete; Phase 08 partial (CONTENT-03 + CONTENT-02 plumbing) — prose rewrite deferred
-last_updated: "2026-06-20T16:18:29.647Z"
-last_activity: 2026-06-20 -- Phases 07 & 08(partial) executed; preparing combined v1.4 PR
+stopped_at: Phase 08 complete (CONTENT-01/02/03); v1.4 phases 6-8 all done — milestone ready to close
+last_updated: "2026-06-21T00:00:00.000Z"
+last_activity: 2026-06-21 -- Phase 08 completed: prose humanized + 14 bilingual project descriptions
 progress:
   total_phases: 3
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 6
-  completed_plans: 4
-  percent: 67
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 08 — international-content (partial; prose rewrite deferred)
+**Current focus:** v1.4 complete — all three phases (6 Look & Feel, 7 IA, 8 International Content) done; milestone ready to close
 
 ## Current Position
 
-Phase: 08 (international-content) — PARTIAL
-Plan: 08-02 mechanical slice done (CONTENT-03 + CONTENT-02 plumbing); 08-01 + 14 project descriptions DEFERRED (humanizer/voice)
-Status: Phase 07 complete; Phase 08 partial — combined v1.4 PR (phases 6,7,8) being shipped
-Last activity: 2026-06-20 -- Phases 07 & 08(partial) executed
+Phase: 08 (international-content) — COMPLETE
+Plan: 08-01 (CONTENT-01 prose + 14 project descriptions) + 08-02 (CONTENT-02 plumbing + CONTENT-03 education) both done
+Status: v1.4 phases 6-8 all complete; ready to ship Phase 08 PR and close the milestone
+Last activity: 2026-06-21 -- Phase 08 completed (humanized prose + bilingual project descriptions)
 
-Progress: [█░░░░░░░░░] 17%
+Progress: [██████████] 100%
 
 ## Milestone History
 
@@ -67,12 +67,12 @@ Logged in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-- Owner to verify the 14 drafted project descriptions during Phase 8.
-- Owner to decide whether to fill or drop `[your number]` metric placeholders.
+- Owner to verify the 14 drafted project descriptions (real client projects).
+- Owner may add real metrics where useful (kept qualitative; no `[your number]` placeholders shipped, since they would render literally on the live site).
 
 ### Blockers/Concerns
 
-- None for planning. Phase 8 depends on a humanizer skill being installable via `find-skills`.
+- None. Humanizer resolved: installed free prompt-based `blader/humanizer`; removed the paid `humanizerai/agent-skills@humanize` (needed an API key + credits + external calls).
 
 ## Deferred Items
 

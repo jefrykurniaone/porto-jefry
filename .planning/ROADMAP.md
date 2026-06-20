@@ -30,7 +30,7 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 
 - [x] **Phase 6: Look & Feel Polish** ✅ **(COMPLETE)** — fix muted-text contrast (WCAG AA), rebalance the three hero CTAs (no wrap, equal size), redesign the theme/language toggles (sliding switch + segmented EN|ID pill)
 - [x] **Phase 7: Information Architecture** — move the GitHub link from Contact to About (completed 2026-06-20)
-- [ ] **Phase 8: International Content Overhaul** — rewrite all prose in a natural humanized voice, add a remote/global-availability signal, add bilingual project descriptions, fix education-major English
+- [x] **Phase 8: International Content Overhaul** ✅ **(COMPLETE)** — rewrote all prose in a natural humanized voice, added a remote/global-availability signal, added 14 bilingual project descriptions, fixed education-major English (completed 2026-06-21)
 
 #### Phase 6: Look & Feel Polish 🔵 (CURRENT PRIORITY)
 
@@ -85,8 +85,8 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 
 **Plans**: 2
 
-- [ ] 08-01-PLAN.md — Humanizer install + core prose rewrite + global-availability signal (CONTENT-01) — ⏸ DEFERRED (humanizer-skill install sandbox-blocked; awaiting voice decision)
-- [ ] 08-02-PLAN.md — Bilingual project descriptions (i18n + Projects.tsx) + education English fixes (CONTENT-02, CONTENT-03) — ⚠ PARTIAL: CONTENT-03 done + CONTENT-02 plumbing done (Projects.tsx i18n read w/ guard); the 14 description strings deferred with 08-01
+- [x] 08-01-PLAN.md — Humanizer install + core prose rewrite + global-availability signal (CONTENT-01) — ✅ done with free prompt-based `blader/humanizer` (paid HumanizerAI skill removed per owner)
+- [x] 08-02-PLAN.md — Bilingual project descriptions (i18n + Projects.tsx) + education English fixes (CONTENT-02, CONTENT-03) — ✅ CONTENT-03 + Projects.tsx plumbing (08-02 slice) + all 14 description strings (08-01) complete
 
 ## Progress
 
@@ -101,4 +101,4 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 | 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
 | 6. Look & Feel Polish | v1.4 | 3/3 | Complete    | 2026-06-20 |
 | 7. Information Architecture | v1.4 | 1/1 | Complete   | 2026-06-20 |
-| 8. International Content Overhaul | v1.4 | 0/2 | 🟡 Partial — CONTENT-03 + CONTENT-02 plumbing done; prose (CONTENT-01) + project descriptions deferred | — |
+| 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete — CONTENT-01/02/03 done; prose humanized, 14 bilingual project descriptions, education English | 2026-06-21 |
