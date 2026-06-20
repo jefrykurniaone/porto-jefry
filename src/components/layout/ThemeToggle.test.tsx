@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { render, waitFor, act } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
@@ -47,12 +47,13 @@ describe('ThemeToggle SGDS behavior', () => {
         expect(sw).toHaveAttribute('aria-label', 'Switch to dark mode');
     });
 
-    it('switch checked attribute reflects day (false) by default', async () => {
+    it('switch checked property reflects day (false) by default', async () => {
         const { container } = renderThemeToggle();
         await act(async () => { vi.runAllTimers(); });
-        const sw = container.querySelector('sgds-switch');
-        // React serialises boolean false as the string "false" on web components
-        expect(sw).not.toHaveAttribute('checked', 'true');
+        const sw = container.querySelector('sgds-switch') as (HTMLElement & { checked?: boolean }) | null;
+        // `checked` is bound as a DOM property (not a JSX attribute) so React does
+        // not strip it on re-render; it should be false for the default day theme.
+        expect(sw?.checked).toBe(false);
     });
 
     it('dispatching sgds-change on the switch calls toggleTheme (night→day→night)', async () => {
