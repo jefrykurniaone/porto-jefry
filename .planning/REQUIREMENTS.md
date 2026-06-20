@@ -45,7 +45,7 @@ Current milestone — **polish-and-international-content** (v1.4). Readability, 
 ### Look & Feel
 
 - [x] **UI-05**: All `sgds:text-muted` text meets WCAG AA contrast (≥4.5:1) in both light and dark themes — fixed via a single `--sgds-color-muted` override in `globals.css` (root cause: token was `#c6c6c6` day / `#3b3b3b` night ≈ 1.6:1)
-- [ ] **UI-06**: Hero shows three equal-sized CTA buttons; "View My Work" never wraps to a second line; buttons stack full-width below 512px
+- [x] **UI-06**: Hero shows three equal-sized CTA buttons; "View My Work" never wraps to a second line; buttons stack full-width below 512px
 - [ ] **UI-07**: Theme toggle is a sun/moon sliding switch (`sgds-switch`); language toggle is a compact segmented EN|ID pill; both compact and in the navbar
 
 ### Information Architecture

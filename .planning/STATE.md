@@ -3,14 +3,14 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
 status: executing
-stopped_at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
-last_updated: "2026-06-20T09:01:39.788Z"
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-06-20T09:07:24.057Z"
 last_activity: 2026-06-20 -- Phase 06 execution started
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 6
-  completed_plans: 1
+  completed_plans: 2
   percent: 0
 ---
 
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 ## Current Position
 
 Phase: 06 (look-feel-polish) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 Status: Ready to execute
 Last activity: 2026-06-20 -- Phase 06 execution started
 
@@ -80,9 +80,15 @@ Logged in PROJECT.md Key Decisions table.
 |----------|------|--------|-------------|
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
 | Phase 06-look-feel-polish P01 | 600 | 2 tasks | 1 files |
+| Phase 06-look-feel-polish P02 | 5m | 3 tasks | 2 files |
 
 ## Session Continuity
 
-Last session: 2026-06-20T09:01:39.779Z
-Stopped at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
+Last session: 2026-06-20T09:07:24.049Z
+Stopped at: Completed 06-02-PLAN.md
 Resume file: None
+
+## Decisions
+
+- [Phase ?]: Hero CTA sizing unified: min-width 11.5rem + width auto + white-space nowrap on .hero-cta-link; sgds-button aligned to 3rem height and same min-width
+- [Phase ?]: Hero CTA hierarchy: CV sgds-button set to variant=outline so visual reads as 1 filled primary (View My Work) + 2 outline (Download CV, Contact Me)
