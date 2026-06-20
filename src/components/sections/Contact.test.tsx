@@ -29,7 +29,7 @@ describe('Contact', () => {
 
     it('renders translated description', () => {
         renderContact();
-        expect(screen.getByText(/always open to discussing/)).toBeInTheDocument();
+        expect(screen.getByText(/open to new roles and freelance work/)).toBeInTheDocument();
     });
 
     it('renders email link with mailto href', () => {

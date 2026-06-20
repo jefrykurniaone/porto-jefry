@@ -17,7 +17,7 @@
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — profile photo",
         "title": "Backend Developer & .NET Specialist",
-        "subtitle": "5+ years building enterprise .NET applications, RESTful APIs, and data-driven systems — with a growing passion for AI-powered software development.",
+        "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
         "cta_contact": "Contact Me",
@@ -31,7 +31,7 @@
     },
     "about": {
         "title": "About Me",
-        "description": "Results-driven Backend Developer with 5+ years of expertise in .NET (C#, VB.NET) and Microsoft SQL Server, delivering production-grade applications across banking, insurance, HR, and government sectors. Currently building high-performance backend systems and RESTful APIs at PT Xtremax Teknologi Indonesia, with prior experience leading technical teams through full enterprise software lifecycles. Beyond core .NET development, I continuously expand my technical horizon — building full-stack applications with React and Next.js, containerising services with Docker, and exploring AI integration using Microsoft Semantic Kernel and OpenAI APIs. Passionate about clean, maintainable code and software solutions that genuinely drive business value.",
+        "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote roles or relocation, including with companies outside Indonesia.",
         "contact_email": "Email",
         "contact_phone": "Phone",
         "contact_linkedin": "LinkedIn",
@@ -43,64 +43,64 @@
         "items": {
             "xtremax-2025": {
                 "bullets": [
-                    "Designing and developing backend systems for dynamic, high-performance applications, ensuring seamless integration with front-end systems.",
-                    "Customizing and optimizing Sitefinity CMS features to deliver high-quality client solutions.",
-                    "Developing RESTful APIs and integrating third-party services to enhance client website functionality.",
-                    "Optimizing SQL queries and ensuring efficient database interactions for large data volumes.",
-                    "Conducting thorough unit tests and resolving issues promptly to maintain application stability and quality.",
-                    "Working with cross-functional teams to meet project requirements and deliver exceptional user experiences."
+                    "Build and maintain backend features for Singapore public-sector websites running on Sitefinity and Sitecore CMS.",
+                    "Develop REST APIs and connect third-party services so client sites can show live, up-to-date content.",
+                    "Customise Sitefinity modules and templates to fit each client's content structure and design.",
+                    "Write and tune SQL queries so pages stay responsive against large datasets.",
+                    "Write unit tests and fix defects quickly to keep sites stable in production.",
+                    "Work with designers, content teams, and project managers to ship features that match the brief."
                 ]
             },
             "arkamaya-2024": {
                 "bullets": [
-                    "Building and developing software applications according to project needs, ensuring efficiency, security, and maintainability.",
-                    "Performing routine maintenance and updating existing systems to improve performance and ensure compatibility with the latest technologies.",
-                    "Conducting unit testing, debugging, and code optimization to ensure applications run smoothly and are free from bugs.",
-                    "Working collaboratively with other development teams, both internal and external, to create high-quality software solutions.",
-                    "Creating clear and detailed technical documentation for each developed application.",
-                    "Managing and optimizing database usage for efficient data handling and developing queries to support application needs.",
-                    "Addressing technical issues that arise during development or maintenance and providing effective and swift solutions."
+                    "Built web applications for HR, event-management, and operational systems, in C#/ASP.NET MVC and PHP/CodeIgniter.",
+                    "Maintained and upgraded existing systems to keep them current with their frameworks and libraries.",
+                    "Wrote unit tests and debugged production issues so releases stayed stable.",
+                    "Integrated REST and SOAP APIs to connect client systems with external services.",
+                    "Designed database schemas and wrote the queries each application needed.",
+                    "Wrote clear technical documentation so other developers could pick up and extend the code.",
+                    "Worked with internal and client teams to scope features and resolve issues as they came up."
                 ]
             },
             "nawa-lead-2024": {
                 "bullets": [
-                    "Managed teams of developers on technical aspects to ensure projects are delivered on time and within budget.",
-                    "Organized technical work by breaking it down into tasks and distributing them to the rest of the team.",
-                    "Helped on project plans and timelines in coordination with PM or Product Owner.",
-                    "Assisted in system design creation in coordination with BA.",
-                    "Created technical specification documents in coordination with BA based on functional specification documents (FSD).",
-                    "Led technical design meetings and tech breakdowns.",
-                    "Performed code review on pull/merge requests using GIT.",
-                    "Ensured best practices are implemented and followed.",
-                    "Deployed applications to IIS in Development/Testing Server (Windows Server in Azure VM)."
+                    "Led the technical work on projects and kept delivery on schedule and within budget.",
+                    "Broke work down into tasks and distributed them across the development team.",
+                    "Worked with the project manager and product owner on plans and timelines.",
+                    "Worked with the business analyst on system design.",
+                    "Wrote technical specification documents from the functional specs (FSD).",
+                    "Ran technical design meetings and walked the team through how each feature would be built.",
+                    "Reviewed pull and merge requests in Git.",
+                    "Set coding standards and made sure the team kept to them.",
+                    "Deployed applications to IIS on the development and test servers (Windows Server on Azure VMs)."
                 ]
             },
             "nawa-onerisk-2023": {
                 "bullets": [
-                    "Created functional specification documents in coordination with BA based on RED (Requirement Elicitation Document).",
-                    "Developed, analyzed, and tested software that meets requirements on system design.",
-                    "Inspected software defects in active systems.",
-                    "Tested and fixed production issues in active systems.",
-                    "Attended meetings and explained the technical breakdown of proposed solutions.",
-                    "Created deployment guideline documents."
+                    "Wrote functional specification documents from the requirement elicitation documents (RED).",
+                    "Developed, analysed, and tested software against the system design.",
+                    "Investigated software defects in live systems.",
+                    "Reproduced and fixed production issues.",
+                    "Explained the technical approach for proposed solutions in project meetings.",
+                    "Wrote deployment guide documents."
                 ]
             },
             "xtremax-2022": {
                 "bullets": [
-                    "Created functional specification documents in coordination with BA based on RED.",
-                    "Developed, analyzed, and tested software meeting system design requirements.",
-                    "Inspected software defects and fixed production issues in active systems.",
-                    "Attended meetings and explained the technical breakdown of proposed solutions.",
-                    "Created deployment guideline documents and updated daily task reports."
+                    "Wrote functional specification documents from the requirement elicitation documents (RED).",
+                    "Developed, analysed, and tested software against the system design.",
+                    "Investigated defects and fixed production issues in live systems.",
+                    "Explained the technical approach for proposed solutions in project meetings.",
+                    "Wrote deployment guides and kept daily task reports up to date."
                 ]
             },
             "nawa-2020": {
                 "bullets": [
-                    "Developed and maintained multiple enterprise risk management applications (ORMS) for major financial institutions including Adira Insurance and BTPN, using VB.NET and ASP.NET Web Forms.",
-                    "Designed and optimised complex SQL Server stored procedures, views, and SSIS ETL pipelines to support large-scale financial data processing.",
-                    "Built rich regulatory and business intelligence reports with SSRS to meet compliance and stakeholder reporting requirements.",
-                    "Automated end-to-end test scenarios using Katalon, improving test coverage and reducing manual QA effort.",
-                    "Collaborated with business analysts to translate functional specification documents into robust technical implementations."
+                    "Developed and maintained operational risk-management systems (ORMS) for Adira Insurance and BTPN, in VB.NET and ASP.NET Web Forms.",
+                    "Wrote and optimised SQL Server stored procedures, views, and SSIS ETL jobs to process large volumes of financial data.",
+                    "Built regulatory and business-intelligence reports in SSRS to meet compliance and reporting requirements.",
+                    "Automated end-to-end test scenarios with Katalon, which widened test coverage and cut manual QA time.",
+                    "Worked with business analysts to turn functional specs into working features."
                 ]
             }
         }
@@ -124,7 +124,51 @@
     },
     "projects": {
         "title": "Projects Experience",
-        "present": "Present"
+        "present": "Present",
+        "items": {
+            "heritagesg-website-maintenance": {
+                "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
+            },
+            "yellow-ribbon-singapore-website": {
+                "description": "Backend and CMS development for the Yellow Ribbon Singapore website on Sitefinity, using C# and .NET Framework MVC over SQL Server."
+            },
+            "public-service-commission-website": {
+                "description": "Built and maintained backend features for the Public Service Commission website on Sitefinity, with .NET MVC and SQL Server."
+            },
+            "agency-for-science-technology-and-research": {
+                "description": "Backend development for the Agency for Science, Technology and Research (A*STAR) website, built on Sitefinity CMS in C# and .NET MVC."
+            },
+            "defense-science-and-technology-agency": {
+                "description": "Backend and CMS work for the Defence Science and Technology Agency (DSTA) website on Sitefinity, in C# and .NET MVC."
+            },
+            "unpacking-direction-ttlc": {
+                "description": "A PHP and CodeIgniter web application for the Unpacking Direction TTLC programme, with a MySQL backend and a jQuery and AJAX front end."
+            },
+            "sustainability-tam-event-management": {
+                "description": "An event-management system (Sustainability TAM) built in C# and ASP.NET MVC, backed by SQL Server and covered with NUnit tests."
+            },
+            "hris-job-tomori": {
+                "description": "An HR information system (HRIS) for JOB Tomori, built in ASP.NET MVC with REST and SOAP API integrations over SQL Server."
+            },
+            "trainer-tdk-framework-tmmin": {
+                "description": "Delivered training on the Toyota Development Kit (TDK) framework at TMMIN, covering C#, ASP.NET MVC, and SQL Server."
+            },
+            "rbbr-super-bank": {
+                "description": "A risk-based bank rating (RBBR) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SSRS reporting on SQL Server."
+            },
+            "oprisk-super-bank": {
+                "description": "An operational-risk (OPRISK) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SQL Server and SSRS reports."
+            },
+            "orms-adira-insurance": {
+                "description": "An operational risk-management system (ORMS) for Adira Insurance, built in VB.NET and ASP.NET Web Forms with SSIS data pipelines and SSRS reports."
+            },
+            "orms-btpn": {
+                "description": "An operational risk-management system (ORMS) for BTPN, built in VB.NET and ASP.NET Web Forms with SQL Server, SSIS, and SSRS."
+            },
+            "nawa-point-web-application": {
+                "description": "A web application (Nawa Point) built in C# and ASP.NET MVC with SQL Server, developed during my .NET training at Coding.ID."
+            }
+        }
     },
     "certifications": {
         "title": "Certifications",
@@ -132,12 +176,12 @@
             "name": ".NET Programmer Class",
             "issuer": "Coding.ID",
             "period": "Nov 2019 – Jan 2020",
-            "description": "Completed an intensive .NET programming course covering ASP.NET MVC, C#, and Microsoft SQL Server."
+            "description": "A .NET programming course covering C#, ASP.NET MVC, and Microsoft SQL Server."
         }
     },
     "contact": {
         "title": "Get In Touch",
-        "description": "I'm always open to discussing new opportunities, projects, or just having a chat about technology.",
+        "description": "I'm open to new roles and freelance work, including remote positions with teams abroad. Whether you have a project in mind or just want to talk shop about .NET or AI, drop me a message.",
         "email_label": "Email Me",
         "phone_label": "Call Me",
         "linkedin_label": "LinkedIn Profile"

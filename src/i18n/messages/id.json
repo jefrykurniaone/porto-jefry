@@ -17,7 +17,7 @@
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — foto profil",
         "title": "Backend Developer & Spesialis .NET",
-        "subtitle": "5+ tahun membangun aplikasi .NET enterprise, RESTful API, dan sistem berbasis data — dengan minat yang terus berkembang di pengembangan software berbasis AI.",
+        "subtitle": "Lebih dari lima tahun membangun API dan sistem dengan data besar untuk klien perbankan, asuransi, dan pemerintahan. Belakangan saya juga memakai React dan Next.js, serta bekerja dengan alur kerja AI agentic coding menggunakan Claude, GitHub Copilot, dan OpenCode.",
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
         "cta_contact": "Hubungi Saya",
@@ -31,7 +31,7 @@
     },
     "about": {
         "title": "Tentang Saya",
-        "description": "Backend Developer berpengalaman dengan 5+ tahun keahlian dalam .NET (C#, VB.NET) dan Microsoft SQL Server, menghadirkan aplikasi tingkat produksi di sektor perbankan, asuransi, HR, dan pemerintahan. Saat ini membangun sistem backend berperforma tinggi dan RESTful API di PT Xtremax Teknologi Indonesia, dengan pengalaman sebelumnya memimpin tim teknis melalui siklus pengembangan perangkat lunak enterprise secara menyeluruh. Di luar keahlian .NET utama, saya terus memperluas wawasan teknis — membangun aplikasi full-stack dengan React dan Next.js, mengontainerisasi layanan dengan Docker, serta menjelajahi integrasi AI menggunakan Microsoft Semantic Kernel dan OpenAI API. Bersemangat dalam menulis kode yang bersih dan mudah dipelihara, serta merancang solusi perangkat lunak yang benar-benar memberikan nilai bisnis.",
+        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar dan terbuka untuk peran remote maupun relokasi, termasuk dengan perusahaan di luar Indonesia.",
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn",
@@ -43,64 +43,64 @@
         "items": {
             "xtremax-2025": {
                 "bullets": [
-                    "Merancang dan mengembangkan sistem backend untuk aplikasi dinamis dan berperforma tinggi, memastikan integrasi yang mulus dengan sistem front-end.",
-                    "Mengkustomisasi dan mengoptimalkan fitur Sitefinity CMS untuk menghadirkan solusi berkualitas tinggi bagi klien.",
-                    "Mengembangkan RESTful API dan mengintegrasikan layanan pihak ketiga untuk meningkatkan fungsionalitas website klien.",
-                    "Mengoptimalkan kueri SQL dan memastikan interaksi database yang efisien untuk volume data yang besar.",
-                    "Melakukan pengujian unit secara menyeluruh dan menyelesaikan masalah dengan cepat untuk menjaga stabilitas dan kualitas aplikasi.",
-                    "Bekerja sama dengan tim lintas fungsi untuk memenuhi kebutuhan proyek dan menghadirkan pengalaman pengguna yang luar biasa."
+                    "Membangun dan memelihara fitur backend untuk situs sektor publik Singapura yang berjalan di Sitefinity dan Sitecore CMS.",
+                    "Mengembangkan REST API dan menghubungkan layanan pihak ketiga agar situs klien bisa menampilkan konten terkini.",
+                    "Menyesuaikan modul dan template Sitefinity sesuai struktur konten dan desain tiap klien.",
+                    "Menulis dan menyetel kueri SQL agar halaman tetap responsif meski datanya besar.",
+                    "Menulis unit test dan memperbaiki bug dengan cepat agar situs tetap stabil di produksi.",
+                    "Bekerja bersama desainer, tim konten, dan project manager untuk merilis fitur sesuai kebutuhan."
                 ]
             },
             "arkamaya-2024": {
                 "bullets": [
-                    "Membangun dan mengembangkan aplikasi perangkat lunak sesuai kebutuhan proyek, memastikan efisiensi, keamanan, dan kemudahan pemeliharaan.",
-                    "Melakukan pemeliharaan rutin dan memperbarui sistem yang ada untuk meningkatkan performa serta memastikan kompatibilitas dengan teknologi terkini.",
-                    "Melakukan pengujian unit, debugging, dan optimasi kode untuk memastikan aplikasi berjalan lancar dan bebas dari bug.",
-                    "Berkolaborasi dengan tim pengembang lain, baik internal maupun eksternal, untuk menciptakan solusi perangkat lunak berkualitas tinggi.",
-                    "Membuat dokumentasi teknis yang jelas dan detail untuk setiap aplikasi yang dikembangkan.",
-                    "Mengelola dan mengoptimalkan penggunaan database untuk penanganan data yang efisien serta mengembangkan kueri guna mendukung kebutuhan aplikasi.",
-                    "Menangani masalah teknis yang muncul selama pengembangan atau pemeliharaan dan memberikan solusi yang efektif dan cepat."
+                    "Membangun aplikasi web untuk sistem HR, manajemen acara, dan operasional, memakai C#/ASP.NET MVC dan PHP/CodeIgniter.",
+                    "Memelihara dan memperbarui sistem yang ada agar tetap selaras dengan framework dan library-nya.",
+                    "Menulis unit test dan men-debug masalah produksi agar rilis tetap stabil.",
+                    "Mengintegrasikan REST dan SOAP API untuk menghubungkan sistem klien dengan layanan eksternal.",
+                    "Merancang skema database dan menulis kueri yang dibutuhkan tiap aplikasi.",
+                    "Menulis dokumentasi teknis yang jelas agar pengembang lain mudah melanjutkan dan mengembangkan kodenya.",
+                    "Bekerja dengan tim internal maupun klien untuk merumuskan fitur dan menyelesaikan masalah yang muncul."
                 ]
             },
             "nawa-lead-2024": {
                 "bullets": [
-                    "Memimpin tim pengembang dalam aspek teknis untuk memastikan proyek selesai tepat waktu dan sesuai anggaran.",
-                    "Mengorganisir pekerjaan teknis dengan memecahnya menjadi tugas-tugas dan mendistribusikannya kepada anggota tim.",
-                    "Membantu perencanaan proyek dan jadwal pelaksanaan dalam koordinasi dengan PM atau Product Owner.",
-                    "Membantu pembuatan desain sistem dalam koordinasi dengan BA.",
-                    "Membuat dokumen spesifikasi teknis bersama BA berdasarkan dokumen spesifikasi fungsional (FSD).",
-                    "Memimpin rapat desain teknis dan sesi breakdown teknologi.",
-                    "Melakukan code review pada pull/merge request menggunakan GIT.",
-                    "Memastikan praktik terbaik diterapkan dan diikuti oleh tim.",
-                    "Men-deploy aplikasi ke IIS pada server Development/Testing (Windows Server di Azure VM)."
+                    "Memimpin pekerjaan teknis pada proyek dan menjaga agar pengiriman tepat waktu dan sesuai anggaran.",
+                    "Memecah pekerjaan menjadi tugas-tugas dan membaginya ke seluruh tim pengembang.",
+                    "Bekerja dengan project manager dan product owner untuk menyusun rencana dan jadwal.",
+                    "Bekerja dengan business analyst dalam merancang sistem.",
+                    "Menulis dokumen spesifikasi teknis berdasarkan spesifikasi fungsional (FSD).",
+                    "Memimpin rapat desain teknis dan menjelaskan ke tim bagaimana tiap fitur akan dibangun.",
+                    "Mereview pull dan merge request di Git.",
+                    "Menetapkan standar penulisan kode dan memastikan tim mengikutinya.",
+                    "Men-deploy aplikasi ke IIS di server pengembangan dan pengujian (Windows Server di Azure VM)."
                 ]
             },
             "nawa-onerisk-2023": {
                 "bullets": [
-                    "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED (Requirement Elicitation Document).",
-                    "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
-                    "Memeriksa cacat perangkat lunak pada sistem yang sedang berjalan.",
-                    "Menguji dan memperbaiki masalah produksi pada sistem yang sedang berjalan.",
-                    "Menghadiri rapat dan menjelaskan breakdown teknis dari solusi yang diusulkan.",
-                    "Membuat dokumen panduan deployment."
+                    "Menulis dokumen spesifikasi fungsional berdasarkan requirement elicitation document (RED).",
+                    "Mengembangkan, menganalisis, dan menguji software sesuai desain sistem.",
+                    "Menelusuri cacat software pada sistem yang berjalan.",
+                    "Mereproduksi dan memperbaiki masalah produksi.",
+                    "Menjelaskan pendekatan teknis untuk solusi yang diusulkan dalam rapat proyek.",
+                    "Menulis dokumen panduan deployment."
                 ]
             },
             "xtremax-2022": {
                 "bullets": [
-                    "Membuat dokumen spesifikasi fungsional bersama BA berdasarkan RED.",
-                    "Mengembangkan, menganalisis, dan menguji perangkat lunak yang memenuhi kebutuhan desain sistem.",
-                    "Memeriksa cacat perangkat lunak dan memperbaiki masalah produksi pada sistem yang sedang berjalan.",
-                    "Menghadiri rapat dan menjelaskan breakdown teknis dari solusi yang diusulkan.",
-                    "Membuat dokumen panduan deployment dan memperbarui laporan tugas harian."
+                    "Menulis dokumen spesifikasi fungsional berdasarkan requirement elicitation document (RED).",
+                    "Mengembangkan, menganalisis, dan menguji software sesuai desain sistem.",
+                    "Menelusuri cacat dan memperbaiki masalah produksi pada sistem yang berjalan.",
+                    "Menjelaskan pendekatan teknis untuk solusi yang diusulkan dalam rapat proyek.",
+                    "Menulis panduan deployment dan memperbarui laporan tugas harian."
                 ]
             },
             "nawa-2020": {
                 "bullets": [
-                    "Mengembangkan dan memelihara beberapa aplikasi manajemen risiko enterprise (ORMS) untuk lembaga keuangan besar termasuk Adira Insurance dan BTPN, menggunakan VB.NET dan ASP.NET Web Forms.",
-                    "Merancang dan mengoptimalkan stored procedure, view, dan pipeline SSIS ETL yang kompleks di SQL Server untuk mendukung pemrosesan data keuangan skala besar.",
-                    "Membangun laporan regulatory dan business intelligence yang komprehensif menggunakan SSRS untuk memenuhi persyaratan kepatuhan dan pelaporan stakeholder.",
-                    "Mengotomatiskan skenario pengujian end-to-end menggunakan Katalon, meningkatkan cakupan pengujian dan mengurangi upaya QA manual.",
-                    "Berkolaborasi dengan analis bisnis untuk menerjemahkan dokumen spesifikasi fungsional menjadi implementasi teknis yang handal."
+                    "Mengembangkan dan memelihara sistem manajemen risiko operasional (ORMS) untuk Adira Insurance dan BTPN, memakai VB.NET dan ASP.NET Web Forms.",
+                    "Menulis dan mengoptimalkan stored procedure, view, dan job SSIS ETL di SQL Server untuk memproses data keuangan dalam jumlah besar.",
+                    "Membangun laporan regulasi dan business intelligence di SSRS untuk memenuhi kebutuhan kepatuhan dan pelaporan.",
+                    "Mengotomatiskan skenario pengujian end-to-end dengan Katalon, yang memperluas cakupan pengujian dan memangkas waktu QA manual.",
+                    "Bekerja dengan business analyst untuk menerjemahkan spesifikasi fungsional menjadi fitur yang berjalan."
                 ]
             }
         }
@@ -124,7 +124,51 @@
     },
     "projects": {
         "title": "Pengalaman Proyek",
-        "present": "Sekarang"
+        "present": "Sekarang",
+        "items": {
+            "heritagesg-website-maintenance": {
+                "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."
+            },
+            "yellow-ribbon-singapore-website": {
+                "description": "Pengembangan backend dan CMS untuk situs Yellow Ribbon Singapore di Sitefinity, memakai C# dan .NET Framework MVC di atas SQL Server."
+            },
+            "public-service-commission-website": {
+                "description": "Membangun dan memelihara fitur backend untuk situs Public Service Commission di Sitefinity, dengan .NET MVC dan SQL Server."
+            },
+            "agency-for-science-technology-and-research": {
+                "description": "Pengembangan backend untuk situs Agency for Science, Technology and Research (A*STAR), dibangun di Sitefinity CMS dengan C# dan .NET MVC."
+            },
+            "defense-science-and-technology-agency": {
+                "description": "Pekerjaan backend dan CMS untuk situs Defence Science and Technology Agency (DSTA) di Sitefinity, dengan C# dan .NET MVC."
+            },
+            "unpacking-direction-ttlc": {
+                "description": "Aplikasi web PHP dan CodeIgniter untuk program Unpacking Direction TTLC, dengan backend MySQL dan front end jQuery dan AJAX."
+            },
+            "sustainability-tam-event-management": {
+                "description": "Sistem manajemen acara (Sustainability TAM) yang dibangun dengan C# dan ASP.NET MVC, didukung SQL Server dan diuji dengan NUnit."
+            },
+            "hris-job-tomori": {
+                "description": "Sistem informasi HR (HRIS) untuk JOB Tomori, dibangun dengan ASP.NET MVC dan integrasi REST serta SOAP API di atas SQL Server."
+            },
+            "trainer-tdk-framework-tmmin": {
+                "description": "Memberikan pelatihan tentang framework Toyota Development Kit (TDK) untuk TMMIN, mencakup C#, ASP.NET MVC, dan SQL Server."
+            },
+            "rbbr-super-bank": {
+                "description": "Modul risk-based bank rating (RBBR) untuk Super Bank, dibangun dengan VB.NET dan ASP.NET Web Forms serta pelaporan SSRS di SQL Server."
+            },
+            "oprisk-super-bank": {
+                "description": "Modul risiko operasional (OPRISK) untuk Super Bank, dibangun dengan VB.NET dan ASP.NET Web Forms dengan SQL Server dan laporan SSRS."
+            },
+            "orms-adira-insurance": {
+                "description": "Sistem manajemen risiko operasional (ORMS) untuk Adira Insurance, dibangun dengan VB.NET dan ASP.NET Web Forms dengan pipeline data SSIS dan laporan SSRS."
+            },
+            "orms-btpn": {
+                "description": "Sistem manajemen risiko operasional (ORMS) untuk BTPN, dibangun dengan VB.NET dan ASP.NET Web Forms dengan SQL Server, SSIS, dan SSRS."
+            },
+            "nawa-point-web-application": {
+                "description": "Aplikasi web (Nawa Point) yang dibangun dengan C# dan ASP.NET MVC serta SQL Server, dikembangkan selama pelatihan .NET saya di Coding.ID."
+            }
+        }
     },
     "certifications": {
         "title": "Sertifikasi",
@@ -132,12 +176,12 @@
             "name": "Kelas Programmer .NET",
             "issuer": "Coding.ID",
             "period": "Nov 2019 – Jan 2020",
-            "description": "Menyelesaikan kursus pemrograman .NET intensif yang mencakup ASP.NET MVC, C#, dan Microsoft SQL Server."
+            "description": "Kursus pemrograman .NET yang mencakup C#, ASP.NET MVC, dan Microsoft SQL Server."
         }
     },
     "contact": {
         "title": "Hubungi Saya",
-        "description": "Saya selalu terbuka untuk mendiskusikan peluang baru, proyek, atau sekadar mengobrol tentang teknologi.",
+        "description": "Saya terbuka untuk peran baru maupun pekerjaan lepas, termasuk posisi remote dengan tim di luar negeri. Entah Anda punya proyek tertentu atau sekadar ingin ngobrol soal .NET atau AI, kirim saja pesan ke saya.",
         "email_label": "Kirim Email",
         "phone_label": "Hubungi",
         "linkedin_label": "Profil LinkedIn"

@@ -42,9 +42,9 @@ export const skillCategories: SkillCategory[] = [
         category: 'ai_emerging',
         skills: [
             'Python',
-            'Semantic Kernel',
-            'OpenAI API',
-            'Azure OpenAI',
+            'Claude',
+            'GitHub Copilot',
+            'OpenCode',
             'LLM Integration',
         ],
     },
@@ -56,7 +56,9 @@ export const skillCategories: SkillCategory[] = [
         category: 'tools_devops',
         skills: [
             'Git',
-            'Docker',
+            'Visual Studio',
+            'VS Code',
+            'SSMS',
             'Swagger / OpenAPI',
             'Postman',
             'Azure VM',

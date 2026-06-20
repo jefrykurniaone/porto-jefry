@@ -40,14 +40,14 @@ describe('Certifications', () => {
     it('renders certification description from translation', () => {
         renderCertifications();
         expect(
-            screen.getByText(/intensive .NET programming course/),
+            screen.getByText(/\.NET programming course covering C#/),
         ).toBeInTheDocument();
     });
 
     it('renders Indonesian translations when locale=id', () => {
         renderCertifications('id');
         expect(screen.getByText('Kelas Programmer .NET')).toBeInTheDocument();
-        expect(screen.getByText(/kursus pemrograman .NET intensif/)).toBeInTheDocument();
+        expect(screen.getByText(/Kursus pemrograman .NET yang mencakup/)).toBeInTheDocument();
     });
 
     it('renders sgds-card for each certification', () => {
