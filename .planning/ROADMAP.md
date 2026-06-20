@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
 - [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
 - [x] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk (completed 2026-06-10)
-- [ ] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]`
+- [x] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]` (completed 2026-06-20)
 - [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
 
 ## Phase Details
@@ -116,7 +116,19 @@ Plans:
   4. `eslint-plugin-sonarjs` (or equivalent) is installed and active — `npm run lint` fails on max-lines, max-lines-per-function, and no-nested-template-literals violations
   5. Shared tech stacks in `src/data/projects.ts` are extracted as named `TECH_*` constants — no string arrays duplicated across project entries, and the file stays under 300 lines
 
-**Plans**: TBD
+**Plans**: 6 plans in 2 waves
+Plans:
+**Wave 1**
+
+- [x] 04-01-PLAN.md — Experience type safety: exported ExperienceMessages interface + useTranslations typed access (TYPE-01, TYPE-02)
+- [x] 04-02-PLAN.md — Build-time LAST_MODIFIED_DATE codegen from git commit date (QUAL-01)
+- [x] 04-03-PLAN.md — Extract duplicate tech stacks into TECH_* constants in projects.ts (QUAL-03)
+- [x] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
+- [x] 04-05-PLAN.md — Function-length refactors via hooks: Navbar, Hero, Contact (QUAL-02)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
+- [x] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
 
 ## Progress
 
@@ -128,4 +140,4 @@ Plans:
 | 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
 | 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | 3/3 | Complete    | 2026-06-10 |
-| 4. Code Quality & Type Safety | 0/TBD | ⏸️ Deferred (Phase 7) | - |
+| 4. Code Quality & Type Safety | 6/6 | Complete    | 2026-06-20 |

@@ -49,10 +49,10 @@ function ContactCard({
     );
 }
 
-export default function Contact() {
-    const t = useTranslations('contact');
+type TranslateFn = (key: string) => string;
 
-    const links: ContactLinkItem[] = [
+function buildContactLinks(t: TranslateFn): ContactLinkItem[] {
+    return [
         {
             label: t('email_label'),
             href: `mailto:${CONTACT_EMAIL}`,
@@ -82,7 +82,11 @@ export default function Contact() {
             isExternal: true,
         },
     ];
+}
 
+export default function Contact() {
+    const t = useTranslations('contact');
+    const links = buildContactLinks(t);
     return (
         <section id='contact' className='sgds:py-layout-lg sgds:bg-default'>
             <div className='sgds-container sgds:text-center'>

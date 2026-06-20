@@ -1,15 +1,36 @@
 'use client';
 
-import { useTranslations, useMessages, useLocale } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { experiences, type ExperienceItem } from '@/data/experience';
 import { translatePeriod } from '@/utils/translate-period';
 import { TechList } from '@/components/ui/TechList';
+
+export interface ExperienceMessages {
+    items: Record<string, { bullets: string[] }>;
+}
 
 interface ExperienceCardProps {
     exp: ExperienceItem;
     bullets: string[];
     presentLabel: string;
     locale: string;
+}
+
+function ExperienceBulletList({ bullets }: Readonly<{ bullets: string[] }>) {
+    return (
+        <ul className='experience-bullet-list sgds:mb-lg'>
+            {bullets.map((b) => (
+                <li
+                    key={b}
+                    className='experience-bullet-item readable-muted sgds:text-body-md sgds:flex'>
+                    <span className='readable-muted sgds:mt-1.5 sgds:shrink-0'>
+                        •
+                    </span>
+                    <span>{b}</span>
+                </li>
+            ))}
+        </ul>
+    );
 }
 
 function ExperienceCard({
@@ -37,20 +58,7 @@ function ExperienceCard({
                     <p className='readable-muted sgds:font-semibold sgds:mb-component-xs sgds:text-body-md'>
                         {exp.company}
                     </p>
-                    {bullets.length > 0 && (
-                        <ul className='experience-bullet-list sgds:mb-lg'>
-                            {bullets.map((b) => (
-                                <li
-                                    key={b}
-                                    className='experience-bullet-item readable-muted sgds:text-body-md sgds:flex'>
-                                    <span className='readable-muted sgds:mt-1.5 sgds:shrink-0'>
-                                        •
-                                    </span>
-                                    <span>{b}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    )}
+                    {bullets.length > 0 && <ExperienceBulletList bullets={bullets} />}
                     {exp.tech && <TechList items={exp.tech} />}
                 </div>
             </sgds-card>
@@ -61,13 +69,8 @@ function ExperienceCard({
 export default function Experience() {
     const t = useTranslations('experience');
     const locale = useLocale();
-    const messages = useMessages();
 
-    interface ExperienceMessages {
-        items: Record<string, { bullets: string[] }>;
-    }
-    const expMessages = messages.experience as unknown as ExperienceMessages;
-    const expItems = expMessages?.items ?? {};
+    const expItems = (t.raw('items') as ExperienceMessages['items']) ?? {};
 
     return (
         <section

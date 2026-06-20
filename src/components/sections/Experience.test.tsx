@@ -67,9 +67,11 @@ describe('Experience', () => {
         expect(source).not.toContain('dark:');
     });
 
-    it('source keeps useMessages() workaround unchanged', () => {
+    it('source uses typed useTranslations access instead of useMessages workaround', () => {
         const source = fs.readFileSync('src/components/sections/Experience.tsx', 'utf-8');
-        expect(source).toContain('useMessages');
-        expect(source).toContain('as unknown as');
+        expect(source).not.toContain('useMessages');
+        expect(source).not.toContain('as unknown as');
+        expect(source).toContain("useTranslations('experience')");
+        expect(source).toContain("t.raw('items')");
     });
 });

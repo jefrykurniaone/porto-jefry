@@ -184,7 +184,8 @@ describe('Hero', () => {
     });
 
     it('source uses Jefry_Kurniawan_CV.pdf download filename', () => {
-        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        // filename lives in the extracted useCvDownload hook
+        const source = fs.readFileSync('src/hooks/use-cv-download.ts', 'utf-8');
         expect(source).toContain("Jefry_Kurniawan_CV.pdf");
     });
 

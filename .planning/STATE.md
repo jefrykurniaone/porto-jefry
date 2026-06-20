@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: "Phase 03 complete — awaiting Phase 05 planning"
-last_updated: "2026-06-10T18:04:25.378Z"
-last_activity: 2026-06-10
+stopped_at: Completed 04-06-PLAN.md
+last_updated: "2026-06-20T00:54:00.418Z"
+last_activity: 2026-06-20
 progress:
   total_phases: 5
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 15
-  percent: 60
+  completed_phases: 4
+  total_plans: 14
+  completed_plans: 21
+  percent: 80
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-02)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
-**Current focus:** Phase 03 complete — next: Phase 05 (sgds-migration)
+**Current focus:** Phase 04 — code-quality-type-safety-deferred-phase-7
 
 ## Current Position
 
 Phase: 05
 Plan: Not started
-Status: Phase 03 complete (3/3 plans; verified 3/3 must-haves; 1 post-merge UAT item tracked in 03-HUMAN-UAT.md)
-Last activity: 2026-06-11 -- Phase 03 security-hardening completed
+Status: Phase complete — ready for verification
+Last activity: 2026-06-20
 
 Progress: [██████░░░░] 60%
 
@@ -36,7 +36,7 @@ Progress: [██████░░░░] 60%
 
 **Velocity:**
 
-- Total plans completed: 8
+- Total plans completed: 14
 - Phase 1: 1 plan (00:03:02)
 - Phase 2: 4 plans
 
@@ -47,6 +47,7 @@ Progress: [██████░░░░] 60%
 | Phase 1 — Quick Bug Fixes | 1 | 00:03:02 | 00:03:02 |
 | Phase 2 — UX Polish | 4 | ~2h | ~30m |
 | 03 | 3 | - | - |
+| 04 | 6 | - | - |
 
 **Recent Trend:**
 
@@ -54,6 +55,12 @@ Progress: [██████░░░░] 60%
 - Trend: Steady
 
 *Updated after each plan completion*
+| Phase 04-code-quality-type-safety-deferred-phase-7 P01 | 3min | 2 tasks | 2 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P02 | 3min | 2 tasks | 3 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P03 | 5min | 1 tasks | 1 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P04 | 3min | 2 tasks | 4 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P05 | 7min | 3 tasks | 7 files |
+| Phase 04-code-quality-type-safety-deferred-phase-7 P06 | 15min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -66,7 +73,12 @@ Recent decisions affecting current work:
 - **Phase 2 Plan 4**: Server-side ThemeToggle placeholder removed (caused white-dot bug). CLS prevention now via `isMounted` guard in client component — same CLS=0 outcome, different mechanism.
 - In-memory rate limiter is serverless-unsafe → Phase 3 replaces with Upstash Redis / Vercel KV
 - `useMessages()` + double cast for Experience bullets is a known workaround → Phase 4 eliminates it
-- Manual `LAST_MODIFIED_DATE` constant requires manual updates → Phase 4 automates via git at build time
+- `LAST_MODIFIED_DATE` is now automated via `scripts/gen-build-meta.mjs` prebuild codegen (git log -1 --format=%cs)
+- [Phase ?]: Use t.raw('items') as ExperienceMessages['items'] for typed access to structured next-intl message subtrees — single direct assertion replaces prior useMessages()+as unknown as double cast
+- [Phase ?]: In-file private sub-component extraction (Readonly<Props>) is the established pattern for meeting 40-line function limit
+- [Phase 04 Plan 05]: Custom hooks (use-focus-trap, use-scrolled, use-cv-download) follow kebab-case filenames per project convention; plain module functions (buildContactLinks) used when no state/effects needed
+- [Phase ?]: Only sonarjs/no-nested-template-literals activated from sonarjs plugin to avoid unrelated violations
+- [Phase ?]: useFocusTrap refactored with private helper extraction to meet 40-line function limit — established pattern for hook refactors
 
 ### Pending Todos
 
@@ -87,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-06-11T00:23:00.000Z
-Stopped at: "03-03 Task 3 — checkpoint:human-verify (D-10 hash re-verification against deployed production HTML)"
-Resume file: .planning/phases/03-security-hardening/03-03-PLAN.md (Task 3 continuation)
+Last session: 2026-06-20T00:43:54.696Z
+Stopped at: Completed 04-06-PLAN.md
+Resume file: None

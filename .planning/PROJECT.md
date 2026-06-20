@@ -33,6 +33,10 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - ✓ Rate-limit identity from trusted `ipAddress(req)` only; spoofed `x-forwarded-for` has no effect (SEC-01) — Phase 3
 - ✓ CSP tightened: unused Google Fonts domains removed; theme-init script hash recomputed and verified against the live script (SEC-02) — Phase 3
 - ✓ In-memory rate limiter formally closed as accepted-risk (per-instance Map adequate at portfolio scale; CV PDF module-cached) (SEC-03) — Phase 3
+- ✓ `LAST_MODIFIED_DATE` auto-generated from the last git commit date at build time via prebuild codegen (QUAL-01) — Phase 4
+- ✓ `ExperienceMessages` exported interface; `useMessages()` double-cast removed in favor of `useTranslations` typed access (TYPE-01, TYPE-02) — Phase 4
+- ✓ `eslint-plugin-sonarjs` active; `max-lines`, `max-lines-per-function`, and `no-nested-template-literals` enforced at error level (QUAL-02) — Phase 4
+- ✓ Shared tech stacks in `projects.ts` extracted as named `TECH_*` constants, no duplicated arrays (QUAL-03) — Phase 4
 
 ### Active
 
@@ -43,10 +47,6 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - [ ] Fix `type="button"` missing on LanguageToggle and ThemeToggle
 - [ ] Fix Navbar scroll listener missing `passive: true`
 - [ ] Fix ThemeToggle layout shift (CLS) during hydration
-- [ ] Automate LAST_MODIFIED_DATE from git at build time
-- [ ] Improve ExperienceMessages type safety (remove `as unknown as` cast)
-- [ ] Add ESLint SonarJS plugin for code quality enforcement
-- [ ] Extract shared tech stacks in projects.ts as named constants
 - [ ] Fix translatePeriod regex (add word-boundary anchors)
 
 ### Out of Scope
@@ -120,4 +120,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-06-11 after Phase 3 (security-hardening) completion*
+*Last updated: 2026-06-20 after Phase 4 (code-quality-type-safety) completion*

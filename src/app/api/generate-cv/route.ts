@@ -93,37 +93,26 @@ function buildPdfHeaders(): HeadersInit {
     };
 }
 
-export async function GET(req: NextRequest) {
-    const { searchParams } = req.nextUrl;
-    const rawLocale = searchParams.get('locale') ?? 'en';
-
-    const locale: SupportedLocale = SUPPORTED_LOCALES.includes(
-        rawLocale as SupportedLocale,
-    )
+function resolveLocale(rawLocale: string): SupportedLocale {
+    return SUPPORTED_LOCALES.includes(rawLocale as SupportedLocale)
         ? (rawLocale as SupportedLocale)
         : 'en';
+}
 
-    const ip = ipAddress(req) ?? '127.0.0.1';
-    if (!checkRateLimit(ip)) {
-        const entry = rateLimitStore.get(ip)!;
-        const retryAfterSeconds = Math.max(
-            1,
-            Math.ceil((entry.windowStart + RATE_LIMIT_WINDOW_MS - Date.now()) / 1000),
-        );
-        return new NextResponse('Too Many Requests', {
-            status: 429,
-            headers: { 'Retry-After': String(retryAfterSeconds) },
-        });
-    }
+function rateLimitGuard(ip: string): NextResponse | null {
+    if (checkRateLimit(ip)) return null;
+    const entry = rateLimitStore.get(ip)!;
+    const retryAfterSeconds = Math.max(
+        1,
+        Math.ceil((entry.windowStart + RATE_LIMIT_WINDOW_MS - Date.now()) / 1000),
+    );
+    return new NextResponse('Too Many Requests', {
+        status: 429,
+        headers: { 'Retry-After': String(retryAfterSeconds) },
+    });
+}
 
-    const cached = CV_BUFFER_CACHE.get(locale);
-    if (cached) {
-        return new NextResponse(cached, {
-            status: 200,
-            headers: buildPdfHeaders(),
-        });
-    }
-
+async function renderCvResponse(locale: SupportedLocale): Promise<NextResponse> {
     try {
         const messages = MESSAGES_MAP[locale];
         const photoSrc = await getPhotoSrc();
@@ -151,4 +140,24 @@ export async function GET(req: NextRequest) {
         });
         return new NextResponse('Internal Server Error', { status: 500 });
     }
+}
+
+export async function GET(req: NextRequest) {
+    const { searchParams } = req.nextUrl;
+    const rawLocale = searchParams.get('locale') ?? 'en';
+    const locale = resolveLocale(rawLocale);
+
+    const ip = ipAddress(req) ?? '127.0.0.1';
+    const rateLimitResponse = rateLimitGuard(ip);
+    if (rateLimitResponse) return rateLimitResponse;
+
+    const cached = CV_BUFFER_CACHE.get(locale);
+    if (cached) {
+        return new NextResponse(cached, {
+            status: 200,
+            headers: buildPdfHeaders(),
+        });
+    }
+
+    return renderCvResponse(locale);
 }
