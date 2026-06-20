@@ -1,4 +1,4 @@
-import { useTranslations, useLocale } from 'next-intl';
+import { useTranslations, useLocale, useMessages } from 'next-intl';
 import { projects } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import { TechList } from '@/components/ui/TechList';
@@ -8,9 +8,10 @@ interface ProjectCardProps {
     project: ProjectItem;
     presentLabel: string;
     locale: string;
+    description?: string;
 }
 
-function ProjectCard({ project, presentLabel, locale }: Readonly<ProjectCardProps>) {
+function ProjectCard({ project, presentLabel, locale, description }: Readonly<ProjectCardProps>) {
     return (
         <div key={project.id} className='tidy-grid-item sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
             <sgds-card suppressHydrationWarning>
@@ -34,9 +35,9 @@ function ProjectCard({ project, presentLabel, locale }: Readonly<ProjectCardProp
                     <p className='sgds:text-label-sm sgds:text-primary sgds:font-semibold sgds:mb-component-sm'>
                         {translatePeriod(project.period.replace('Present', presentLabel), locale)}
                     </p>
-                    {project.description && (
+                    {description && (
                         <p className='sgds:text-body-md sgds:text-body-default sgds:mb-component-sm sgds:leading-xs'>
-                            {project.description}
+                            {description}
                         </p>
                     )}
                     <TechList items={project.tech} />
@@ -46,9 +47,24 @@ function ProjectCard({ project, presentLabel, locale }: Readonly<ProjectCardProp
     );
 }
 
+function resolveProjectDescription(
+    messages: ReturnType<typeof useMessages>,
+    projectId: string,
+): string | undefined {
+    const items = (messages as Record<string, unknown>)?.projects;
+    if (!items || typeof items !== 'object') return undefined;
+    const itemsMap = (items as Record<string, unknown>)?.items;
+    if (!itemsMap || typeof itemsMap !== 'object') return undefined;
+    const projectEntry = (itemsMap as Record<string, unknown>)[projectId];
+    if (!projectEntry || typeof projectEntry !== 'object') return undefined;
+    const desc = (projectEntry as Record<string, unknown>).description;
+    return typeof desc === 'string' && desc.length > 0 ? desc : undefined;
+}
+
 export default function Projects() {
     const t = useTranslations('projects');
     const locale = useLocale();
+    const messages = useMessages();
 
     return (
         <section id='projects' className='sgds:py-layout-lg sgds:bg-alternate'>
@@ -63,6 +79,7 @@ export default function Projects() {
                             project={project}
                             presentLabel={t('present')}
                             locale={locale}
+                            description={resolveProjectDescription(messages, project.id)}
                         />
                     ))}
                 </div>
