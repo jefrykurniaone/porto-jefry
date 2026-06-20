@@ -2,6 +2,33 @@
 
 import { useEffect, RefObject } from 'react';
 
+function handleFocusTrapKeyDown(
+    e: KeyboardEvent,
+    focusable: HTMLElement[],
+    onClose: () => void,
+    toggleRef: RefObject<HTMLButtonElement>
+): void {
+    if (e.key === 'Escape') {
+        onClose();
+        toggleRef.current?.focus();
+        return;
+    }
+    if (e.key !== 'Tab' || focusable.length === 0) return;
+
+    const first = focusable[0];
+    const last = focusable.at(-1);
+
+    if (e.shiftKey) {
+        if (document.activeElement === first) {
+            e.preventDefault();
+            last?.focus();
+        }
+    } else if (document.activeElement === last) {
+        e.preventDefault();
+        first?.focus();
+    }
+}
+
 /**
  * Traps keyboard focus within a mobile menu when it is open.
  * Handles:
@@ -26,29 +53,10 @@ export function useFocusTrap(
         );
         focusable[0]?.focus();
 
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') {
-                onClose();
-                toggleRef.current?.focus();
-                return;
-            }
-            if (e.key !== 'Tab' || focusable.length === 0) return;
+        const handler = (e: KeyboardEvent) =>
+            handleFocusTrapKeyDown(e, focusable, onClose, toggleRef);
 
-            const first = focusable[0];
-            const last = focusable.at(-1);
-
-            if (e.shiftKey) {
-                if (document.activeElement === first) {
-                    e.preventDefault();
-                    last?.focus();
-                }
-            } else if (document.activeElement === last) {
-                e.preventDefault();
-                first?.focus();
-            }
-        };
-
-        document.addEventListener('keydown', handleKeyDown);
-        return () => document.removeEventListener('keydown', handleKeyDown);
+        document.addEventListener('keydown', handler);
+        return () => document.removeEventListener('keydown', handler);
     }, [isOpen, menuRef, toggleRef, onClose]);
 }
