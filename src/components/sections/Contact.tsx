@@ -1,5 +1,4 @@
 import { useTranslations } from 'next-intl';
-import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
     CONTACT_EMAIL,
@@ -7,8 +6,6 @@ import {
     CONTACT_PHONE_DISPLAY,
     CONTACT_LINKEDIN_URL,
     CONTACT_LINKEDIN_DISPLAY,
-    CONTACT_GITHUB_URL,
-    CONTACT_GITHUB_DISPLAY,
 } from '@/data/contact';
 
 interface ContactLinkItem {
@@ -74,13 +71,6 @@ function buildContactLinks(t: TranslateFn): ContactLinkItem[] {
             icon: <LinkedInIcon size={24} aria-hidden='true' />,
             isExternal: true,
         },
-        {
-            label: t('github_label'),
-            href: CONTACT_GITHUB_URL,
-            value: CONTACT_GITHUB_DISPLAY,
-            icon: <GitHubIcon size={24} aria-hidden='true' />,
-            isExternal: true,
-        },
     ];
 }
 
@@ -98,7 +88,7 @@ export default function Contact() {
                 </p>
                 <div className='sgds-grid'>
                     {links.map((link) => (
-                        <div key={link.href} className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-3'>
+                        <div key={link.href} className='sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
                             <ContactCard {...link} />
                         </div>
                     ))}
