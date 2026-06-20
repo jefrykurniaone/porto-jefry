@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
 status: executing
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-06-20T09:07:24.057Z"
-last_activity: 2026-06-20 -- Phase 06 execution started
+stopped_at: Completed 06-03-PLAN.md
+last_updated: "2026-06-20T16:20:00Z"
+last_activity: 2026-06-20 -- Phase 06 plan 03 complete
 progress:
   total_phases: 3
   completed_phases: 0
   total_plans: 6
-  completed_plans: 2
-  percent: 0
+  completed_plans: 3
+  percent: 17
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 ## Current Position
 
-Phase: 06 (look-feel-polish) — EXECUTING
-Plan: 3 of 3
-Status: Ready to execute
-Last activity: 2026-06-20 -- Phase 06 execution started
+Phase: 06 (look-feel-polish) — COMPLETED
+Plan: 3 of 3 — ALL DONE
+Status: Phase 06 complete; ready for Phase 07
+Last activity: 2026-06-20 -- Phase 06 plan 03 complete
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 17%
 
 ## Milestone History
 
@@ -84,11 +84,12 @@ Logged in PROJECT.md Key Decisions table.
 
 ## Session Continuity
 
-Last session: 2026-06-20T09:07:24.049Z
-Stopped at: Completed 06-02-PLAN.md
+Last session: 2026-06-20T16:20:00Z
+Stopped at: Completed 06-03-PLAN.md (Phase 06 complete)
 Resume file: None
 
 ## Decisions
 
 - [Phase ?]: Hero CTA sizing unified: min-width 11.5rem + width auto + white-space nowrap on .hero-cta-link; sgds-button aligned to 3rem height and same min-width
 - [Phase ?]: Hero CTA hierarchy: CV sgds-button set to variant=outline so visual reads as 1 filled primary (View My Work) + 2 outline (Download CV, Contact Me)
+- [Phase 06-03]: sgds-switch wired via addEventListener callback ref (quoted JSX attrs invalid); ThemeSwitchSkeleton extracted for 40-line limit; pill uses native buttons with aria-pressed; Navbar gap-component-xs

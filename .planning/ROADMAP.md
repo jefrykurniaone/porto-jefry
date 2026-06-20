@@ -28,7 +28,7 @@ Full phase details: `milestones/v1.3-ROADMAP.md`. Production CSP/theme-init smok
 
 Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal to **international employers**. Three independently-shippable phases, each on its own branch (`branching_strategy: "phase"`).
 
-- [ ] **Phase 6: Look & Feel Polish** 🔵 **(CURRENT PRIORITY)** — fix muted-text contrast (WCAG AA), rebalance the three hero CTAs (no wrap, equal size), redesign the theme/language toggles (sliding switch + segmented EN|ID pill)
+- [x] **Phase 6: Look & Feel Polish** ✅ **(COMPLETE)** — fix muted-text contrast (WCAG AA), rebalance the three hero CTAs (no wrap, equal size), redesign the theme/language toggles (sliding switch + segmented EN|ID pill)
 - [ ] **Phase 7: Information Architecture** — move the GitHub link from Contact to About
 - [ ] **Phase 8: International Content Overhaul** — rewrite all prose in a natural humanized voice, add a remote/global-availability signal, add bilingual project descriptions, fix education-major English
 
@@ -49,7 +49,7 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 
 - [x] 06-01-PLAN.md — Contrast & readability: `--sgds-color-muted` token override (UI-05)
 - [x] 06-02-PLAN.md — Hero CTA rebalance: equal-sized, no-wrap buttons (UI-06)
-- [ ] 06-03-PLAN.md — Toggle redesign: theme slider + language EN|ID pill (UI-07)
+- [x] 06-03-PLAN.md — Toggle redesign: theme slider + language EN|ID pill (UI-07)
 
 #### Phase 7: Information Architecture
 
@@ -99,6 +99,6 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 | 5. SGDS Migration | v1.3 | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | v1.3 | 3/3 | ✅ Complete | 2026-06-10 |
 | 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
-| 6. Look & Feel Polish | v1.4 | 2/3 | In Progress|  |
+| 6. Look & Feel Polish | v1.4 | 3/3 | ✅ Complete | 2026-06-20 |
 | 7. Information Architecture | v1.4 | 0/1 | 🔵 Planned | — |
 | 8. International Content Overhaul | v1.4 | 0/2 | 🔵 Planned | — |
