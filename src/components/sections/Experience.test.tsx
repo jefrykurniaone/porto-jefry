@@ -32,7 +32,7 @@ describe('Experience', () => {
 
     it('renders translated bullet points', () => {
         renderExperience();
-        expect(screen.getByText(/Designing and developing backend systems/)).toBeInTheDocument();
+        expect(screen.getByText(/Build and maintain backend features/)).toBeInTheDocument();
     });
 
     it('renders timeline rail and section anchor', () => {

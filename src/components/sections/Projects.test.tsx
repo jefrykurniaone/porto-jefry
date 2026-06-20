@@ -52,14 +52,21 @@ describe('Projects', () => {
         });
     });
 
-    it('renders no project descriptions (none defined in i18n yet)', () => {
+    it('renders a description for every project from i18n', () => {
         const { container } = renderProjects();
-        // Descriptions are read from i18n via resolveProjectDescription; no description
-        // keys exist in en.json yet, so no description paragraphs should be rendered.
+        // Descriptions are read from i18n via resolveProjectDescription; every project
+        // now has a projects.items.<id>.description key, so each card renders one.
         const descParas = container.querySelectorAll(
             'p.sgds\\:text-body-md.sgds\\:text-body-default.sgds\\:mb-component-sm',
         );
-        expect(descParas.length).toBe(0);
+        expect(descParas.length).toBe(projects.length);
+    });
+
+    it('renders the actual description text for a known project', () => {
+        renderProjects();
+        expect(
+            screen.getByText(messages.projects.items['rbbr-super-bank'].description),
+        ).toBeInTheDocument();
     });
 
     it('renders all tech as plain text per project', () => {

@@ -22,7 +22,7 @@ describe('About', () => {
 
     it('renders translated description', () => {
         renderAbout();
-        expect(screen.getByText(/Results-driven Backend Developer/)).toBeInTheDocument();
+        expect(screen.getByText(/backend developer with over five years in \.NET/)).toBeInTheDocument();
     });
 
     it('renders sgds-card for the summary surface', () => {
