@@ -3,28 +3,39 @@
 import { useRouter, usePathname } from '@/i18n/routing';
 import { useLocale, useTranslations } from 'next-intl';
 
+const LOCALES = ['en', 'id'] as const;
+type Locale = typeof LOCALES[number];
+
 export default function LanguageToggle() {
-    const locale = useLocale();
+    const locale = useLocale() as Locale;
     const router = useRouter();
     const pathname = usePathname();
     const t = useTranslations('lang');
 
-    const toggleLocale = () => {
-        const nextLocale = locale === 'en' ? 'id' : 'en';
+    const handleLocaleClick = (nextLocale: Locale) => {
+        if (nextLocale === locale) return;
         router.replace(pathname, { locale: nextLocale });
     };
 
     return (
-        <sgds-button
-            type="button"
-            variant="outline"
-            tone="neutral"
-            size="sm"
-            onClick={toggleLocale}
+        <div
+            role="group"
             aria-label={t('switch')}
+            className='lang-pill'
             suppressHydrationWarning
         >
-            {locale === 'en' ? 'EN' : 'ID'}
-        </sgds-button>
+            {LOCALES.map((l) => (
+                <button
+                    key={l}
+                    type="button"
+                    className='lang-pill__btn'
+                    aria-pressed={locale === l}
+                    onClick={() => { handleLocaleClick(l); }}
+                    suppressHydrationWarning
+                >
+                    {l.toUpperCase()}
+                </button>
+            ))}
+        </div>
     );
 }
