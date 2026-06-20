@@ -163,7 +163,7 @@ className='bg-white dark:bg-gray-950 text-gray-900 dark:text-white'
 - Commit format: Conventional Commits
 - No direct commit/push to `main`/`master` — always create feature branch first before commit and merge to main via Pull Request
 - Each GSD phase gets its own branch (branching_strategy: "phase"). Branch name derived from phase slug.
-- After PR merge: delete only the remote branch (`git push origin --delete <branch>`). Do NOT delete the local branch.
+- After PR merge: delete both the remote branch (`git push origin --delete <branch>`) and the local branch (`git branch -d <branch>`, or `-D` if it was squash-merged).
 - PR must pass all CI checks before merge
 
 ### Dependencies
