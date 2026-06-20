@@ -40,18 +40,19 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - ✓ Four latent correctness defects fixed: button types, passive scroll listener, regex anchors, hash encoding (FIX-01..04) — Phase 1
 - ✓ User-visible CV download error feedback + branded locale-aware 404/error pages + ThemeToggle CLS fix (UX-01..04) — Phase 2
 - ✓ Full UI migrated to SGDS web components; Tailwind v3→v4; dark mode on SGDS theming; minimalist monochrome look (SGDS-01..05) — Phase 5
+- ✓ Muted text meets WCAG AA contrast (≥4.5:1) in light + dark via a single `--sgds-color-muted` override (UI-05) — v1.4 Phase 6
+- ✓ Hero CTAs equal-sized; "View My Work" never wraps; stack full-width below 512px (UI-06) — v1.4 Phase 6
+- ✓ Theme = sun/moon sliding switch; language = segmented EN|ID pill; both compact and in the navbar (UI-07) — v1.4 Phase 6
+- ✓ GitHub link moved from Contact to About; URL defined once in `data/contact.ts` (IA-01) — v1.4 Phase 7
+- ✓ Core prose humanized (natural, non-buzzword voice) + remote/international + relocation availability signal; EN/ID parity (CONTENT-01) — v1.4 Phase 8
+- ✓ 14 bilingual project descriptions via i18n; `Projects.tsx` reads them with a missing-key guard (CONTENT-02) — v1.4 Phase 8
+- ✓ Education majors read idiomatic English ("Diploma in Informatics Management", "Bachelor's in Information Systems") (CONTENT-03) — v1.4 Phase 8
 
 ### Active
 
-<!-- Current scope (v1.4 — polish-and-international-content) — readability, look & feel, content for international employers -->
+<!-- No active requirements — v1.4 shipped. Define the next milestone's scope via /gsd-new-milestone. -->
 
-- [ ] **UI-05**: Muted text meets WCAG AA contrast in light + dark — Phase 6
-- [ ] **UI-06**: Hero CTAs equal-sized, "View My Work" never wraps — Phase 6
-- [ ] **UI-07**: Theme = sliding switch, language = segmented EN|ID pill — Phase 6
-- [ ] **IA-01**: GitHub link moved from Contact to About — Phase 7
-- [ ] **CONTENT-01**: Prose rewritten (humanizer voice) + global-availability signal — Phase 8
-- [ ] **CONTENT-02**: Bilingual project descriptions via i18n — Phase 8
-- [ ] **CONTENT-03**: Education majors use idiomatic English — Phase 8
+(None — v1.4 complete. Candidates for the next milestone live under v2 Requirements in the archived `milestones/v1.4-REQUIREMENTS.md`. Run `/gsd-new-milestone` to define fresh requirements.)
 
 ### Out of Scope
 
@@ -70,7 +71,8 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - **Deployed at:** https://porto-jefry.vercel.app
 - **Runtime:** Vercel Edge/Serverless, Node.js ≥20
 - **Codebase map:** Completed 2026-06-02 — see `.planning/codebase/`
-- **Known tech debt:** In-memory rate limiter is serverless-unsafe; ExperienceMessages uses double cast; cv-styles.ts approaching 300-line limit; LAST_MODIFIED_DATE is stale
+- **Known tech debt:** In-memory rate limiter is serverless-unsafe (accepted-risk, SEC-03); `cv-styles.ts` approaching 300-line limit. (Resolved in v1.3: ExperienceMessages double-cast removed; LAST_MODIFIED_DATE now build-time codegen.)
+- **Owner follow-ups (v1.4):** verify the 14 drafted project descriptions (real client projects); optionally add real metrics to experience bullets
 - **Test infrastructure:** Vitest + Testing Library, 80% coverage thresholds enforced
 - **Branching:** Feature branches + PRs (no direct push to main)
 - **CI:** ESLint + TypeScript checks on every PR
@@ -94,7 +96,9 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 | @react-pdf/renderer for CV | No external service dependency, runs in-process | ✓ Good |
 | In-memory rate limiter | Simple for MVP; does not scale across serverless instances | ⚠️ Revisit |
 | `useMessages()` + double cast for Experience bullets | Workaround for untyped AbstractIntlMessages | ⚠️ Revisit |
-| Manual LAST_MODIFIED_DATE constant | Simple but requires manual updates | ⚠️ Revisit |
+| Manual LAST_MODIFIED_DATE constant | Simple but requires manual updates | ✓ Resolved v1.3 (build-time codegen) |
+| Humanize prose with free `blader/humanizer`, not the paid HumanizerAI API | Avoids API key, per-word credits, and sending content to a third-party detector-evasion service; a prompt-based voice guide is sufficient | ✓ Good (v1.4) |
+| AI narrative = agentic coding workflow (Claude/Copilot/OpenCode), not building AI features (Semantic Kernel/OpenAI) | Reflects how the owner actually works; Docker dropped (never used) | ✓ Good (v1.4) |
 
 ## Invariants
 
@@ -125,8 +129,8 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-**Shipped:** v1.3 — Improvement & Hardening (2026-06-20, tag `v1.3`). Full SGDS web-component migration (Tailwind v4, SGDS dark-mode theming, minimalist monochrome), security hardening, type-safety/code-quality, UX polish. Git tags: v1.1, v1.2, v1.3.
-**Next:** v1.4 — Polish & International Content (Phases 6-8): contrast/readability, hero CTA rebalance, toggle redesign, GitHub move, humanized international content.
+**Shipped:** v1.4 — Polish & International Content (2026-06-21, tag `v1.4`). WCAG-AA muted-text contrast, rebalanced hero CTAs, sliding theme switch + EN|ID language pill, GitHub link moved to About, and a full humanized-prose rewrite (natural voice, AI agentic coding workflow narrative, remote/relocation availability signal) with 14 bilingual project descriptions and idiomatic education terms. Git tags: v1.1, v1.2, v1.3, v1.4.
+**Next:** TBD — define via `/gsd-new-milestone`. Candidate scope (deferred to v2): CI Lighthouse/CWV checks, Playwright E2E, Dependabot, blog, testimonials, experience timeline, Core Web Vitals ≥90, progressive image loading.
 
 ---
-*Last updated: 2026-06-20 — milestone v1.3 closed & archived (aligned from internal "v1.0" to the git tag sequence); milestone v1.4 (polish-and-international-content) opened*
+*Last updated: 2026-06-21 — milestone v1.4 (polish-and-international-content) closed & archived*
