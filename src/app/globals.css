@@ -79,9 +79,9 @@
 
     .hero-download-button sgds-button::part(button) {
         box-sizing: border-box !important;
-        height: 2.75rem !important;
-        min-height: 2.75rem !important;
-        min-width: 10.5rem !important;
+        height: 3rem !important;
+        min-height: 3rem !important;
+        min-width: 11.5rem !important;
         padding: 0.625rem 1rem !important;
     }
 
@@ -102,7 +102,9 @@
         gap: 0.5rem !important;
         height: 3rem;
         min-height: 3rem;
-        width: 9.25rem;
+        min-width: 11.5rem;
+        width: auto;
+        white-space: nowrap;
         padding: 0.625rem 0.75rem;
         border-radius: var(--sgds-border-radius-md);
         transition: background-color 0.2s ease, opacity 0.2s ease;
