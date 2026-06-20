@@ -1,8 +1,9 @@
 ---
 phase: 06-look-feel-polish
 verified: 2026-06-20T00:00:00Z
-status: human_needed
+status: passed
 score: 4/4 must-haves verified
+human_verification_cleared: "06-UAT.md — 7/7 passed 2026-06-20 (incl. toggle-slide fix 68b1ed1)"
 overrides_applied: 0
 human_verification:
   - test: "Visual contrast check — muted text in light theme"

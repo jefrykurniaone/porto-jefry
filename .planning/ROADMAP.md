@@ -99,6 +99,6 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 | 5. SGDS Migration | v1.3 | 7/7 | ✅ Complete | 2026-06-08 |
 | 3. Security Hardening | v1.3 | 3/3 | ✅ Complete | 2026-06-10 |
 | 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
-| 6. Look & Feel Polish | v1.4 | 3/3 | ✅ Complete | 2026-06-20 |
+| 6. Look & Feel Polish | v1.4 | 3/3 | Complete    | 2026-06-20 |
 | 7. Information Architecture | v1.4 | 0/1 | 🔵 Planned | — |
 | 8. International Content Overhaul | v1.4 | 0/2 | 🔵 Planned | — |
