@@ -2,10 +2,10 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
-status: verifying
-stopped_at: Completed 07-01-PLAN.md (Phase 07 complete)
+status: in-progress
+stopped_at: Phase 07 complete; Phase 08 partial (CONTENT-03 + CONTENT-02 plumbing) — prose rewrite deferred
 last_updated: "2026-06-20T16:18:29.647Z"
-last_activity: 2026-06-20 -- Phase 07 execution started
+last_activity: 2026-06-20 -- Phases 07 & 08(partial) executed; preparing combined v1.4 PR
 progress:
   total_phases: 3
   completed_phases: 2
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 07 — information-architecture
+**Current focus:** Phase 08 — international-content (partial; prose rewrite deferred)
 
 ## Current Position
 
-Phase: 07 (information-architecture) — EXECUTING
-Plan: 1 of 1
-Status: Phase complete — ready for verification
-Last activity: 2026-06-20 -- Phase 07 execution started
+Phase: 08 (international-content) — PARTIAL
+Plan: 08-02 mechanical slice done (CONTENT-03 + CONTENT-02 plumbing); 08-01 + 14 project descriptions DEFERRED (humanizer/voice)
+Status: Phase 07 complete; Phase 08 partial — combined v1.4 PR (phases 6,7,8) being shipped
+Last activity: 2026-06-20 -- Phases 07 & 08(partial) executed
 
 Progress: [█░░░░░░░░░] 17%
 
