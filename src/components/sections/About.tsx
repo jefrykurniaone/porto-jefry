@@ -1,4 +1,5 @@
 import { useTranslations } from 'next-intl';
+import { GitHubIcon } from '@/components/icons/GitHubIcon';
 import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
     CONTACT_EMAIL,
@@ -6,15 +7,18 @@ import {
     CONTACT_PHONE_DISPLAY,
     CONTACT_LINKEDIN_URL,
     CONTACT_LINKEDIN_HANDLE,
+    CONTACT_GITHUB_URL,
+    CONTACT_GITHUB_HANDLE,
 } from '@/data/contact';
 
 interface AboutContactLinksProps {
     emailLabel: string;
     phoneLabel: string;
     linkedinLabel: string;
+    githubLabel: string;
 }
 
-function AboutContactLinks({ emailLabel, phoneLabel, linkedinLabel }: Readonly<AboutContactLinksProps>) {
+function AboutContactLinks({ emailLabel, phoneLabel, linkedinLabel, githubLabel }: Readonly<AboutContactLinksProps>) {
     return (
         <div slot='footer' className='sgds:flex sgds:flex-wrap sgds:gap-layout-sm'>
             <a
@@ -40,6 +44,15 @@ function AboutContactLinks({ emailLabel, phoneLabel, linkedinLabel }: Readonly<A
                 <LinkedInIcon size={18} aria-hidden='true' />
                 <span>{CONTACT_LINKEDIN_HANDLE}</span>
             </a>
+            <a
+                href={CONTACT_GITHUB_URL}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label={githubLabel}
+                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
+                <GitHubIcon size={18} aria-hidden='true' />
+                <span>{CONTACT_GITHUB_HANDLE}</span>
+            </a>
         </div>
     );
 }
@@ -62,6 +75,7 @@ export default function About() {
                             emailLabel={t('contact_email')}
                             phoneLabel={t('contact_phone')}
                             linkedinLabel={t('contact_linkedin')}
+                            githubLabel={t('contact_github')}
                         />
                     </sgds-card>
                 </div>
