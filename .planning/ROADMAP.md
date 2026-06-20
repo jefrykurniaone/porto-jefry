@@ -29,7 +29,7 @@ Full phase details: `milestones/v1.3-ROADMAP.md`. Production CSP/theme-init smok
 Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal to **international employers**. Three independently-shippable phases, each on its own branch (`branching_strategy: "phase"`).
 
 - [x] **Phase 6: Look & Feel Polish** ✅ **(COMPLETE)** — fix muted-text contrast (WCAG AA), rebalance the three hero CTAs (no wrap, equal size), redesign the theme/language toggles (sliding switch + segmented EN|ID pill)
-- [ ] **Phase 7: Information Architecture** — move the GitHub link from Contact to About
+- [x] **Phase 7: Information Architecture** — move the GitHub link from Contact to About (completed 2026-06-20)
 - [ ] **Phase 8: International Content Overhaul** — rewrite all prose in a natural humanized voice, add a remote/global-availability signal, add bilingual project descriptions, fix education-major English
 
 #### Phase 6: Look & Feel Polish 🔵 (CURRENT PRIORITY)
@@ -66,7 +66,7 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 
 **Plans**: 1
 
-- [ ] 07-01-PLAN.md — Move GitHub link Contact→About + i18n label key move + tests (IA-01)
+- [x] 07-01-PLAN.md — Move GitHub link Contact→About + i18n label key move + tests (IA-01)
 
 #### Phase 8: International Content Overhaul
 
@@ -100,5 +100,5 @@ Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal 
 | 3. Security Hardening | v1.3 | 3/3 | ✅ Complete | 2026-06-10 |
 | 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
 | 6. Look & Feel Polish | v1.4 | 3/3 | Complete    | 2026-06-20 |
-| 7. Information Architecture | v1.4 | 0/1 | 🔵 Planned | — |
+| 7. Information Architecture | v1.4 | 1/1 | Complete   | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 0/2 | 🔵 Planned | — |

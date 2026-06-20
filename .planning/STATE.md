@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
-status: executing
-stopped_at: Completed 06-03-PLAN.md (Phase 06 complete)
-last_updated: "2026-06-20T15:37:18.489Z"
-last_activity: 2026-06-20 -- Phase 07 planning complete
+status: verifying
+stopped_at: Completed 07-01-PLAN.md (Phase 07 complete)
+last_updated: "2026-06-20T16:18:29.647Z"
+last_activity: 2026-06-20 -- Phase 07 execution started
 progress:
   total_phases: 3
-  completed_phases: 1
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 3
-  percent: 33
+  completed_plans: 4
+  percent: 67
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 06 — look-feel-polish
+**Current focus:** Phase 07 — information-architecture
 
 ## Current Position
 
-Phase: 07
-Plan: Not started
-Status: Ready to execute
-Last activity: 2026-06-20 -- Phase 07 planning complete
+Phase: 07 (information-architecture) — EXECUTING
+Plan: 1 of 1
+Status: Phase complete — ready for verification
+Last activity: 2026-06-20 -- Phase 07 execution started
 
 Progress: [█░░░░░░░░░] 17%
 
@@ -81,11 +81,12 @@ Logged in PROJECT.md Key Decisions table.
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
 | Phase 06-look-feel-polish P01 | 600 | 2 tasks | 1 files |
 | Phase 06-look-feel-polish P02 | 5m | 3 tasks | 2 files |
+| Phase 07-information-architecture P01 | 15m | 3 tasks | 7 files |
 
 ## Session Continuity
 
-Last session: 2026-06-20T16:20:00Z
-Stopped at: Completed 06-03-PLAN.md (Phase 06 complete)
+Last session: 2026-06-20T16:18:29.632Z
+Stopped at: Completed 07-01-PLAN.md (Phase 07 complete)
 Resume file: None
 
 ## Decisions
@@ -93,3 +94,4 @@ Resume file: None
 - [Phase ?]: Hero CTA sizing unified: min-width 11.5rem + width auto + white-space nowrap on .hero-cta-link; sgds-button aligned to 3rem height and same min-width
 - [Phase ?]: Hero CTA hierarchy: CV sgds-button set to variant=outline so visual reads as 1 filled primary (View My Work) + 2 outline (Download CV, Contact Me)
 - [Phase 06-03]: sgds-switch wired via addEventListener callback ref (quoted JSX attrs invalid); ThemeSwitchSkeleton extracted for 40-line limit; pill uses native buttons with aria-pressed; Navbar gap-component-xs
+- [Phase ?]: IA-01 complete: GitHub moved from Contact to About; CONTACT_GITHUB_HANDLE added to data/contact.ts; label migrated to about.contact_github with EN/ID parity

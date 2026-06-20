@@ -50,7 +50,7 @@ Current milestone — **polish-and-international-content** (v1.4). Readability, 
 
 ### Information Architecture
 
-- [ ] **IA-01**: GitHub link is rendered in the About section and removed from the Contact section; the URL stays defined once in `src/data/contact.ts`
+- [x] **IA-01**: GitHub link is rendered in the About section and removed from the Contact section; the URL stays defined once in `src/data/contact.ts`
 
 ### Content
 
