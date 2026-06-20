@@ -21,7 +21,7 @@ export default function LanguageToggle() {
         <div
             role="group"
             aria-label={t('switch')}
-            className='lang-pill'
+            className='lang-pill sgds:text-body-sm'
             suppressHydrationWarning
         >
             {LOCALES.map((l) => (

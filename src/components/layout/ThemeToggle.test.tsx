@@ -1,6 +1,5 @@
-import { describe, it, expect, beforeEach } from 'vitest';
-import { render, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, waitFor, act } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '@/i18n/messages/en.json';
 import ThemeToggle from './ThemeToggle';
@@ -17,48 +16,95 @@ describe('ThemeToggle SGDS behavior', () => {
     beforeEach(() => {
         localStorage.clear();
         document.documentElement.classList.remove('sgds-night-theme');
+        vi.useFakeTimers();
     });
 
-    it('renders the sgds-icon-button control', () => {
-        const { container } = renderThemeToggle();
-        const btn = container.querySelector('sgds-icon-button');
-        expect(btn).toBeInTheDocument();
+    afterEach(() => {
+        vi.useRealTimers();
     });
 
-    it('has accessible aria-label from translations', () => {
+    it('renders the sgds-switch control after mount', async () => {
         const { container } = renderThemeToggle();
-        const btn = container.querySelector('sgds-icon-button');
-        expect(btn).toHaveAttribute('aria-label', 'Switch to dark mode');
+        // The component has an isMounted guard — tick timers to let useEffect run
+        await act(async () => { vi.runAllTimers(); });
+        const sw = container.querySelector('sgds-switch');
+        expect(sw).toBeInTheDocument();
     });
 
-    it('toggles to night on click, persists sgds-theme, and applies sgds-night-theme', async () => {
-        const user = userEvent.setup();
+    it('renders sun and moon sgds-icons flanking the switch', async () => {
         const { container } = renderThemeToggle();
-        const btn = container.querySelector('sgds-icon-button')!;
-        await user.click(btn);
+        await act(async () => { vi.runAllTimers(); });
+        const icons = container.querySelectorAll('sgds-icon');
+        const names = Array.from(icons).map((el) => el.getAttribute('name'));
+        expect(names).toContain('sun');
+        expect(names).toContain('moon');
+    });
+
+    it('switch has an accessible aria-label from translations', async () => {
+        const { container } = renderThemeToggle();
+        await act(async () => { vi.runAllTimers(); });
+        const sw = container.querySelector('sgds-switch');
+        expect(sw).toHaveAttribute('aria-label', 'Switch to dark mode');
+    });
+
+    it('switch checked attribute reflects day (false) by default', async () => {
+        const { container } = renderThemeToggle();
+        await act(async () => { vi.runAllTimers(); });
+        const sw = container.querySelector('sgds-switch');
+        // React serialises boolean false as the string "false" on web components
+        expect(sw).not.toHaveAttribute('checked', 'true');
+    });
+
+    it('dispatching sgds-change on the switch calls toggleTheme (night→day→night)', async () => {
+        vi.useRealTimers();
+        const { container } = renderThemeToggle();
+        await waitFor(() => {
+            expect(container.querySelector('sgds-switch')).toBeInTheDocument();
+        });
+
+        const sw = container.querySelector('sgds-switch')!;
+        // Simulate the sgds-change custom event that sgds-switch fires
+        await act(async () => {
+            sw.dispatchEvent(new CustomEvent('sgds-change', { bubbles: true }));
+        });
+
         expect(localStorage.getItem('sgds-theme')).toBe('night');
         expect(document.documentElement.classList.contains('sgds-night-theme')).toBe(true);
     });
 
-    it('toggles back to day on second click', async () => {
-        const user = userEvent.setup();
+    it('dispatching sgds-change twice toggles back to day', async () => {
+        vi.useRealTimers();
         const { container } = renderThemeToggle();
-        const btn = container.querySelector('sgds-icon-button')!;
-        await user.click(btn);
-        expect(localStorage.getItem('sgds-theme')).toBe('night');
-        await user.click(btn);
+        await waitFor(() => {
+            expect(container.querySelector('sgds-switch')).toBeInTheDocument();
+        });
+
+        const sw = container.querySelector('sgds-switch')!;
+        await act(async () => {
+            sw.dispatchEvent(new CustomEvent('sgds-change', { bubbles: true }));
+        });
+        await act(async () => {
+            sw.dispatchEvent(new CustomEvent('sgds-change', { bubbles: true }));
+        });
+
         expect(localStorage.getItem('sgds-theme')).toBe('day');
         expect(document.documentElement.classList.contains('sgds-night-theme')).toBe(false);
     });
 
-    it('updates aria-label after toggle to night', async () => {
-        const user = userEvent.setup();
+    it('aria-label updates after theme toggle to night', async () => {
+        vi.useRealTimers();
         const { container } = renderThemeToggle();
-        const btn = container.querySelector('sgds-icon-button')!;
-        expect(btn).toHaveAttribute('aria-label', 'Switch to dark mode');
-        await user.click(btn);
         await waitFor(() => {
-            expect(btn).toHaveAttribute('aria-label', 'Switch to light mode');
+            expect(container.querySelector('sgds-switch')).toBeInTheDocument();
+        });
+
+        const sw = container.querySelector('sgds-switch')!;
+        await act(async () => {
+            sw.dispatchEvent(new CustomEvent('sgds-change', { bubbles: true }));
+        });
+
+        await waitFor(() => {
+            expect(sw).toHaveAttribute('aria-label', 'Switch to light mode');
         });
     });
 });

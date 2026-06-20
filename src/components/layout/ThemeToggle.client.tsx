@@ -4,14 +4,22 @@ import { useState, useEffect, useCallback } from 'react';
 import { useSgdsTheme } from '@/hooks/useSgdsTheme';
 import { useTranslations } from 'next-intl';
 
+function ThemeSwitchSkeleton() {
+    return (
+        <div
+            style={{ width: '3.5rem', height: '1.5rem' }}
+            aria-hidden="true"
+            suppressHydrationWarning
+        />
+    );
+}
+
 export default function ThemeToggleClient() {
     const { theme, toggleTheme } = useSgdsTheme();
     const t = useTranslations('theme');
     const [isMounted, setIsMounted] = useState(false);
 
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    useEffect(() => { setIsMounted(true); }, []);
 
     const switchCallbackRef = useCallback((el: HTMLElement | null) => {
         if (!el) return;
@@ -20,18 +28,10 @@ export default function ThemeToggleClient() {
         switchEl.addEventListener('sgds-change', toggleTheme);
     }, [toggleTheme]);
 
+    if (!isMounted) return <ThemeSwitchSkeleton />;
+
     const isNight = theme === 'night';
     const ariaLabel = isNight ? t('toggle_light') : t('toggle_dark');
-
-    if (!isMounted) {
-        return (
-            <div
-                style={{ width: '3.5rem', height: '1.5rem' }}
-                aria-hidden="true"
-                suppressHydrationWarning
-            />
-        );
-    }
 
     return (
         <div
