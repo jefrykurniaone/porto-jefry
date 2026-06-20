@@ -36,7 +36,7 @@ result: [pending]
 
 ### 5. Theme toggle — sliding switch behavior
 expected: The sun/moon sgds-switch in the navbar slides when clicked, transitions the site between light and dark themes, and persists the choice across page reload (localStorage key "sgds-theme").
-result: [pending]
+result: passed — user reported the thumb did not slide; root-caused to React stripping the boolean `checked` attribute on the custom element. Fixed in 68b1ed1 (imperative property binding). Browser-verified: thumb slides left↔right on each click and restores the saved position after reload.
 
 ### 6. Language toggle — segmented pill visual and navigation
 expected: The EN|ID pill shows the active locale with a filled (primary) background and the inactive locale dimmed; clicking the inactive segment navigates to that locale and the indicator updates.
@@ -44,14 +44,14 @@ result: [pending]
 
 ### 7. ThemeToggle event listener cleanup — WR-01 regression check
 expected: In a browser with React Strict Mode (dev), toggling the theme once produces exactly one theme change (not two). Confirms the sgds-change listener is not double-bound (WR-01 from 06-REVIEW.md).
-result: [pending]
+result: passed — listener is now added in a useEffect that returns a removeEventListener cleanup (fixed in 68b1ed1). Browser-verified single toggle per click in dev.
 
 ## Summary
 
 total: 7
-passed: 0
+passed: 2
 issues: 0
-pending: 7
+pending: 5
 skipped: 0
 blocked: 0
 
