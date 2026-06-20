@@ -8,3 +8,4 @@ export const CONTACT_LINKEDIN_DISPLAY = 'linkedin.com/in/jefrykurniaone';
 export const CONTACT_LINKEDIN_HANDLE = 'jefrykurniaone';
 export const CONTACT_GITHUB_URL = 'https://github.com/jefrykurniaone/';
 export const CONTACT_GITHUB_DISPLAY = 'github.com/jefrykurniaone';
+export const CONTACT_GITHUB_HANDLE = 'jefrykurniaone';

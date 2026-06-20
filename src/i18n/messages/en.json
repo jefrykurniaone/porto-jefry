@@ -34,7 +34,8 @@
         "description": "Results-driven Backend Developer with 5+ years of expertise in .NET (C#, VB.NET) and Microsoft SQL Server, delivering production-grade applications across banking, insurance, HR, and government sectors. Currently building high-performance backend systems and RESTful APIs at PT Xtremax Teknologi Indonesia, with prior experience leading technical teams through full enterprise software lifecycles. Beyond core .NET development, I continuously expand my technical horizon — building full-stack applications with React and Next.js, containerising services with Docker, and exploring AI integration using Microsoft Semantic Kernel and OpenAI APIs. Passionate about clean, maintainable code and software solutions that genuinely drive business value.",
         "contact_email": "Email",
         "contact_phone": "Phone",
-        "contact_linkedin": "LinkedIn"
+        "contact_linkedin": "LinkedIn",
+        "contact_github": "GitHub"
     },
     "experience": {
         "title": "Professional Experience",
@@ -139,8 +140,7 @@
         "description": "I'm always open to discussing new opportunities, projects, or just having a chat about technology.",
         "email_label": "Email Me",
         "phone_label": "Call Me",
-        "linkedin_label": "LinkedIn Profile",
-        "github_label": "GitHub"
+        "linkedin_label": "LinkedIn Profile"
     },
     "footer": {
         "built_with": "Built with Next.js & SGDS",

@@ -22,6 +22,12 @@
     /* Links default to blue (independent of primary) — neutralise them too. */
     --sgds-link-color-default: #1a1a1a;
     --sgds-link-color-emphasis: #4a4a4a;
+
+    /* UI-05 WCAG AA fix: SGDS default --sgds-color-muted (#c6c6c6) is ~1.6:1 on
+       white — far below AA 4.5:1. Override to #5f5f5f (~7.95:1 on #ffffff) so
+       every sgds:text-muted site (Hero h2/subtitle, Contact, Projects, Education,
+       Certifications, 404, error) passes without changing component classNames. */
+    --sgds-color-muted: #5f5f5f;
 }
 
 :root.sgds-night-theme {
@@ -32,6 +38,11 @@
 
     --sgds-link-color-default: #dfdfdf;
     --sgds-link-color-emphasis: #f3f3f3;
+
+    /* UI-05 WCAG AA fix: SGDS night default (#3b3b3b) is ~1.6:1 on #0e0e0e.
+       Override to #b0b0b0 (~9.78:1 on #0e0e0e) — clearly lighter than body
+       text (#f3f3f3) while remaining visibly subordinate to it. */
+    --sgds-color-muted: #b0b0b0;
 }
 
 @layer base {
@@ -68,9 +79,9 @@
 
     .hero-download-button sgds-button::part(button) {
         box-sizing: border-box !important;
-        height: 2.75rem !important;
-        min-height: 2.75rem !important;
-        min-width: 10.5rem !important;
+        height: 3rem !important;
+        min-height: 3rem !important;
+        min-width: 11.5rem !important;
         padding: 0.625rem 1rem !important;
     }
 
@@ -91,7 +102,9 @@
         gap: 0.5rem !important;
         height: 3rem;
         min-height: 3rem;
-        width: 9.25rem;
+        min-width: 11.5rem;
+        width: auto;
+        white-space: nowrap;
         padding: 0.625rem 0.75rem;
         border-radius: var(--sgds-border-radius-md);
         transition: background-color 0.2s ease, opacity 0.2s ease;
@@ -212,5 +225,47 @@
     /* ── Hero text balance ── */
     .hero-name {
         text-wrap: balance;
+    }
+
+    /* ── Language pill toggle (segmented EN|ID) ── */
+    .lang-pill {
+        display: inline-flex;
+        border-radius: var(--sgds-border-radius-pill, 9999px);
+        border: 1px solid color-mix(in srgb, var(--sgds-color-default) 25%, transparent);
+        overflow: hidden;
+        height: 1.75rem;
+    }
+
+    .lang-pill__btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 0.625rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        font-size: 0.75rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        color: var(--sgds-color-muted);
+        line-height: 1;
+        transition: background-color 0.15s ease, color 0.15s ease;
+        min-width: 2rem;
+    }
+
+    .lang-pill__btn:focus-visible {
+        outline: 2px solid var(--sgds-primary-border-color-default);
+        outline-offset: -2px;
+    }
+
+    .lang-pill__btn[aria-pressed="true"] {
+        background: var(--sgds-primary-bg-default);
+        color: var(--sgds-color-fixed-light);
+        border-radius: var(--sgds-border-radius-pill, 9999px);
+    }
+
+    .lang-pill__btn[aria-pressed="false"]:hover {
+        background: color-mix(in srgb, var(--sgds-color-default) 8%, transparent);
+        color: var(--sgds-color-default);
     }
 }

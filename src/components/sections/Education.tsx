@@ -20,7 +20,7 @@ function EducationCard({ edu, gpaLabel, locale }: Readonly<EducationCardProps>) 
                         {translatePeriod(edu.period, locale)}
                     </p>
                     <p className='sgds:text-body-md sgds:text-body-default'>
-                        {edu.degree}{edu.major && ` — ${edu.major}`}
+                        {edu.degree}{edu.major && ` in ${edu.major}`}
                     </p>
                     {edu.gpa && (
                         <p className='sgds:text-label-sm sgds:text-muted sgds:mt-component-xs'>

@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.4
-milestone_name: polish-and-international-content
-status: planning
-stopped_at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
-last_updated: "2026-06-20T02:00:00.000Z"
-last_activity: 2026-06-20
+milestone_name: — Polish & International Content
+status: in-progress
+stopped_at: Phase 07 complete; Phase 08 partial (CONTENT-03 + CONTENT-02 plumbing) — prose rewrite deferred
+last_updated: "2026-06-20T16:18:29.647Z"
+last_activity: 2026-06-20 -- Phases 07 & 08(partial) executed; preparing combined v1.4 PR
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 2
   total_plans: 6
-  completed_plans: 0
-  percent: 0
+  completed_plans: 4
+  percent: 67
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-20)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 06 — look-feel-polish (contrast, hero CTAs, toggle controls)
+**Current focus:** Phase 08 — international-content (partial; prose rewrite deferred)
 
 ## Current Position
 
-Phase: 06
-Plan: Not started
-Status: Milestone v1.4 planned — ready to execute Phase 6
-Last activity: 2026-06-20
+Phase: 08 (international-content) — PARTIAL
+Plan: 08-02 mechanical slice done (CONTENT-03 + CONTENT-02 plumbing); 08-01 + 14 project descriptions DEFERRED (humanizer/voice)
+Status: Phase 07 complete; Phase 08 partial — combined v1.4 PR (phases 6,7,8) being shipped
+Last activity: 2026-06-20 -- Phases 07 & 08(partial) executed
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [█░░░░░░░░░] 17%
 
 ## Milestone History
 
@@ -79,9 +79,19 @@ Logged in PROJECT.md Key Decisions table.
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
+| Phase 06-look-feel-polish P01 | 600 | 2 tasks | 1 files |
+| Phase 06-look-feel-polish P02 | 5m | 3 tasks | 2 files |
+| Phase 07-information-architecture P01 | 15m | 3 tasks | 7 files |
 
 ## Session Continuity
 
-Last session: 2026-06-20T02:00:00.000Z
-Stopped at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
+Last session: 2026-06-20T16:18:29.632Z
+Stopped at: Completed 07-01-PLAN.md (Phase 07 complete)
 Resume file: None
+
+## Decisions
+
+- [Phase ?]: Hero CTA sizing unified: min-width 11.5rem + width auto + white-space nowrap on .hero-cta-link; sgds-button aligned to 3rem height and same min-width
+- [Phase ?]: Hero CTA hierarchy: CV sgds-button set to variant=outline so visual reads as 1 filled primary (View My Work) + 2 outline (Download CV, Contact Me)
+- [Phase 06-03]: sgds-switch wired via addEventListener callback ref (quoted JSX attrs invalid); ThemeSwitchSkeleton extracted for 40-line limit; pill uses native buttons with aria-pressed; Navbar gap-component-xs
+- [Phase ?]: IA-01 complete: GitHub moved from Contact to About; CONTACT_GITHUB_HANDLE added to data/contact.ts; label migrated to about.contact_github with EN/ID parity

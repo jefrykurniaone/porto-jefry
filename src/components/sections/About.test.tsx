@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
 import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
+import { CONTACT_GITHUB_URL, CONTACT_GITHUB_HANDLE } from '@/data/contact';
 import About from './About';
 
 function renderAbout() {
@@ -54,7 +55,22 @@ describe('About', () => {
 
     it('renders LinkedIn handle text', () => {
         renderAbout();
-        expect(screen.getByText('jefrykurniaone')).toBeInTheDocument();
+        const handles = screen.getAllByText('jefrykurniaone');
+        expect(handles.length).toBeGreaterThanOrEqual(1);
+    });
+
+    it('renders GitHub link with correct href', () => {
+        renderAbout();
+        const link = document.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`);
+        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('target', '_blank');
+        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    it('renders GitHub handle text', () => {
+        renderAbout();
+        const handles = screen.getAllByText(CONTACT_GITHUB_HANDLE);
+        expect(handles.length).toBeGreaterThanOrEqual(1);
     });
 
     it('renders translated aria-labels on contact links', () => {
@@ -65,6 +81,8 @@ describe('About', () => {
         expect(phoneLink).toHaveAttribute('aria-label', 'Phone');
         const linkedinLink = document.querySelector('a[href*="linkedin.com"]');
         expect(linkedinLink).toHaveAttribute('aria-label', 'LinkedIn');
+        const githubLink = document.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`);
+        expect(githubLink).toHaveAttribute('aria-label', 'GitHub');
     });
 
     it('source contains sgds-card', () => {

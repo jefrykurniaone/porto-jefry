@@ -10,7 +10,6 @@ import {
     CONTACT_LINKEDIN_URL,
     CONTACT_LINKEDIN_DISPLAY,
     CONTACT_GITHUB_URL,
-    CONTACT_GITHUB_DISPLAY,
 } from '@/data/contact';
 import Contact from './Contact';
 
@@ -65,17 +64,10 @@ describe('Contact', () => {
         expect(screen.getByText(CONTACT_LINKEDIN_DISPLAY)).toBeInTheDocument();
     });
 
-    it('renders GitHub link with external link guards', () => {
+    it('does not render GitHub link in contact section', () => {
         renderContact();
         const link = document.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`);
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('target', '_blank');
-        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-    });
-
-    it('renders GitHub display value', () => {
-        renderContact();
-        expect(screen.getByText(CONTACT_GITHUB_DISPLAY)).toBeInTheDocument();
+        expect(link).not.toBeInTheDocument();
     });
 
     it('renders translated labels', () => {
@@ -83,13 +75,12 @@ describe('Contact', () => {
         expect(screen.getByText('Email Me')).toBeInTheDocument();
         expect(screen.getByText('Call Me')).toBeInTheDocument();
         expect(screen.getByText('LinkedIn Profile')).toBeInTheDocument();
-        expect(screen.getByText('GitHub')).toBeInTheDocument();
     });
 
     it('renders sgds-card for each contact method', () => {
         renderContact();
         const cards = document.querySelectorAll('sgds-card');
-        expect(cards.length).toBe(4);
+        expect(cards.length).toBe(3);
     });
 
     it('renders sgds-icon for mail and phone', () => {
@@ -115,9 +106,9 @@ describe('Contact', () => {
         expect(source).toContain('noopener noreferrer');
     });
 
-    it('source preserves GitHubIcon', () => {
+    it('source does not contain GitHubIcon (moved to About)', () => {
         const source = fs.readFileSync('src/components/sections/Contact.tsx', 'utf-8');
-        expect(source).toContain('GitHubIcon');
+        expect(source).not.toContain('GitHubIcon');
     });
 
     it('source preserves LinkedInIcon', () => {

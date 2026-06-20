@@ -52,13 +52,14 @@ describe('Projects', () => {
         });
     });
 
-    it('renders project descriptions when present', () => {
-        renderProjects();
-        projects
-            .filter((p) => p.description)
-            .forEach((project) => {
-                expect(screen.getByText(project.description!)).toBeInTheDocument();
-            });
+    it('renders no project descriptions (none defined in i18n yet)', () => {
+        const { container } = renderProjects();
+        // Descriptions are read from i18n via resolveProjectDescription; no description
+        // keys exist in en.json yet, so no description paragraphs should be rendered.
+        const descParas = container.querySelectorAll(
+            'p.sgds\\:text-body-md.sgds\\:text-body-default.sgds\\:mb-component-sm',
+        );
+        expect(descParas.length).toBe(0);
     });
 
     it('renders all tech as plain text per project', () => {

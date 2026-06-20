@@ -123,7 +123,7 @@ export default function Navbar() {
             <sgds-mainnav expand="always" suppressHydrationWarning>
                 <strong slot="brand" className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>JK</strong>
                 <DesktopNavLinks onNavClick={scrollTo} />
-                <div slot="end" className='sgds:flex sgds:items-center sgds:gap-component-sm'>
+                <div slot="end" className='sgds:flex sgds:items-center sgds:gap-component-xs'>
                     <ThemeToggle />
                     <LanguageToggle />
                     <HamburgerButton isOpen={isOpen} toggleRef={toggleRef} onToggle={() => setIsOpen(!isOpen)} label={t('toggle_menu')} />
