@@ -2,7 +2,7 @@
 
 ## What This Is
 
-A personal portfolio website for Jefry, built with Next.js 14 App Router, TypeScript (strict), and Tailwind CSS. Deployed on Vercel. Supports EN/ID localization via next-intl, dark/light mode via next-themes, and includes a CV PDF download feature powered by @react-pdf/renderer.
+A personal portfolio website for Jefry, built with Next.js 14 App Router, TypeScript (strict), and Tailwind CSS v4. Deployed on Vercel. The UI is built on the Singapore Design System (SGDS) web components with a minimalist monochrome look. Supports EN/ID localization via next-intl, dark/light mode via SGDS theming (`.sgds-night-theme` class, persisted in localStorage), and includes a CV PDF download feature powered by @react-pdf/renderer.
 
 ## Core Value
 
@@ -23,7 +23,7 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - ✓ Certifications section — existing
 - ✓ Contact section with social/email links — existing
 - ✓ EN/ID bilingual localization via next-intl — existing
-- ✓ Dark/light mode toggle via next-themes — existing
+- ✓ Dark/light mode toggle via SGDS theming (`.sgds-night-theme`) — migrated from next-themes in Phase 5
 - ✓ CV PDF download (GET /api/generate-cv?locale=en|id) — existing
 - ✓ Responsive mobile/desktop layout via Tailwind — existing
 - ✓ SEO: sitemap, metadata, hreflang alternates — existing
@@ -37,17 +37,21 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 - ✓ `ExperienceMessages` exported interface; `useMessages()` double-cast removed in favor of `useTranslations` typed access (TYPE-01, TYPE-02) — Phase 4
 - ✓ `eslint-plugin-sonarjs` active; `max-lines`, `max-lines-per-function`, and `no-nested-template-literals` enforced at error level (QUAL-02) — Phase 4
 - ✓ Shared tech stacks in `projects.ts` extracted as named `TECH_*` constants, no duplicated arrays (QUAL-03) — Phase 4
+- ✓ Four latent correctness defects fixed: button types, passive scroll listener, regex anchors, hash encoding (FIX-01..04) — Phase 1
+- ✓ User-visible CV download error feedback + branded locale-aware 404/error pages + ThemeToggle CLS fix (UX-01..04) — Phase 2
+- ✓ Full UI migrated to SGDS web components; Tailwind v3→v4; dark mode on SGDS theming; minimalist monochrome look (SGDS-01..05) — Phase 5
 
 ### Active
 
-<!-- Current scope — addressing known issues, hardening, and UX polish -->
+<!-- Current scope (v1.4 — polish-and-international-content) — readability, look & feel, content for international employers -->
 
-- [ ] User-visible error feedback on CV download failure
-- [ ] Custom branded 404 and error pages (locale-aware)
-- [ ] Fix `type="button"` missing on LanguageToggle and ThemeToggle
-- [ ] Fix Navbar scroll listener missing `passive: true`
-- [ ] Fix ThemeToggle layout shift (CLS) during hydration
-- [ ] Fix translatePeriod regex (add word-boundary anchors)
+- [ ] **UI-05**: Muted text meets WCAG AA contrast in light + dark — Phase 6
+- [ ] **UI-06**: Hero CTAs equal-sized, "View My Work" never wraps — Phase 6
+- [ ] **UI-07**: Theme = sliding switch, language = segmented EN|ID pill — Phase 6
+- [ ] **IA-01**: GitHub link moved from Contact to About — Phase 7
+- [ ] **CONTENT-01**: Prose rewritten (humanizer voice) + global-availability signal — Phase 8
+- [ ] **CONTENT-02**: Bilingual project descriptions via i18n — Phase 8
+- [ ] **CONTENT-03**: Education majors use idiomatic English — Phase 8
 
 ### Out of Scope
 
@@ -119,5 +123,10 @@ This document evolves at phase transitions and milestone boundaries.
 3. Audit Out of Scope — reasons still valid?
 4. Update Context with current state
 
+## Current State
+
+**Shipped:** v1.3 — Improvement & Hardening (2026-06-20, tag `v1.3`). Full SGDS web-component migration (Tailwind v4, SGDS dark-mode theming, minimalist monochrome), security hardening, type-safety/code-quality, UX polish. Git tags: v1.1, v1.2, v1.3.
+**Next:** v1.4 — Polish & International Content (Phases 6-8): contrast/readability, hero CTA rebalance, toggle redesign, GitHub move, humanized international content.
+
 ---
-*Last updated: 2026-06-20 after Phase 4 (code-quality-type-safety) completion*
+*Last updated: 2026-06-20 — milestone v1.3 closed & archived (aligned from internal "v1.0" to the git tag sequence); milestone v1.4 (polish-and-international-content) opened*

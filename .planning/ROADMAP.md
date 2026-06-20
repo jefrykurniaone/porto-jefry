@@ -1,143 +1,104 @@
 # Roadmap: porto-jefry
 
-## Overview
+## Milestones
 
-Improvement and hardening milestone for an existing, deployed personal portfolio (https://porto-jefry.vercel.app). Phases progress from low-risk quick fixes through UX polish, SGDS component migration (showcase for GovTech applications), security hardening, and type-safety / code-quality improvements — each phase independently shippable via PR.
+- ✅ **v1.1 New Features** — back-to-top, test suite, CI (tagged 2026-05-26)
+- ✅ **v1.2 Security & API Hardening** — Phase 1 (tagged 2026-05-26)
+- ✅ **v1.3 Improvement & Hardening** — Phases 1-5 (shipped 2026-06-20)
+- 🔵 **v1.4 Polish & International Content** — Phases 6-8 (current)
+
+Full milestone archives in `.planning/milestones/`. Versioning is aligned to git tags; the improvement+SGDS milestone tracked internally as "v1.0" was closed as **v1.3**.
 
 ## Phases
 
-**Phase Numbering:**
+<details>
+<summary>✅ v1.3 Improvement & Hardening (Phases 1-5) — SHIPPED 2026-06-20</summary>
 
-- Integer phases (1, 2, 3, 4, 5, 6, 7): Planned milestone work
-- Decimal phases (e.g., 2.1): Urgent insertions (marked with INSERTED)
+- [x] **Phase 1: Quick Bug Fixes** (1/1) — completed 2026-06-03 — button types, passive listener, regex anchors, hash encoding (FIX-01..04)
+- [x] **Phase 2: UX Polish** (4/4) — completed 2026-06-03 — CV error feedback, branded 404/error pages, ThemeToggle CLS (UX-01..04)
+- [x] **Phase 5: SGDS Migration** (7/7) — completed 2026-06-08 — full SGDS web-component migration, Tailwind v4, SGDS dark-mode theming (SGDS-01..05)
+- [x] **Phase 3: Security Hardening** (3/3) — completed 2026-06-10 — trusted-IP rate limiting, CSP re-audit, SEC-03 accepted-risk (SEC-01..03)
+- [x] **Phase 4: Code Quality & Type Safety** (6/6) — completed 2026-06-20 — exported `ExperienceMessages`, build-time date codegen, sonarjs lint gates, `TECH_*` constants (TYPE-01..02, QUAL-01..03)
 
-Decimal phases appear between their surrounding integers in numeric order.
+Full phase details: `milestones/v1.3-ROADMAP.md`. Production CSP/theme-init smoke test verified 2026-06-20.
 
-- [x] **Phase 1: Quick Bug Fixes** - Correct four low-risk defects (button types, passive listener, regex anchors, hash encoding)
-- [x] **Phase 2: UX Polish** - Add CV error feedback, custom 404/error pages, and fix ThemeToggle CLS
-- [x] **Phase 3: Security Hardening** - Replace unsafe IP header trust, clean up CSP, and close distributed rate limiting as an accepted-risk (completed 2026-06-10)
-- [x] **Phase 4: Code Quality & Type Safety** - Eliminate double cast, automate stale date, enforce linting rules, extract constants `[DEFERRED → Phase 7]` (completed 2026-06-20)
-- [ ] **Phase 5: SGDS Migration** ⭐ **(CURRENT PRIORITY)** - Full migration of all UI components to SGDS web components, Tailwind v3→v4 upgrade, dark mode migrated to SGDS theming
+</details>
 
-## Phase Details
+### 🔵 v1.4 — Polish & International Content (CURRENT)
 
-### Phase 1: Quick Bug Fixes
+Refinement milestone for the deployed, SGDS-migrated portfolio, tuned to appeal to **international employers**. Three independently-shippable phases, each on its own branch (`branching_strategy: "phase"`).
 
-**Goal**: Four latent correctness defects are fixed and cannot regress
-**Depends on**: Nothing (first phase)
-**Requirements**: FIX-01, FIX-02, FIX-03, FIX-04
-**Success Criteria** (what must be TRUE):
+- [ ] **Phase 6: Look & Feel Polish** 🔵 **(CURRENT PRIORITY)** — fix muted-text contrast (WCAG AA), rebalance the three hero CTAs (no wrap, equal size), redesign the theme/language toggles (sliding switch + segmented EN|ID pill)
+- [ ] **Phase 7: Information Architecture** — move the GitHub link from Contact to About
+- [ ] **Phase 8: International Content Overhaul** — rewrite all prose in a natural humanized voice, add a remote/global-availability signal, add bilingual project descriptions, fix education-major English
 
-  1. `LanguageToggle` and `ThemeToggle` buttons each carry `type="button"` — no accidental form submission on Enter key
-  2. Navbar scroll listener is registered with `{ passive: true }` — no browser console warnings about passive event violations
-  3. `translatePeriod` regex uses `\b` anchors — period strings with overlapping tokens no longer produce partial/double replacements
-  4. Hero anchor hash and Navbar hash link use the same plain `#id` format — clicking a Navbar link scrolls to the correct section in all browsers
+#### Phase 6: Look & Feel Polish 🔵 (CURRENT PRIORITY)
 
-**Plans**: 1 complete
+**Goal**: Muted text is readable in both themes; the hero CTAs are balanced and never wrap; the theme/language controls are a compact sliding switch and segmented pill
+**Depends on**: Nothing (first v1.4 phase; builds on the shipped SGDS UI)
+**Requirements**: UI-05, UI-06, UI-07
+**Branch**: `06-look-feel-polish`
+**Success Criteria**:
 
-**Execution Summary:**
+  1. Every `sgds:text-muted` usage (hero h2/subtitle, contact, projects period, education date, certifications issuer, 404/error) renders at ≥4.5:1 contrast in both light and dark themes
+  2. The hero shows three equal-height, equal-width CTA buttons; "View My Work" sits on a single line at all desktop widths; the three stack full-width below 512px
+  3. The theme toggle is a sun/moon sliding switch and the language toggle is a compact segmented EN|ID pill; both smaller than the prior buttons and in the navbar
+  4. `npm run lint` + `npx tsc --noEmit` + `npm run test` + `npm run build` all pass; coverage thresholds maintained
 
-- Plan 1: Quick Bug Fixes — All fixes already implemented and verified (00:03:02)
+**Plans**: 3
 
-### Phase 2: UX Polish
+- [ ] 06-01-PLAN.md — Contrast & readability: `--sgds-color-muted` token override (UI-05)
+- [ ] 06-02-PLAN.md — Hero CTA rebalance: equal-sized, no-wrap buttons (UI-06)
+- [ ] 06-03-PLAN.md — Toggle redesign: theme slider + language EN|ID pill (UI-07)
 
-**Goal**: Users see a branded, locale-aware experience on errors, and CV download failures are clearly communicated
-**Depends on**: Phase 1
-**Requirements**: UX-01, UX-02, UX-03, UX-04
-**Success Criteria** (what must be TRUE):
+#### Phase 7: Information Architecture
 
-  1. When CV PDF generation fails, an inline error message (localized, EN and ID) is visible on the page — no silent failure
-  2. Navigating to a non-existent URL shows the branded `not-found.tsx` page in the correct locale instead of the Next.js default
-  3. An unexpected runtime error surfaces the branded `error.tsx` fallback page (locale-aware) instead of a blank/default crash page
-  4. ThemeToggle renders its icon immediately on hydration — no icon pop-in or layout shift (CLS = 0 for the toggle)
+**Goal**: The GitHub link is presented in About and no longer in Contact, with the URL still defined exactly once
+**Depends on**: Phase 6 (sequential; independent code areas)
+**Requirements**: IA-01
+**Branch**: `07-information-architecture`
+**Success Criteria**:
 
-**Plans**: 4 plans in 1 wave
-**UI hint**: yes
+  1. The About section renders a GitHub link (icon + handle) using `CONTACT_GITHUB_URL` from `src/data/contact.ts`
+  2. The Contact section no longer renders a GitHub card; its grid stays balanced (3 cards)
+  3. The GitHub URL is defined only in `src/data/contact.ts`; the label key lives under `about.*` in both `en.json` and `id.json` (key parity holds)
+  4. Contact and About tests updated; full CI passes
 
-Plans:
+**Plans**: 1
 
-- [x] 02-01-PLAN.md — CV download error feedback with inline banner
-- [x] 02-02-PLAN.md — Custom 404 page (locale-aware)
-- [x] 02-03-PLAN.md — Custom error boundary page (locale-aware)
-- [x] 02-04-PLAN.md — Verify ThemeToggle CLS fix (verification only)
+- [ ] 07-01-PLAN.md — Move GitHub link Contact→About + i18n label key move + tests (IA-01)
 
-### Phase 5: SGDS Migration ⭐ (CURRENT PRIORITY)
+#### Phase 8: International Content Overhaul
 
-**Goal**: All portfolio UI components are migrated to SGDS web components; Tailwind CSS is upgraded to v4; dark mode uses SGDS theming exclusively; portfolio serves as a live demonstration of SGDS expertise for GovTech applications
-**Depends on**: Phase 2 (complete)
-**Requirements**: SGDS-01 (foundation setup), SGDS-02 (layout components), SGDS-03 (section components part 1), SGDS-04 (section components part 2), SGDS-05 (testing & polish)
-**Success Criteria** (what must be TRUE):
+**Goal**: All user-facing prose reads as natural, specific, human writing aimed at international employers; projects carry bilingual descriptions; education terms are idiomatic English
+**Depends on**: Phase 7
+**Requirements**: CONTENT-01, CONTENT-02, CONTENT-03
+**Branch**: `08-international-content`
+**Success Criteria**:
 
-  1. `@govtechsg/sgds-web-component` installed; Tailwind upgraded to v4; SGDS CSS imported in correct order (`themes/day.css` → `sgds.css` → `utility.css`)
-  2. `next-themes` removed; dark mode controlled by `.sgds-night-theme` class on `<html>`; toggle persists in localStorage
-  3. All section components (Hero, About, Experience, Education, Skills, Projects, Certifications, Contact) use `<sgds-*>` web components where SGDS equivalents exist
-  4. Layout components (Navbar, Footer) migrated to SGDS; custom components (Timeline, BackToTop) styled with `sgds:` utility classes
-  5. All test files rewritten for SGDS components; 80% coverage maintained; `npm run build` + `npm run lint` + `npx tsc --noEmit` all pass
+  1. A humanizer skill is installed (via `find-skills`) and used to rewrite `hero.subtitle`/`hero.title`, `about.description`, all `experience.items.*.bullets`, `contact.description`, and `certifications.coding_id.description` — no buzzword resume-speak remains
+  2. The About/Contact copy includes a clear remote/international availability signal
+  3. No fabricated metrics: impact statements are qualitative, with explicit `[your number]` placeholders where a real figure would help
+  4. All 14 projects have bilingual descriptions read from i18n (`projects.items.<id>.description`); `Projects.tsx` consumes them via next-intl with a missing-key guard
+  5. Education majors/degrees read "Diploma in Informatics Management" and "Bachelor's in Information Systems"
+  6. `en.json`/`id.json` key parity holds (`translations.test.ts` passes); full CI passes
 
-**Plans**: 7 plans in 5 waves
+**Plans**: 2
 
-Plans:
-
-- [x] 05-01-PLAN.md — SGDS foundation build pipeline and test harness
-- [x] 05-02-PLAN.md — React 18 direct SGDS validation checkpoint
-- [x] 05-03-PLAN.md — SGDS theme ownership and ThemeToggle migration
-- [x] 05-04-PLAN.md — SGDS layout chrome and truthful footer checkpoint
-- [x] 05-05-PLAN.md — Hero/About/Experience/Education SGDS section migration
-- [x] 05-06-PLAN.md — Skills/Projects/Certifications/Contact SGDS section migration
-- [x] 05-07-PLAN.md — SGDS fallback polish, source audit, and final verification
-
-### Phase 3: Security Hardening
-
-**Goal**: The CV download API trusts only platform-provided IP identity, CSP is tightened to what is actually used, and rate limiting is safe across serverless instances
-**Depends on**: Phase 2
-**Requirements**: SEC-01, SEC-02, SEC-03
-**Success Criteria** (what must be TRUE):
-
-  1. `/api/generate-cv` reads client IP exclusively from `ipAddress(req)` (@vercel/functions, reads the Vercel-injected `x-real-ip`) -- spoofed `x-forwarded-for` headers have no effect on rate-limit identity (CONTEXT supersedes the prior `req.ip` wording: D-02)
-  2. CSP `style-src` no longer lists `https://fonts.googleapis.com` and `font-src` no longer lists `https://fonts.gstatic.com`; the prod `script-src` theme-init hash matches the live SGDS script (D-05, D-06, D-08)
-  3. SEC-03 (distributed rate limiting) is formally closed as **accepted-risk** -- the in-memory per-instance limiter stays, documented in route.ts and REQUIREMENTS.md (CONTEXT supersedes the prior Upstash/Vercel KV wording: D-12)
-
-**Plans**: 2 plans in 1 wave
-Plans:
-
-- [x] 03-02-PLAN.md -- SEC-01 trusted IP via ipAddress() + SEC-03 accepted-risk documentation
-- [x] 03-03-PLAN.md -- SEC-02 post-SGDS CSP re-audit (remove Google Fonts, recompute theme-init hash) + middleware tests
-
-### Phase 4: Code Quality & Type Safety [DEFERRED → Phase 7]
-
-**Goal**: The codebase passes strict type checks without workarounds, stale metadata is automated, and linting enforces structural quality rules
-**Depends on**: Phase 3 (or can run after Phase 5)
-**Requirements**: TYPE-01, TYPE-02, QUAL-01, QUAL-02, QUAL-03
-**Success Criteria** (what must be TRUE):
-
-  1. `ExperienceMessages` is a top-level exported interface — no `as unknown as` or double-cast in the Experience component and TypeScript strict mode reports zero errors
-  2. Experience bullet text is accessed via `useTranslations` namespace drilling — `useMessages()` is no longer called in the Experience component
-  3. `LAST_MODIFIED_DATE` reflects the actual last git commit date automatically at build time — no manual constant to update
-  4. `eslint-plugin-sonarjs` (or equivalent) is installed and active — `npm run lint` fails on max-lines, max-lines-per-function, and no-nested-template-literals violations
-  5. Shared tech stacks in `src/data/projects.ts` are extracted as named `TECH_*` constants — no string arrays duplicated across project entries, and the file stays under 300 lines
-
-**Plans**: 6 plans in 2 waves
-Plans:
-**Wave 1**
-
-- [x] 04-01-PLAN.md — Experience type safety: exported ExperienceMessages interface + useTranslations typed access (TYPE-01, TYPE-02)
-- [x] 04-02-PLAN.md — Build-time LAST_MODIFIED_DATE codegen from git commit date (QUAL-01)
-- [x] 04-03-PLAN.md — Extract duplicate tech stacks into TECH_* constants in projects.ts (QUAL-03)
-- [x] 04-04-PLAN.md — Function-length refactors: route.ts, error.tsx, Projects, About (QUAL-02)
-- [x] 04-05-PLAN.md — Function-length refactors via hooks: Navbar, Hero, Contact (QUAL-02)
-
-**Wave 2** *(blocked on Wave 1 completion)*
-
-- [x] 04-06-PLAN.md — Install eslint-plugin-sonarjs + activate error-level lint gate + full CI verify (QUAL-02)
+- [ ] 08-01-PLAN.md — Humanizer install + core prose rewrite + global-availability signal (CONTENT-01)
+- [ ] 08-02-PLAN.md — Bilingual project descriptions (i18n + Projects.tsx) + education English fixes (CONTENT-02, CONTENT-03)
 
 ## Progress
 
-**Execution Order:** 1 → 2 → 5 → [6 (was 3)] → [7 (was 4)]
+**Execution Order:** v1.4 — 6 → 7 → 8
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. Quick Bug Fixes | 1/1 | ✅ Complete | 2026-06-03 |
-| 2. UX Polish | 4/4 | ✅ Complete | 2026-06-03 |
-| 5. SGDS Migration | 7/7 | ✅ Complete | 2026-06-08 |
-| 3. Security Hardening | 3/3 | Complete    | 2026-06-10 |
-| 4. Code Quality & Type Safety | 6/6 | Complete    | 2026-06-20 |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. Quick Bug Fixes | v1.3 | 1/1 | ✅ Complete | 2026-06-03 |
+| 2. UX Polish | v1.3 | 4/4 | ✅ Complete | 2026-06-03 |
+| 5. SGDS Migration | v1.3 | 7/7 | ✅ Complete | 2026-06-08 |
+| 3. Security Hardening | v1.3 | 3/3 | ✅ Complete | 2026-06-10 |
+| 4. Code Quality & Type Safety | v1.3 | 6/6 | ✅ Complete | 2026-06-20 |
+| 6. Look & Feel Polish | v1.4 | 0/3 | 🔵 Planned | — |
+| 7. Information Architecture | v1.4 | 0/1 | 🔵 Planned | — |
+| 8. International Content Overhaul | v1.4 | 0/2 | 🔵 Planned | — |
