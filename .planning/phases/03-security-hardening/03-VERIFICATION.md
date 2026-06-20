@@ -1,10 +1,18 @@
 ---
 phase: 03-security-hardening
 verified: 2026-06-11T00:59:00Z
-status: human_needed
+status: verified
+human_verification_resolved: 2026-06-20
 score: 3/3 must-haves verified
 overrides_applied: 0
 gaps: []
+resolution:
+  - item: "Production CSP + theme-init smoke test"
+    status: PASS
+    method: "Deterministic HTTPS check of live production (2026-06-20). Production CSP script-src contains sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc=; the live inline theme-init script body hashes byte-exact to that value (browser authorizes & executes it, no script-src violation). Script adds sgds-night-theme when localStorage sgds-theme==='night'. Analytics domains allowed (va.vercel-scripts.com script-src, vitals.vercel-insights.com connect-src); fonts self-hosted (font-src 'self', Inter referenced, no Google Fonts)."
+  - item: "REQUIREMENTS.md SEC-01/SEC-02 traceability closure"
+    status: RESOLVED
+    method: "SEC-01 and SEC-02 are marked [x] with traceability 'Complete' in REQUIREMENTS.md (closed after this report was written). Documentation now consistent with the verified implementation."
 human_verification:
   - test: "Post-merge production smoke test: after merging gsd/phase-03-security-hardening to main and Vercel deploys, load https://porto-jefry.vercel.app/en with localStorage['sgds-theme']='night' set, then reload. Open DevTools console and confirm zero CSP script-src violations for the inline theme-init script, and the night theme applies with no flash."
     expected: "No CSP violation for sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc= in the browser console; sgds-night-theme class applied; no theme flash on reload."

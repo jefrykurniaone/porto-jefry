@@ -1,104 +1,87 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-status: verifying
-stopped_at: Completed 04-06-PLAN.md
-last_updated: "2026-06-20T00:54:00.418Z"
+milestone: v1.4
+milestone_name: polish-and-international-content
+status: planning
+stopped_at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
+last_updated: "2026-06-20T02:00:00.000Z"
 last_activity: 2026-06-20
 progress:
-  total_phases: 5
-  completed_phases: 4
-  total_plans: 14
-  completed_plans: 21
-  percent: 80
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 6
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-02)
+See: .planning/PROJECT.md (updated 2026-06-20)
 
-**Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
-**Current focus:** Phase 04 — code-quality-type-safety-deferred-phase-7
+**Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
+**Current focus:** Phase 06 — look-feel-polish (contrast, hero CTAs, toggle controls)
 
 ## Current Position
 
-Phase: 05
+Phase: 06
 Plan: Not started
-Status: Phase complete — ready for verification
+Status: Milestone v1.4 planned — ready to execute Phase 6
 Last activity: 2026-06-20
 
-Progress: [██████░░░░] 60%
+Progress: [░░░░░░░░░░] 0%
+
+## Milestone History
+
+| Milestone | Name | Tag | Status | Closed |
+|-----------|------|-----|--------|--------|
+| v1.1 | New Features (back-to-top, test suite, CI) | v1.1 | ✅ Shipped | 2026-05-26 |
+| v1.2 | Security & API Hardening (Phase 1) | v1.2 | ✅ Shipped | 2026-05-26 |
+| v1.3 | Improvement & Hardening (Quick Fixes → UX → SGDS → Security → Code Quality) | v1.3 | ✅ Shipped | 2026-06-20 |
+| v1.4 | Polish & International Content (Look & Feel → Info Architecture → Content) | — | 🔵 Planning | — |
+
+> Versioning was aligned to git tags at the v1.3 close: the improvement+SGDS milestone tracked internally as "v1.0" was archived as v1.3 (next after git's v1.2). The early `milestones/v1.0-*` snapshot documents the v1.2-era "Quality & Tech Debt" scope and is preserved as history.
 
 ## Performance Metrics
 
-**Velocity:**
+**Velocity (v1.3):** 21 plans across 5 phases — Phase 1 (1), Phase 2 (4), Phase 5 (7), Phase 3 (3), Phase 4 (6).
 
-- Total plans completed: 14
-- Phase 1: 1 plan (00:03:02)
-- Phase 2: 4 plans
-
-**By Phase:**
-
-| Phase | Plans | Total | Avg/Plan |
-|-------|-------|-------|----------|
-| Phase 1 — Quick Bug Fixes | 1 | 00:03:02 | 00:03:02 |
-| Phase 2 — UX Polish | 4 | ~2h | ~30m |
-| 03 | 3 | - | - |
-| 04 | 6 | - | - |
-
-**Recent Trend:**
-
-- Last 5 plans: All complete
-- Trend: Steady
-
-*Updated after each plan completion*
-| Phase 04-code-quality-type-safety-deferred-phase-7 P01 | 3min | 2 tasks | 2 files |
-| Phase 04-code-quality-type-safety-deferred-phase-7 P02 | 3min | 2 tasks | 3 files |
-| Phase 04-code-quality-type-safety-deferred-phase-7 P03 | 5min | 1 tasks | 1 files |
-| Phase 04-code-quality-type-safety-deferred-phase-7 P04 | 3min | 2 tasks | 4 files |
-| Phase 04-code-quality-type-safety-deferred-phase-7 P05 | 7min | 3 tasks | 7 files |
-| Phase 04-code-quality-type-safety-deferred-phase-7 P06 | 15min | 2 tasks | 4 files |
+*v1.4 metrics will accrue as phases 6-8 execute.*
 
 ## Accumulated Context
 
-### Decisions
+### Decisions (v1.4 design — see phase CONTEXT files)
 
-Decisions are logged in PROJECT.md Key Decisions table.
-Recent decisions affecting current work:
+- **Contrast (UI-05):** root cause is SGDS token `--sgds-color-muted` (#c6c6c6 day / #3b3b3b night ≈ 1.6:1). Fix via single global override in `globals.css` (day ≈ #5f5f5f, night ≈ #b0b0b0), tuned to ≥4.5:1. `.readable-muted` helper left untouched.
+- **Hero CTAs (UI-06):** keep all three buttons; unify to equal height/width with `white-space: nowrap`; 1 filled primary + 2 outline; full-width stack < 512px.
+- **Toggles (UI-07):** theme → `<sgds-switch>` sun/moon slider; language → segmented EN|ID pill. `sgds-switch` already registered globally via `src/app/sgds.tsx` (no new dep).
+- **GitHub move (IA-01):** remove from `Contact.tsx` `buildContactLinks`; add to `About.tsx` `AboutContactLinks`; single source of truth stays `src/data/contact.ts`.
+- **Content (CONTENT-01):** install humanizer skill via `find-skills` first; rewrite prose in natural voice + remote/international availability signal; no fabricated metrics (qualitative impact + `[your number]` placeholders). EN/ID parity enforced by `translations.test.ts`.
+- **Project descriptions (CONTENT-02):** route through i18n (`projects.items.<id>.description`); `Projects.tsx` reads via next-intl; drafted bilingually for owner verification.
+- **Education (CONTENT-03, owner-supplied):** D3 Manajemen Informatika → "Diploma in Informatics Management"; S1 Sistem Informasi → "Bachelor's in Information Systems".
 
-- **Phase 1 Plan 1**: All fixes were already implemented in the codebase before execution — verification confirmed correct implementation, no commits needed
-- **Phase 2 Plan 4**: Server-side ThemeToggle placeholder removed (caused white-dot bug). CLS prevention now via `isMounted` guard in client component — same CLS=0 outcome, different mechanism.
-- In-memory rate limiter is serverless-unsafe → Phase 3 replaces with Upstash Redis / Vercel KV
-- `useMessages()` + double cast for Experience bullets is a known workaround → Phase 4 eliminates it
-- `LAST_MODIFIED_DATE` is now automated via `scripts/gen-build-meta.mjs` prebuild codegen (git log -1 --format=%cs)
-- [Phase ?]: Use t.raw('items') as ExperienceMessages['items'] for typed access to structured next-intl message subtrees — single direct assertion replaces prior useMessages()+as unknown as double cast
-- [Phase ?]: In-file private sub-component extraction (Readonly<Props>) is the established pattern for meeting 40-line function limit
-- [Phase 04 Plan 05]: Custom hooks (use-focus-trap, use-scrolled, use-cv-download) follow kebab-case filenames per project convention; plain module functions (buildContactLinks) used when no state/effects needed
-- [Phase ?]: Only sonarjs/no-nested-template-literals activated from sonarjs plugin to avoid unrelated violations
-- [Phase ?]: useFocusTrap refactored with private helper extraction to meet 40-line function limit — established pattern for hook refactors
+### Decisions carried from v1.3
+
+Logged in PROJECT.md Key Decisions table.
 
 ### Pending Todos
 
-None yet.
+- Owner to verify the 14 drafted project descriptions during Phase 8.
+- Owner to decide whether to fill or drop `[your number]` metric placeholders.
 
 ### Blockers/Concerns
 
-- SEC-03 (distributed rate limiting) requires Upstash Redis or Vercel KV env vars to be provisioned before Phase 3 executes
+- None for planning. Phase 8 depends on a humanizer skill being installable via `find-skills`.
 
 ## Deferred Items
 
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
-| Security | Phase 3 Security Hardening (SEC-01, SEC-02) | Deferred → Phase 6 | 2026-06-04 |
-| Code Quality | Phase 4 Code Quality & Type Safety | Deferred → Phase 7 | 2026-06-04 |
-| SGDS | Masthead component — may not fit personal portfolio | Evaluate in Phase 5 | 2026-06-04 |
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
 
 ## Session Continuity
 
-Last session: 2026-06-20T00:43:54.696Z
-Stopped at: Completed 04-06-PLAN.md
+Last session: 2026-06-20T02:00:00.000Z
+Stopped at: v1.3 closed & tagged; v1.4 planned — phases 6-8 ready to execute
 Resume file: None
