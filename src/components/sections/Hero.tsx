@@ -39,13 +39,13 @@ function HeroCtaLinks({
             </a>
             {isDownloading ? (
                 <span className='hero-download-button'>
-                    <sgds-button type='button' loading suppressHydrationWarning>
+                    <sgds-button type='button' variant='outline' loading suppressHydrationWarning>
                         {ctaDownloading}
                     </sgds-button>
                 </span>
             ) : (
                 <span className='hero-download-button'>
-                    <sgds-button type='button' onClick={onDownload} suppressHydrationWarning>
+                    <sgds-button type='button' variant='outline' onClick={onDownload} suppressHydrationWarning>
                         <sgds-icon slot='start' name='download' aria-hidden='true' suppressHydrationWarning />
                         {ctaCv}
                     </sgds-button>
