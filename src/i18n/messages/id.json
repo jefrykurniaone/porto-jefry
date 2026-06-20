@@ -17,7 +17,7 @@
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — foto profil",
         "title": "Backend Developer & Spesialis .NET",
-        "subtitle": "Lebih dari lima tahun membangun API dan sistem dengan data besar untuk klien perbankan, asuransi, dan pemerintahan. Belakangan saya juga memakai React dan Next.js, serta mulai membangun dengan tooling AI seperti Semantic Kernel dan OpenAI API.",
+        "subtitle": "Lebih dari lima tahun membangun API dan sistem dengan data besar untuk klien perbankan, asuransi, dan pemerintahan. Belakangan saya juga memakai React dan Next.js, serta bekerja dengan alur kerja AI agentic coding menggunakan Claude, GitHub Copilot, dan OpenCode.",
         "cta_work": "Lihat Karya Saya",
         "cta_cv": "Unduh CV",
         "cta_contact": "Hubungi Saya",
@@ -31,7 +31,7 @@
     },
     "about": {
         "title": "Tentang Saya",
-        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, menjalankan layanan di Docker, dan mulai menambahkan fitur AI ke aplikasi dengan Microsoft Semantic Kernel dan OpenAI API. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar dan terbuka untuk peran remote, termasuk dengan perusahaan di luar Indonesia.",
+        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar dan terbuka untuk peran remote maupun relokasi, termasuk dengan perusahaan di luar Indonesia.",
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn",
@@ -53,7 +53,7 @@
             },
             "arkamaya-2024": {
                 "bullets": [
-                    "Membangun aplikasi web untuk sistem HR, manajemen acara, dan pelatihan staf, memakai C#/ASP.NET MVC dan PHP/CodeIgniter.",
+                    "Membangun aplikasi web untuk sistem HR, manajemen acara, dan operasional, memakai C#/ASP.NET MVC dan PHP/CodeIgniter.",
                     "Memelihara dan memperbarui sistem yang ada agar tetap selaras dengan framework dan library-nya.",
                     "Menulis unit test dan men-debug masalah produksi agar rilis tetap stabil.",
                     "Mengintegrasikan REST dan SOAP API untuk menghubungkan sistem klien dengan layanan eksternal.",
@@ -151,7 +151,7 @@
                 "description": "Sistem informasi HR (HRIS) untuk JOB Tomori, dibangun dengan ASP.NET MVC dan integrasi REST serta SOAP API di atas SQL Server."
             },
             "trainer-tdk-framework-tmmin": {
-                "description": "Aplikasi manajemen pelatihan (TDK Framework) untuk TMMIN, dibangun dengan C# dan ASP.NET MVC serta SQL Server."
+                "description": "Memberikan pelatihan tentang framework Toyota Development Kit (TDK) untuk TMMIN, mencakup C#, ASP.NET MVC, dan SQL Server."
             },
             "rbbr-super-bank": {
                 "description": "Modul risk-based bank rating (RBBR) untuk Super Bank, dibangun dengan VB.NET dan ASP.NET Web Forms serta pelaporan SSRS di SQL Server."

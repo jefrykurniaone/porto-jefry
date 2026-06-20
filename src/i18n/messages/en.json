@@ -17,7 +17,7 @@
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — profile photo",
         "title": "Backend Developer & .NET Specialist",
-        "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and started building with AI tooling like Semantic Kernel and the OpenAI API.",
+        "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
         "cta_work": "View My Work",
         "cta_cv": "Download CV",
         "cta_contact": "Contact Me",
@@ -31,7 +31,7 @@
     },
     "about": {
         "title": "About Me",
-        "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, run services in Docker, and have started adding AI features to applications with Microsoft Semantic Kernel and the OpenAI API. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote roles, including with companies outside Indonesia.",
+        "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote roles or relocation, including with companies outside Indonesia.",
         "contact_email": "Email",
         "contact_phone": "Phone",
         "contact_linkedin": "LinkedIn",
@@ -53,7 +53,7 @@
             },
             "arkamaya-2024": {
                 "bullets": [
-                    "Built web applications for HR, event-management, and staff-training systems, in C#/ASP.NET MVC and PHP/CodeIgniter.",
+                    "Built web applications for HR, event-management, and operational systems, in C#/ASP.NET MVC and PHP/CodeIgniter.",
                     "Maintained and upgraded existing systems to keep them current with their frameworks and libraries.",
                     "Wrote unit tests and debugged production issues so releases stayed stable.",
                     "Integrated REST and SOAP APIs to connect client systems with external services.",
@@ -151,7 +151,7 @@
                 "description": "An HR information system (HRIS) for JOB Tomori, built in ASP.NET MVC with REST and SOAP API integrations over SQL Server."
             },
             "trainer-tdk-framework-tmmin": {
-                "description": "A training-management application (TDK Framework) for TMMIN, built in C# and ASP.NET MVC with SQL Server."
+                "description": "Delivered training on the Toyota Development Kit (TDK) framework at TMMIN, covering C#, ASP.NET MVC, and SQL Server."
             },
             "rbbr-super-bank": {
                 "description": "A risk-based bank rating (RBBR) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SSRS reporting on SQL Server."
