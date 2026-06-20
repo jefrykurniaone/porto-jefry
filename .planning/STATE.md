@@ -3,9 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: — Polish & International Content
 status: in-progress
-stopped_at: Phase 08 complete (CONTENT-01/02/03); v1.4 phases 6-8 all done — milestone ready to close
+stopped_at: Phase 08 shipped — PR #32 (completes v1.4 phases 6-8); awaiting merge
 last_updated: "2026-06-21T00:00:00.000Z"
-last_activity: 2026-06-21 -- Phase 08 completed: prose humanized + 14 bilingual project descriptions
+last_activity: 2026-06-21 -- Phase 08 shipped via PR #32 (humanized prose + bilingual project descriptions)
 progress:
   total_phases: 3
   completed_phases: 3
@@ -27,8 +27,8 @@ See: .planning/PROJECT.md (updated 2026-06-20)
 
 Phase: 08 (international-content) — COMPLETE
 Plan: 08-01 (CONTENT-01 prose + 14 project descriptions) + 08-02 (CONTENT-02 plumbing + CONTENT-03 education) both done
-Status: v1.4 phases 6-8 all complete; ready to ship Phase 08 PR and close the milestone
-Last activity: 2026-06-21 -- Phase 08 completed (humanized prose + bilingual project descriptions)
+Status: Phase 08 shipped via PR #32 (completes v1.4 phases 6-8); awaiting merge → then /gsd-complete-milestone
+Last activity: 2026-06-21 -- Phase 08 shipped via PR #32
 
 Progress: [██████████] 100%
 
