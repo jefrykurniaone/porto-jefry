@@ -39,7 +39,7 @@ describe('Education', () => {
 
     it('renders degree and major text', () => {
         renderEducation();
-        expect(screen.getByText(/Bachelor.*?System Information/)).toBeInTheDocument();
+        expect(screen.getByText(/Bachelor.*?Information Systems/)).toBeInTheDocument();
     });
 
     it('renders GPA label and value', () => {

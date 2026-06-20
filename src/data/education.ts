@@ -10,16 +10,16 @@ export interface EducationItem {
 export const education: EducationItem[] = [
     {
         institution: 'Widyatama University',
-        degree: "Bachelor's Degree",
-        major: 'System Information',
+        degree: "Bachelor's",
+        major: 'Information Systems',
         period: '2018 – 2020',
         gpa: '3.63 / 4.00',
         type: 'formal',
     },
     {
         institution: 'Telkom University',
-        degree: 'Diploma Degree',
-        major: 'Informatic Management',
+        degree: 'Diploma',
+        major: 'Informatics Management',
         period: '2013 – 2017',
         gpa: '3.26 / 4.00',
         type: 'formal',
