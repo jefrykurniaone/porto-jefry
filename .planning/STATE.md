@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.5
-milestone_name: Mobile Navigation & Layout Fixes
+milestone_name: Responsive Navigation & Layout Fixes
 status: planning
-last_updated: "2026-06-21T01:08:16.229Z"
+last_updated: "2026-06-21T01:27:07.589Z"
 last_activity: 2026-06-21
 progress:
-  total_phases: 0
+  total_phases: 2
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-21)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Planning the next milestone (v1.4 shipped). Run /gsd-new-milestone to define fresh requirements.
+**Current focus:** v1.5 — Responsive Navigation & Layout Fixes. Roadmap revised (11 requirements, 2 phases); ready for Phase 9 planning.
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: Not started
 Plan: —
-Status: Defining requirements
-Last activity: 2026-06-21 — Milestone v1.5 started
+Status: Roadmap approved; awaiting Phase 9 planning
+Last activity: 2026-06-21 — Roadmap revised for v1.5 (broadened scope: phone + tablet + desktop; NAV-05 added)
+
+Progress: [----------] 0% (0/2 phases, 0/? plans)
 
 ## Milestone History
 
@@ -51,6 +53,8 @@ Last activity: 2026-06-21 — Milestone v1.5 started
 
 Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives (`milestones/v1.4-*`, phase SUMMARY files). v1.4 highlights: humanize prose with the free `blader/humanizer` (paid HumanizerAI API rejected — needed API key + credits + external calls); AI narrative = agentic coding workflow (Claude/Copilot/OpenCode), not building AI features (Semantic Kernel/OpenAI); Docker dropped (never used).
 
+**v1.5 context:** Root cause of the mobile nav bug is `expand="always"` on `<sgds-mainnav>`, which forces the desktop layout at all viewport widths. The existing `Navbar.tsx` already has `MobileNavLinks`, `HamburgerButton`, and `useFocusTrap` wired up — the drawer mechanism needs to move to an `sgds-drawer` component to get correct focus trapping, backdrop, and scroll lock. The scope is phone + tablet + desktop: phone (<768px) uses the hamburger drawer; tablet/desktop (≥768px) uses the inline nav, but adds a horizontal-scroll overflow fallback (NAV-05) so navigation never breaks when items don't all fit (tablet portrait, non-maximized window, longer ID labels, browser zoom). Hero photo clipping (LAYOUT-01) is caused by `min-h-screen` + vertical centering with no `padding-top` to account for the fixed navbar; fix must cover phones and tablets (portrait and landscape).
+
 ### Pending Todos (owner, non-blocking)
 
 - Verify the 14 drafted project descriptions (real client projects).
@@ -65,20 +69,19 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
-| Phase 06-look-feel-polish P01 | 600 | 2 tasks | 1 files |
-| Phase 06-look-feel-polish P02 | 5m | 3 tasks | 2 files |
-| Phase 07-information-architecture P01 | 15m | 3 tasks | 7 files |
+| v2 | CI Lighthouse/CWV checks (CI-01) | Deferred | 2026-06-21 |
+| v2 | Playwright E2E (CI-02) | Deferred | 2026-06-21 |
+| v2 | Dependabot (CI-03) | Deferred | 2026-06-21 |
+| v2 | Core Web Vitals ≥90 mobile (PERF-01) | Deferred | 2026-06-21 |
+| v2 | Progressive image loading (PERF-02) | Deferred | 2026-06-21 |
+| v2 | Blog (FEAT-01), Testimonials (FEAT-02), Experience timeline (FEAT-03) | Deferred | 2026-06-21 |
 
 ## Session Continuity
 
 Last session: 2026-06-21
-Stopped at: Milestone v1.4 closed & archived (tag v1.4)
+Stopped at: v1.5 roadmap revised (Phases 9-10; scope broadened to phone + tablet + desktop; NAV-05 added)
 Resume file: None
-
-## Decisions
-
-Per-phase execution notes are archived with the milestone (see `milestones/v1.4-*` and phase SUMMARY files). PROJECT.md holds the durable Key Decisions log.
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Run `/gsd-plan-phase 9` to plan Phase 9: Responsive Navbar
