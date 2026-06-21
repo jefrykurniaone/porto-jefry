@@ -9,10 +9,10 @@ Requirements for the Navbar Layout Balance milestone. Each maps to roadmap phase
 
 ### Navbar Balance
 
-- [ ] **NAVBAL-01**: At `≥ md`, the 7 inline nav links render horizontally centered in the navbar row, between the "JK" brand (left) and the theme/language controls (right).
-- [ ] **NAVBAL-02**: The horizontal space to the left and right of the centered nav cluster is visually balanced — no large empty gap between the last link ("Contact") and the controls.
-- [ ] **NAVBAL-03**: When the inline nav cannot fit all 7 links (narrow `≥ md` widths, longer ID labels, browser zoom), it still falls back to horizontal scroll — the v1.5 NAV-05 behavior is preserved, with no overflow or clipping.
-- [ ] **NAVBAL-04**: No regression to the phone hamburger drawer (`< md`), ≥44px tap targets, or page horizontal-overflow guarantee from 320px through 1024px.
+- [x] **NAVBAL-01**: At `≥ md`, the 7 inline nav links render horizontally centered in the navbar row, between the "JK" brand (left) and the theme/language controls (right).
+- [x] **NAVBAL-02**: The horizontal space to the left and right of the centered nav cluster is visually balanced — no large empty gap between the last link ("Contact") and the controls.
+- [x] **NAVBAL-03**: When the inline nav cannot fit all 7 links (narrow `≥ md` widths, longer ID labels, browser zoom), it still falls back to horizontal scroll — the v1.5 NAV-05 behavior is preserved, with no overflow or clipping.
+- [x] **NAVBAL-04**: No regression to the phone hamburger drawer (`< md`), ≥44px tap targets, or page horizontal-overflow guarantee from 320px through 1024px.
 
 ## v2 Requirements
 
@@ -45,12 +45,13 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| NAVBAL-01 | Phase 11 | Pending |
-| NAVBAL-02 | Phase 11 | Pending |
-| NAVBAL-03 | Phase 11 | Pending |
-| NAVBAL-04 | Phase 11 | Pending |
+| NAVBAL-01 | Phase 11 | Complete |
+| NAVBAL-02 | Phase 11 | Complete |
+| NAVBAL-03 | Phase 11 | Complete |
+| NAVBAL-04 | Phase 11 | Complete |
 
 **Coverage:**
+
 - v1.6 requirements: 4 total
 - Mapped to phases: 4
 - Unmapped: 0 ✓
