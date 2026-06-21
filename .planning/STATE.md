@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Responsive Navigation & Layout Fixes
-status: executing
-stopped_at: Phase 09 Plan 01 complete — MobileDrawer foundation built; Plan 02 Navbar integration next
-last_updated: "2026-06-21T01:56:32Z"
-last_activity: 2026-06-21 -- Phase 09 Plan 01 complete
+status: verifying
+stopped_at: Phase 09 Plan 02 complete — MobileDrawer integrated into Navbar; awaiting human responsive verification (Task 3 checkpoint)
+last_updated: "2026-06-21T02:27:00Z"
+last_activity: 2026-06-21 -- Phase 09 Plan 02 complete
 progress:
   total_phases: 2
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 1
-  percent: 25
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State
@@ -25,12 +25,12 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 
 ## Current Position
 
-Phase: 09 (responsive-navbar) — EXECUTING
-Plan: 2 of 2 (Plan 01 complete; Plan 02 next)
-Status: Executing Phase 09
-Last activity: 2026-06-21 -- Phase 09 Plan 01 complete
+Phase: 09 (responsive-navbar) — AWAITING VERIFICATION
+Plan: 2 of 2 (Plan 01 complete; Plan 02 complete)
+Status: Phase complete — awaiting human responsive verification (Task 3 checkpoint)
+Last activity: 2026-06-21 -- Phase 09 Plan 02 complete
 
-Progress: [##--------] 25% (0/2 phases, 1/2 plans)
+Progress: [██████████] 100% (0/2 phases complete, 2/2 plans complete)
 
 ## Milestone History
 
@@ -58,6 +58,8 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 
 **09-01 decisions:** Custom React drawer used instead of sgds-drawer (jsdom stubs prevent a11y assertions on Lit components under Vitest). NAV_KEYS exported from Navbar.tsx to avoid drift. Drawer returns null when closed (same pattern as existing MobileNavLinks — required for useFocusTrap DOM queries). useScrollLock captures prior overflow before locking and restores on release/unmount (T-09-03 mitigation).
 
+**09-02 decisions:** Removed `expand="always"` from sgds-mainnav (root cause fix). MobileDrawer owns the single focus-trap; Navbar removed its duplicate useFocusTrap. ThemeToggle/LanguageToggle gated `sgds:hidden sgds:md:flex` (phone bar = brand+hamburger only). InlineNav sub-component wraps DesktopNavLinks in `overflow-x-auto` (NAV-05). `nav.nav_scroll` i18n key omitted — native keyboard/pointer scroll reachability sufficient without explicit aria label.
+
 ### Pending Todos (owner, non-blocking)
 
 - Verify the 14 drafted project descriptions (real client projects).
@@ -78,13 +80,15 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 | v2 | Core Web Vitals ≥90 mobile (PERF-01) | Deferred | 2026-06-21 |
 | v2 | Progressive image loading (PERF-02) | Deferred | 2026-06-21 |
 | v2 | Blog (FEAT-01), Testimonials (FEAT-02), Experience timeline (FEAT-03) | Deferred | 2026-06-21 |
+| Phase 09 P02 | 18m | 2 tasks | 2 files |
 
 ## Session Continuity
 
 Last session: 2026-06-21
-Stopped at: Phase 09 Plan 01 complete — MobileDrawer foundation built; Plan 02 Navbar integration next
+Stopped at: Phase 09 Plan 02 complete — run `npm run dev` and verify responsive behavior across phone/tablet/desktop (Task 3 checkpoint)
 Resume file: None
 
 ## Operator Next Steps
 
-- Run `/gsd-execute-phase 9 --plan 02` to execute Phase 09 Plan 02: Wire MobileDrawer into Navbar
+- Human verification: run `npm run dev`, open http://localhost:3000, verify responsive nav at phone 360/390/430, tablet 768/1024, desktop 1280+ in EN and ID locales (see 09-02-PLAN.md Task 3 checklist)
+- After approval: merge PR and close Phase 09
