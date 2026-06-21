@@ -6,6 +6,27 @@ Historical record of shipped milestones. Full archives in `.planning/milestones/
 
 ---
 
+## v1.5 — Responsive Navigation & Layout Fixes
+
+**Shipped:** 2026-06-21
+**Phases:** 2 (9 → 10) · **Plans:** 3
+**Tag:** v1.5
+**Archive:** `milestones/v1.5-ROADMAP.md`, `milestones/v1.5-REQUIREMENTS.md`
+
+**Delivered:** Fixed the prod-mobile regressions (Samsung Galaxy S8, 360×740): hero photo clipped under the fixed navbar, only 3 of 7 nav links visible (always-expanded nav overflowed with no scroll), no hamburger. Phones now collapse to a brand + hamburger that opens an accessible right-side drawer (all 7 sections + theme/language toggles, focus-trap, scroll-lock, Esc/backdrop); the inline tablet/desktop nav scrolls horizontally whenever items overflow; and the hero clears the fixed navbar on phones and tablets with no horizontal page overflow from 320px through 1024px.
+
+**Key accomplishments:**
+
+- Phone navbar collapses to brand + hamburger; custom accessible `MobileDrawer` (7 links + toggles, focus-trap, scroll-lock, Esc/backdrop, ≥44px targets) (NAV-01..04, A11Y-01..04) (#36)
+- Inline tablet/desktop nav gains `overflow-x-auto` horizontal-scroll fallback so navigation never breaks when labels don't fit (NAV-05) (#36)
+- Root cause fixed: `expand="always"` on `<sgds-mainnav>` was forcing the desktop layout at all widths (#36)
+- Hero clears the fixed navbar via a single `--navbar-height` token + `.hero-section` (100svh, top-anchored, `box-sizing: border-box`) replacing the center-only `min-h-screen` (LAYOUT-01) (#36)
+- Horizontal overflow eliminated 320→1024px: root-cause CTA fix (full-width to `max-width: 1024px`) + defensive `overflow-x: clip` (LAYOUT-02) (#36)
+
+**Quality:** Lint 0 · tsc 0 · Vitest 627/627 · build clean · security `threats_open: 0` · human UAT passed both phases (phone/tablet/desktop, EN + ID).
+
+---
+
 ## v1.4 — Polish & International Content
 
 **Shipped:** 2026-06-21

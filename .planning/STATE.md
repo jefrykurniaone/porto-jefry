@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Responsive Navigation & Layout Fixes
-status: verifying
-stopped_at: Phase 10 Plan 01 complete — hero overflow fixes (LAYOUT-01, LAYOUT-02) verified and approved
-last_updated: "2026-06-21T11:31:18.291Z"
+status: shipped
+stopped_at: v1.5 shipped and closed (tag v1.5, PR #36) — define the next milestone via /gsd-new-milestone
+last_updated: "2026-06-21T11:55:00.000Z"
 last_activity: 2026-06-21
 progress:
   total_phases: 2
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-21)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 10 — hero-overflow-fixes
+**Current focus:** v1.5 shipped and closed — next milestone TBD (`/gsd-new-milestone`)
 
 ## Current Position
 
-Phase: 10
-Plan: Not started
-Status: Phase complete — ready for verification
+Milestone: v1.5 — SHIPPED & CLOSED (tag v1.5, PR #36)
+Phase: — (no active phase)
+Status: Milestone complete — ready to start the next milestone
 Last activity: 2026-06-21
 
-Progress: [██████████] 100% (0/2 phases complete, 2/2 plans complete)
+Progress: [██████████] 100% (v1.5: 2/2 phases, 3/3 plans complete)
 
 ## Milestone History
 
@@ -40,6 +40,7 @@ Progress: [██████████] 100% (0/2 phases complete, 2/2 plans 
 | v1.2 | Security & API Hardening (Phase 1) | v1.2 | ✅ Shipped | 2026-05-26 |
 | v1.3 | Improvement & Hardening (Quick Fixes → UX → SGDS → Security → Code Quality) | v1.3 | ✅ Shipped | 2026-06-20 |
 | v1.4 | Polish & International Content (Look & Feel → Info Architecture → Content) | v1.4 | ✅ Shipped | 2026-06-21 |
+| v1.5 | Responsive Navigation & Layout Fixes (Responsive Navbar → Hero & Overflow Fixes) | v1.5 | ✅ Shipped | 2026-06-21 |
 
 > Versioning was aligned to git tags at the v1.3 close: the improvement+SGDS milestone tracked internally as "v1.0" was archived as v1.3 (next after git's v1.2). The early `milestones/v1.0-*` snapshot documents the v1.2-era "Quality & Tech Debt" scope and is preserved as history.
 
@@ -47,6 +48,7 @@ Progress: [██████████] 100% (0/2 phases complete, 2/2 plans 
 
 **Velocity (v1.3):** 21 plans across 5 phases — Phase 1 (1), Phase 2 (4), Phase 5 (7), Phase 3 (3), Phase 4 (6).
 **Velocity (v1.4):** 6 plans across 3 phases — Phase 6 (3), Phase 7 (1), Phase 8 (2). Shipped via PRs #31 and #32.
+**Velocity (v1.5):** 3 plans across 2 phases — Phase 9 (2), Phase 10 (1). Shipped via PR #36 (squash).
 
 ## Accumulated Context
 
@@ -85,11 +87,12 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 
 ## Session Continuity
 
-Last session: 2026-06-21T11:19:25.982Z
-Stopped at: Phase 10 Plan 01 complete — hero overflow fixes (LAYOUT-01, LAYOUT-02) verified and approved
+Last session: 2026-06-21
+Stopped at: v1.5 shipped (PR #36, tag v1.5) and milestone closed
 Resume file: None
 
 ## Operator Next Steps
 
-- Human verification: run `npm run dev`, open http://localhost:3000, verify responsive nav at phone 360/390/430, tablet 768/1024, desktop 1280+ in EN and ID locales (see 09-02-PLAN.md Task 3 checklist)
-- After approval: merge PR and close Phase 09
+- Start the next milestone: `/gsd-new-milestone` (questioning → research → requirements → roadmap). A fresh `.planning/REQUIREMENTS.md` is created there.
+- Optional cleanup: prune merged local branches `gsd/phase-09-responsive-navbar` and `feat/responsive-navbar`; archive phase dirs via `/gsd-cleanup`.
+- v2 deferred candidates remain tracked (CI/PERF/FEAT) for the next milestone's scoping.

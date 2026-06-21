@@ -8,16 +8,23 @@ A personal portfolio website for Jefry, built with Next.js 14 App Router, TypeSc
 
 A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
 
-## Current Milestone: v1.5 Responsive Navigation & Layout Fixes
+## Current Milestone: none — v1.5 shipped, next TBD
+
+**Last shipped:** v1.5 Responsive Navigation & Layout Fixes (2026-06-21, tag `v1.5`, PR #36). Define the next milestone with `/gsd-new-milestone`.
+
+<details>
+<summary>✅ v1.5 Responsive Navigation & Layout Fixes (shipped 2026-06-21)</summary>
 
 **Goal:** Make navigation and layout work correctly across phone, tablet, and desktop — a hamburger drawer on phones, a horizontally-scrollable inline nav whenever items overflow (tablet/small windows/zoom), and a hero whose photo and content clear the fixed navbar instead of being clipped.
 
-**Target features:**
-- On phones (below the `md` breakpoint) the navbar collapses to brand + hamburger only; `expand="always"` no longer forces the desktop layout on mobile.
-- The hamburger opens a right-side `sgds-drawer` listing all 7 sections with large tap targets, plus the theme + language toggles; tapping a link smooth-scrolls and closes the drawer.
+**Delivered:**
+- On phones (below the `md` breakpoint) the navbar collapses to brand + hamburger only.
+- The hamburger opens a right-side accessible `MobileDrawer` listing all 7 sections with large tap targets, plus the theme + language toggles; tapping a link smooth-scrolls and closes the drawer.
 - At `md` and above, when the inline nav's items don't all fit (tablet portrait, non-maximized laptop, longer ID labels, zoom) the nav row scrolls horizontally so every section stays reachable; it shows fully without scroll on a wide desktop.
 - The hero profile photo and content are fully visible below the fixed header on phones and tablets (no top clipping).
-- Responsive polish: no horizontal overflow from 320px through tablet widths, ≥44px tap targets, and an accessible drawer (focus trap, Esc to close, background scroll lock). Validated at 360/390/430 (phone), 768/1024 (tablet), 1280+ (desktop).
+- No horizontal overflow from 320px through tablet widths, ≥44px tap targets, accessible drawer (focus trap, Esc to close, background scroll lock). Validated at 360/390/430 (phone), 768/1024 (tablet), 1280+ (desktop).
+
+</details>
 
 ## Requirements
 
@@ -147,9 +154,10 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
-**Shipped:** v1.4 — Polish & International Content (2026-06-21, tag `v1.4`). WCAG-AA muted-text contrast, rebalanced hero CTAs, sliding theme switch + EN|ID language pill, GitHub link moved to About, and a full humanized-prose rewrite (natural voice, AI agentic coding workflow narrative, remote/relocation availability signal) with 14 bilingual project descriptions and idiomatic education terms. Git tags: v1.1, v1.2, v1.3, v1.4.
-**In progress:** v1.5 — Responsive Navigation & Layout Fixes. **Both phases now complete and verified (pending ship/merge):** Phase 09 (responsive-navbar) collapsed the nav to a hamburger drawer on phones with all 7 sections + toggles and made the inline tablet/desktop nav horizontally scrollable on overflow (NAV-01–05, A11Y-01–04). Phase 10 (hero-overflow-fixes, completed 2026-06-21) cleared the hero from the fixed header on phones + tablets via a `--navbar-height` token + `.hero-section` top-clearance, and eliminated horizontal overflow 320→1024px (root-cause CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02). Originally reported on prod mobile (Samsung Galaxy S8, 360×740): hero photo clipped under the fixed navbar, only 3 of 7 nav links visible, no hamburger.
+**Shipped:** v1.5 — Responsive Navigation & Layout Fixes (2026-06-21, tag `v1.5`, PR #36). Phone hamburger + accessible `MobileDrawer` (7 sections + theme/language toggles, focus-trap, scroll-lock, Esc/backdrop), inline tablet/desktop nav scrolls horizontally on overflow (NAV-01–05, A11Y-01–04), hero clears the fixed navbar via a `--navbar-height` token + `.hero-section` top-clearance, and no horizontal overflow 320→1024px (root-cause CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02). Fixed the prod-mobile regression (Samsung Galaxy S8, 360×740). Git tags: v1.1, v1.2, v1.3, v1.4, v1.5.
+**Previously shipped:** v1.4 — Polish & International Content (2026-06-21, tag `v1.4`): WCAG-AA muted-text contrast, rebalanced hero CTAs, sliding theme switch + EN|ID language pill, GitHub link moved to About, full humanized-prose rewrite with 14 bilingual project descriptions and idiomatic education terms.
+**Next:** none defined — start with `/gsd-new-milestone`.
 **Deferred (v2 candidates):** CI Lighthouse/CWV checks, Playwright E2E, Dependabot, blog, testimonials, experience timeline, Core Web Vitals ≥90, progressive image loading.
 
 ---
-*Last updated: 2026-06-21 — Phase 10 (hero-overflow-fixes) complete; v1.5 fully implemented, pending ship*
+*Last updated: 2026-06-21 — v1.5 (Responsive Navigation & Layout Fixes) shipped and closed (tag v1.5, PR #36)*
