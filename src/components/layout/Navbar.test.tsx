@@ -56,6 +56,19 @@ describe('Navbar', () => {
         expect(wrapper?.className).toContain('overflow-x-auto');
     });
 
+    it('inline-nav wrapper grows into middle space and centers links while preserving overflow-x scroll fallback', () => {
+        // NAVBAL-01/02: wrapper must carry a flex-grow utility so it expands into the
+        // dead gap between the brand and controls; justify-center centers the links.
+        // NAVBAL-03 / NAV-05: overflow-x-auto must coexist with growing so the centered
+        // cluster still scrolls horizontally when the 7 links do not all fit.
+        const { container } = renderNavbar();
+        const wrapper = container.querySelector('[data-testid="inline-nav-wrapper"]');
+        expect(wrapper).toBeInTheDocument();
+        expect(wrapper?.className).toContain('flex-1');
+        expect(wrapper?.className).toContain('justify-center');
+        expect(wrapper?.className).toContain('overflow-x-auto');
+    });
+
     it('renders inline nav links with translated text', () => {
         const { container } = renderNavbar();
         const inlineWrapper = container.querySelector('[data-testid="inline-nav-wrapper"]');
