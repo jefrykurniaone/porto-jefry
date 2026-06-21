@@ -6,6 +6,26 @@ Historical record of shipped milestones. Full archives in `.planning/milestones/
 
 ---
 
+## v1.6 — Navbar Layout Balance
+
+**Shipped:** 2026-06-21
+**Phases:** 1 (11) · **Plans:** 1
+**Tag:** v1.6
+**Archive:** `milestones/v1.6-ROADMAP.md`, `milestones/v1.6-REQUIREMENTS.md`
+
+**Delivered:** Rebalanced the desktop navbar so the 7 section links sit centered between the "JK" brand (left) and the theme/language controls (right), removing the large dead gap — without regressing any v1.5 responsive behavior. Root cause was SGDS `<sgds-mainnav>` packing slotted links left (`justify-content: flex-start`) and shoving `.slot-end` controls right (`margin-left: auto`); fixed purely within the `InlineNav` wrapper.
+
+**Key accomplishments:**
+
+- `InlineNav` wrapper gains `sgds:flex-1 + sgds:justify-center` to fill the middle space and center the 7 desktop links between the brand and controls (NAVBAL-01, NAVBAL-02) (#39)
+- A vertical-alignment follow-up added `sgds:items-center` (the slotted wrapper defaulted to `align-items: stretch`, so links rode high) — found and fixed during UAT (`28fe7ce`)
+- NAV-05 horizontal-scroll fallback preserved: `sgds:overflow-x-auto + sgds:flex-nowrap` retained, with a new regression test asserting grow + scroll coexist (NAVBAL-03)
+- No regression to the phone hamburger drawer, ≥44px targets, or no-horizontal-overflow guarantee 320→1024px (NAVBAL-04)
+
+**Quality:** Lint 0 · tsc 0 · Vitest 628 pass · build clean · security `threats_open: 0` · human UAT 4/4 pass (desktop centering, overflow scroll, phone drawer, 320–1024px overflow). Pure Tailwind layout change — no new dependencies.
+
+---
+
 ## v1.5 — Responsive Navigation & Layout Fixes
 
 **Shipped:** 2026-06-21

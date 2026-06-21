@@ -1,11 +1,11 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.6
-milestone_name: milestone
-status: executing
-stopped_at: Phase 11 planned (11-01-PLAN.md, ready to execute)
-last_updated: "2026-06-21T17:53:15.804Z"
-last_activity: 2026-06-21
+milestone_name: Navbar Layout Balance
+status: Awaiting next milestone
+stopped_at: v1.6 milestone complete (archived 2026-06-22)
+last_updated: "2026-06-22T00:00:00.000Z"
+last_activity: 2026-06-22 — Milestone v1.6 completed and archived
 progress:
   total_phases: 1
   completed_phases: 1
@@ -18,19 +18,17 @@ progress:
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-06-21)
+See: .planning/PROJECT.md (updated 2026-06-22)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Phase 11 — navbar-layout-balance
+**Current focus:** Planning next milestone (v1.6 shipped)
 
 ## Current Position
 
-Phase: 11
-Plan: Not started
-Status: Executing Phase 11
-Last activity: 2026-06-21
-
-Progress: [░░░░░░░░░░] 0% (0/1 phases complete)
+Phase: Milestone v1.6 complete
+Plan: —
+Status: Awaiting next milestone
+Last activity: 2026-06-21 — Milestone v1.6 completed and archived
 
 ## Milestone History
 
@@ -41,6 +39,7 @@ Progress: [░░░░░░░░░░] 0% (0/1 phases complete)
 | v1.3 | Improvement & Hardening (Quick Fixes → UX → SGDS → Security → Code Quality) | v1.3 | ✅ Shipped | 2026-06-20 |
 | v1.4 | Polish & International Content (Look & Feel → Info Architecture → Content) | v1.4 | ✅ Shipped | 2026-06-21 |
 | v1.5 | Responsive Navigation & Layout Fixes (Responsive Navbar → Hero & Overflow Fixes) | v1.5 | ✅ Shipped | 2026-06-21 |
+| v1.6 | Navbar Layout Balance (Phase 11) | v1.6 | ✅ Shipped | 2026-06-22 |
 
 > Versioning was aligned to git tags at the v1.3 close: the improvement+SGDS milestone tracked internally as "v1.0" was archived as v1.3 (next after git's v1.2). The early `milestones/v1.0-*` snapshot documents the v1.2-era "Quality & Tech Debt" scope and is preserved as history.
 
@@ -49,6 +48,7 @@ Progress: [░░░░░░░░░░] 0% (0/1 phases complete)
 **Velocity (v1.3):** 21 plans across 5 phases — Phase 1 (1), Phase 2 (4), Phase 5 (7), Phase 3 (3), Phase 4 (6).
 **Velocity (v1.4):** 6 plans across 3 phases — Phase 6 (3), Phase 7 (1), Phase 8 (2). Shipped via PRs #31 and #32.
 **Velocity (v1.5):** 3 plans across 2 phases — Phase 9 (2), Phase 10 (1). Shipped via PR #36 (squash).
+**Velocity (v1.6):** 1 plan across 1 phase — Phase 11 (1). Shipped via PR #39.
 
 ## Accumulated Context
 
@@ -87,11 +87,10 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 
 ## Session Continuity
 
-Last session: 2026-06-21T17:01:13.866Z
-Stopped at: Phase 11 planned (11-01-PLAN.md, ready to execute)
+Last session: 2026-06-22T00:00:00.000Z
+Stopped at: v1.6 milestone complete (archived 2026-06-22)
 Resume file: None
 
 ## Operator Next Steps
 
-- Execute Phase 11: `/gsd-execute-phase 11`
-- After shipping: close milestone via `/gsd-complete-milestone`
+- Start the next milestone with /gsd-new-milestone
