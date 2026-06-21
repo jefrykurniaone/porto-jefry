@@ -211,4 +211,10 @@ describe('Hero', () => {
         expect(css).toContain('100svh');
         expect(css).toContain('scroll-margin-top: var(--navbar-height)');
     });
+
+    it('source: globals.css contains overflow-x: clip defensive guard (not overflow-x: hidden)', () => {
+        const css = fs.readFileSync('src/app/globals.css', 'utf-8');
+        expect(css).toContain('overflow-x: clip');
+        expect(css).not.toContain('overflow-x: hidden');
+    });
 });

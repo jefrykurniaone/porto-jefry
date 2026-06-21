@@ -54,10 +54,17 @@
 @layer base {
     html {
         scroll-behavior: smooth;
+        /* Defensive horizontal-overflow guard (LAYOUT-02).
+           overflow-x: clip (NOT hidden) is used so no new scroll container is created —
+           position: sticky elements and scroll-margin-top remain unaffected.
+           This is a defensive layer ON TOP of the root-cause CTA min-width fix below;
+           it must not be masking a still-overflowing element. */
+        overflow-x: clip;
     }
     body {
         background: var(--sgds-bg-default);
         color: var(--sgds-color-default);
+        overflow-x: clip; /* defensive guard, paired with html above */
     }
 
     /* ── Hero section top-clearance (LAYOUT-01) ──
@@ -232,7 +239,11 @@
         row-gap: var(--sgds-spacer-8);
     }
 
-    @media (max-width: 512px) {
+    /* Root-cause overflow fix (LAYOUT-02): three 11.5rem (184px) CTAs + gaps exceed
+       the container width on narrow tablets (513–1024px band). Widening this
+       breakpoint to 1024px forces CTAs to full-width so they stack/wrap instead of
+       overflowing. Desktop (>=1025px) retains the fixed min-width: 11.5rem sizing. */
+    @media (max-width: 1024px) {
         .hero-cta-group,
         .hero-cta-link,
         .hero-download-button,
