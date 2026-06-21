@@ -54,7 +54,9 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
   4. At 768px and 1024px (tablet), the inline nav is visible; when the 7 labels (especially the longer Indonesian ones) or a non-maximized window means they don't all fit, the nav row scrolls horizontally (swipe/drag) so every section remains reachable — no item is clipped or permanently hidden
   5. At 1280px+ (desktop, full-width window), all 7 nav items are fully visible with no scroll required; the drawer and hamburger are hidden
   6. While the drawer is open: keyboard focus is trapped inside it, Tab cycles within it, Esc closes it and returns focus to the hamburger button, the backdrop tap closes it, and background page scroll is locked; all interactive controls have accessible labels and meet 44px minimum touch targets
-**Plans**: TBD
+**Plans**: 2 plans
+  - [ ] 09-01-PLAN.md — Build the accessible MobileDrawer (7 links + theme/lang toggles + close/backdrop, focus-trap + scroll-lock), the `useScrollLock` hook, and bilingual `nav.close_menu` (NAV-02, NAV-04, A11Y-01..04)
+  - [ ] 09-02-PLAN.md — Integrate the drawer into Navbar: collapse phone bar to brand+hamburger, remove `expand="always"`, add `overflow-x-auto` inline-nav scroll fallback, wire `scrollTo`, update tests (NAV-01, NAV-03, NAV-05, A11Y-04)
 **UI hint**: yes
 
 ### Phase 10: Hero & Overflow Fixes
@@ -80,5 +82,5 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 | 6. Look & Feel Polish | v1.4 | 3/3 | ✅ Complete | 2026-06-20 |
 | 7. Information Architecture | v1.4 | 1/1 | ✅ Complete | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
-| 9. Responsive Navbar | v1.5 | 0/? | Not started | - |
+| 9. Responsive Navbar | v1.5 | 0/2 | Not started | - |
 | 10. Hero & Overflow Fixes | v1.5 | 0/? | Not started | - |
