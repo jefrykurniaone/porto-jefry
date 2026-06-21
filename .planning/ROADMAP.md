@@ -39,7 +39,7 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 ### v1.5 Responsive Navigation & Layout Fixes
 
 - [x] **Phase 9: Responsive Navbar** — Navbar collapses to brand + hamburger on phones; hamburger opens an accessible right-side drawer with all 7 section links and both toggles; inline nav at tablet/desktop scrolls horizontally whenever items overflow so navigation never breaks at any width (completed 2026-06-21)
-- [ ] **Phase 10: Hero & Overflow Fixes** — Hero photo and content clear the fixed navbar on phones and tablets (portrait and landscape); no horizontal page overflow from 320px through 1024px
+- [x] **Phase 10: Hero & Overflow Fixes** — Hero photo and content clear the fixed navbar on phones and tablets (portrait and landscape); no horizontal page overflow from 320px through 1024px (completed 2026-06-21)
 
 ## Phase Details
 
@@ -82,7 +82,7 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 
 **Wave 1**
 
-  - [ ] 10-01-PLAN.md — Fix hero top-clipping below the fixed navbar (`--navbar-height` token + `.hero-section` 100svh/top-anchored clearance) and eliminate horizontal page overflow 320→1024px (root-cause `min-width: 11.5rem` CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02)
+  - [x] 10-01-PLAN.md — Fix hero top-clipping below the fixed navbar (`--navbar-height` token + `.hero-section` 100svh/top-anchored clearance) and eliminate horizontal page overflow 320→1024px (root-cause `min-width: 11.5rem` CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02)
 
 **UI hint**: yes
 
@@ -99,4 +99,4 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 | 7. Information Architecture | v1.4 | 1/1 | ✅ Complete | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
 | 9. Responsive Navbar | v1.5 | 2/2 | Complete   | 2026-06-21 |
-| 10. Hero & Overflow Fixes | v1.5 | 0/1 | Planned | - |
+| 10. Hero & Overflow Fixes | v1.5 | 1/1 | Complete   | 2026-06-21 |

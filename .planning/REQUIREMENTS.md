@@ -24,8 +24,8 @@ Requirements for this milestone. Each maps to a roadmap phase. Coverage spans **
 
 ### Hero & Responsive Layout (LAYOUT)
 
-- [ ] **LAYOUT-01**: The hero profile photo and content are fully visible below the fixed navbar at short viewport heights, on both phones and tablets (portrait and landscape) — no top clipping
-- [ ] **LAYOUT-02**: There is no horizontal page overflow from 320px up through tablet widths (≤1024px); content fits the viewport at the validation widths 360 / 390 / 430 (phone) and 768 / 1024 (tablet), with desktop (≥1280px) unaffected
+- [x] **LAYOUT-01**: The hero profile photo and content are fully visible below the fixed navbar at short viewport heights, on both phones and tablets (portrait and landscape) — no top clipping
+- [x] **LAYOUT-02**: There is no horizontal page overflow from 320px up through tablet widths (≤1024px); content fits the viewport at the validation widths 360 / 390 / 430 (phone) and 768 / 1024 (tablet), with desktop (≥1280px) unaffected
 
 ## v2 Requirements
 
@@ -71,8 +71,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | A11Y-02 | Phase 9 | In Progress (Esc + close + backdrop unit-verified; Plan 02 wires) |
 | A11Y-03 | Phase 9 | In Progress (useScrollLock unit-verified; Plan 02 wires) |
 | A11Y-04 | Phase 9 | In Progress (44px targets unit-verified; Plan 02 wires hamburger) |
-| LAYOUT-01 | Phase 10 | Pending |
-| LAYOUT-02 | Phase 10 | Pending |
+| LAYOUT-01 | Phase 10 | Complete |
+| LAYOUT-02 | Phase 10 | Complete |
 
 **Coverage:**
 
