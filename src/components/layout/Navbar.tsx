@@ -76,6 +76,10 @@ function InlineNav({ onNavClick }: Readonly<NavLinksProps>) {
     );
 }
 
+// expand="always" disables SGDS's own mobile collapse/toggler — otherwise it renders a
+// stray hamburger and pulls the end-slot controls into an (empty) native collapse,
+// conflicting with our custom MobileDrawer. Responsive behavior is driven by our CSS
+// (hide inline nav < md) plus the overflow-x-auto wrapper for tablet/desktop.
 export default function Navbar() {
     const t = useTranslations('nav');
     const [isOpen, setIsOpen] = useState(false);
@@ -97,7 +101,7 @@ export default function Navbar() {
     }`;
     return (
         <header className={headerClass}>
-            <sgds-mainnav suppressHydrationWarning>
+            <sgds-mainnav expand="always" suppressHydrationWarning>
                 <strong slot="brand" className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>JK</strong>
                 <InlineNav onNavClick={scrollTo} />
                 <div slot="end" className='sgds:flex sgds:items-center sgds:gap-component-xs'>

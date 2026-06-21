@@ -28,10 +28,12 @@ describe('Navbar', () => {
         expect(container.querySelector('sgds-mainnav')).toBeInTheDocument();
     });
 
-    it('sgds-mainnav does not have expand="always" attribute', () => {
+    it('sgds-mainnav uses expand="always" so SGDS does not render its own mobile toggler', () => {
+        // expand="always" disables SGDS's native collapse/toggler; mobile behavior is
+        // handled by our custom MobileDrawer + CSS hiding, not the SGDS navbar-collapse.
         const { container } = renderNavbar();
         const nav = container.querySelector('sgds-mainnav');
-        expect(nav).not.toHaveAttribute('expand', 'always');
+        expect(nav).toHaveAttribute('expand', 'always');
     });
 
     it('renders desktop nav items as sgds-mainnav-item', () => {
