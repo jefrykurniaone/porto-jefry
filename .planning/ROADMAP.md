@@ -99,4 +99,4 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 | 7. Information Architecture | v1.4 | 1/1 | ✅ Complete | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
 | 9. Responsive Navbar | v1.5 | 2/2 | Complete   | 2026-06-21 |
-| 10. Hero & Overflow Fixes | v1.5 | 1/1 | Complete   | 2026-06-21 |
+| 10. Hero & Overflow Fixes | v1.5 | 1/1 | Complete    | 2026-06-21 |
