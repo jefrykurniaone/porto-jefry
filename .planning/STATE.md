@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: — Polish & International Content
-status: Shipped — awaiting next milestone
-stopped_at: Milestone v1.4 closed & archived (tag v1.4); awaiting /gsd-new-milestone
-last_updated: "2026-06-21T00:00:00.000Z"
-last_activity: 2026-06-21 — Milestone v1.4 completed, archived, and tagged v1.4
+milestone: v1.5
+milestone_name: Mobile Navigation & Layout Fixes
+status: planning
+last_updated: "2026-06-21T01:08:16.229Z"
+last_activity: 2026-06-21
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,10 +24,10 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 
 ## Current Position
 
-Phase: Milestone v1.4 complete (Phases 6-8 shipped)
+Phase: Not started (defining requirements)
 Plan: —
-Status: Shipped & archived — awaiting next milestone
-Last activity: 2026-06-21 — Milestone v1.4 completed, archived, and tagged v1.4
+Status: Defining requirements
+Last activity: 2026-06-21 — Milestone v1.5 started
 
 ## Milestone History
 

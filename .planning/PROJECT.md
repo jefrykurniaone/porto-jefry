@@ -8,6 +8,16 @@ A personal portfolio website for Jefry, built with Next.js 14 App Router, TypeSc
 
 A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
 
+## Current Milestone: v1.5 Mobile Navigation & Layout Fixes
+
+**Goal:** Make the portfolio fully usable on phones — a working hamburger that opens a slide-in drawer reaching all 7 sections, and a hero whose photo and content clear the fixed navbar instead of being clipped.
+
+**Target features:**
+- Below the `md` breakpoint the navbar collapses to brand + hamburger only (desktop links hidden); `expand="always"` no longer forces the desktop layout on mobile.
+- The hamburger opens a right-side `sgds-drawer` listing all 7 sections with large tap targets, plus the theme + language toggles; tapping a link smooth-scrolls and closes the drawer.
+- The hero profile photo and content are fully visible below the fixed header at all phone viewport heights (no top clipping).
+- Mobile polish: no horizontal overflow, ≥44px tap targets, and an accessible drawer (focus trap, Esc to close, background scroll lock).
+
 ## Requirements
 
 ### Validated
@@ -50,9 +60,15 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 
 ### Active
 
-<!-- No active requirements — v1.4 shipped. Define the next milestone's scope via /gsd-new-milestone. -->
+<!-- Current scope — v1.5 Mobile Navigation & Layout Fixes. See .planning/REQUIREMENTS.md for full REQ-IDs. -->
 
-(None — v1.4 complete. Candidates for the next milestone live under v2 Requirements in the archived `milestones/v1.4-REQUIREMENTS.md`. Run `/gsd-new-milestone` to define fresh requirements.)
+- [ ] Mobile navbar collapses to brand + hamburger below `md` (NAV-01)
+- [ ] Hamburger opens a right slide-in drawer with all 7 section links (NAV-02)
+- [ ] Drawer links smooth-scroll, update the hash, and close the drawer (NAV-03)
+- [ ] Theme + language toggles available inside the drawer (NAV-04)
+- [ ] Drawer is accessible: focus trap, Esc + backdrop/close, scroll lock, ≥44px targets (A11Y-01..04)
+- [ ] Hero photo + content fully visible below the fixed navbar on short viewports (LAYOUT-01)
+- [ ] No horizontal page overflow on mobile (320–480px) (LAYOUT-02)
 
 ### Out of Scope
 
@@ -130,7 +146,8 @@ This document evolves at phase transitions and milestone boundaries.
 ## Current State
 
 **Shipped:** v1.4 — Polish & International Content (2026-06-21, tag `v1.4`). WCAG-AA muted-text contrast, rebalanced hero CTAs, sliding theme switch + EN|ID language pill, GitHub link moved to About, and a full humanized-prose rewrite (natural voice, AI agentic coding workflow narrative, remote/relocation availability signal) with 14 bilingual project descriptions and idiomatic education terms. Git tags: v1.1, v1.2, v1.3, v1.4.
-**Next:** TBD — define via `/gsd-new-milestone`. Candidate scope (deferred to v2): CI Lighthouse/CWV checks, Playwright E2E, Dependabot, blog, testimonials, experience timeline, Core Web Vitals ≥90, progressive image loading.
+**In progress:** v1.5 — Mobile Navigation & Layout Fixes. Reported on prod mobile (Samsung Galaxy S8, 360×740): hero photo clipped under the fixed navbar, only 3 of 7 nav links visible (the always-expanded nav overflows and can't be scrolled), and no hamburger appears. Fix = collapse to a hamburger that opens a right slide-in drawer with all 7 sections + toggles, and clear the hero from the fixed header.
+**Deferred (v2 candidates):** CI Lighthouse/CWV checks, Playwright E2E, Dependabot, blog, testimonials, experience timeline, Core Web Vitals ≥90, progressive image loading.
 
 ---
-*Last updated: 2026-06-21 — milestone v1.4 (polish-and-international-content) closed & archived*
+*Last updated: 2026-06-21 — milestone v1.5 (mobile-navigation-and-layout-fixes) started*
