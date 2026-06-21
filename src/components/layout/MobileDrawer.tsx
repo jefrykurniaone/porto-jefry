@@ -39,13 +39,56 @@ function DrawerLinks({ onNavClick }: Readonly<DrawerLinksProps>) {
     );
 }
 
+interface DrawerPanelProps {
+    panelRef: React.RefObject<HTMLDivElement>;
+    onClose: () => void;
+    onNavClick: (id: string) => void;
+}
+
+function DrawerPanel({ panelRef, onClose, onNavClick }: Readonly<DrawerPanelProps>) {
+    const t = useTranslations('nav');
+    return (
+        <div
+            ref={panelRef}
+            role="dialog"
+            aria-modal="true"
+            aria-label={t('toggle_menu')}
+            className='sgds:fixed sgds:right-0 sgds:top-0 sgds:z-50 sgds:h-full sgds:w-72 sgds:flex sgds:flex-col sgds:bg-surface-raised sgds:shadow-lg'
+            onClick={(e) => e.stopPropagation()}
+        >
+            {/* Header row with close button */}
+            <div className='sgds:flex sgds:items-center sgds:justify-end sgds:px-4 sgds:py-3 sgds:border-b sgds:border-divider'>
+                <button
+                    type="button"
+                    onClick={onClose}
+                    aria-label={t('close_menu')}
+                    className='sgds:flex sgds:items-center sgds:justify-center sgds:rounded-sm sgds:border-0 sgds:bg-transparent sgds:cursor-pointer'
+                    style={{ minWidth: '44px', minHeight: '44px' }}
+                >
+                    <sgds-icon name="cross" suppressHydrationWarning />
+                </button>
+            </div>
+
+            {/* Navigation links */}
+            <nav className='sgds:flex-1 sgds:overflow-y-auto sgds:px-4 sgds:py-4'>
+                <DrawerLinks onNavClick={onNavClick} />
+            </nav>
+
+            {/* Footer controls: theme + language */}
+            <div className='sgds:flex sgds:items-center sgds:gap-component-xs sgds:px-4 sgds:py-4 sgds:border-t sgds:border-divider'>
+                <ThemeToggle />
+                <LanguageToggle />
+            </div>
+        </div>
+    );
+}
+
 export default function MobileDrawer({
     isOpen,
     onClose,
     onNavClick,
     toggleRef,
 }: Readonly<MobileDrawerProps>) {
-    const t = useTranslations('nav');
     const panelRef = useRef<HTMLDivElement>(null);
 
     useFocusTrap(isOpen, panelRef, toggleRef, onClose);
@@ -63,39 +106,7 @@ export default function MobileDrawer({
                 aria-hidden="true"
             />
 
-            {/* Right-side slide-in panel */}
-            <div
-                ref={panelRef}
-                role="dialog"
-                aria-modal="true"
-                aria-label={t('toggle_menu')}
-                className='sgds:fixed sgds:right-0 sgds:top-0 sgds:z-50 sgds:h-full sgds:w-72 sgds:flex sgds:flex-col sgds:bg-surface-raised sgds:shadow-lg'
-                onClick={(e) => e.stopPropagation()}
-            >
-                {/* Header row with close button */}
-                <div className='sgds:flex sgds:items-center sgds:justify-end sgds:px-4 sgds:py-3 sgds:border-b sgds:border-divider'>
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        aria-label={t('close_menu')}
-                        className='sgds:flex sgds:items-center sgds:justify-center sgds:rounded-sm sgds:border-0 sgds:bg-transparent sgds:cursor-pointer'
-                        style={{ minWidth: '44px', minHeight: '44px' }}
-                    >
-                        <sgds-icon name="cross" suppressHydrationWarning />
-                    </button>
-                </div>
-
-                {/* Navigation links */}
-                <nav className='sgds:flex-1 sgds:overflow-y-auto sgds:px-4 sgds:py-4'>
-                    <DrawerLinks onNavClick={onNavClick} />
-                </nav>
-
-                {/* Footer controls: theme + language */}
-                <div className='sgds:flex sgds:items-center sgds:gap-component-xs sgds:px-4 sgds:py-4 sgds:border-t sgds:border-divider'>
-                    <ThemeToggle />
-                    <LanguageToggle />
-                </div>
-            </div>
+            <DrawerPanel panelRef={panelRef} onClose={onClose} onNavClick={onNavClick} />
         </>
     );
 }
