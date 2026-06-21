@@ -194,4 +194,27 @@ describe('Hero', () => {
         expect(source).not.toContain('next-themes');
         expect(source).not.toContain('useTheme');
     });
+
+    it('source: Hero.tsx hero section uses hero-section class (no sgds:min-h-screen on section)', () => {
+        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
+        expect(source).toContain('hero-section');
+        expect(source).not.toContain('sgds:min-h-screen');
+        // The hero <section> element must not have sgds:items-center (center-only layout removed).
+        // sgds:items-center may still appear on inner elements (CTA group, CTA links) — that is fine.
+        const sectionTag = source.match(/<section[^>]*id=['"]hero['"][^>]*>/)?.[0] ?? '';
+        expect(sectionTag).not.toContain('sgds:items-center');
+    });
+
+    it('source: globals.css declares --navbar-height and uses it for hero clearance and scroll-margin-top', () => {
+        const css = fs.readFileSync('src/app/globals.css', 'utf-8');
+        expect(css).toContain('--navbar-height');
+        expect(css).toContain('100svh');
+        expect(css).toContain('scroll-margin-top: var(--navbar-height)');
+    });
+
+    it('source: globals.css contains overflow-x: clip defensive guard (not overflow-x: hidden)', () => {
+        const css = fs.readFileSync('src/app/globals.css', 'utf-8');
+        expect(css).toContain('overflow-x: clip');
+        expect(css).not.toContain('overflow-x: hidden');
+    });
 });

@@ -9,6 +9,12 @@
    then reads near-black in day / light-gray in night. Kept unlayered and after
    the @imports so it wins the cascade over the theme files. */
 :root {
+    /* ── Layout tokens ──
+       --navbar-height: single source of truth for the fixed navbar's vertical
+       footprint (de-facto 5rem). Consumed by .hero-section top-clearance and
+       section { scroll-margin-top } so both stay in sync from one token. */
+    --navbar-height: 5rem;
+
     --sgds-product-primary-100: #f3f3f3;
     --sgds-product-primary-200: #e0e0e0;
     --sgds-product-primary-300: #c6c6c6;
@@ -48,10 +54,39 @@
 @layer base {
     html {
         scroll-behavior: smooth;
+        /* Defensive horizontal-overflow guard (LAYOUT-02).
+           overflow-x: clip (NOT hidden) is used so no new scroll container is created —
+           position: sticky elements and scroll-margin-top remain unaffected.
+           This is a defensive layer ON TOP of the root-cause CTA min-width fix below;
+           it must not be masking a still-overflowing element. */
+        overflow-x: clip;
     }
     body {
         background: var(--sgds-bg-default);
         color: var(--sgds-color-default);
+        overflow-x: clip; /* defensive guard, paired with html above */
+    }
+
+    /* ── Hero section top-clearance (LAYOUT-01) ──
+       Replaces center-only min-h-screen that clipped the photo/heading behind
+       the fixed navbar on short/landscape viewports. Content is top-anchored
+       within the space below the navbar via padding-top >= --navbar-height.
+       100svh (small viewport unit — excludes mobile browser chrome) is used
+       with 100dvh and 100vh fallbacks so content is never pushed under the
+       browser toolbar on mobile. */
+    .hero-section {
+        /* border-box so padding-top is included WITHIN the 100svh box (this project
+           excludes Tailwind preflight and SGDS ships no global border-box reset, so
+           the default is content-box). Without this the effective min-height becomes
+           100svh + var(--navbar-height), making the hero taller than the viewport. */
+        box-sizing: border-box;
+        min-height: 100vh;     /* fallback for browsers without svh/dvh support */
+        min-height: 100dvh;    /* dynamic viewport height — recalcs as browser chrome appears/disappears */
+        min-height: 100svh;    /* small viewport height — stable; excludes mobile browser chrome */
+        padding-top: var(--navbar-height);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
     }
 
     .readable-muted {
@@ -159,7 +194,7 @@
 
     /* ── Section spacing ── */
     section {
-        scroll-margin-top: 5rem;
+        scroll-margin-top: var(--navbar-height);
     }
 
     /* ── Experience timeline (flat: hairline dividers, no rail/dots) ── */
@@ -209,7 +244,11 @@
         row-gap: var(--sgds-spacer-8);
     }
 
-    @media (max-width: 512px) {
+    /* Root-cause overflow fix (LAYOUT-02): three 11.5rem (184px) CTAs + gaps exceed
+       the container width on narrow tablets (513–1024px band). Widening this
+       breakpoint to 1024px forces CTAs to full-width so they stack/wrap instead of
+       overflowing. Desktop (>=1025px) retains the fixed min-width: 11.5rem sizing. */
+    @media (max-width: 1024px) {
         .hero-cta-group,
         .hero-cta-link,
         .hero-download-button,

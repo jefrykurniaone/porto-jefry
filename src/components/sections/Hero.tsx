@@ -137,7 +137,7 @@ export default function Hero() {
     const t = useTranslations('hero');
     const locale = useLocale();
     return (
-        <section id='hero' className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:bg-default'>
+        <section id='hero' className='hero-section sgds:flex sgds:justify-center sgds:bg-default'>
             <div className='sgds-container hero-content sgds:text-center sgds:py-layout-lg'>
                 <HeroPhotoHeading
                     photoAlt={t('photo_alt')}

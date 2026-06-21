@@ -10,7 +10,8 @@
         "logo_label": "Back to top",
         "toggle_menu": "Toggle navigation menu",
         "skip_to_content": "Skip to main content",
-        "back_to_top": "Back to top"
+        "back_to_top": "Back to top",
+        "close_menu": "Close menu"
     },
     "hero": {
         "greeting": "Hi, I'm",

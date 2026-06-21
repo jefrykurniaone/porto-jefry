@@ -1,16 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: — Polish & International Content
-status: Shipped — awaiting next milestone
-stopped_at: Milestone v1.4 closed & archived (tag v1.4); awaiting /gsd-new-milestone
-last_updated: "2026-06-21T00:00:00.000Z"
-last_activity: 2026-06-21 — Milestone v1.4 completed, archived, and tagged v1.4
+milestone: v1.5
+milestone_name: Responsive Navigation & Layout Fixes
+status: verifying
+stopped_at: Phase 10 Plan 01 complete — hero overflow fixes (LAYOUT-01, LAYOUT-02) verified and approved
+last_updated: "2026-06-21T11:31:18.291Z"
+last_activity: 2026-06-21
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 6
-  completed_plans: 6
+  total_phases: 2
+  completed_phases: 2
+  total_plans: 3
+  completed_plans: 3
   percent: 100
 ---
 
@@ -21,14 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-21)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** Planning the next milestone (v1.4 shipped). Run /gsd-new-milestone to define fresh requirements.
+**Current focus:** Phase 10 — hero-overflow-fixes
 
 ## Current Position
 
-Phase: Milestone v1.4 complete (Phases 6-8 shipped)
-Plan: —
-Status: Shipped & archived — awaiting next milestone
-Last activity: 2026-06-21 — Milestone v1.4 completed, archived, and tagged v1.4
+Phase: 10
+Plan: Not started
+Status: Phase complete — ready for verification
+Last activity: 2026-06-21
+
+Progress: [██████████] 100% (0/2 phases complete, 2/2 plans complete)
 
 ## Milestone History
 
@@ -52,6 +54,12 @@ Last activity: 2026-06-21 — Milestone v1.4 completed, archived, and tagged v1.
 
 Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives (`milestones/v1.4-*`, phase SUMMARY files). v1.4 highlights: humanize prose with the free `blader/humanizer` (paid HumanizerAI API rejected — needed API key + credits + external calls); AI narrative = agentic coding workflow (Claude/Copilot/OpenCode), not building AI features (Semantic Kernel/OpenAI); Docker dropped (never used).
 
+**v1.5 context:** Root cause of the mobile nav bug is `expand="always"` on `<sgds-mainnav>`, which forces the desktop layout at all viewport widths. The existing `Navbar.tsx` already has `MobileNavLinks`, `HamburgerButton`, and `useFocusTrap` wired up — the drawer mechanism needs to move to an `sgds-drawer` component to get correct focus trapping, backdrop, and scroll lock. The scope is phone + tablet + desktop: phone (<768px) uses the hamburger drawer; tablet/desktop (≥768px) uses the inline nav, but adds a horizontal-scroll overflow fallback (NAV-05) so navigation never breaks when items don't all fit (tablet portrait, non-maximized window, longer ID labels, browser zoom). Hero photo clipping (LAYOUT-01) is caused by `min-h-screen` + vertical centering with no `padding-top` to account for the fixed navbar; fix must cover phones and tablets (portrait and landscape).
+
+**09-01 decisions:** Custom React drawer used instead of sgds-drawer (jsdom stubs prevent a11y assertions on Lit components under Vitest). NAV_KEYS exported from Navbar.tsx to avoid drift. Drawer returns null when closed (same pattern as existing MobileNavLinks — required for useFocusTrap DOM queries). useScrollLock captures prior overflow before locking and restores on release/unmount (T-09-03 mitigation).
+
+**09-02 decisions:** Removed `expand="always"` from sgds-mainnav (root cause fix). MobileDrawer owns the single focus-trap; Navbar removed its duplicate useFocusTrap. ThemeToggle/LanguageToggle gated `sgds:hidden sgds:md:flex` (phone bar = brand+hamburger only). InlineNav sub-component wraps DesktopNavLinks in `overflow-x-auto` (NAV-05). `nav.nav_scroll` i18n key omitted — native keyboard/pointer scroll reachability sufficient without explicit aria label.
+
 ### Pending Todos (owner, non-blocking)
 
 - Verify the 14 drafted project descriptions (real client projects).
@@ -66,20 +74,22 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 | Category | Item | Status | Deferred At |
 |----------|------|--------|-------------|
 | SGDS | UK English writing standards audit | Future consideration | 2026-06-04 |
-| Phase 06-look-feel-polish P01 | 600 | 2 tasks | 1 files |
-| Phase 06-look-feel-polish P02 | 5m | 3 tasks | 2 files |
-| Phase 07-information-architecture P01 | 15m | 3 tasks | 7 files |
+| v2 | CI Lighthouse/CWV checks (CI-01) | Deferred | 2026-06-21 |
+| v2 | Playwright E2E (CI-02) | Deferred | 2026-06-21 |
+| v2 | Dependabot (CI-03) | Deferred | 2026-06-21 |
+| v2 | Core Web Vitals ≥90 mobile (PERF-01) | Deferred | 2026-06-21 |
+| v2 | Progressive image loading (PERF-02) | Deferred | 2026-06-21 |
+| v2 | Blog (FEAT-01), Testimonials (FEAT-02), Experience timeline (FEAT-03) | Deferred | 2026-06-21 |
+| Phase 09 P02 | 18m | 2 tasks | 2 files |
+| Phase 10-hero-overflow-fixes P10-01 | 30min | 3 tasks | 3 files |
 
 ## Session Continuity
 
-Last session: 2026-06-21
-Stopped at: Milestone v1.4 closed & archived (tag v1.4)
+Last session: 2026-06-21T11:19:25.982Z
+Stopped at: Phase 10 Plan 01 complete — hero overflow fixes (LAYOUT-01, LAYOUT-02) verified and approved
 Resume file: None
-
-## Decisions
-
-Per-phase execution notes are archived with the milestone (see `milestones/v1.4-*` and phase SUMMARY files). PROJECT.md holds the durable Key Decisions log.
 
 ## Operator Next Steps
 
-- Start the next milestone with /gsd-new-milestone
+- Human verification: run `npm run dev`, open http://localhost:3000, verify responsive nav at phone 360/390/430, tablet 768/1024, desktop 1280+ in EN and ID locales (see 09-02-PLAN.md Task 3 checklist)
+- After approval: merge PR and close Phase 09
