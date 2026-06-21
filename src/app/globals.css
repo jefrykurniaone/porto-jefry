@@ -75,6 +75,11 @@
        with 100dvh and 100vh fallbacks so content is never pushed under the
        browser toolbar on mobile. */
     .hero-section {
+        /* border-box so padding-top is included WITHIN the 100svh box (this project
+           excludes Tailwind preflight and SGDS ships no global border-box reset, so
+           the default is content-box). Without this the effective min-height becomes
+           100svh + var(--navbar-height), making the hero taller than the viewport. */
+        box-sizing: border-box;
         min-height: 100vh;     /* fallback for browsers without svh/dvh support */
         min-height: 100dvh;    /* dynamic viewport height — recalcs as browser chrome appears/disappears */
         min-height: 100svh;    /* small viewport height — stable; excludes mobile browser chrome */
