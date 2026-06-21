@@ -60,7 +60,8 @@ Full phase details: `milestones/v1.5-ROADMAP.md`. Shipped via PR #36 (squash).
   2. When the browser window is narrowed to a tablet width where the 7 links no longer all fit, the inline nav scrolls horizontally (NAV-05 behavior) instead of overflowing or clipping.
   3. On phone widths (< md), the hamburger menu still opens the MobileDrawer with all 7 section links, the theme toggle, and the language toggle — the drawer behavior is completely unchanged from v1.5.
   4. No horizontal page scrollbar appears at any width from 320px through 1024px; ≥44px tap targets are preserved.
-**Plans**: TBD
+**Plans**: 1 plan
+  - [ ] 11-01-PLAN.md — Center the InlineNav links (flex-grow + centered, scroll-fallback preserved)
 **UI hint**: yes
 
 ## Progress
@@ -77,4 +78,4 @@ Full phase details: `milestones/v1.5-ROADMAP.md`. Shipped via PR #36 (squash).
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
 | 9. Responsive Navbar | v1.5 | 2/2 | ✅ Complete | 2026-06-21 |
 | 10. Hero & Overflow Fixes | v1.5 | 1/1 | ✅ Complete | 2026-06-21 |
-| 11. Navbar Layout Balance | v1.6 | 0/TBD | Not started | - |
+| 11. Navbar Layout Balance | v1.6 | 0/1 | Planned | - |
