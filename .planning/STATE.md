@@ -2,11 +2,11 @@
 gsd_state_version: 1.0
 milestone: v1.6
 milestone_name: Navbar Layout Balance
-status: planning
+status: in_progress
 last_updated: "2026-06-21T12:44:13.274Z"
 last_activity: 2026-06-21
 progress:
-  total_phases: 0
+  total_phases: 1
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,14 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-21)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** v1.5 shipped and closed — next milestone TBD (`/gsd-new-milestone`)
+**Current focus:** v1.6 — Phase 11: Navbar Layout Balance (roadmap written, ready for planning)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 11 — Navbar Layout Balance
 Plan: —
-Status: Defining requirements
-Last activity: 2026-06-21 — Milestone v1.6 started
+Status: Roadmap written; awaiting `/gsd-plan-phase 11`
+Last activity: 2026-06-21 — v1.6 roadmap created (Phase 11 defined)
+
+Progress: [░░░░░░░░░░] 0% (0/1 phases complete)
 
 ## Milestone History
 
@@ -59,6 +61,8 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 
 **09-02 decisions:** Removed `expand="always"` from sgds-mainnav (root cause fix). MobileDrawer owns the single focus-trap; Navbar removed its duplicate useFocusTrap. ThemeToggle/LanguageToggle gated `sgds:hidden sgds:md:flex` (phone bar = brand+hamburger only). InlineNav sub-component wraps DesktopNavLinks in `overflow-x-auto` (NAV-05). `nav.nav_scroll` i18n key omitted — native keyboard/pointer scroll reachability sufficient without explicit aria label.
 
+**v1.6 context:** Root cause of the balance defect: SGDS `<sgds-mainnav>` renders brand → default slot → `.slot-end` with `justify-content: flex-start` and `.slot-end { margin-left: auto }`, which packs links against the brand on the left and shoves controls to the far right. Fix lives in the `InlineNav` wrapper in `Navbar.tsx` (lines ~68-77): make the wrapper flex-grow and center its links so the navbar row reads balanced. Must not regress v1.5 responsive behavior (phone hamburger drawer, NAV-05 overflow-x-auto fallback, ≥44px targets, no horizontal page overflow 320→1024px). Pure layout change — no new dependencies.
+
 ### Pending Todos (owner, non-blocking)
 
 - Verify the 14 drafted project descriptions (real client projects).
@@ -79,17 +83,14 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 | v2 | Core Web Vitals ≥90 mobile (PERF-01) | Deferred | 2026-06-21 |
 | v2 | Progressive image loading (PERF-02) | Deferred | 2026-06-21 |
 | v2 | Blog (FEAT-01), Testimonials (FEAT-02), Experience timeline (FEAT-03) | Deferred | 2026-06-21 |
-| Phase 09 P02 | 18m | 2 tasks | 2 files |
-| Phase 10-hero-overflow-fixes P10-01 | 30min | 3 tasks | 3 files |
 
 ## Session Continuity
 
 Last session: 2026-06-21
-Stopped at: v1.5 shipped (PR #36, tag v1.5) and milestone closed
+Stopped at: v1.6 roadmap written (Phase 11 defined)
 Resume file: None
 
 ## Operator Next Steps
 
-- Start the next milestone: `/gsd-new-milestone` (questioning → research → requirements → roadmap). A fresh `.planning/REQUIREMENTS.md` is created there.
-- Optional cleanup: prune merged local branches `gsd/phase-09-responsive-navbar` and `feat/responsive-navbar`; archive phase dirs via `/gsd-cleanup`.
-- v2 deferred candidates remain tracked (CI/PERF/FEAT) for the next milestone's scoping.
+- Plan Phase 11: `/gsd-plan-phase 11`
+- After shipping: close milestone via `/gsd-complete-milestone`
