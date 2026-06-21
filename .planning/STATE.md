@@ -3,8 +3,9 @@ gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Responsive Navigation & Layout Fixes
 status: planning
-last_updated: "2026-06-21T01:27:07.589Z"
-last_activity: 2026-06-21
+stopped_at: v1.5 roadmap revised (Phases 9-10; scope broadened to phone + tablet + desktop; NAV-05 added)
+last_updated: "2026-06-21T01:46:14.112Z"
+last_activity: "2026-06-21 — Roadmap revised for v1.5 (broadened scope: phone + tablet + desktop; NAV-05 added)"
 progress:
   total_phases: 2
   completed_phases: 0

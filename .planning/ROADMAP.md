@@ -44,29 +44,40 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 ## Phase Details
 
 ### Phase 9: Responsive Navbar
+
 **Goal**: Navigation works correctly at every viewport width — phones collapse to a hamburger drawer, tablets and desktops use an inline nav that scrolls horizontally when items don't all fit
 **Depends on**: Nothing (Phase 8 shipped; this begins v1.5)
 **Requirements**: NAV-01, NAV-02, NAV-03, NAV-04, NAV-05, A11Y-01, A11Y-02, A11Y-03, A11Y-04
 **Success Criteria** (what must be TRUE):
+
   1. At 360 / 390 / 430px wide, the navbar shows only the brand and the hamburger button; no inline section links are visible, and tapping the hamburger opens a right-side drawer listing all 7 sections (About, Experience, Education, Skills, Projects, Certifications, Contact) with touch targets of at least 44px
   2. Tapping any drawer link smooth-scrolls to that section, updates the URL hash, and closes the drawer — verified on both EN and ID labels
   3. The theme toggle and EN|ID language switch are present and functional inside the open drawer at all phone widths (360–430px)
   4. At 768px and 1024px (tablet), the inline nav is visible; when the 7 labels (especially the longer Indonesian ones) or a non-maximized window means they don't all fit, the nav row scrolls horizontally (swipe/drag) so every section remains reachable — no item is clipped or permanently hidden
   5. At 1280px+ (desktop, full-width window), all 7 nav items are fully visible with no scroll required; the drawer and hamburger are hidden
-  6. While the drawer is open: keyboard focus is trapped inside it, Tab cycles within it, Esc closes it and returns focus to the hamburger button, the backdrop tap closes it, and background page scroll is locked; all interactive controls have accessible labels and meet 44px minimum touch targets
-**Plans**: 2 plans
+  6. While the drawer is open: keyboard focus is trapped inside it, Tab cycles within it, Esc closes it and returns focus to the hamburger button, the backdrop tap closes it, and background page scroll is locked; all interactive controls have accessible labels and meet 44px minimum touch targets**Plans**: 2 plans
+
+**Wave 1**
+
   - [ ] 09-01-PLAN.md — Build the accessible MobileDrawer (7 links + theme/lang toggles + close/backdrop, focus-trap + scroll-lock), the `useScrollLock` hook, and bilingual `nav.close_menu` (NAV-02, NAV-04, A11Y-01..04)
+
+**Wave 2** *(blocked on Wave 1 completion)*
+
   - [ ] 09-02-PLAN.md — Integrate the drawer into Navbar: collapse phone bar to brand+hamburger, remove `expand="always"`, add `overflow-x-auto` inline-nav scroll fallback, wire `scrollTo`, update tests (NAV-01, NAV-03, NAV-05, A11Y-04)
+
 **UI hint**: yes
 
 ### Phase 10: Hero & Overflow Fixes
+
 **Goal**: The hero profile photo and all page content are fully visible and horizontally contained on phones and tablets after the navbar is finalized
 **Depends on**: Phase 9 (navbar height and structure must be settled before the hero top-offset is calculated)
 **Requirements**: LAYOUT-01, LAYOUT-02
 **Success Criteria** (what must be TRUE):
+
   1. At 360 / 390 / 430px (phone, portrait) and 768 / 1024px (tablet, portrait and landscape), the hero profile photo and heading are fully visible below the fixed navbar — no part of the photo or content is obscured by the fixed header
   2. On tablets in landscape orientation (e.g. 1024px wide, short viewport height), the hero content clears the fixed navbar so the photo is not clipped at the top
   3. From 320px through 1024px, no section or component causes a horizontal scrollbar; all content fits the viewport width at the validation widths 360 / 390 / 430 (phone) and 768 / 1024 (tablet), with desktop (1280px+) unaffected
+
 **Plans**: TBD
 **UI hint**: yes
 
