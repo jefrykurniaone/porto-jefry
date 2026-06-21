@@ -1,17 +1,16 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.5
-milestone_name: Responsive Navigation & Layout Fixes
-status: shipped
-stopped_at: v1.5 shipped and closed (tag v1.5, PR #36) — define the next milestone via /gsd-new-milestone
-last_updated: "2026-06-21T11:55:00.000Z"
+milestone: v1.6
+milestone_name: Navbar Layout Balance
+status: planning
+last_updated: "2026-06-21T12:44:13.274Z"
 last_activity: 2026-06-21
 progress:
-  total_phases: 2
-  completed_phases: 2
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -25,12 +24,10 @@ See: .planning/PROJECT.md (updated 2026-06-21)
 
 ## Current Position
 
-Milestone: v1.5 — SHIPPED & CLOSED (tag v1.5, PR #36)
-Phase: — (no active phase)
-Status: Milestone complete — ready to start the next milestone
-Last activity: 2026-06-21
-
-Progress: [██████████] 100% (v1.5: 2/2 phases, 3/3 plans complete)
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-06-21 — Milestone v1.6 started
 
 ## Milestone History
 
