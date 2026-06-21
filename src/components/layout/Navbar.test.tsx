@@ -92,13 +92,26 @@ describe('Navbar', () => {
         expect(within(dialog).getByLabelText('Close menu')).toBeInTheDocument();
     });
 
-    it('close button inside drawer closes the drawer', async () => {
+    it('close button inside drawer closes the drawer and returns focus to the hamburger', async () => {
         renderNavbar();
         const user = userEvent.setup();
-        await user.click(screen.getByLabelText(/toggle navigation menu/i));
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
         expect(screen.getByRole('dialog')).toBeInTheDocument();
         await user.click(screen.getByLabelText('Close menu'));
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(document.activeElement).toBe(toggleBtn);
+    });
+
+    it('clicking the backdrop closes the drawer and returns focus to the hamburger', async () => {
+        renderNavbar();
+        const user = userEvent.setup();
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
+        expect(screen.getByRole('dialog')).toBeInTheDocument();
+        await user.click(screen.getByTestId('drawer-backdrop'));
+        expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(document.activeElement).toBe(toggleBtn);
     });
 
     it('clicking a drawer link calls scrollIntoView, pushState, and closes the drawer', async () => {
@@ -112,13 +125,15 @@ describe('Navbar', () => {
         document.body.appendChild(section);
         const pushSpy = vi.spyOn(history, 'pushState');
 
-        await user.click(screen.getByLabelText(/toggle navigation menu/i));
+        const toggleBtn = screen.getByLabelText(/toggle navigation menu/i);
+        await user.click(toggleBtn);
         const dialog = screen.getByRole('dialog');
         await user.click(within(dialog).getByRole('link', { name: 'Projects' }));
 
         expect(scrollSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
         expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
         expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+        expect(document.activeElement).toBe(toggleBtn);
 
         section.remove();
         pushSpy.mockRestore();

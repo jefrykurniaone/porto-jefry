@@ -81,12 +81,17 @@ export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const toggleRef = useRef<HTMLButtonElement>(null);
     const isScrolled = useScrolled(20);
-    const closeMenu = useCallback(() => setIsOpen(false), []);
+    const closeMenu = useCallback(() => {
+        setIsOpen(false);
+        // Return focus to the toggle on every close path (close button, backdrop,
+        // link select, Escape) so focus is never orphaned on <body> — WCAG 2.4.3.
+        toggleRef.current?.focus();
+    }, []);
     const scrollTo = useCallback((id: string) => {
         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
         history.pushState(null, '', `#${id}`);
-        setIsOpen(false);
-    }, []);
+        closeMenu();
+    }, [closeMenu]);
     const headerClass = `sgds:fixed sgds:top-0 sgds:left-0 sgds:right-0 sgds:z-50 sgds:transition-all sgds:duration-300 ${
         isScrolled ? 'sgds:bg-surface-raised/90 sgds:backdrop-blur-md sgds:shadow-sm' : 'sgds:bg-transparent'
     }`;
