@@ -7,6 +7,7 @@
 - ✅ **v1.3 Improvement & Hardening** — Phases 1-5 (shipped 2026-06-20)
 - ✅ **v1.4 Polish & International Content** — Phases 6-8 (shipped 2026-06-21)
 - ✅ **v1.5 Responsive Navigation & Layout Fixes** — Phases 9-10 (shipped 2026-06-21)
+- 🔄 **v1.6 Navbar Layout Balance** — Phase 11 (in progress)
 
 Full milestone archives in `.planning/milestones/`. Versioning is aligned to git tags; the improvement+SGDS milestone tracked internally as "v1.0" was closed as **v1.3**.
 
@@ -46,6 +47,28 @@ Full phase details: `milestones/v1.5-ROADMAP.md`. Shipped via PR #36 (squash).
 
 </details>
 
+- [x] **Phase 11: Navbar Layout Balance** - Center the inline nav links between the brand and controls on desktop (completed 2026-06-21)
+
+## Phase Details
+
+### Phase 11: Navbar Layout Balance
+
+**Goal**: The desktop navbar row reads balanced — the 7 section links sit centered between the "JK" brand on the left and the theme/language controls on the right, with no large dead gap.
+**Depends on**: Phase 10 (v1.5 responsive behavior must be preserved as-is)
+**Requirements**: NAVBAL-01, NAVBAL-02, NAVBAL-03, NAVBAL-04
+**Success Criteria** (what must be TRUE):
+
+  1. On a wide desktop (≥ md breakpoint), the nav links appear visually centered in the navbar row with balanced whitespace on both sides — no large empty gap between the last link and the theme/language controls.
+  2. When the browser window is narrowed to a tablet width where the 7 links no longer all fit, the inline nav scrolls horizontally (NAV-05 behavior) instead of overflowing or clipping.
+  3. On phone widths (< md), the hamburger menu still opens the MobileDrawer with all 7 section links, the theme toggle, and the language toggle — the drawer behavior is completely unchanged from v1.5.
+  4. No horizontal page scrollbar appears at any width from 320px through 1024px; ≥44px tap targets are preserved.
+
+**Plans**: 1 plan
+
+  - [x] 11-01-PLAN.md — Center the InlineNav links (flex-grow + centered, scroll-fallback preserved)
+
+**UI hint**: yes
+
 ## Progress
 
 | Phase | Milestone | Plans Complete | Status | Completed |
@@ -60,3 +83,4 @@ Full phase details: `milestones/v1.5-ROADMAP.md`. Shipped via PR #36 (squash).
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
 | 9. Responsive Navbar | v1.5 | 2/2 | ✅ Complete | 2026-06-21 |
 | 10. Hero & Overflow Fixes | v1.5 | 1/1 | ✅ Complete | 2026-06-21 |
+| 11. Navbar Layout Balance | v1.6 | 1/1 | Complete    | 2026-06-21 |

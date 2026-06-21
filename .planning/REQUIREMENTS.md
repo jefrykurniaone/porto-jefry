@@ -1,0 +1,61 @@
+# Requirements: porto-jefry — v1.6 Navbar Layout Balance
+
+**Defined:** 2026-06-21
+**Core Value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
+
+## v1.6 Requirements
+
+Requirements for the Navbar Layout Balance milestone. Each maps to roadmap phases.
+
+### Navbar Balance
+
+- [x] **NAVBAL-01**: At `≥ md`, the 7 inline nav links render horizontally centered in the navbar row, between the "JK" brand (left) and the theme/language controls (right).
+- [x] **NAVBAL-02**: The horizontal space to the left and right of the centered nav cluster is visually balanced — no large empty gap between the last link ("Contact") and the controls.
+- [x] **NAVBAL-03**: When the inline nav cannot fit all 7 links (narrow `≥ md` widths, longer ID labels, browser zoom), it still falls back to horizontal scroll — the v1.5 NAV-05 behavior is preserved, with no overflow or clipping.
+- [x] **NAVBAL-04**: No regression to the phone hamburger drawer (`< md`), ≥44px tap targets, or page horizontal-overflow guarantee from 320px through 1024px.
+
+## v2 Requirements
+
+Deferred to future release. Tracked but not in current roadmap.
+
+### Polish (carried from prior milestones)
+
+- **CI-01**: CI Lighthouse / Core Web Vitals checks
+- **CI-02**: Playwright E2E
+- **CI-03**: Dependabot
+- **PERF-01**: Core Web Vitals ≥90 mobile
+- **PERF-02**: Progressive image loading
+- **FEAT-01**: Blog · **FEAT-02**: Testimonials · **FEAT-03**: Experience timeline
+
+## Out of Scope
+
+Explicitly excluded. Documented to prevent scope creep.
+
+| Feature | Reason |
+|---------|--------|
+| Restyling nav link typography / colors | This milestone is layout/position only — visual style is unchanged |
+| Changing brand or controls position | Brand stays left, controls stay right by design; only the link cluster moves |
+| Reworking the mobile drawer | Shipped and validated in v1.5; only guarding against regression here |
+| Adding/removing nav sections | The 7 sections are fixed; this is purely a balance fix |
+| Forking/overriding SGDS internals | Prefer composing within the `InlineNav` wrapper over patching `sgds-mainnav` |
+
+## Traceability
+
+Which phases cover which requirements. Updated during roadmap creation.
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| NAVBAL-01 | Phase 11 | Complete |
+| NAVBAL-02 | Phase 11 | Complete |
+| NAVBAL-03 | Phase 11 | Complete |
+| NAVBAL-04 | Phase 11 | Complete |
+
+**Coverage:**
+
+- v1.6 requirements: 4 total
+- Mapped to phases: 4
+- Unmapped: 0 ✓
+
+---
+*Requirements defined: 2026-06-21*
+*Last updated: 2026-06-21 after initial definition*

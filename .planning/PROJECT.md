@@ -8,9 +8,16 @@ A personal portfolio website for Jefry, built with Next.js 14 App Router, TypeSc
 
 A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators to download his CV and reach him.
 
-## Current Milestone: none — v1.5 shipped, next TBD
+## Current Milestone: v1.6 Navbar Layout Balance
 
-**Last shipped:** v1.5 Responsive Navigation & Layout Fixes (2026-06-21, tag `v1.5`, PR #36). Define the next milestone with `/gsd-new-milestone`.
+**Goal:** Rebalance the desktop navbar so the 7 section links sit centered between the "JK" brand (left) and the theme/language controls (right), removing the large dead gap — without regressing v1.5 responsive behavior (phone hamburger drawer, tablet/desktop horizontal-scroll on overflow).
+
+**Target features:**
+- Inline nav links centered between brand and controls at `≥ md` (balanced left/right gaps)
+- Root-cause fix in the `InlineNav` wrapper (flex-grow + center), not a brittle override
+- v1.5 responsive behavior preserved: phone hamburger drawer (`< md`), horizontal-scroll overflow fallback (NAV-05), ≥44px targets, no horizontal page overflow 320→1024px
+
+**Last shipped:** v1.5 Responsive Navigation & Layout Fixes (2026-06-21, tag `v1.5`, PR #36).
 
 <details>
 <summary>✅ v1.5 Responsive Navigation & Layout Fixes (shipped 2026-06-21)</summary>
@@ -68,16 +75,23 @@ A fast, accessible, bilingual portfolio that accurately represents Jefry's work 
 
 ### Active
 
-<!-- Current scope — v1.5 Responsive Navigation & Layout Fixes. See .planning/REQUIREMENTS.md for full REQ-IDs. -->
+<!-- Current scope — v1.6 Navbar Layout Balance. See .planning/REQUIREMENTS.md for full REQ-IDs. -->
 
-- [ ] Phone navbar collapses to brand + hamburger below `md` (NAV-01)
-- [ ] Hamburger opens a right slide-in drawer with all 7 section links (NAV-02)
-- [ ] Drawer links smooth-scroll, update the hash, and close the drawer (NAV-03)
-- [ ] Theme + language toggles available inside the drawer (NAV-04)
-- [ ] Inline nav (≥`md`) scrolls horizontally when items overflow so all 7 stay reachable (NAV-05)
-- [ ] Drawer is accessible: focus trap, Esc + backdrop/close, scroll lock, ≥44px targets (A11Y-01..04)
-- [ ] Hero photo + content fully visible below the fixed navbar on phones + tablets (LAYOUT-01)
-- [ ] No horizontal page overflow from 320px through tablet widths ≤1024px (LAYOUT-02)
+- [ ] Inline nav links centered between brand and controls at `≥ md` (NAVBAL-01)
+- [ ] Balanced left/right gaps — no large dead space before the theme/language controls (NAVBAL-02)
+- [ ] Horizontal-scroll overflow fallback (NAV-05) still works when items don't fit (NAVBAL-03)
+- [ ] No regression to phone hamburger drawer (`< md`), ≥44px targets, or page overflow 320→1024px (NAVBAL-04)
+
+#### Validated in v1.5 (shipped 2026-06-21)
+
+- ✓ Phone navbar collapses to brand + hamburger below `md` (NAV-01)
+- ✓ Hamburger opens a right slide-in drawer with all 7 section links (NAV-02)
+- ✓ Drawer links smooth-scroll, update the hash, and close the drawer (NAV-03)
+- ✓ Theme + language toggles available inside the drawer (NAV-04)
+- ✓ Inline nav (≥`md`) scrolls horizontally when items overflow so all 7 stay reachable (NAV-05)
+- ✓ Drawer is accessible: focus trap, Esc + backdrop/close, scroll lock, ≥44px targets (A11Y-01..04)
+- ✓ Hero photo + content fully visible below the fixed navbar on phones + tablets (LAYOUT-01)
+- ✓ No horizontal page overflow from 320px through tablet widths ≤1024px (LAYOUT-02)
 
 ### Out of Scope
 
@@ -154,10 +168,10 @@ This document evolves at phase transitions and milestone boundaries.
 
 ## Current State
 
+**In progress:** v1.6 — Navbar Layout Balance. Center the desktop inline nav between the "JK" brand and the theme/language controls so the row reads evenly, removing the large dead gap. Root cause: SGDS `<sgds-mainnav>` renders brand → default slot → `.slot-end` with `justify-content:flex-start` + `.slot-end{margin-left:auto}`, packing links left and shoving controls right. Fix is in the `InlineNav` wrapper (`Navbar.tsx:68-77`). Must preserve v1.5 responsive behavior (phone drawer, NAV-05 overflow scroll, ≥44px targets, no 320→1024px overflow).
 **Shipped:** v1.5 — Responsive Navigation & Layout Fixes (2026-06-21, tag `v1.5`, PR #36). Phone hamburger + accessible `MobileDrawer` (7 sections + theme/language toggles, focus-trap, scroll-lock, Esc/backdrop), inline tablet/desktop nav scrolls horizontally on overflow (NAV-01–05, A11Y-01–04), hero clears the fixed navbar via a `--navbar-height` token + `.hero-section` top-clearance, and no horizontal overflow 320→1024px (root-cause CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02). Fixed the prod-mobile regression (Samsung Galaxy S8, 360×740). Git tags: v1.1, v1.2, v1.3, v1.4, v1.5.
 **Previously shipped:** v1.4 — Polish & International Content (2026-06-21, tag `v1.4`): WCAG-AA muted-text contrast, rebalanced hero CTAs, sliding theme switch + EN|ID language pill, GitHub link moved to About, full humanized-prose rewrite with 14 bilingual project descriptions and idiomatic education terms.
-**Next:** none defined — start with `/gsd-new-milestone`.
 **Deferred (v2 candidates):** CI Lighthouse/CWV checks, Playwright E2E, Dependabot, blog, testimonials, experience timeline, Core Web Vitals ≥90, progressive image loading.
 
 ---
-*Last updated: 2026-06-21 — v1.5 (Responsive Navigation & Layout Fixes) shipped and closed (tag v1.5, PR #36)*
+*Last updated: 2026-06-21 — v1.6 (Navbar Layout Balance) started*
