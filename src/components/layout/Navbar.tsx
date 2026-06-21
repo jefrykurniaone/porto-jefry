@@ -7,7 +7,7 @@ import LanguageToggle from './LanguageToggle';
 import { useFocusTrap } from '@/hooks/use-focus-trap';
 import { useScrolled } from '@/hooks/use-scrolled';
 
-const NAV_KEYS = [
+export const NAV_KEYS = [
     'about',
     'experience',
     'education',
