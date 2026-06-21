@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.5
 milestone_name: Responsive Navigation & Layout Fixes
-status: planning
-stopped_at: v1.5 roadmap revised (Phases 9-10; scope broadened to phone + tablet + desktop; NAV-05 added)
-last_updated: "2026-06-21T01:46:14.112Z"
-last_activity: "2026-06-21 — Roadmap revised for v1.5 (broadened scope: phone + tablet + desktop; NAV-05 added)"
+status: executing
+stopped_at: Phase 09 Plan 01 complete — MobileDrawer foundation built; Plan 02 Navbar integration next
+last_updated: "2026-06-21T01:56:32Z"
+last_activity: 2026-06-21 -- Phase 09 Plan 01 complete
 progress:
   total_phases: 2
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 2
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-06-21)
 
 **Core value:** A fast, accessible, bilingual portfolio that accurately represents Jefry's work and makes it easy for recruiters and collaborators — including international employers — to download his CV and reach him.
-**Current focus:** v1.5 — Responsive Navigation & Layout Fixes. Roadmap revised (11 requirements, 2 phases); ready for Phase 9 planning.
+**Current focus:** Phase 09 — responsive-navbar
 
 ## Current Position
 
-Phase: Not started
-Plan: —
-Status: Roadmap approved; awaiting Phase 9 planning
-Last activity: 2026-06-21 — Roadmap revised for v1.5 (broadened scope: phone + tablet + desktop; NAV-05 added)
+Phase: 09 (responsive-navbar) — EXECUTING
+Plan: 2 of 2 (Plan 01 complete; Plan 02 next)
+Status: Executing Phase 09
+Last activity: 2026-06-21 -- Phase 09 Plan 01 complete
 
-Progress: [----------] 0% (0/2 phases, 0/? plans)
+Progress: [##--------] 25% (0/2 phases, 1/2 plans)
 
 ## Milestone History
 
@@ -56,6 +56,8 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 
 **v1.5 context:** Root cause of the mobile nav bug is `expand="always"` on `<sgds-mainnav>`, which forces the desktop layout at all viewport widths. The existing `Navbar.tsx` already has `MobileNavLinks`, `HamburgerButton`, and `useFocusTrap` wired up — the drawer mechanism needs to move to an `sgds-drawer` component to get correct focus trapping, backdrop, and scroll lock. The scope is phone + tablet + desktop: phone (<768px) uses the hamburger drawer; tablet/desktop (≥768px) uses the inline nav, but adds a horizontal-scroll overflow fallback (NAV-05) so navigation never breaks when items don't all fit (tablet portrait, non-maximized window, longer ID labels, browser zoom). Hero photo clipping (LAYOUT-01) is caused by `min-h-screen` + vertical centering with no `padding-top` to account for the fixed navbar; fix must cover phones and tablets (portrait and landscape).
 
+**09-01 decisions:** Custom React drawer used instead of sgds-drawer (jsdom stubs prevent a11y assertions on Lit components under Vitest). NAV_KEYS exported from Navbar.tsx to avoid drift. Drawer returns null when closed (same pattern as existing MobileNavLinks — required for useFocusTrap DOM queries). useScrollLock captures prior overflow before locking and restores on release/unmount (T-09-03 mitigation).
+
 ### Pending Todos (owner, non-blocking)
 
 - Verify the 14 drafted project descriptions (real client projects).
@@ -80,9 +82,9 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 ## Session Continuity
 
 Last session: 2026-06-21
-Stopped at: v1.5 roadmap revised (Phases 9-10; scope broadened to phone + tablet + desktop; NAV-05 added)
+Stopped at: Phase 09 Plan 01 complete — MobileDrawer foundation built; Plan 02 Navbar integration next
 Resume file: None
 
 ## Operator Next Steps
 
-- Run `/gsd-plan-phase 9` to plan Phase 9: Responsive Navbar
+- Run `/gsd-execute-phase 9 --plan 02` to execute Phase 09 Plan 02: Wire MobileDrawer into Navbar

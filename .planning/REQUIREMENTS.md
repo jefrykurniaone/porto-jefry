@@ -63,14 +63,14 @@ Which phases cover which requirements. Updated during roadmap creation.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | NAV-01 | Phase 9 | Pending |
-| NAV-02 | Phase 9 | Pending |
-| NAV-03 | Phase 9 | Pending |
-| NAV-04 | Phase 9 | Pending |
-| NAV-05 | Phase 9 | Pending |
-| A11Y-01 | Phase 9 | Pending |
-| A11Y-02 | Phase 9 | Pending |
-| A11Y-03 | Phase 9 | Pending |
-| A11Y-04 | Phase 9 | Pending |
+| NAV-02 | Phase 9 | In Progress (MobileDrawer unit-verified; Plan 02 wires hamburger) |
+| NAV-03 | Phase 9 | Pending (Plan 02) |
+| NAV-04 | Phase 9 | In Progress (toggles in drawer unit-verified; Plan 02 wires hamburger) |
+| NAV-05 | Phase 9 | Pending (Plan 02) |
+| A11Y-01 | Phase 9 | In Progress (useFocusTrap unit-verified; Plan 02 wires) |
+| A11Y-02 | Phase 9 | In Progress (Esc + close + backdrop unit-verified; Plan 02 wires) |
+| A11Y-03 | Phase 9 | In Progress (useScrollLock unit-verified; Plan 02 wires) |
+| A11Y-04 | Phase 9 | In Progress (44px targets unit-verified; Plan 02 wires hamburger) |
 | LAYOUT-01 | Phase 10 | Pending |
 | LAYOUT-02 | Phase 10 | Pending |
 

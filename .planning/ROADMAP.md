@@ -59,7 +59,7 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 
 **Wave 1**
 
-  - [ ] 09-01-PLAN.md — Build the accessible MobileDrawer (7 links + theme/lang toggles + close/backdrop, focus-trap + scroll-lock), the `useScrollLock` hook, and bilingual `nav.close_menu` (NAV-02, NAV-04, A11Y-01..04)
+  - [x] 09-01-PLAN.md — Build the accessible MobileDrawer (7 links + theme/lang toggles + close/backdrop, focus-trap + scroll-lock), the `useScrollLock` hook, and bilingual `nav.close_menu` (NAV-02, NAV-04, A11Y-01..04) ✅ 2026-06-21
 
 **Wave 2** *(blocked on Wave 1 completion)*
 
@@ -93,5 +93,5 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 | 6. Look & Feel Polish | v1.4 | 3/3 | ✅ Complete | 2026-06-20 |
 | 7. Information Architecture | v1.4 | 1/1 | ✅ Complete | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
-| 9. Responsive Navbar | v1.5 | 0/2 | Not started | - |
+| 9. Responsive Navbar | v1.5 | 1/2 | In progress | - |
 | 10. Hero & Overflow Fixes | v1.5 | 0/? | Not started | - |
