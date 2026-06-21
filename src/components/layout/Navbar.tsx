@@ -69,7 +69,7 @@ function InlineNav({ onNavClick }: Readonly<NavLinksProps>) {
     return (
         <div
             data-testid="inline-nav-wrapper"
-            className='sgds:hidden sgds:md:flex sgds:flex-nowrap sgds:overflow-x-auto'
+            className='sgds:hidden sgds:md:flex sgds:flex-1 sgds:justify-center sgds:flex-nowrap sgds:overflow-x-auto'
         >
             <DesktopNavLinks onNavClick={onNavClick} />
         </div>
