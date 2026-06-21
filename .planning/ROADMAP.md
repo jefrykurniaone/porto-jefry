@@ -78,7 +78,12 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
   2. On tablets in landscape orientation (e.g. 1024px wide, short viewport height), the hero content clears the fixed navbar so the photo is not clipped at the top
   3. From 320px through 1024px, no section or component causes a horizontal scrollbar; all content fits the viewport width at the validation widths 360 / 390 / 430 (phone) and 768 / 1024 (tablet), with desktop (1280px+) unaffected
 
-**Plans**: TBD
+**Plans**: 1 plan
+
+**Wave 1**
+
+  - [ ] 10-01-PLAN.md — Fix hero top-clipping below the fixed navbar (`--navbar-height` token + `.hero-section` 100svh/top-anchored clearance) and eliminate horizontal page overflow 320→1024px (root-cause `min-width: 11.5rem` CTA fix + defensive `overflow-x: clip`) (LAYOUT-01, LAYOUT-02)
+
 **UI hint**: yes
 
 ## Progress
@@ -94,4 +99,4 @@ Full phase details: `milestones/v1.4-ROADMAP.md`. Shipped via PRs #31 (Phases 6-
 | 7. Information Architecture | v1.4 | 1/1 | ✅ Complete | 2026-06-20 |
 | 8. International Content Overhaul | v1.4 | 2/2 | ✅ Complete | 2026-06-21 |
 | 9. Responsive Navbar | v1.5 | 2/2 | Complete   | 2026-06-21 |
-| 10. Hero & Overflow Fixes | v1.5 | 0/? | Not started | - |
+| 10. Hero & Overflow Fixes | v1.5 | 0/1 | Planned | - |
