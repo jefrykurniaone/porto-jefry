@@ -16,6 +16,6 @@
     "_auto_chain_active": false
   },
   "git": {
-    "branching_strategy": "phase"
+    "branching_strategy": "milestone"
   }
 }
