@@ -4,8 +4,8 @@ milestone: v1.6
 milestone_name: Navbar Layout Balance
 status: Awaiting next milestone
 stopped_at: v1.6 milestone complete (archived 2026-06-22)
-last_updated: "2026-06-22T00:00:00.000Z"
-last_activity: 2026-06-22 — Milestone v1.6 completed and archived
+last_updated: "2026-06-29T00:00:00.000Z"
+last_activity: 2026-06-29 — Completed quick task 260629-8e1: CV PDF parity (descriptions, all projects, GitHub header)
 progress:
   total_phases: 1
   completed_phases: 1
@@ -28,7 +28,7 @@ See: .planning/PROJECT.md (updated 2026-06-22)
 Phase: Milestone v1.6 complete
 Plan: —
 Status: Awaiting next milestone
-Last activity: 2026-06-21 — Milestone v1.6 completed and archived
+Last activity: 2026-06-29 — Completed quick task 260629-8e1: CV PDF parity (descriptions, all projects, GitHub header)
 
 ## Milestone History
 
@@ -72,6 +72,12 @@ Full decision log lives in PROJECT.md (Key Decisions) and the milestone archives
 ### Blockers/Concerns
 
 - None.
+
+### Quick Tasks Completed
+
+| # | Description | Date | Commit | Directory |
+|---|-------------|------|--------|-----------|
+| 260629-8e1 | CV PDF parity: project descriptions, all projects, GitHub in header | 2026-06-29 | a8d257b | [260629-8e1-cv-pdf-parity-project-descriptions-all-p](./quick/260629-8e1-cv-pdf-parity-project-descriptions-all-p/) |
 
 ## Deferred Items
 
