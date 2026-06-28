@@ -18,6 +18,8 @@ export {
     CONTACT_PHONE_INTL as CONTACT_PHONE,
     CONTACT_LINKEDIN_URL as LINKEDIN_URL,
     CONTACT_LINKEDIN_DISPLAY as LINKEDIN_DISPLAY,
+    CONTACT_GITHUB_URL as GITHUB_URL,
+    CONTACT_GITHUB_DISPLAY as GITHUB_DISPLAY,
 } from '@/data/contact';
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -231,6 +233,12 @@ export const styles = StyleSheet.create({
     projectMeta: {
         fontSize: 8,
         color: MUTED,
+        marginBottom: 3,
+    },
+    projectDesc: {
+        fontSize: 8.5,
+        color: DARK,
+        lineHeight: 1.4,
         marginBottom: 3,
     },
     // Certifications

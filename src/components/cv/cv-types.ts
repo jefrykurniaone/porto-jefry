@@ -14,7 +14,11 @@ export interface Messages {
     };
     education: { title: string; formal: string; informal: string; gpa: string };
     skills: { title: string };
-    projects: { title: string; present: string };
+    projects: {
+        title: string;
+        present: string;
+        items: Record<string, { description: string }>;
+    };
     certifications: {
         title: string;
         coding_id: { name: string; issuer: string; period: string; description: string };
