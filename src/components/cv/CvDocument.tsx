@@ -24,7 +24,7 @@ export default function CvDocument({ messages, photoSrc, locale = 'en' }: Readon
                 <CvExperience messages={messages} locale={locale} />
                 <CvEducation messages={messages} />
                 <CvSkills messages={messages} />
-                <CvProjects messages={messages} />
+                <CvProjects messages={messages} locale={locale} />
                 <CvCertifications messages={messages} />
             </Page>
         </Document>

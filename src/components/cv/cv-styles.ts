@@ -8,8 +8,6 @@ export const BORDER = '#E5E7EB';
 export const LIGHT_BG = '#F9FAFB';
 
 // ─── Layout Constants ─────────────────────────────────────────────────────────
-export const MAX_PROJECTS = 6;
-export const MAX_TECH_TAGS = 4;
 export const PHOTO_SIZE = 68;
 
 // ─── Contact Constants (re-exported from shared data) ────────────────────────
