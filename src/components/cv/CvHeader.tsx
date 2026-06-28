@@ -5,6 +5,8 @@ import {
     CONTACT_PHONE,
     LINKEDIN_URL,
     LINKEDIN_DISPLAY,
+    GITHUB_URL,
+    GITHUB_DISPLAY,
 } from './cv-styles';
 import { type Messages } from './cv-types';
 
@@ -29,6 +31,10 @@ export default function CvHeader({ messages, photoSrc }: Readonly<CvHeaderProps>
                         <Text style={styles.contactItem}>|</Text>
                         <Link style={styles.contactLink} src={LINKEDIN_URL}>
                             {LINKEDIN_DISPLAY}
+                        </Link>
+                        <Text style={styles.contactItem}>|</Text>
+                        <Link style={styles.contactLink} src={GITHUB_URL}>
+                            {GITHUB_DISPLAY}
                         </Link>
                     </View>
                 </View>
