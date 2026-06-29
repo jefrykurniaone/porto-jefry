@@ -8,8 +8,6 @@ export const BORDER = '#E5E7EB';
 export const LIGHT_BG = '#F9FAFB';
 
 // ─── Layout Constants ─────────────────────────────────────────────────────────
-export const MAX_PROJECTS = 6;
-export const MAX_TECH_TAGS = 4;
 export const PHOTO_SIZE = 68;
 
 // ─── Contact Constants (re-exported from shared data) ────────────────────────
@@ -18,6 +16,8 @@ export {
     CONTACT_PHONE_INTL as CONTACT_PHONE,
     CONTACT_LINKEDIN_URL as LINKEDIN_URL,
     CONTACT_LINKEDIN_DISPLAY as LINKEDIN_DISPLAY,
+    CONTACT_GITHUB_URL as GITHUB_URL,
+    CONTACT_GITHUB_DISPLAY as GITHUB_DISPLAY,
 } from '@/data/contact';
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
@@ -231,6 +231,12 @@ export const styles = StyleSheet.create({
     projectMeta: {
         fontSize: 8,
         color: MUTED,
+        marginBottom: 3,
+    },
+    projectDesc: {
+        fontSize: 8.5,
+        color: DARK,
+        lineHeight: 1.4,
         marginBottom: 3,
     },
     // Certifications
