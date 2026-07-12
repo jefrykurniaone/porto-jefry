@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor, act } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
 import fs from 'fs';
@@ -15,7 +15,19 @@ vi.mock('next/image', () => ({
 
 let fetchMock: ReturnType<typeof vi.fn>;
 
+function mediaQueryResult(query: string, matches: boolean) {
+    return {
+        matches,
+        media: query,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+    };
+}
+
 beforeEach(() => {
+    (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
+        (query: string) => mediaQueryResult(query, false),
+    );
     fetchMock = vi.fn().mockResolvedValue({
         ok: true,
         blob: () => Promise.resolve(new Blob()),
@@ -38,15 +50,19 @@ function renderHero() {
     );
 }
 
+function getCvButton() {
+    return screen.getByRole('button', { name: /download cv/i });
+}
+
 describe('Hero', () => {
     it('renders translated heading with name', () => {
         renderHero();
         expect(screen.getByText('Jefry Kurniawan')).toBeInTheDocument();
     });
 
-    it('renders translated title', () => {
+    it('renders the availability status pill', () => {
         renderHero();
-        expect(screen.getByText('Backend Developer & .NET Specialist')).toBeInTheDocument();
+        expect(screen.getByText('Open to remote roles')).toBeInTheDocument();
     });
 
     it('renders profile image with translated alt text', () => {
@@ -55,43 +71,82 @@ describe('Hero', () => {
         expect(img).toHaveAttribute('alt', 'Jefry Kurniawan — profile photo');
     });
 
-    it('renders CV download sgds-button', () => {
+    it('types the first role into the typed line', async () => {
         renderHero();
-        const cvBtn = document.querySelector('sgds-button');
-        expect(cvBtn).toBeInTheDocument();
-        expect(cvBtn?.textContent).toMatch(/download|unduh|cv/i);
+        // Match a prefix rather than the full word: typing runs on real timers
+        // (62 ms/char), so waiting for the complete role is slow and can flake
+        // under parallel test load.
+        await screen.findByText(
+            (_, el) => el?.tagName === 'H2' && /Backend/.test(el.textContent ?? ''),
+            undefined,
+            { timeout: 4000 },
+        );
     });
 
-    it('renders View My Work link', () => {
+    it('shows the first role statically under prefers-reduced-motion', () => {
+        (window.matchMedia as ReturnType<typeof vi.fn>).mockImplementation(
+            (query: string) => mediaQueryResult(query, query.includes('prefers-reduced-motion')),
+        );
+        renderHero();
+        const typed = document.querySelector('.hero__typed');
+        expect(typed?.textContent).toContain('Backend Developer');
+    });
+
+    it('renders View My Work link pointing at #projects', () => {
         renderHero();
         const workLink = document.querySelector('a[href="#projects"]');
         expect(workLink).toBeInTheDocument();
         expect(workLink?.textContent).toMatch(/view.*work/i);
     });
 
+    it('renders Contact Me link pointing at #contact', () => {
+        renderHero();
+        const contactLink = document.querySelector('a[href="#contact"]');
+        expect(contactLink).toBeInTheDocument();
+        expect(contactLink?.textContent).toMatch(/contact/i);
+    });
+
+    it('clicking a CTA link scrolls to its section and updates hash', async () => {
+        renderHero();
+        const section = document.createElement('div');
+        section.id = 'projects';
+        const scrollSpy = vi.fn();
+        Object.defineProperty(section, 'scrollIntoView', { value: scrollSpy, configurable: true });
+        document.body.appendChild(section);
+        const pushSpy = vi.spyOn(history, 'pushState');
+
+        const user = userEvent.setup();
+        await user.click(document.querySelector('a[href="#projects"]')!);
+
+        expect(scrollSpy).toHaveBeenCalledWith({ behavior: 'smooth' });
+        expect(pushSpy).toHaveBeenCalledWith(null, '', '#projects');
+        section.remove();
+        pushSpy.mockRestore();
+    });
+
     it('clicking CV button triggers download fetch', async () => {
         renderHero();
         const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button');
-        expect(cvBtn).toBeTruthy();
-        if (!cvBtn) return;
-        await user.click(cvBtn);
-        expect(fetchMock).toHaveBeenCalled();
+        await user.click(getCvButton());
+        expect(fetchMock).toHaveBeenCalledWith(
+            expect.stringContaining('/api/generate-cv?'),
+        );
     });
 
-    it('prevents duplicate fetch while isDownloading is true', async () => {
+    it('disables the CV button while downloading (no duplicate fetch)', async () => {
         fetchMock = vi.fn().mockReturnValue(new Promise(() => {}));
         vi.stubGlobal('fetch', fetchMock);
 
         renderHero();
         const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button')!;
-        expect(cvBtn).toBeTruthy();
-
+        const cvBtn = getCvButton();
         await user.click(cvBtn);
-        await user.click(cvBtn);
+        await act(async () => {
+            cvBtn.click();
+        });
 
         expect(fetchMock).toHaveBeenCalledTimes(1);
+        expect(screen.getByRole('button', { name: /generating/i })).toBeDisabled();
     });
 
     it('creates object URL and revokes URL on success', async () => {
@@ -100,8 +155,7 @@ describe('Hero', () => {
 
         renderHero();
         const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button')!;
-        await user.click(cvBtn);
+        await user.click(getCvButton());
 
         await waitFor(() => {
             expect(createSpy).toHaveBeenCalled();
@@ -109,106 +163,46 @@ describe('Hero', () => {
         await waitFor(() => {
             expect(revokeSpy).toHaveBeenCalledWith('blob:mock');
         });
-        expect(fetchMock).toHaveBeenCalledWith(
-            expect.stringContaining('/api/generate-cv?')
-        );
-
-        createSpy.mockRestore();
-        revokeSpy.mockRestore();
     });
 
-    it('renders sgds-alert with role="alert" on failed CV download', async () => {
-        const failedFetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 500,
-        });
+    it('shows an aria-live alert with HTTP status text on failed CV download', async () => {
+        const failedFetch = vi.fn().mockResolvedValue({ ok: false, status: 500 });
         vi.stubGlobal('fetch', failedFetch);
 
         renderHero();
         const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button')!;
-        await user.click(cvBtn);
+        await user.click(getCvButton());
 
         await waitFor(() => {
-            const alert = document.querySelector('sgds-alert');
-            expect(alert).toBeInTheDocument();
-        });
-    });
-
-    it('error alert paragraph has aria-live="polite" with HTTP status text', async () => {
-        const failedFetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 500,
-        });
-        vi.stubGlobal('fetch', failedFetch);
-
-        renderHero();
-        const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button')!;
-        await user.click(cvBtn);
-
-        await waitFor(() => {
-            const liveRegion = document.querySelector('[aria-live="polite"]');
-            expect(liveRegion).toBeInTheDocument();
-            expect(liveRegion?.textContent).toMatch(/failed|gagal|error/i);
+            const alert = screen.getByRole('alert');
+            expect(alert).toHaveAttribute('aria-live', 'polite');
+            expect(alert.textContent).toMatch(/failed|gagal|error/i);
         });
     });
 
     it('error alert auto-dismisses after 5 seconds', async () => {
         const setTimeoutSpy = vi.spyOn(global, 'setTimeout');
-        const failedFetch = vi.fn().mockResolvedValue({
-            ok: false,
-            status: 500,
-        });
+        const failedFetch = vi.fn().mockResolvedValue({ ok: false, status: 500 });
         vi.stubGlobal('fetch', failedFetch);
 
         renderHero();
         const user = userEvent.setup();
-        const cvBtn = document.querySelector('sgds-button')!;
-        await user.click(cvBtn);
+        await user.click(getCvButton());
 
         await screen.findByText(/failed|gagal/i);
         expect(setTimeoutSpy).toHaveBeenCalledWith(expect.any(Function), 5000);
         setTimeoutSpy.mockRestore();
     });
 
-    it('source contains sgds-button and sgds-alert', () => {
-        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
-        expect(source).toContain('sgds-button');
-        expect(source).toContain('sgds-alert');
-    });
-
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
-    });
-
     it('source uses Jefry_Kurniawan_CV.pdf download filename', () => {
         // filename lives in the extracted useCvDownload hook
         const source = fs.readFileSync('src/hooks/use-cv-download.ts', 'utf-8');
-        expect(source).toContain("Jefry_Kurniawan_CV.pdf");
+        expect(source).toContain('Jefry_Kurniawan_CV.pdf');
     });
 
-    it('source contains no next-themes import', () => {
-        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
-        expect(source).not.toContain('next-themes');
-        expect(source).not.toContain('useTheme');
-    });
-
-    it('source: Hero.tsx hero section uses hero-section class (no sgds:min-h-screen on section)', () => {
-        const source = fs.readFileSync('src/components/sections/Hero.tsx', 'utf-8');
-        expect(source).toContain('hero-section');
-        expect(source).not.toContain('sgds:min-h-screen');
-        // The hero <section> element must not have sgds:items-center (center-only layout removed).
-        // sgds:items-center may still appear on inner elements (CTA group, CTA links) — that is fine.
-        const sectionTag = source.match(/<section[^>]*id=['"]hero['"][^>]*>/)?.[0] ?? '';
-        expect(sectionTag).not.toContain('sgds:items-center');
-    });
-
-    it('source: globals.css declares --navbar-height and uses it for hero clearance and scroll-margin-top', () => {
+    it('source: globals.css declares --navbar-height and uses it for scroll-margin-top', () => {
         const css = fs.readFileSync('src/app/globals.css', 'utf-8');
         expect(css).toContain('--navbar-height');
-        expect(css).toContain('100svh');
         expect(css).toContain('scroll-margin-top: var(--navbar-height)');
     });
 

@@ -5,6 +5,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { createRef } from 'react';
 import messages from '@/i18n/messages/en.json';
 import MobileDrawer from './MobileDrawer';
+import { NAV_KEYS } from './Navbar';
 
 vi.mock('@/i18n/routing', () => ({
     useRouter: () => ({ replace: vi.fn() }),
@@ -31,33 +32,22 @@ describe('MobileDrawer', () => {
         document.body.style.overflow = '';
     });
 
-    it('renders all 7 section labels when open', () => {
+    it('renders all section labels when open', () => {
         renderDrawer();
-        expect(screen.getByText('About')).toBeInTheDocument();
-        expect(screen.getByText('Experience')).toBeInTheDocument();
-        expect(screen.getByText('Education')).toBeInTheDocument();
-        expect(screen.getByText('Skills')).toBeInTheDocument();
-        expect(screen.getByText('Projects')).toBeInTheDocument();
-        expect(screen.getByText('Certifications')).toBeInTheDocument();
-        expect(screen.getByText('Contact')).toBeInTheDocument();
-    });
-
-    it('renders ThemeToggle inside the panel', () => {
-        const { container } = renderDrawer();
-        // ThemeToggle renders a button or its client wrapper
-        expect(container.querySelector('[data-testid="theme-toggle"], button[aria-label], .theme-toggle')).toBeDefined();
+        for (const key of NAV_KEYS) {
+            const label = messages.nav[key as keyof typeof messages.nav];
+            expect(screen.getByText(label)).toBeInTheDocument();
+        }
     });
 
     it('renders LanguageToggle (role="group") inside the panel', () => {
         renderDrawer();
-        const langGroup = screen.getByRole('group');
-        expect(langGroup).toBeInTheDocument();
+        expect(screen.getByRole('group')).toBeInTheDocument();
     });
 
     it('renders close button with aria-label "Close menu"', () => {
         renderDrawer();
-        const closeBtn = screen.getByLabelText('Close menu');
-        expect(closeBtn).toBeInTheDocument();
+        expect(screen.getByLabelText('Close menu')).toBeInTheDocument();
     });
 
     it('clicking the close button calls onClose', async () => {
@@ -82,7 +72,6 @@ describe('MobileDrawer', () => {
         const onClose = vi.fn();
         const { container } = renderDrawer(true, onClose);
         const user = userEvent.setup();
-        // The backdrop is the outer full-screen overlay (data-testid or first child)
         const backdrop = container.querySelector('[data-testid="drawer-backdrop"]');
         expect(backdrop).toBeInTheDocument();
         await user.click(backdrop!);
@@ -118,11 +107,9 @@ describe('MobileDrawer', () => {
         expect(aboutLink).toHaveAttribute('href', '#about');
     });
 
-    it('close button meets 44px minimum touch target', () => {
+    it('close button uses the 44px touch-target class', () => {
         renderDrawer();
         const closeBtn = screen.getByLabelText('Close menu');
-        const style = closeBtn.getAttribute('style') ?? '';
-        expect(style).toMatch(/min.*[Ww]idth.*44px/);
-        expect(style).toMatch(/min.*[Hh]eight.*44px/);
+        expect(closeBtn.className).toContain('nav-hamburger');
     });
 });

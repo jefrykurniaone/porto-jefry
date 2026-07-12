@@ -1,10 +1,14 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
-import { CONTACT_GITHUB_URL, CONTACT_GITHUB_HANDLE } from '@/data/contact';
 import About from './About';
+import {
+    CONTACT_EMAIL,
+    CONTACT_PHONE_HREF,
+    CONTACT_LINKEDIN_URL,
+    CONTACT_GITHUB_URL,
+} from '@/data/contact';
 
 function renderAbout() {
     return render(
@@ -15,88 +19,49 @@ function renderAbout() {
 }
 
 describe('About', () => {
-    it('renders translated heading', () => {
+    it('renders the section title', () => {
         renderAbout();
-        expect(screen.getByText('About Me')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'About Me' })).toBeInTheDocument();
     });
 
-    it('renders translated description', () => {
+    it('renders the numbered section kicker', () => {
         renderAbout();
-        expect(screen.getByText(/backend developer with over five years in \.NET/)).toBeInTheDocument();
+        expect(screen.getByText('01 / About')).toBeInTheDocument();
     });
 
-    it('renders sgds-card for the summary surface', () => {
+    it('renders the about description', () => {
         renderAbout();
-        const card = document.querySelector('sgds-card');
-        expect(card).toBeInTheDocument();
+        expect(screen.getByText(/backend developer with over five years/i)).toBeInTheDocument();
     });
 
-    it('renders email link with correct href', () => {
+    it('renders four contact chips with correct hrefs', () => {
+        const { container } = renderAbout();
+        expect(container.querySelector(`a[href="mailto:${CONTACT_EMAIL}"]`)).toBeInTheDocument();
+        expect(container.querySelector(`a[href="${CONTACT_PHONE_HREF}"]`)).toBeInTheDocument();
+        expect(container.querySelector(`a[href="${CONTACT_LINKEDIN_URL}"]`)).toBeInTheDocument();
+        expect(container.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`)).toBeInTheDocument();
+    });
+
+    it('external chips open in a new tab with rel noopener', () => {
+        const { container } = renderAbout();
+        const linkedin = container.querySelector(`a[href="${CONTACT_LINKEDIN_URL}"]`);
+        expect(linkedin).toHaveAttribute('target', '_blank');
+        expect(linkedin).toHaveAttribute('rel', 'noopener noreferrer');
+    });
+
+    it('renders the terminal card with whoami output', () => {
         renderAbout();
-        const link = document.querySelector('a[href^="mailto:"]');
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', 'mailto:jefrykurniaone@gmail.com');
+        expect(screen.getByText('whoami')).toBeInTheDocument();
+        expect(screen.getByText(/jefry\.kurniawan · backend developer/i)).toBeInTheDocument();
     });
 
-    it('renders phone link with correct href', () => {
+    it('renders the translated terminal status line', () => {
         renderAbout();
-        const link = document.querySelector('a[href^="tel:"]');
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('href', 'tel:+6282126229978');
+        expect(screen.getByText(/open to remote roles & relocation/i)).toBeInTheDocument();
     });
 
-    it('renders LinkedIn link with target=_blank and rel=noopener noreferrer', () => {
+    it('renders the AI workflow line in the terminal', () => {
         renderAbout();
-        const link = document.querySelector('a[href*="linkedin.com"]');
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('target', '_blank');
-        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-    });
-
-    it('renders LinkedIn handle text', () => {
-        renderAbout();
-        const handles = screen.getAllByText('jefrykurniaone');
-        expect(handles.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('renders GitHub link with correct href', () => {
-        renderAbout();
-        const link = document.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`);
-        expect(link).toBeInTheDocument();
-        expect(link).toHaveAttribute('target', '_blank');
-        expect(link).toHaveAttribute('rel', 'noopener noreferrer');
-    });
-
-    it('renders GitHub handle text', () => {
-        renderAbout();
-        const handles = screen.getAllByText(CONTACT_GITHUB_HANDLE);
-        expect(handles.length).toBeGreaterThanOrEqual(1);
-    });
-
-    it('renders translated aria-labels on contact links', () => {
-        renderAbout();
-        const emailLink = document.querySelector('a[href^="mailto:"]');
-        expect(emailLink).toHaveAttribute('aria-label', 'Email');
-        const phoneLink = document.querySelector('a[href^="tel:"]');
-        expect(phoneLink).toHaveAttribute('aria-label', 'Phone');
-        const linkedinLink = document.querySelector('a[href*="linkedin.com"]');
-        expect(linkedinLink).toHaveAttribute('aria-label', 'LinkedIn');
-        const githubLink = document.querySelector(`a[href="${CONTACT_GITHUB_URL}"]`);
-        expect(githubLink).toHaveAttribute('aria-label', 'GitHub');
-    });
-
-    it('source contains sgds-card', () => {
-        const source = fs.readFileSync('src/components/sections/About.tsx', 'utf-8');
-        expect(source).toContain('sgds-card');
-    });
-
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/About.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
-    });
-
-    it('source imports contact constants from data', () => {
-        const source = fs.readFileSync('src/components/sections/About.tsx', 'utf-8');
-        expect(source).toContain('@/data/contact');
+        expect(screen.getByText('Claude · GitHub Copilot · OpenCode')).toBeInTheDocument();
     });
 });

@@ -1,7 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
 import { skillCategories } from '@/data/skills';
 import Skills from './Skills';
@@ -15,54 +14,39 @@ function renderSkills() {
 }
 
 describe('Skills', () => {
-    it('renders translated section heading', () => {
+    it('renders the section title', () => {
         renderSkills();
-        expect(screen.getByText('Technical Skills')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Technical Skills' })).toBeInTheDocument();
     });
 
-    it('renders all category headings from translations', () => {
+    it('renders every translated category label', () => {
         renderSkills();
-        expect(screen.getByText('Backend')).toBeInTheDocument();
-        expect(screen.getByText('Frontend')).toBeInTheDocument();
-        expect(screen.getByText('Database')).toBeInTheDocument();
-        expect(screen.getByText('AI & Emerging Tech')).toBeInTheDocument();
-        expect(screen.getByText('CMS & Platforms')).toBeInTheDocument();
-        expect(screen.getByText('Tools & DevOps')).toBeInTheDocument();
+        for (const cat of skillCategories) {
+            const label = messages.skills.categories[
+                cat.category as keyof typeof messages.skills.categories
+            ];
+            expect(screen.getByRole('heading', { name: label })).toBeInTheDocument();
+        }
     });
 
-    it('renders all skill names as text for each category', () => {
-        const { container } = renderSkills();
-        skillCategories.forEach((cat) => {
-            cat.skills.forEach((skill) => {
-                expect(container.textContent).toContain(skill);
-            });
-        });
+    it('lists the AI & Emerging Tech category first', () => {
+        expect(skillCategories[0].category).toBe('ai_emerging');
     });
 
-    it('renders sgds-card for each skill category', () => {
+    it('renders the AI badge only on the AI category card', () => {
         renderSkills();
-        const cards = document.querySelectorAll('sgds-card');
-        expect(cards.length).toBe(skillCategories.length);
+        const badges = screen.getAllByText('AI', { selector: '.ai-badge' });
+        expect(badges).toHaveLength(1);
+        const card = badges[0].closest('.skill-card');
+        expect(card?.textContent).toContain('AI & Emerging Tech');
     });
 
-    it('source contains sgds-card', () => {
-        const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
-        expect(source).toContain('sgds-card');
-    });
-
-    it('source uses TechList and no sgds-badge', () => {
-        const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
-        expect(source).toContain('TechList');
-        expect(source).not.toContain('sgds-badge');
-    });
-
-    it('source imports skillCategories from data', () => {
-        const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
-        expect(source).toContain('@/data/skills');
-    });
-
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/Skills.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
+    it('renders every skill as a chip', () => {
+        renderSkills();
+        for (const cat of skillCategories) {
+            for (const skill of cat.skills) {
+                expect(screen.getByText(skill)).toBeInTheDocument();
+            }
+        }
     });
 });

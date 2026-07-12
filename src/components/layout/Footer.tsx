@@ -5,9 +5,9 @@ export default function Footer() {
     const year = new Date().getFullYear();
 
     return (
-        <footer id='site-footer' className='site-footer readable-muted sgds:border-t sgds:border-divider sgds:text-center sgds:text-body-md'>
+        <footer id='site-footer' className='site-footer'>
             <p>{t('built_with')}</p>
-            <p className='sgds:mt-1'>
+            <p>
                 &copy; {year} Jefry Kurniawan. {t('rights')}
             </p>
         </footer>

@@ -1,310 +1,215 @@
-@import '@govtechsg/sgds-web-component/themes/day.css';
-@import '@govtechsg/sgds-web-component/themes/night.css';
-@import '@govtechsg/sgds-web-component/css/sgds.css';
-@import '@govtechsg/sgds-web-component/css/utility.css';
+@import './styles/layout.css';
+@import './styles/sections.css';
 
-/* ── Monochrome accent ──
-   Override the SGDS purple product-primary palette with neutral grays. Every
-   downstream token (sgds:text-primary, sgds:ring-primary, buttons, hero CTAs)
-   then reads near-black in day / light-gray in night. Kept unlayered and after
-   the @imports so it wins the cascade over the theme files. */
+/* ── Design tokens (Porto Redesign AI-Focused) ──
+   Dark is the default theme; light overrides via :root[data-theme="light"].
+   The pre-hydration script in the locale layout stamps data-theme before
+   first paint, so there is no flash in either theme. */
 :root {
-    /* ── Layout tokens ──
-       --navbar-height: single source of truth for the fixed navbar's vertical
-       footprint (de-facto 5rem). Consumed by .hero-section top-clearance and
-       section { scroll-margin-top } so both stay in sync from one token. */
-    --navbar-height: 5rem;
+    /* Single source of truth for the fixed navbar's vertical footprint.
+       Consumed by .hero top-clearance and section scroll-margin-top. */
+    --navbar-height: 64px;
 
-    --sgds-product-primary-100: #f3f3f3;
-    --sgds-product-primary-200: #e0e0e0;
-    --sgds-product-primary-300: #c6c6c6;
-    --sgds-product-primary-400: #8a8a8a;
-    --sgds-product-primary-500: #6b6b6b;
-    --sgds-product-primary-600: #1a1a1a; /* day: primary text + surface */
-    --sgds-product-primary-700: #1a1a1a; /* day: primary button fill */
-    --sgds-product-primary-800: #0e0e0e;
-    --sgds-product-primary-900: #0e0e0e;
-
-    /* Links default to blue (independent of primary) — neutralise them too. */
-    --sgds-link-color-default: #1a1a1a;
-    --sgds-link-color-emphasis: #4a4a4a;
-
-    /* UI-05 WCAG AA fix: SGDS default --sgds-color-muted (#c6c6c6) is ~1.6:1 on
-       white — far below AA 4.5:1. Override to #5f5f5f (~7.95:1 on #ffffff) so
-       every sgds:text-muted site (Hero h2/subtitle, Contact, Projects, Education,
-       Certifications, 404, error) passes without changing component classNames. */
-    --sgds-color-muted: #5f5f5f;
+    --bg: #07070c;
+    --bg2: #0b0b13;
+    --panel: #0f0f19;
+    --line: rgba(235, 235, 248, 0.09);
+    --text: #ececf4;
+    --muted: #9c9cb0;
+    --accent: #9d7bff;
+    --accent-2: #4fd8e8;
+    --ok: #3ddc97;
+    --accent-ink: color-mix(in oklab, var(--accent) 72%, white);
+    --glow: color-mix(in srgb, var(--accent) 22%, transparent);
+    --cta-text: #0a0a10;
+    --cta-bg: var(--accent);
 }
 
-:root.sgds-night-theme {
-    --sgds-product-primary-300: #ededed; /* night: primary color-emphasis */
-    --sgds-product-primary-400: #dfdfdf; /* night: accent text + outline border */
-    --sgds-product-primary-600: #4a4a4a; /* night: button fill (visible on near-black) */
-    --sgds-product-primary-700: #5c5c5c; /* night: button hover fill */
-
-    --sgds-link-color-default: #dfdfdf;
-    --sgds-link-color-emphasis: #f3f3f3;
-
-    /* UI-05 WCAG AA fix: SGDS night default (#3b3b3b) is ~1.6:1 on #0e0e0e.
-       Override to #b0b0b0 (~9.78:1 on #0e0e0e) — clearly lighter than body
-       text (#f3f3f3) while remaining visibly subordinate to it. */
-    --sgds-color-muted: #b0b0b0;
+:root[data-theme='light'] {
+    --bg: #f7f7fb;
+    --bg2: #efeff6;
+    --panel: #ffffff;
+    --line: rgba(12, 12, 36, 0.11);
+    --text: #16161f;
+    --muted: #5c5c70;
+    --accent-ink: color-mix(in oklab, var(--accent) 58%, black);
+    --glow: color-mix(in srgb, var(--accent) 16%, transparent);
+    --cta-text: #ffffff;
+    --cta-bg: color-mix(in oklab, var(--accent) 62%, black);
 }
 
 @layer base {
     html {
         scroll-behavior: smooth;
-        /* Defensive horizontal-overflow guard (LAYOUT-02).
-           overflow-x: clip (NOT hidden) is used so no new scroll container is created —
-           position: sticky elements and scroll-margin-top remain unaffected.
-           This is a defensive layer ON TOP of the root-cause CTA min-width fix below;
-           it must not be masking a still-overflowing element. */
+        background: var(--bg);
+        /* Defensive horizontal-overflow guard. overflow-x: clip (NOT hidden)
+           creates no new scroll container — position: sticky elements and
+           scroll-margin-top remain unaffected. */
         overflow-x: clip;
     }
+
     body {
-        background: var(--sgds-bg-default);
-        color: var(--sgds-color-default);
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-sans), sans-serif;
+        transition: background 0.35s ease, color 0.35s ease;
         overflow-x: clip; /* defensive guard, paired with html above */
     }
 
-    /* ── Hero section top-clearance (LAYOUT-01) ──
-       Replaces center-only min-h-screen that clipped the photo/heading behind
-       the fixed navbar on short/landscape viewports. Content is top-anchored
-       within the space below the navbar via padding-top >= --navbar-height.
-       100svh (small viewport unit — excludes mobile browser chrome) is used
-       with 100dvh and 100vh fallbacks so content is never pushed under the
-       browser toolbar on mobile. */
-    .hero-section {
-        /* border-box so padding-top is included WITHIN the 100svh box (this project
-           excludes Tailwind preflight and SGDS ships no global border-box reset, so
-           the default is content-box). Without this the effective min-height becomes
-           100svh + var(--navbar-height), making the hero taller than the viewport. */
-        box-sizing: border-box;
-        min-height: 100vh;     /* fallback for browsers without svh/dvh support */
-        min-height: 100dvh;    /* dynamic viewport height — recalcs as browser chrome appears/disappears */
-        min-height: 100svh;    /* small viewport height — stable; excludes mobile browser chrome */
-        padding-top: var(--navbar-height);
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
+    a {
+        color: var(--accent-ink);
     }
 
-    .readable-muted {
-        color: color-mix(in srgb, var(--sgds-color-default) 72%, var(--sgds-bg-default));
+    a:hover {
+        color: var(--text);
     }
 
-    .site-footer {
-        padding: var(--sgds-spacer-6) 0;
+    ::selection {
+        background: color-mix(in srgb, #9d7bff 35%, transparent);
     }
 
-    /* ── Button improvements ── */
-    sgds-button::part(button) {
-        border-radius: var(--sgds-border-radius-md) !important;
-        font-weight: 600 !important;
-        padding: var(--sgds-spacer-7) var(--sgds-spacer-8) !important;
-        transition: all 0.2s ease !important;
-    }
-    sgds-button:not([variant]):hover::part(button) {
-        opacity: 0.9;
-    }
-
-    .hero-download-button {
-        display: inline-flex;
-    }
-
-    .hero-download-button sgds-button::part(button) {
-        box-sizing: border-box !important;
-        height: 3rem !important;
-        min-height: 3rem !important;
-        min-width: 11.5rem !important;
-        padding: 0.625rem 1rem !important;
-    }
-
-    .hero-content {
-        max-width: 64rem;
-    }
-
-    .hero-subtitle {
-        max-width: 56rem;
-    }
-
-    .hero-cta-group {
-        gap: 0.75rem;
-    }
-
-    .hero-cta-link {
-        box-sizing: border-box;
-        gap: 0.5rem !important;
-        height: 3rem;
-        min-height: 3rem;
-        min-width: 11.5rem;
-        width: auto;
-        white-space: nowrap;
-        padding: 0.625rem 0.75rem;
-        border-radius: var(--sgds-border-radius-md);
-        transition: background-color 0.2s ease, opacity 0.2s ease;
-    }
-
-    .hero-cta-link:hover {
-        opacity: 0.9;
-    }
-
-    .hero-cta-link-primary {
-        background: var(--sgds-primary-bg-default);
-        color: var(--sgds-color-fixed-light);
-    }
-
-    .hero-cta-link-primary:hover {
-        background: var(--sgds-primary-surface-emphasis);
-    }
-
-    .hero-cta-link-outline {
-        border: 1px solid var(--sgds-primary-border-color-default);
-        color: var(--sgds-primary-color-default);
-    }
-
-    .hero-cta-link-outline:hover {
-        background: var(--sgds-primary-surface-muted);
-    }
-
-    /* ── Flat cards (minimalist: borderless, transparent, no shadow) ──
-       --sgds-surface-default → transparent blends the card into its section bg;
-       --sgds-border-color-muted → transparent drops the shadow-DOM default border
-       (both custom properties inherit into the card's shadow DOM). Body padding
-       is zeroed so content aligns to grid gaps + hairline dividers. */
-    sgds-card {
-        box-shadow: none;
-        border-radius: 0;
-        height: auto;
-        display: block;
-        --sgds-surface-default: transparent;
-        --sgds-border-color-muted: transparent;
-    }
-    sgds-card::part(body) {
-        padding: 0;
-    }
-    sgds-card::part(description) {
-        padding-bottom: 0;
-    }
-
-    /* ── Icon improvements ── */
-    sgds-icon {
-        vertical-align: middle;
-    }
-
-    /* ── Section spacing ── */
     section {
         scroll-margin-top: var(--navbar-height);
     }
 
-    /* ── Experience timeline (flat: hairline dividers, no rail/dots) ── */
-    .timeline-shell {
-        max-width: 60rem;
+    h1,
+    h2,
+    h3,
+    p {
+        margin: 0;
     }
 
-    .timeline-list {
-        gap: 0;
+    button {
+        font-family: inherit;
     }
+}
 
-    .timeline-item {
-        padding: var(--sgds-spacer-8) 0;
+@keyframes blinkCursor {
+    0%,
+    49% {
+        opacity: 1;
     }
-
-    .timeline-item:first-child {
-        padding-top: 0;
+    50%,
+    100% {
+        opacity: 0;
     }
+}
 
-    .timeline-item + .timeline-item {
-        border-top: 1px solid color-mix(in srgb, var(--sgds-color-default) 12%, transparent);
+@keyframes pulseDot {
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 color-mix(in srgb, #3ddc97 45%, transparent);
     }
-
-    .experience-bullet-list {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        padding-left: 0;
-        list-style: none;
+    50% {
+        opacity: 0.6;
+        box-shadow: 0 0 0 6px transparent;
     }
+}
 
-    .experience-bullet-item {
-        gap: 0.75rem;
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(18px);
     }
-
-    .tech-list {
-        line-height: var(--sgds-line-height-md);
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
+}
 
-    /* ── Tidy grid items (flat: hairline top-border per cell) ── */
-    .tidy-grid-item {
-        padding-top: var(--sgds-spacer-6);
-        border-top: 1px solid color-mix(in srgb, var(--sgds-color-default) 12%, transparent);
-    }
+/* ── Shared primitives ── */
+.mono {
+    font-family: var(--font-mono), monospace;
+}
 
-    .sgds-grid {
-        row-gap: var(--sgds-spacer-8);
-    }
+.container-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
 
-    /* Root-cause overflow fix (LAYOUT-02): three 11.5rem (184px) CTAs + gaps exceed
-       the container width on narrow tablets (513–1024px band). Widening this
-       breakpoint to 1024px forces CTAs to full-width so they stack/wrap instead of
-       overflowing. Desktop (>=1025px) retains the fixed min-width: 11.5rem sizing. */
-    @media (max-width: 1024px) {
-        .hero-cta-group,
-        .hero-cta-link,
-        .hero-download-button,
-        .hero-download-button sgds-button {
-            width: 100%;
-        }
+.section-band {
+    border-top: 1px solid var(--line);
+}
 
-        .hero-download-button sgds-button::part(button) {
-            width: 100% !important;
-        }
-    }
+.section-band--alt {
+    background: var(--bg2);
+}
 
-    /* ── Hero text balance ── */
-    .hero-name {
-        text-wrap: balance;
-    }
+.section-inner {
+    padding: 96px 24px;
+}
 
-    /* ── Language pill toggle (segmented EN|ID) ── */
-    .lang-pill {
-        display: inline-flex;
-        border-radius: var(--sgds-border-radius-pill, 9999px);
-        border: 1px solid color-mix(in srgb, var(--sgds-color-default) 25%, transparent);
-        overflow: hidden;
-        height: 1.75rem;
-    }
+.section-kicker {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--accent-ink);
+    margin: 0 0 10px;
+}
 
-    .lang-pill__btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0 0.625rem;
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        font-size: 0.75rem;
-        font-weight: 600;
-        letter-spacing: 0.03em;
-        color: var(--sgds-color-muted);
-        line-height: 1;
-        transition: background-color 0.15s ease, color 0.15s ease;
-        min-width: 2rem;
-    }
+.section-title {
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 44px;
+}
 
-    .lang-pill__btn:focus-visible {
-        outline: 2px solid var(--sgds-primary-border-color-default);
-        outline-offset: -2px;
-    }
+.chip {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 4px 9px;
+}
 
-    .lang-pill__btn[aria-pressed="true"] {
-        background: var(--sgds-primary-bg-default);
-        color: var(--sgds-color-fixed-light);
-        border-radius: var(--sgds-border-radius-pill, 9999px);
-    }
+.chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 
-    .lang-pill__btn[aria-pressed="false"]:hover {
-        background: color-mix(in srgb, var(--sgds-color-default) 8%, transparent);
-        color: var(--sgds-color-default);
-    }
+.panel-card {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--panel);
+    padding: 24px;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.panel-card--lift:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    transform: translateY(-3px);
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 12px;
+    z-index: 200;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--accent-ink);
+    border-radius: 8px;
+    padding: 10px 16px;
+    text-decoration: none;
+}
+
+.skip-link:focus {
+    left: 12px;
 }

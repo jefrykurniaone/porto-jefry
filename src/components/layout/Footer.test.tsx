@@ -15,52 +15,31 @@ function renderFooter(locale: 'en' | 'id' = 'en') {
 }
 
 describe('Footer', () => {
-    describe('approved-truthful-footer-fallback path', () => {
-        it('renders without crashing', () => {
-            renderFooter();
-        });
+    it('renders the AI-workflow credit line (en)', () => {
+        renderFooter();
+        expect(
+            screen.getByText(/Designed & shipped with an AI-agentic workflow/i),
+        ).toBeInTheDocument();
+        expect(screen.getByText(/Claude · Copilot · OpenCode/)).toBeInTheDocument();
+    });
 
-        it('has site-footer id', () => {
-            const { container } = renderFooter();
-            expect(container.querySelector('#site-footer')).toBeInTheDocument();
-        });
+    it('renders the AI-workflow credit line (id)', () => {
+        renderFooter('id');
+        expect(
+            screen.getByText(/Didesain & dibangun dengan alur kerja AI-agentic/i),
+        ).toBeInTheDocument();
+    });
 
-        it('does not render sgds-footer', () => {
-            const { container } = renderFooter();
-            expect(container.querySelector('sgds-footer')).not.toBeInTheDocument();
-        });
+    it('renders the copyright with the current year and rights text', () => {
+        renderFooter();
+        const year = String(new Date().getFullYear());
+        const copyright = screen.getByText((content) => content.includes('Jefry Kurniawan'));
+        expect(copyright.textContent).toContain(year);
+        expect(copyright.textContent).toContain(messages.footer.rights);
+    });
 
-        it('displays the current year', () => {
-            renderFooter();
-            expect(screen.getByText(new RegExp(String(new Date().getFullYear())))).toBeInTheDocument();
-        });
-
-        it('displays translated built_with text in English', () => {
-            renderFooter('en');
-            expect(screen.getByText('Built with Next.js & SGDS')).toBeInTheDocument();
-        });
-
-        it('displays translated built_with text in Indonesian', () => {
-            renderFooter('id');
-            expect(screen.getByText('Dibangun dengan Next.js dan SGDS')).toBeInTheDocument();
-        });
-
-        it('has SGDS utility classes on the footer element', () => {
-            const { container } = renderFooter();
-            const footer = container.querySelector('#site-footer');
-            expect(footer?.className).toContain('sgds:');
-        });
-
-        it('has no placeholder href="#" links', () => {
-            const { container } = renderFooter();
-            const links = container.querySelectorAll('a[href="#"]');
-            expect(links.length).toBe(0);
-        });
-
-        it('has no government ownership text', () => {
-            renderFooter();
-            expect(screen.queryByText(/government/i)).not.toBeInTheDocument();
-            expect(screen.queryByText(/singapore/i)).not.toBeInTheDocument();
-        });
+    it('does not mention SGDS anymore', () => {
+        const { container } = renderFooter();
+        expect(container.textContent).not.toMatch(/SGDS/);
     });
 });

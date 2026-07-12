@@ -17,7 +17,6 @@
         "test:coverage": "vitest run --coverage"
     },
     "dependencies": {
-        "@govtechsg/sgds-web-component": "^3.21.0",
         "@react-pdf/renderer": "^4.5.1",
         "@vercel/analytics": "^2.0.1",
         "@vercel/functions": "^3.7.0",

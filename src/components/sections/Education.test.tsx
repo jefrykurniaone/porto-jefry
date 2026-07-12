@@ -1,10 +1,10 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
 import idMessages from '@/i18n/messages/id.json';
 import Education from './Education';
+import { education } from '@/data/education';
 
 function renderEducation(locale: 'en' | 'id' = 'en') {
     const msg = locale === 'id' ? idMessages : messages;
@@ -16,75 +16,43 @@ function renderEducation(locale: 'en' | 'id' = 'en') {
 }
 
 describe('Education', () => {
-    it('renders translated section heading', () => {
+    it('renders the combined section title', () => {
         renderEducation();
-        expect(screen.getByText('Education')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { name: 'Education & Certification' }),
+        ).toBeInTheDocument();
     });
 
-    it('renders formal education heading', () => {
+    it('renders every institution from data', () => {
         renderEducation();
-        expect(screen.getByText('Formal Education')).toBeInTheDocument();
+        for (const edu of education) {
+            expect(screen.getByRole('heading', { name: edu.institution })).toBeInTheDocument();
+        }
     });
 
-    it('renders informal education heading', () => {
+    it('tags formal entries as Formal and informal entries as Certification', () => {
         renderEducation();
-        expect(screen.getByText('Informal Education')).toBeInTheDocument();
+        const formalCount = education.filter((e) => e.type === 'formal').length;
+        const certCount = education.filter((e) => e.type === 'informal').length;
+        expect(screen.getAllByText('Formal')).toHaveLength(formalCount);
+        expect(screen.getAllByText('Certification')).toHaveLength(certCount);
     });
 
-    it('renders institution names', () => {
+    it('renders localized degrees from messages (en)', () => {
         renderEducation();
-        expect(screen.getByText('Widyatama University')).toBeInTheDocument();
-        expect(screen.getByText('Telkom University')).toBeInTheDocument();
+        expect(screen.getByText("Bachelor's in Information Systems")).toBeInTheDocument();
+        expect(screen.getByText('Diploma in Informatics Management')).toBeInTheDocument();
     });
 
-    it('renders degree and major text', () => {
-        renderEducation();
-        expect(screen.getByText(/Bachelor.*?Information Systems/)).toBeInTheDocument();
-    });
-
-    it('renders GPA label and value', () => {
-        renderEducation();
-        const gpaLabels = screen.getAllByText(/GPA/);
-        expect(gpaLabels.length).toBeGreaterThan(0);
-        expect(screen.getByText(/3\.63 \/ 4\.00/)).toBeInTheDocument();
-    });
-
-    it('renders Indonesian month when locale=id', () => {
+    it('renders localized degrees from messages (id)', () => {
         renderEducation('id');
-        // Coding.ID informal education has period "Nov 2019 – Jan 2020" which should be translated
-        expect(screen.getByText(/Nov 2019 – Jan 2020/)).toBeInTheDocument();
+        expect(screen.getByText('S1 Sistem Informasi')).toBeInTheDocument();
+        expect(screen.getByText('D3 Manajemen Informatika')).toBeInTheDocument();
     });
 
-    it('renders sgds-card for each education entry', () => {
+    it('renders GPA lines only for entries with a GPA', () => {
         renderEducation();
-        const cards = document.querySelectorAll('sgds-card');
-        expect(cards.length).toBeGreaterThan(0);
-    });
-
-    it('renders sgds-grid container', () => {
-        renderEducation();
-        const grids = document.querySelectorAll('.sgds-grid');
-        expect(grids.length).toBeGreaterThan(0);
-    });
-
-    it('source contains sgds-card', () => {
-        const source = fs.readFileSync('src/components/sections/Education.tsx', 'utf-8');
-        expect(source).toContain('sgds-card');
-    });
-
-    it('source uses formal/informal filtering', () => {
-        const source = fs.readFileSync('src/components/sections/Education.tsx', 'utf-8');
-        expect(source).toContain("e.type === 'formal'");
-        expect(source).toContain("e.type === 'informal'");
-    });
-
-    it('source calls translatePeriod', () => {
-        const source = fs.readFileSync('src/components/sections/Education.tsx', 'utf-8');
-        expect(source).toContain('translatePeriod(edu.period, locale)');
-    });
-
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/Education.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
+        const withGpa = education.filter((e) => e.gpa).length;
+        expect(screen.getAllByText(/^GPA: /)).toHaveLength(withGpa);
     });
 });

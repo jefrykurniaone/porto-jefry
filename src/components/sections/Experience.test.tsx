@@ -1,77 +1,79 @@
 import { describe, it, expect } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
-import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
+import idMessages from '@/i18n/messages/id.json';
 import Experience from './Experience';
+import { experiences } from '@/data/experience';
 
-function renderExperience() {
+function renderExperience(locale: 'en' | 'id' = 'en') {
     return render(
-        <NextIntlClientProvider locale="en" messages={messages}>
+        <NextIntlClientProvider locale={locale} messages={locale === 'en' ? messages : idMessages}>
             <Experience />
         </NextIntlClientProvider>,
     );
 }
 
 describe('Experience', () => {
-    it('renders translated section heading', () => {
+    it('renders the section title', () => {
         renderExperience();
-        expect(screen.getByText('Professional Experience')).toBeInTheDocument();
+        expect(
+            screen.getByRole('heading', { name: 'Professional Experience' }),
+        ).toBeInTheDocument();
     });
 
-    it('renders at least one company name', () => {
+    it('renders every role from data', () => {
         renderExperience();
-        const companies = screen.getAllByText('PT Xtremax Teknologi Indonesia');
-        expect(companies.length).toBeGreaterThan(0);
+        for (const exp of experiences) {
+            expect(screen.getByRole('heading', { name: exp.role })).toBeInTheDocument();
+        }
     });
 
-    it('renders experience roles', () => {
-        renderExperience();
-        expect(screen.getByText('Software Developer I - Backend')).toBeInTheDocument();
-    });
-
-    it('renders translated bullet points', () => {
-        renderExperience();
-        expect(screen.getByText(/Build and maintain backend features/)).toBeInTheDocument();
-    });
-
-    it('renders timeline rail and section anchor', () => {
+    it('shows at most 3 bullets per entry initially', () => {
         const { container } = renderExperience();
-        // Verify the section has the correct id anchor
-        const section = container.querySelector('#experience');
-        expect(section).toBeInTheDocument();
-        // Verify the container for the timeline rail exists (has relative positioning)
-        expect(section?.innerHTML).toContain('sgds:relative');
+        const rows = container.querySelectorAll('.exp-row');
+        expect(rows.length).toBe(experiences.length);
+        rows.forEach((row) => {
+            expect(row.querySelectorAll('li').length).toBeLessThanOrEqual(3);
+        });
     });
 
-    it('renders sgds-card for each experience panel', () => {
-        renderExperience();
-        const cards = document.querySelectorAll('sgds-card');
-        expect(cards.length).toBeGreaterThan(0);
-    });
-
-    it('renders technology stack as plain text from data', () => {
+    it('expands hidden bullets via the "+ N more" button and collapses again', async () => {
         const { container } = renderExperience();
-        expect(container.textContent).toContain('C#');
+        const user = userEvent.setup();
+        const firstRow = container.querySelector('.exp-row') as HTMLElement;
+        const bullets = messages.experience.items['xtremax-2025'].bullets;
+        const hidden = bullets.length - 3;
+
+        const moreBtn = within(firstRow).getByRole('button', {
+            name: `+ ${hidden} more`,
+        });
+        expect(moreBtn).toHaveAttribute('aria-expanded', 'false');
+
+        await user.click(moreBtn);
+        expect(within(firstRow).getAllByRole('listitem').length).toBe(bullets.length);
+        const lessBtn = within(firstRow).getByRole('button', { name: '− show less' });
+        expect(lessBtn).toHaveAttribute('aria-expanded', 'true');
+
+        await user.click(lessBtn);
+        expect(within(firstRow).getAllByRole('listitem').length).toBe(3);
     });
 
-    it('source contains sgds-card and uses TechList for tech', () => {
-        const source = fs.readFileSync('src/components/sections/Experience.tsx', 'utf-8');
-        expect(source).toContain('sgds-card');
-        expect(source).toContain('TechList');
-        expect(source).not.toContain('sgds-badge');
+    it('replaces Present with the localized label', () => {
+        renderExperience('id');
+        expect(screen.getByText(/Jul 2025 – Sekarang/)).toBeInTheDocument();
     });
 
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/Experience.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
+    it('translates month abbreviations for the id locale', () => {
+        renderExperience('id');
+        // Dec 2024 → Des 2024 via translatePeriod
+        expect(screen.getByText(/Des 2024/)).toBeInTheDocument();
     });
 
-    it('source uses typed useTranslations access instead of useMessages workaround', () => {
-        const source = fs.readFileSync('src/components/sections/Experience.tsx', 'utf-8');
-        expect(source).not.toContain('useMessages');
-        expect(source).not.toContain('as unknown as');
-        expect(source).toContain("useTranslations('experience')");
-        expect(source).toContain("t.raw('items')");
+    it('renders tech chips for entries with tech', () => {
+        const { container } = renderExperience();
+        const firstRow = container.querySelector('.exp-row') as HTMLElement;
+        expect(within(firstRow).getByText('Sitefinity')).toBeInTheDocument();
     });
 });

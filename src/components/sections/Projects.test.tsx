@@ -1,10 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { NextIntlClientProvider } from 'next-intl';
-import fs from 'fs';
 import messages from '@/i18n/messages/en.json';
 import { projects } from '@/data/projects';
-import { translatePeriod } from '@/utils/translate-period';
 import Projects from './Projects';
 
 function renderProjects() {
@@ -16,97 +14,45 @@ function renderProjects() {
 }
 
 describe('Projects', () => {
-    it('renders translated section heading', () => {
+    it('renders the section title', () => {
         renderProjects();
-        expect(screen.getByText('Projects Experience')).toBeInTheDocument();
+        expect(screen.getByRole('heading', { name: 'Projects Experience' })).toBeInTheDocument();
     });
 
-    it('renders all project names', () => {
+    it('renders every project name from data', () => {
         renderProjects();
-        projects.forEach((project) => {
-            expect(screen.getByText(project.name)).toBeInTheDocument();
-        });
+        for (const project of projects) {
+            expect(screen.getByRole('heading', { name: project.name })).toBeInTheDocument();
+        }
     });
 
-    it('renders company names for all projects', () => {
+    it('renders a translated description for every project', () => {
         renderProjects();
-        projects.forEach((project) => {
-            const matches = screen.getAllByText(project.company);
-            expect(matches.length).toBeGreaterThanOrEqual(1);
-        });
+        for (const project of projects) {
+            const desc = messages.projects.items[
+                project.id as keyof typeof messages.projects.items
+            ]?.description;
+            expect(desc, `missing description message for ${project.id}`).toBeTruthy();
+            expect(screen.getByText(desc)).toBeInTheDocument();
+        }
     });
 
-    it('renders all project periods', () => {
+    it('renders the company eyebrow for each card', () => {
         renderProjects();
-        const uniquePeriods = new Map<string, number>();
-        projects.forEach((project) => {
-            const period = translatePeriod(
-                project.period.replace('Present', 'Present'),
-                'en',
-            );
-            uniquePeriods.set(period, (uniquePeriods.get(period) || 0) + 1);
+        const eyebrows = screen.getAllByText('PT Xtremax Teknologi Indonesia', {
+            selector: '.card-eyebrow',
         });
-        uniquePeriods.forEach((count, period) => {
-            const matches = screen.getAllByText(period);
-            expect(matches.length).toBe(count);
-        });
+        expect(eyebrows.length).toBeGreaterThan(0);
     });
 
-    it('renders a description for every project from i18n', () => {
+    it('replaces Present with the translated label in periods', () => {
+        renderProjects();
+        expect(screen.getAllByText(/– Present/).length).toBeGreaterThan(0);
+    });
+
+    it('renders tech chips per project', () => {
         const { container } = renderProjects();
-        // Descriptions are read from i18n via resolveProjectDescription; every project
-        // now has a projects.items.<id>.description key, so each card renders one.
-        const descParas = container.querySelectorAll(
-            'p.sgds\\:text-body-md.sgds\\:text-body-default.sgds\\:mb-component-sm',
-        );
-        expect(descParas.length).toBe(projects.length);
-    });
-
-    it('renders the actual description text for a known project', () => {
-        renderProjects();
-        expect(
-            screen.getByText(messages.projects.items['rbbr-super-bank'].description),
-        ).toBeInTheDocument();
-    });
-
-    it('renders all tech as plain text per project', () => {
-        const { container } = renderProjects();
-        projects.forEach((project) => {
-            project.tech.forEach((tech) => {
-                expect(container.textContent).toContain(tech);
-            });
-        });
-    });
-
-    it('renders sgds-card for each project', () => {
-        renderProjects();
-        const cards = document.querySelectorAll('sgds-card');
-        expect(cards.length).toBe(projects.length);
-    });
-
-    it('source contains sgds-card', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('sgds-card');
-    });
-
-    it('source uses TechList and no sgds-badge', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('TechList');
-        expect(source).not.toContain('sgds-badge');
-    });
-
-    it('source contains noopener noreferrer for external links', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('noopener noreferrer');
-    });
-
-    it('source imports projects from data', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).toContain('@/data/projects');
-    });
-
-    it('source contains no dark: utility', () => {
-        const source = fs.readFileSync('src/components/sections/Projects.tsx', 'utf-8');
-        expect(source).not.toContain('dark:');
+        const firstCard = container.querySelector('.project-card');
+        expect(firstCard?.querySelectorAll('.chip').length).toBeGreaterThan(0);
     });
 });

@@ -20,7 +20,7 @@ CI pipeline order: lint → typecheck → test → build.
 
 ## Architecture
 
-**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site built with Next.js 14 App Router, TypeScript, Tailwind CSS, and next-intl. Deployed on Vercel.
+**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site built with Next.js 14 App Router, TypeScript, and next-intl. Deployed on Vercel. Styling is a custom token-based CSS design system (no component library): design tokens live in `src/app/globals.css` (`--bg`, `--panel`, `--accent`, …) with dark as the default theme and light overrides via `:root[data-theme="light"]`; component styles are in `src/app/styles/`. Fonts are Space Grotesk (sans) and JetBrains Mono (mono) via `next/font`, exposed as `--font-sans` / `--font-mono`.
 
 ### Request flow
 

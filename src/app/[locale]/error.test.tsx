@@ -24,12 +24,12 @@ vi.mock('next-intl', async () => {
 
 // Mock @/i18n/routing Link component
 vi.mock('@/i18n/routing', () => ({
-    Link: ({ children, href }: { children: React.ReactNode; href: string }) => (
-        <a href={href}>{children}</a>
+    Link: ({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => (
+        <a href={href} {...props}>{children}</a>
     ),
 }));
 
-describe('Error page (SGDS migration)', () => {
+describe('Error page', () => {
     const mockError = new Error('Test error');
     const mockReset = vi.fn();
 
@@ -41,11 +41,6 @@ describe('Error page (SGDS migration)', () => {
         );
     };
 
-    it('should render with use client directive', () => {
-        const { container } = renderError();
-        expect(container).toBeTruthy();
-    });
-
     it('should display translated error title in h1', () => {
         renderError();
         const heading = screen.getByRole('heading', { level: 1 });
@@ -54,64 +49,37 @@ describe('Error page (SGDS migration)', () => {
 
     it('should display translated error message', () => {
         renderError();
-        const message = screen.getByText('An unexpected error occurred. Please try refreshing the page.');
-        expect(message).toBeInTheDocument();
+        expect(
+            screen.getByText('An unexpected error occurred. Please try refreshing the page.'),
+        ).toBeInTheDocument();
     });
 
-    it('should render Try Again sgds-button that calls reset prop', async () => {
+    it('should render a Try Again button that calls reset prop', async () => {
         const user = userEvent.setup();
-        const { container } = renderError();
+        renderError();
 
-        const tryAgainBtn = container.querySelector('sgds-button');
-        expect(tryAgainBtn).toBeInTheDocument();
-        expect(tryAgainBtn?.textContent).toContain('Try Again');
+        const tryAgainBtn = screen.getByRole('button', { name: 'Try Again' });
+        expect(tryAgainBtn).toHaveAttribute('type', 'button');
 
-        await user.click(tryAgainBtn!);
+        await user.click(tryAgainBtn);
         expect(mockReset).toHaveBeenCalledTimes(1);
     });
 
     it('should render Return Home action with locale-aware link', () => {
         const { container } = renderError();
-
-        // Mock returns locale 'en', so link should be /en
         const links = container.querySelectorAll('a');
-        const homeLink = Array.from(links).find(link =>
-            link.getAttribute('href')?.includes('/en')
+        const homeLink = Array.from(links).find((link) =>
+            link.getAttribute('href')?.includes('/en'),
         );
         expect(homeLink).toBeTruthy();
     });
 
     it('should log error to console with [Error Boundary] prefix', () => {
-        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => { });
+        const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
         renderError();
 
         expect(consoleSpy).toHaveBeenCalledWith('[Error Boundary]', mockError);
         consoleSpy.mockRestore();
-    });
-
-    it('should have type="button" on the Try Again sgds-button', () => {
-        const { container } = renderError();
-
-        const tryAgainBtn = container.querySelector('sgds-button');
-        expect(tryAgainBtn).toHaveAttribute('type', 'button');
-    });
-
-    it('should use SGDS icon (exclamation-triangle-fill)', () => {
-        const { container } = renderError();
-        const icon = container.querySelector('sgds-icon');
-        expect(icon).toBeInTheDocument();
-        expect(icon).toHaveAttribute('name', 'exclamation-triangle-fill');
-    });
-
-    it('should have no lucide-react AlertTriangle icon', () => {
-        // SGDS migration: error page should NOT render lucide-react icons
-        const { container } = renderError();
-        // lucide-react renders as <svg> with specific attributes
-        const lucideSvgs = Array.from(container.querySelectorAll('svg')).filter(
-            svg => !svg.closest('sgds-icon')
-        );
-        // No standalone SVG icons (sgds-icon wraps SVGs internally)
-        expect(lucideSvgs.length).toBe(0);
     });
 });

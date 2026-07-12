@@ -1,27 +1,35 @@
 import { useTranslations } from 'next-intl';
 import { skillCategories } from '@/data/skills';
-import { TechList } from '@/components/ui/TechList';
+
+const AI_CATEGORY = 'ai_emerging';
 
 export default function Skills() {
     const t = useTranslations('skills');
+    const nav = useTranslations('nav');
 
     return (
-        <section id='skills' className='sgds:py-layout-lg sgds:bg-default'>
-            <div className='sgds-container'>
-                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
-                    {t('title')}
-                </h2>
-                <div className='sgds-grid'>
+        <section id='skills' className='section-band section-band--alt'>
+            <div className='container-page section-inner'>
+                <p className='section-kicker'>03 / {nav('skills')}</p>
+                <h2 className='section-title'>{t('title')}</h2>
+                <div className='skills-grid'>
                     {skillCategories.map((cat) => (
-                        <div key={cat.category} className='tidy-grid-item sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
-                            <sgds-card suppressHydrationWarning>
-                                <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default'>
+                        <div key={cat.category} className='panel-card skill-card'>
+                            <div className='skill-card__head'>
+                                <h3 className='skill-card__label'>
                                     {t(`categories.${cat.category}`)}
-                                </span>
-                                <div slot='description'>
-                                    <TechList items={cat.skills} />
-                                </div>
-                            </sgds-card>
+                                </h3>
+                                {cat.category === AI_CATEGORY && (
+                                    <span className='ai-badge'>{t('ai_badge')}</span>
+                                )}
+                            </div>
+                            <div className='chip-row'>
+                                {cat.skills.map((skill) => (
+                                    <span key={skill} className='chip skill-card__chip'>
+                                        {skill}
+                                    </span>
+                                ))}
+                            </div>
                         </div>
                     ))}
                 </div>

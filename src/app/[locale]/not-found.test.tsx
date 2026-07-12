@@ -5,8 +5,8 @@ import NotFound from './not-found';
 
 // Mock @/i18n/routing
 vi.mock('@/i18n/routing', () => ({
-    Link: ({ children, href }: { children: React.ReactNode; href: string }) => (
-        <a href={href}>{children}</a>
+    Link: ({ children, href, ...props }: React.AnchorHTMLAttributes<HTMLAnchorElement> & { href: string }) => (
+        <a href={href} {...props}>{children}</a>
     ),
 }));
 
@@ -18,7 +18,7 @@ const messages = {
     },
 };
 
-describe('NotFound (SGDS migration)', () => {
+describe('NotFound', () => {
     const renderNotFound = () => {
         return render(
             <NextIntlClientProvider locale="en" messages={messages}>
@@ -39,38 +39,20 @@ describe('NotFound (SGDS migration)', () => {
 
     it('should display translated notFound.message in paragraph', () => {
         renderNotFound();
-        const message = screen.getByText(
-            /The page you're looking for doesn't exist/i,
-        );
+        const message = screen.getByText(/The page you're looking for doesn't exist/i);
         expect(message).toBeInTheDocument();
         expect(message.tagName).toBe('P');
     });
 
-    it('should display translated notFound.returnHome as link action', () => {
+    it('should display translated notFound.returnHome as link action to /', () => {
         renderNotFound();
         const link = screen.getByRole('link', { name: /Return Home/i });
-        expect(link).toBeInTheDocument();
+        expect(link).toHaveAttribute('href', '/');
     });
 
-    it('should have button link to / using Link from @/i18n/routing', () => {
+    it('renders the 404 glyph decoratively (hidden from assistive tech)', () => {
         const { container } = renderNotFound();
-        const link = container.querySelector('a[href="/"]');
-        expect(link).toBeInTheDocument();
-    });
-
-    it('should use SGDS icon (question-circle)', () => {
-        const { container } = renderNotFound();
-        const icon = container.querySelector('sgds-icon');
-        expect(icon).toBeInTheDocument();
-        expect(icon).toHaveAttribute('name', 'question-circle');
-    });
-
-    it('should have no lucide-react FileQuestion icon', () => {
-        const { container } = renderNotFound();
-        // No standalone SVG icons (lucide-react renders as <svg>)
-        const lucideSvgs = Array.from(container.querySelectorAll('svg')).filter(
-            svg => !svg.closest('sgds-icon')
-        );
-        expect(lucideSvgs.length).toBe(0);
+        const glyph = container.querySelector('.fullpage-center__glyph');
+        expect(glyph).toHaveAttribute('aria-hidden', 'true');
     });
 });

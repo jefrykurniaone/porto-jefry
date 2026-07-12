@@ -1,41 +1,35 @@
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 /**
- * Tag names that SGDS migration plans 05-02 through 05-07 use in components.
- * Register each tag only when `customElements.get(tag)` is absent so Vitest
- * can render direct `<sgds-*>` JSX without unknown-element warnings.
- *
- * Note: jsdom requires a unique constructor per custom-element tag name,
- * so each tag gets its own anonymous HTMLElement subclass.
+ * jsdom does not implement window.matchMedia. Components use it to honour
+ * prefers-reduced-motion (typed hero roles, particle canvas); tests run with
+ * no reduced-motion preference by default.
  */
-const SGDS_TEST_TAGS = [
-    'sgds-button',
-    'sgds-icon-button',
-    'sgds-mainnav',
-    'sgds-mainnav-item',
-    'sgds-card',
-    'sgds-badge',
-    'sgds-alert',
-    'sgds-icon',
-    'sgds-link',
-    'sgds-footer',
-    'sgds-icon-card',
-] as const;
+Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: vi.fn().mockImplementation((query: string) => ({
+        matches: false,
+        media: query,
+        onchange: null,
+        addListener: vi.fn(),
+        removeListener: vi.fn(),
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+        dispatchEvent: vi.fn(),
+    })),
+});
 
-for (const tag of SGDS_TEST_TAGS) {
-    if (!customElements.get(tag)) {
-        customElements.define(
-            tag,
-            class extends HTMLElement {
-                constructor() {
-                    super();
-                }
-            },
-        );
-    }
-}
+/**
+ * jsdom has no canvas implementation; getContext logs "not implemented" and
+ * returns null. Stub it to return null quietly — ParticleCanvas guards on a
+ * null context. Individual tests may override with a fake 2D context.
+ */
+HTMLCanvasElement.prototype.getContext = vi.fn().mockReturnValue(
+    null,
+) as unknown as HTMLCanvasElement['getContext'];
 
 afterEach(() => {
-    document.documentElement.classList.remove('sgds-night-theme');
+    delete document.documentElement.dataset.theme;
     localStorage.clear();
 });

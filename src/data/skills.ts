@@ -5,6 +5,16 @@ export interface SkillCategory {
 
 export const skillCategories: SkillCategory[] = [
     {
+        category: 'ai_emerging',
+        skills: [
+            'Python',
+            'Claude',
+            'GitHub Copilot',
+            'OpenCode',
+            'LLM Integration',
+        ],
+    },
+    {
         category: 'backend',
         skills: [
             '.NET',
@@ -37,16 +47,6 @@ export const skillCategories: SkillCategory[] = [
     {
         category: 'database',
         skills: ['Microsoft SQL Server', 'MySQL', 'SSIS', 'SSRS'],
-    },
-    {
-        category: 'ai_emerging',
-        skills: [
-            'Python',
-            'Claude',
-            'GitHub Copilot',
-            'OpenCode',
-            'LLM Integration',
-        ],
     },
     {
         category: 'cms_platforms',

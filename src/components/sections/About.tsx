@@ -1,6 +1,4 @@
 import { useTranslations } from 'next-intl';
-import { GitHubIcon } from '@/components/icons/GitHubIcon';
-import { LinkedInIcon } from '@/components/icons/LinkedInIcon';
 import {
     CONTACT_EMAIL,
     CONTACT_PHONE_HREF,
@@ -11,73 +9,78 @@ import {
     CONTACT_GITHUB_HANDLE,
 } from '@/data/contact';
 
-interface AboutContactLinksProps {
-    emailLabel: string;
-    phoneLabel: string;
-    linkedinLabel: string;
-    githubLabel: string;
+interface ContactChip {
+    href: string;
+    icon: string;
+    text: string;
+    label: string;
+    isExternal: boolean;
 }
 
-function AboutContactLinks({ emailLabel, phoneLabel, linkedinLabel, githubLabel }: Readonly<AboutContactLinksProps>) {
+function AboutContactChips({ chips }: Readonly<{ chips: ContactChip[] }>) {
     return (
-        <div slot='footer' className='sgds:flex sgds:flex-wrap sgds:gap-layout-sm'>
-            <a
-                href={`mailto:${CONTACT_EMAIL}`}
-                aria-label={emailLabel}
-                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                <sgds-icon name='mail' aria-hidden='true' suppressHydrationWarning />
-                <span>{CONTACT_EMAIL}</span>
-            </a>
-            <a
-                href={CONTACT_PHONE_HREF}
-                aria-label={phoneLabel}
-                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                <sgds-icon name='phone' aria-hidden='true' suppressHydrationWarning />
-                <span>{CONTACT_PHONE_DISPLAY}</span>
-            </a>
-            <a
-                href={CONTACT_LINKEDIN_URL}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label={linkedinLabel}
-                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                <LinkedInIcon size={18} aria-hidden='true' />
-                <span>{CONTACT_LINKEDIN_HANDLE}</span>
-            </a>
-            <a
-                href={CONTACT_GITHUB_URL}
-                target='_blank'
-                rel='noopener noreferrer'
-                aria-label={githubLabel}
-                className='sgds:inline-flex sgds:items-center sgds:gap-component-xs sgds:text-body-md sgds:text-link hover:sgds:text-link-hover sgds:underline'>
-                <GitHubIcon size={18} aria-hidden='true' />
-                <span>{CONTACT_GITHUB_HANDLE}</span>
-            </a>
+        <div className='contact-chips'>
+            {chips.map((chip) => (
+                <a
+                    key={chip.href}
+                    href={chip.href}
+                    aria-label={chip.label}
+                    target={chip.isExternal ? '_blank' : undefined}
+                    rel={chip.isExternal ? 'noopener noreferrer' : undefined}
+                    className='contact-chip'>
+                    <span className='contact-chip__icon' aria-hidden='true'>{chip.icon}</span>
+                    {chip.text}
+                </a>
+            ))}
+        </div>
+    );
+}
+
+function TerminalCard({ statusLine }: Readonly<{ statusLine: string }>) {
+    return (
+        <div className='terminal'>
+            <div className='terminal__bar'>
+                <span className='terminal__dot' />
+                <span className='terminal__dot' />
+                <span className='terminal__dot terminal__dot--accent' />
+                <span className='terminal__title'>jefry@porto — zsh</span>
+            </div>
+            <div className='terminal__body'>
+                <div><span className='terminal__prompt'>$</span> <span className='terminal__cmd'>whoami</span></div>
+                <div className='terminal__out'>jefry.kurniawan · backend developer</div>
+                <div><span className='terminal__prompt'>$</span> <span className='terminal__cmd'>stack --primary</span></div>
+                <div className='terminal__out'>.NET · C# · SQL Server · REST APIs</div>
+                <div><span className='terminal__prompt'>$</span> <span className='terminal__cmd'>ai --workflow</span></div>
+                <div className='terminal__out'>Claude · GitHub Copilot · OpenCode</div>
+                <div><span className='terminal__prompt'>$</span> <span className='terminal__cmd'>status</span></div>
+                <div className='terminal__out'><span className='terminal__ok'>●</span> {statusLine}</div>
+                <div><span className='terminal__cursor' aria-hidden='true'>▌</span></div>
+            </div>
         </div>
     );
 }
 
 export default function About() {
     const t = useTranslations('about');
+    const nav = useTranslations('nav');
+    const chips: ContactChip[] = [
+        { href: `mailto:${CONTACT_EMAIL}`, icon: '✉', text: CONTACT_EMAIL, label: t('contact_email'), isExternal: false },
+        { href: CONTACT_PHONE_HREF, icon: '✆', text: CONTACT_PHONE_DISPLAY, label: t('contact_phone'), isExternal: false },
+        { href: CONTACT_LINKEDIN_URL, icon: 'in', text: `linkedin/${CONTACT_LINKEDIN_HANDLE}`, label: t('contact_linkedin'), isExternal: true },
+        { href: CONTACT_GITHUB_URL, icon: 'gh', text: `github/${CONTACT_GITHUB_HANDLE}`, label: t('contact_github'), isExternal: true },
+    ];
 
     return (
-        <section id='about' className='sgds:py-layout-lg sgds:bg-alternate'>
-            <div className='sgds-container'>
-                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
-                    {t('title')}
-                </h2>
-                <div className='sgds:flex sgds:justify-center'>
-                    <sgds-card suppressHydrationWarning className='sgds:max-w-3xl'>
-                        <span slot='description' className='sgds:text-body-md sgds:text-body-default sgds:leading-xs'>
-                            {t('description')}
-                        </span>
-                        <AboutContactLinks
-                            emailLabel={t('contact_email')}
-                            phoneLabel={t('contact_phone')}
-                            linkedinLabel={t('contact_linkedin')}
-                            githubLabel={t('contact_github')}
-                        />
-                    </sgds-card>
+        <section id='about' className='section-band section-band--alt'>
+            <div className='container-page section-inner'>
+                <p className='section-kicker'>01 / {nav('about')}</p>
+                <h2 className='section-title'>{t('title')}</h2>
+                <div className='about-grid'>
+                    <div>
+                        <p className='about-desc'>{t('description')}</p>
+                        <AboutContactChips chips={chips} />
+                    </div>
+                    <TerminalCard statusLine={t('term_status')} />
                 </div>
             </div>
         </section>

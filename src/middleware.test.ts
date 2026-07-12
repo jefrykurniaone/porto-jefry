@@ -1,7 +1,18 @@
 import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { createHash } from 'node:crypto';
+import fs from 'node:fs';
 import { buildCsp } from './middleware';
 
 const TEST_NONCE = 'test-nonce-abc123';
+
+/** Extract THEME_INIT_SCRIPT from the locale layout and hash it the CSP way. */
+function themeInitScriptHash(): string {
+    const layout = fs.readFileSync('src/app/[locale]/layout.tsx', 'utf-8');
+    const match = /const THEME_INIT_SCRIPT = `([^`]+)`/.exec(layout);
+    if (!match) throw new Error('THEME_INIT_SCRIPT not found in locale layout');
+    const digest = createHash('sha256').update(match[1], 'utf8').digest('base64');
+    return `'sha256-${digest}'`;
+}
 
 describe('buildCsp — SEC-02 CSP re-audit', () => {
     let originalNodeEnv: string | undefined;
@@ -43,20 +54,21 @@ describe('buildCsp — SEC-02 CSP re-audit', () => {
         });
     });
 
-    describe('SEC-02-c: prod branch must carry the recomputed hash (not the stale one)', () => {
-        it('prod branch: script-src contains the correct recomputed hash', () => {
+    describe('SEC-02-c: prod branch must carry the hash of the CURRENT theme-init script', () => {
+        it('prod branch: script-src contains the hash computed from THEME_INIT_SCRIPT', () => {
             (process.env as Record<string, string>).NODE_ENV = 'production';
             const csp = buildCsp(TEST_NONCE);
-            expect(csp).toContain(
-                `'sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc='`,
-            );
+            expect(csp).toContain(themeInitScriptHash());
         });
 
-        it('prod branch: script-src does NOT contain the stale next-themes hash', () => {
+        it('prod branch: script-src does NOT contain stale hashes from earlier designs', () => {
             (process.env as Record<string, string>).NODE_ENV = 'production';
             const csp = buildCsp(TEST_NONCE);
             expect(csp).not.toContain(
                 `'sha256-1lsbnEG5y+jDum9W3sr9rXc9EniVVZtsPUtyiDRfsik='`,
+            );
+            expect(csp).not.toContain(
+                `'sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc='`,
             );
         });
     });
