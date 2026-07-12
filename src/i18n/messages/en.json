@@ -1,207 +1,223 @@
 {
-    "nav": {
-        "about": "About",
-        "experience": "Experience",
-        "education": "Education",
-        "skills": "Skills",
-        "projects": "Projects",
-        "certifications": "Certifications",
-        "contact": "Contact",
-        "logo_label": "Back to top",
-        "toggle_menu": "Toggle navigation menu",
-        "skip_to_content": "Skip to main content",
-        "back_to_top": "Back to top",
-        "close_menu": "Close menu"
-    },
-    "hero": {
-        "greeting": "Hi, I'm",
-        "name": "Jefry Kurniawan",
-        "photo_alt": "Jefry Kurniawan — profile photo",
-        "title": "Backend Developer & .NET Specialist",
-        "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
-        "cta_work": "View My Work",
-        "cta_cv": "Download CV",
-        "cta_contact": "Contact Me",
-        "downloading_cv": "Generating...",
-        "cv_error": "Failed to generate CV (HTTP {status}). Please try again later."
-    },
-    "notFound": {
-        "title": "Page Not Found",
-        "message": "The page you're looking for doesn't exist or has been moved.",
-        "returnHome": "Return Home"
-    },
-    "about": {
-        "title": "About Me",
-        "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote roles or relocation, including with companies outside Indonesia.",
-        "contact_email": "Email",
-        "contact_phone": "Phone",
-        "contact_linkedin": "LinkedIn",
-        "contact_github": "GitHub"
-    },
-    "experience": {
-        "title": "Professional Experience",
-        "present": "Present",
-        "items": {
-            "xtremax-2025": {
-                "bullets": [
-                    "Build and maintain backend features for Singapore public-sector websites running on Sitefinity and Sitecore CMS.",
-                    "Develop REST APIs and connect third-party services so client sites can show live, up-to-date content.",
-                    "Customise Sitefinity modules and templates to fit each client's content structure and design.",
-                    "Write and tune SQL queries so pages stay responsive against large datasets.",
-                    "Write unit tests and fix defects quickly to keep sites stable in production.",
-                    "Work with designers, content teams, and project managers to ship features that match the brief."
-                ]
-            },
-            "arkamaya-2024": {
-                "bullets": [
-                    "Built web applications for HR, event-management, and operational systems, in C#/ASP.NET MVC and PHP/CodeIgniter.",
-                    "Maintained and upgraded existing systems to keep them current with their frameworks and libraries.",
-                    "Wrote unit tests and debugged production issues so releases stayed stable.",
-                    "Integrated REST and SOAP APIs to connect client systems with external services.",
-                    "Designed database schemas and wrote the queries each application needed.",
-                    "Wrote clear technical documentation so other developers could pick up and extend the code.",
-                    "Worked with internal and client teams to scope features and resolve issues as they came up."
-                ]
-            },
-            "nawa-lead-2024": {
-                "bullets": [
-                    "Led the technical work on projects and kept delivery on schedule and within budget.",
-                    "Broke work down into tasks and distributed them across the development team.",
-                    "Worked with the project manager and product owner on plans and timelines.",
-                    "Worked with the business analyst on system design.",
-                    "Wrote technical specification documents from the functional specs (FSD).",
-                    "Ran technical design meetings and walked the team through how each feature would be built.",
-                    "Reviewed pull and merge requests in Git.",
-                    "Set coding standards and made sure the team kept to them.",
-                    "Deployed applications to IIS on the development and test servers (Windows Server on Azure VMs)."
-                ]
-            },
-            "nawa-onerisk-2023": {
-                "bullets": [
-                    "Wrote functional specification documents from the requirement elicitation documents (RED).",
-                    "Developed, analysed, and tested software against the system design.",
-                    "Investigated software defects in live systems.",
-                    "Reproduced and fixed production issues.",
-                    "Explained the technical approach for proposed solutions in project meetings.",
-                    "Wrote deployment guide documents."
-                ]
-            },
-            "xtremax-2022": {
-                "bullets": [
-                    "Wrote functional specification documents from the requirement elicitation documents (RED).",
-                    "Developed, analysed, and tested software against the system design.",
-                    "Investigated defects and fixed production issues in live systems.",
-                    "Explained the technical approach for proposed solutions in project meetings.",
-                    "Wrote deployment guides and kept daily task reports up to date."
-                ]
-            },
-            "nawa-2020": {
-                "bullets": [
-                    "Developed and maintained operational risk-management systems (ORMS) for Adira Insurance and BTPN, in VB.NET and ASP.NET Web Forms.",
-                    "Wrote and optimised SQL Server stored procedures, views, and SSIS ETL jobs to process large volumes of financial data.",
-                    "Built regulatory and business-intelligence reports in SSRS to meet compliance and reporting requirements.",
-                    "Automated end-to-end test scenarios with Katalon, which widened test coverage and cut manual QA time.",
-                    "Worked with business analysts to turn functional specs into working features."
-                ]
-            }
-        }
-    },
-    "education": {
-        "title": "Education",
-        "formal": "Formal Education",
-        "informal": "Informal Education",
-        "gpa": "GPA"
-    },
-    "skills": {
-        "title": "Technical Skills",
-        "categories": {
-            "backend": "Backend",
-            "frontend": "Frontend",
-            "database": "Database",
-            "ai_emerging": "AI & Emerging Tech",
-            "cms_platforms": "CMS & Platforms",
-            "tools_devops": "Tools & DevOps"
-        }
-    },
-    "projects": {
-        "title": "Projects Experience",
-        "present": "Present",
-        "items": {
-            "heritagesg-website-maintenance": {
-                "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
-            },
-            "yellow-ribbon-singapore-website": {
-                "description": "Backend and CMS development for the Yellow Ribbon Singapore website on Sitefinity, using C# and .NET Framework MVC over SQL Server."
-            },
-            "public-service-commission-website": {
-                "description": "Built and maintained backend features for the Public Service Commission website on Sitefinity, with .NET MVC and SQL Server."
-            },
-            "agency-for-science-technology-and-research": {
-                "description": "Backend development for the Agency for Science, Technology and Research (A*STAR) website, built on Sitefinity CMS in C# and .NET MVC."
-            },
-            "defense-science-and-technology-agency": {
-                "description": "Backend and CMS work for the Defence Science and Technology Agency (DSTA) website on Sitefinity, in C# and .NET MVC."
-            },
-            "unpacking-direction-ttlc": {
-                "description": "A PHP and CodeIgniter web application for the Unpacking Direction TTLC programme, with a MySQL backend and a jQuery and AJAX front end."
-            },
-            "sustainability-tam-event-management": {
-                "description": "An event-management system (Sustainability TAM) built in C# and ASP.NET MVC, backed by SQL Server and covered with NUnit tests."
-            },
-            "hris-job-tomori": {
-                "description": "An HR information system (HRIS) for JOB Tomori, built in ASP.NET MVC with REST and SOAP API integrations over SQL Server."
-            },
-            "trainer-tdk-framework-tmmin": {
-                "description": "Delivered training on the Toyota Development Kit (TDK) framework at TMMIN, covering C#, ASP.NET MVC, and SQL Server."
-            },
-            "rbbr-super-bank": {
-                "description": "A risk-based bank rating (RBBR) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SSRS reporting on SQL Server."
-            },
-            "oprisk-super-bank": {
-                "description": "An operational-risk (OPRISK) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SQL Server and SSRS reports."
-            },
-            "orms-adira-insurance": {
-                "description": "An operational risk-management system (ORMS) for Adira Insurance, built in VB.NET and ASP.NET Web Forms with SSIS data pipelines and SSRS reports."
-            },
-            "orms-btpn": {
-                "description": "An operational risk-management system (ORMS) for BTPN, built in VB.NET and ASP.NET Web Forms with SQL Server, SSIS, and SSRS."
-            },
-            "nawa-point-web-application": {
-                "description": "A web application (Nawa Point) built in C# and ASP.NET MVC with SQL Server, developed during my .NET training at Coding.ID."
-            }
-        }
-    },
-    "certifications": {
-        "title": "Certifications",
-        "coding_id": {
-            "name": ".NET Programmer Class",
-            "issuer": "Coding.ID",
-            "period": "Nov 2019 – Jan 2020",
-            "description": "A .NET programming course covering C#, ASP.NET MVC, and Microsoft SQL Server."
-        }
-    },
-    "contact": {
-        "title": "Get In Touch",
-        "description": "I'm open to new roles and freelance work, including remote positions with teams abroad. Whether you have a project in mind or just want to talk shop about .NET or AI, drop me a message.",
-        "email_label": "Email Me",
-        "phone_label": "Call Me",
-        "linkedin_label": "LinkedIn Profile"
-    },
-    "footer": {
-        "built_with": "Built with Next.js & SGDS",
-        "rights": "All rights reserved."
-    },
-    "theme": {
-        "toggle_dark": "Switch to dark mode",
-        "toggle_light": "Switch to light mode"
-    },
-    "lang": {
-        "switch": "Switch language"
-    },
-    "error": {
-        "title": "Something Went Wrong",
-        "message": "An unexpected error occurred. Please try refreshing the page.",
-        "tryAgain": "Try Again",
-        "returnHome": "Return Home"
+  "nav": {
+    "about": "About",
+    "experience": "Experience",
+    "education": "Education",
+    "skills": "Skills",
+    "projects": "Projects",
+    "certifications": "Certifications",
+    "contact": "Contact",
+    "logo_label": "Back to top",
+    "toggle_menu": "Toggle navigation menu",
+    "skip_to_content": "Skip to main content",
+    "back_to_top": "Back to top",
+    "close_menu": "Close menu"
+  },
+  "hero": {
+    "greeting": "Hi, I'm",
+    "status_pill": "Open to remote/freelance roles",
+    "name": "Jefry Kurniawan",
+    "photo_alt": "Jefry Kurniawan — profile photo",
+    "title": "Backend Developer & .NET Specialist",
+    "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
+    "cta_work": "View My Work",
+    "cta_cv": "Download CV",
+    "cta_contact": "Contact Me",
+    "downloading_cv": "Generating...",
+    "cv_error": "Failed to generate CV (HTTP {status}). Please try again later."
+  },
+  "notFound": {
+    "title": "Page Not Found",
+    "message": "The page you're looking for doesn't exist or has been moved.",
+    "returnHome": "Return Home"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote/freelance roles or relocation, including with companies outside Indonesia.",
+    "contact_email": "Email",
+    "contact_phone": "Phone",
+    "contact_linkedin": "LinkedIn",
+    "contact_github": "GitHub",
+    "term_status": "open to remote/freelance roles & relocation"
+  },
+  "experience": {
+    "title": "Professional Experience",
+    "present": "Present",
+    "show_more": "+ {count} more",
+    "show_less": "− show less",
+    "items": {
+      "xtremax-2025": {
+        "bullets": [
+          "Build and maintain backend features for Singapore public-sector websites running on Sitefinity and Sitecore CMS.",
+          "Develop REST APIs and connect third-party services so client sites can show live, up-to-date content.",
+          "Customise Sitefinity modules and templates to fit each client's content structure and design.",
+          "Write and tune SQL queries so pages stay responsive against large datasets.",
+          "Write unit tests and fix defects quickly to keep sites stable in production.",
+          "Work with designers, content teams, and project managers to ship features that match the brief."
+        ]
+      },
+      "arkamaya-2024": {
+        "bullets": [
+          "Built web applications for HR, event-management, and operational systems, in C#/ASP.NET MVC and PHP/CodeIgniter.",
+          "Maintained and upgraded existing systems to keep them current with their frameworks and libraries.",
+          "Wrote unit tests and debugged production issues so releases stayed stable.",
+          "Integrated REST and SOAP APIs to connect client systems with external services.",
+          "Designed database schemas and wrote the queries each application needed.",
+          "Wrote clear technical documentation so other developers could pick up and extend the code.",
+          "Worked with internal and client teams to scope features and resolve issues as they came up."
+        ]
+      },
+      "nawa-lead-2024": {
+        "bullets": [
+          "Led the technical work on projects and kept delivery on schedule and within budget.",
+          "Broke work down into tasks and distributed them across the development team.",
+          "Worked with the project manager and product owner on plans and timelines.",
+          "Worked with the business analyst on system design.",
+          "Wrote technical specification documents from the functional specs (FSD).",
+          "Ran technical design meetings and walked the team through how each feature would be built.",
+          "Reviewed pull and merge requests in Git.",
+          "Set coding standards and made sure the team kept to them.",
+          "Deployed applications to IIS on the development and test servers (Windows Server on Azure VMs)."
+        ]
+      },
+      "nawa-onerisk-2023": {
+        "bullets": [
+          "Wrote functional specification documents from the requirement elicitation documents (RED).",
+          "Developed, analysed, and tested software against the system design.",
+          "Investigated software defects in live systems.",
+          "Reproduced and fixed production issues.",
+          "Explained the technical approach for proposed solutions in project meetings.",
+          "Wrote deployment guide documents."
+        ]
+      },
+      "xtremax-2022": {
+        "bullets": [
+          "Wrote functional specification documents from the requirement elicitation documents (RED).",
+          "Developed, analysed, and tested software against the system design.",
+          "Investigated defects and fixed production issues in live systems.",
+          "Explained the technical approach for proposed solutions in project meetings.",
+          "Wrote deployment guides and kept daily task reports up to date."
+        ]
+      },
+      "nawa-2020": {
+        "bullets": [
+          "Developed and maintained operational risk-management systems (ORMS) for Adira Insurance and BTPN, in VB.NET and ASP.NET Web Forms.",
+          "Wrote and optimised SQL Server stored procedures, views, and SSIS ETL jobs to process large volumes of financial data.",
+          "Built regulatory and business-intelligence reports in SSRS to meet compliance and reporting requirements.",
+          "Automated end-to-end test scenarios with Katalon, which widened test coverage and cut manual QA time.",
+          "Worked with business analysts to turn functional specs into working features."
+        ]
+      }
     }
+  },
+  "education": {
+    "title": "Education",
+    "combined_title": "Education & Certification",
+    "formal": "Formal Education",
+    "informal": "Informal Education",
+    "kind_formal": "Formal",
+    "kind_cert": "Certification",
+    "gpa": "GPA",
+    "items": {
+      "widyatama": { "degree": "Bachelor's in Information Systems" },
+      "telkom": { "degree": "Diploma in Informatics Management" },
+      "sman03": { "degree": "Senior High School" },
+      "coding_id": {
+        "degree": ".NET Programmer Class — C#, ASP.NET MVC, Microsoft SQL Server"
+      }
+    }
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "ai_badge": "AI",
+    "categories": {
+      "backend": "Backend",
+      "frontend": "Frontend",
+      "database": "Database",
+      "ai_emerging": "AI & Emerging Tech",
+      "cms_platforms": "CMS & Platforms",
+      "tools_devops": "Tools & DevOps"
+    }
+  },
+  "projects": {
+    "title": "Projects Experience",
+    "present": "Present",
+    "items": {
+      "heritagesg-website-maintenance": {
+        "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
+      },
+      "yellow-ribbon-singapore-website": {
+        "description": "Backend and CMS development for the Yellow Ribbon Singapore website on Sitefinity, using C# and .NET Framework MVC over SQL Server."
+      },
+      "public-service-commission-website": {
+        "description": "Built and maintained backend features for the Public Service Commission website on Sitefinity, with .NET MVC and SQL Server."
+      },
+      "agency-for-science-technology-and-research": {
+        "description": "Backend development for the Agency for Science, Technology and Research (A*STAR) website, built on Sitefinity CMS in C# and .NET MVC."
+      },
+      "defense-science-and-technology-agency": {
+        "description": "Backend and CMS work for the Defence Science and Technology Agency (DSTA) website on Sitefinity, in C# and .NET MVC."
+      },
+      "unpacking-direction-ttlc": {
+        "description": "A PHP and CodeIgniter web application for the Unpacking Direction TTLC programme, with a MySQL backend and a jQuery and AJAX front end."
+      },
+      "sustainability-tam-event-management": {
+        "description": "An event-management system (Sustainability TAM) built in C# and ASP.NET MVC, backed by SQL Server and covered with NUnit tests."
+      },
+      "hris-job-tomori": {
+        "description": "An HR information system (HRIS) for JOB Tomori, built in ASP.NET MVC with REST and SOAP API integrations over SQL Server."
+      },
+      "trainer-tdk-framework-tmmin": {
+        "description": "Delivered training on the Toyota Development Kit (TDK) framework at TMMIN, covering C#, ASP.NET MVC, and SQL Server."
+      },
+      "rbbr-super-bank": {
+        "description": "A risk-based bank rating (RBBR) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SSRS reporting on SQL Server."
+      },
+      "oprisk-super-bank": {
+        "description": "An operational-risk (OPRISK) module for Super Bank, built in VB.NET and ASP.NET Web Forms with SQL Server and SSRS reports."
+      },
+      "orms-adira-insurance": {
+        "description": "An operational risk-management system (ORMS) for Adira Insurance, built in VB.NET and ASP.NET Web Forms with SSIS data pipelines and SSRS reports."
+      },
+      "orms-btpn": {
+        "description": "An operational risk-management system (ORMS) for BTPN, built in VB.NET and ASP.NET Web Forms with SQL Server, SSIS, and SSRS."
+      },
+      "nawa-point-web-application": {
+        "description": "A web application (Nawa Point) built in C# and ASP.NET MVC with SQL Server, developed during my .NET training at Coding.ID."
+      }
+    }
+  },
+  "certifications": {
+    "title": "Certifications",
+    "coding_id": {
+      "name": ".NET Programmer Class",
+      "issuer": "Coding.ID",
+      "period": "Nov 2019 – Jan 2020",
+      "description": "A .NET programming course covering C#, ASP.NET MVC, and Microsoft SQL Server."
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "I'm open to new roles and freelance work, including remote positions with teams abroad. Whether you have a project in mind or just want to talk shop about .NET or AI, drop me a message.",
+    "email_label": "Email Me",
+    "phone_label": "Call Me",
+    "linkedin_label": "LinkedIn Profile"
+  },
+  "footer": {
+    "built_with": "Designed & shipped with an AI-agentic workflow — Claude · Copilot · OpenCode.",
+    "rights": "All rights reserved."
+  },
+  "theme": {
+    "toggle_dark": "Switch to dark mode",
+    "toggle_light": "Switch to light mode"
+  },
+  "lang": {
+    "switch": "Switch language"
+  },
+  "error": {
+    "title": "Something Went Wrong",
+    "message": "An unexpected error occurred. Please try refreshing the page.",
+    "tryAgain": "Try Again",
+    "returnHome": "Return Home"
+  }
 }

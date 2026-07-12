@@ -6,14 +6,28 @@ import { routing } from '@/i18n/routing';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/layout/BackToTop';
-import { Inter } from 'next/font/google';
+import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/utils/constants';
-import SgdsLibraryLoader from '@/app/sgds';
 import '@/app/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+const spaceGrotesk = Space_Grotesk({
+    subsets: ['latin'],
+    weight: ['400', '500', '600', '700'],
+    variable: '--font-sans',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+    subsets: ['latin'],
+    weight: ['400', '500', '600'],
+    variable: '--font-mono',
+});
+
+// Stamps data-theme on <html> before first paint (dark is the default).
+// Changing this string requires recomputing the CSP sha256 hash in
+// src/middleware.ts buildCsp().
+const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('porto-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})()`;
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
@@ -60,19 +74,17 @@ export default async function LocaleLayout({
     const nonce = (await headers()).get('x-nonce') ?? undefined;
 
     return (
-        <html lang={locale} suppressHydrationWarning>
-            <body className={inter.className}>
+        <html
+            lang={locale}
+            className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
+            suppressHydrationWarning>
+            <body>
                 <script
                     nonce={nonce}
-                    dangerouslySetInnerHTML={{
-                        __html: `(function(){try{var t=localStorage.getItem('sgds-theme');if(t==='night'){document.documentElement.classList.add('sgds-night-theme')}}catch(e){console.error('[SGDS] theme init:',e)}})()`,
-                    }}
+                    dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
                 />
-                <SgdsLibraryLoader />
                 <NextIntlClientProvider messages={messages}>
-                    <a
-                        href='#main-content'
-                        className='sgds:sr-only sgds:focus:not-sr-only sgds:focus:absolute sgds:focus:top-4 sgds:focus:left-4 sgds:focus:z-50 sgds:focus:rounded-sm sgds:focus:bg-surface-raised sgds:focus:px-component-sm sgds:focus:py-component-xs sgds:focus:text-body-md sgds:focus:text-default sgds:focus:outline-none sgds:focus:ring-2 sgds:focus:ring-primary'>
+                    <a href='#main-content' className='skip-link'>
                         {t('skip_to_content')}
                     </a>
                     <Navbar />

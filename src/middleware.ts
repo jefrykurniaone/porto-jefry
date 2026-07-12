@@ -25,7 +25,7 @@ export function buildCsp(nonce: string): string {
     // Production: strict CSP — hash authorizes theme-init inline script (x-nonce is null on Vercel at runtime)
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-UP1BueuQLAxSqOAov3ToK+6YXLsA7kaU6Mw54dT10dc=' https://va.vercel-scripts.com`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-1MXRx0kCy3uHCgfa+PdHahiZbeaCWj44cA01CgOMqRc=' https://va.vercel-scripts.com`,
         `style-src 'self' 'unsafe-inline'`,
         "font-src 'self'",
         "img-src 'self' data: blob:",

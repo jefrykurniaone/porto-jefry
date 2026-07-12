@@ -8,19 +8,14 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev          # Start dev server at localhost:3000
 npm run build        # Production build
 npm run lint         # Run ESLint
-npm run test         # Run tests once (vitest run)
-npm run test:watch   # Watch mode
-npm run test:coverage # Run with coverage report
 npx tsc --noEmit     # Type-check without building
 ```
 
-Run a single test file: `npx vitest run src/components/sections/Hero.test.tsx`
-
-CI pipeline order: lint → typecheck → test → build.
+CI pipeline order: lint → typecheck → build.
 
 ## Architecture
 
-**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site built with Next.js 14 App Router, TypeScript, Tailwind CSS, and next-intl. Deployed on Vercel.
+**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site built with Next.js 14 App Router, TypeScript, and next-intl. Deployed on Vercel. Styling is a custom token-based CSS design system (no component library): design tokens live in `src/app/globals.css` (`--bg`, `--panel`, `--accent`, …) with dark as the default theme and light overrides via `:root[data-theme="light"]`; component styles are in `src/app/styles/`. Fonts are Space Grotesk (sans) and JetBrains Mono (mono) via `next/font`, exposed as `--font-sans` / `--font-mono`.
 
 ### Request flow
 
@@ -59,14 +54,6 @@ All portfolio content (experience, education, skills, projects, certifications, 
 - HTTP security headers defined in `next.config.mjs` headers config.
 - Locale parameter validated against whitelist before use; invalid values default to `"en"`.
 - Rate limiter evicts stale entries on each request to prevent unbounded memory growth.
-
-### Testing
-
-- Vitest + React Testing Library, jsdom environment. Setup file: `src/test/setup.ts`.
-- Tests are co-located with source files (`*.test.tsx` / `*.test.ts`).
-- Coverage thresholds: 80% lines/functions/statements, 65% branches.
-- CV components (`src/components/cv/`), API routes, middleware, and i18n files are excluded from coverage requirements.
-- Test behavior, not implementation details.
 
 ## Coding standards
 

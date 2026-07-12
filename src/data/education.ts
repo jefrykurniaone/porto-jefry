@@ -1,4 +1,6 @@
 export interface EducationItem {
+    /** Maps to i18n key: education.items.{id}.degree */
+    id: string;
     institution: string;
     degree: string;
     major?: string;
@@ -9,6 +11,7 @@ export interface EducationItem {
 
 export const education: EducationItem[] = [
     {
+        id: 'widyatama',
         institution: 'Widyatama University',
         degree: "Bachelor's",
         major: 'Information Systems',
@@ -17,6 +20,7 @@ export const education: EducationItem[] = [
         type: 'formal',
     },
     {
+        id: 'telkom',
         institution: 'Telkom University',
         degree: 'Diploma',
         major: 'Informatics Management',
@@ -25,12 +29,14 @@ export const education: EducationItem[] = [
         type: 'formal',
     },
     {
+        id: 'sman03',
         institution: 'SMAN 03 Kayuagung',
         degree: 'Senior High School',
         period: '2010 – 2013',
         type: 'formal',
     },
     {
+        id: 'coding_id',
         institution: 'Coding.ID',
         degree: '.NET Programmer Class',
         period: 'Nov 2019 – Jan 2020',

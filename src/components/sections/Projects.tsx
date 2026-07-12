@@ -1,48 +1,25 @@
 import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { projects } from '@/data/projects';
+import { projects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
-import { TechList } from '@/components/ui/TechList';
-import type { ProjectItem } from '@/data/projects';
 
 interface ProjectCardProps {
     project: ProjectItem;
-    presentLabel: string;
-    locale: string;
+    period: string;
     description?: string;
 }
 
-function ProjectCard({ project, presentLabel, locale, description }: Readonly<ProjectCardProps>) {
+function ProjectCard({ project, period, description }: Readonly<ProjectCardProps>) {
     return (
-        <div key={project.id} className='tidy-grid-item sgds-col-4 sgds-col-sm-4 sgds-col-lg-4'>
-            <sgds-card suppressHydrationWarning>
-                <span slot='title' className='sgds:text-heading-sm sgds:font-semibold sgds:text-heading-default sgds:flex sgds:items-center sgds:justify-between sgds:gap-component-xs'>
-                    <span>{project.name}</span>
-                    {project.url && (
-                        <a
-                            href={project.url}
-                            target='_blank'
-                            rel='noopener noreferrer'
-                            aria-label={`${project.name} — external link`}
-                            className='sgds:shrink-0 sgds:text-link hover:sgds:text-link-hover'>
-                            <sgds-icon name='box-arrow-up-right' aria-hidden='true' suppressHydrationWarning />
-                        </a>
-                    )}
-                </span>
-                <div slot='description'>
-                    <p className='sgds:text-label-sm sgds:text-muted sgds:font-semibold sgds:mb-component-xs'>
-                        {project.company}
-                    </p>
-                    <p className='sgds:text-label-sm sgds:text-primary sgds:font-semibold sgds:mb-component-sm'>
-                        {translatePeriod(project.period.replace('Present', presentLabel), locale)}
-                    </p>
-                    {description && (
-                        <p className='sgds:text-body-md sgds:text-body-default sgds:mb-component-sm sgds:leading-xs'>
-                            {description}
-                        </p>
-                    )}
-                    <TechList items={project.tech} />
-                </div>
-            </sgds-card>
+        <div className='panel-card panel-card--lift project-card'>
+            <p className='card-eyebrow'>{project.company}</p>
+            <h3 className='project-card__name'>{project.name}</h3>
+            <p className='card-period'>{period}</p>
+            {description && <p className='project-card__desc'>{description}</p>}
+            <div className='chip-row project-card__tech'>
+                {project.tech.map((tech) => (
+                    <span key={tech} className='chip'>{tech}</span>
+                ))}
+            </div>
         </div>
     );
 }
@@ -63,22 +40,24 @@ function resolveProjectDescription(
 
 export default function Projects() {
     const t = useTranslations('projects');
+    const nav = useTranslations('nav');
     const locale = useLocale();
     const messages = useMessages();
 
     return (
-        <section id='projects' className='sgds:py-layout-lg sgds:bg-alternate'>
-            <div className='sgds-container'>
-                <h2 className='sgds:text-heading-lg sgds:font-semibold sgds:text-heading-default sgds:mb-layout-md sgds:text-center'>
-                    {t('title')}
-                </h2>
-                <div className='sgds-grid'>
+        <section id='projects' className='section-band'>
+            <div className='container-page section-inner'>
+                <p className='section-kicker'>04 / {nav('projects')}</p>
+                <h2 className='section-title'>{t('title')}</h2>
+                <div className='projects-grid'>
                     {projects.map((project) => (
                         <ProjectCard
                             key={project.id}
                             project={project}
-                            presentLabel={t('present')}
-                            locale={locale}
+                            period={translatePeriod(
+                                project.period.replace('Present', t('present')),
+                                locale,
+                            )}
                             description={resolveProjectDescription(messages, project.id)}
                         />
                     ))}

@@ -15,6 +15,7 @@
     },
     "hero": {
         "greeting": "Halo, Saya",
+        "status_pill": "Terbuka untuk peran remote",
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — foto profil",
         "title": "Backend Developer & Spesialis .NET",
@@ -36,11 +37,14 @@
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn",
-        "contact_github": "GitHub"
+        "contact_github": "GitHub",
+        "term_status": "terbuka untuk remote & relokasi"
     },
     "experience": {
         "title": "Pengalaman Profesional",
         "present": "Sekarang",
+        "show_more": "+ {count} lainnya",
+        "show_less": "− sembunyikan",
         "items": {
             "xtremax-2025": {
                 "bullets": [
@@ -108,12 +112,22 @@
     },
     "education": {
         "title": "Pendidikan",
+        "combined_title": "Pendidikan & Sertifikasi",
         "formal": "Pendidikan Formal",
         "informal": "Pendidikan Informal",
-        "gpa": "IPK"
+        "kind_formal": "Formal",
+        "kind_cert": "Sertifikasi",
+        "gpa": "IPK",
+        "items": {
+            "widyatama": { "degree": "S1 Sistem Informasi" },
+            "telkom": { "degree": "D3 Manajemen Informatika" },
+            "sman03": { "degree": "SMA" },
+            "coding_id": { "degree": "Kelas Programmer .NET — C#, ASP.NET MVC, Microsoft SQL Server" }
+        }
     },
     "skills": {
         "title": "Keahlian Teknis",
+        "ai_badge": "AI",
         "categories": {
             "backend": "Backend",
             "frontend": "Frontend",
@@ -188,7 +202,7 @@
         "linkedin_label": "Profil LinkedIn"
     },
     "footer": {
-        "built_with": "Dibangun dengan Next.js dan SGDS",
+        "built_with": "Didesain & dibangun dengan alur kerja AI-agentic — Claude · Copilot · OpenCode.",
         "rights": "Semua hak dilindungi."
     },
     "theme": {

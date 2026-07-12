@@ -18,12 +18,7 @@ export default function LanguageToggle() {
     };
 
     return (
-        <div
-            role="group"
-            aria-label={t('switch')}
-            className='lang-pill sgds:text-body-sm'
-            suppressHydrationWarning
-        >
+        <div role="group" aria-label={t('switch')} className='lang-pill'>
             {LOCALES.map((l) => (
                 <button
                     key={l}
@@ -31,7 +26,6 @@ export default function LanguageToggle() {
                     className='lang-pill__btn'
                     aria-pressed={locale === l}
                     onClick={() => { handleLocaleClick(l); }}
-                    suppressHydrationWarning
                 >
                     {l.toUpperCase()}
                 </button>

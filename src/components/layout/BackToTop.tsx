@@ -33,10 +33,8 @@ export default function BackToTop() {
             type='button'
             onClick={handleClick}
             aria-label={t('back_to_top')}
-            className='sgds:fixed sgds:bottom-6 sgds:right-6 sgds:z-50 sgds:flex sgds:items-center sgds:justify-center sgds:rounded-full sgds:bg-primary sgds:text-white sgds:shadow-md hover:sgds:bg-primary-dark focus-visible:sgds:outline-none focus-visible:sgds:ring-2 focus-visible:sgds:ring-primary focus-visible:sgds:ring-offset-2'
-            style={{ width: '44px', height: '44px', minWidth: '44px', minHeight: '44px' }}
-        >
-            <sgds-icon name="arrow-up" suppressHydrationWarning />
+            className='back-to-top'>
+            ↑
         </button>
     );
 }

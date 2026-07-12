@@ -9,32 +9,6 @@ interface ErrorProps {
     reset: () => void;
 }
 
-interface ErrorActionsProps {
-    reset: () => void;
-    locale: string;
-    tryAgainLabel: string;
-    returnHomeLabel: string;
-}
-
-function ErrorActions({ reset, locale, tryAgainLabel, returnHomeLabel }: Readonly<ErrorActionsProps>) {
-    return (
-        <div className='sgds:flex sgds:gap-layout-sm sgds:justify-center'>
-            <sgds-button type='button' onClick={reset} suppressHydrationWarning>
-                {tryAgainLabel}
-            </sgds-button>
-            <Link href={`/${locale}`}>
-                <sgds-button
-                    type='button'
-                    variant='outline'
-                    suppressHydrationWarning
-                >
-                    {returnHomeLabel}
-                </sgds-button>
-            </Link>
-        </div>
-    );
-}
-
 export default function Error({ error, reset }: ErrorProps) {
     const t = useTranslations('error');
     const locale = useLocale();
@@ -46,26 +20,19 @@ export default function Error({ error, reset }: ErrorProps) {
     }, [error]);
 
     return (
-        <div className='sgds:min-h-screen sgds:flex sgds:items-center sgds:justify-center sgds:px-4 sgds:bg-default'>
-            <div className='sgds:text-center'>
-                <sgds-icon
-                    name='exclamation-triangle-fill'
-                    aria-hidden='true'
-                    suppressHydrationWarning
-                    style={{ width: '64px', height: '64px' }}
-                />
-                <h1 className='sgds:text-heading-lg sgds:font-semibold sgds:mt-4 sgds:mb-4 sgds:text-default'>
-                    {t('title')}
-                </h1>
-                <p className='sgds:text-body-md sgds:text-muted sgds:mb-8'>
-                    {t('message')}
-                </p>
-                <ErrorActions
-                    reset={reset}
-                    locale={locale}
-                    tryAgainLabel={t('tryAgain')}
-                    returnHomeLabel={t('returnHome')}
-                />
+        <div className='fullpage-center'>
+            <div>
+                <p className='fullpage-center__glyph' aria-hidden='true'>[!]</p>
+                <h1 className='fullpage-center__title'>{t('title')}</h1>
+                <p className='fullpage-center__message'>{t('message')}</p>
+                <div className='fullpage-center__actions'>
+                    <button type='button' onClick={reset} className='btn-primary'>
+                        {t('tryAgain')}
+                    </button>
+                    <Link href={`/${locale}`} className='btn-outline'>
+                        {t('returnHome')}
+                    </Link>
+                </div>
             </div>
         </div>
     );
