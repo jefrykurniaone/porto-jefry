@@ -43,7 +43,7 @@ function TerminalCard({ statusLine }: Readonly<{ statusLine: string }>) {
                 <span className='terminal__dot' />
                 <span className='terminal__dot' />
                 <span className='terminal__dot terminal__dot--accent' />
-                <span className='terminal__title'>jefry@porto — zsh</span>
+                <span className='terminal__title'>jefry-kurniawan</span>
             </div>
             <div className='terminal__body'>
                 <div><span className='terminal__prompt'>$</span> <span className='terminal__cmd'>whoami</span></div>
