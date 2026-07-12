@@ -70,6 +70,9 @@ export const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 12,
     },
+    contactRowSecond: {
+        marginTop: 3,
+    },
     contactItem: {
         fontSize: 8,
         color: MUTED,
@@ -198,8 +201,9 @@ export const styles = StyleSheet.create({
         fontSize: 9,
         fontFamily: 'Helvetica-Bold',
         color: DARK,
-        width: 100,
+        width: 112,
         flexShrink: 0,
+        paddingRight: 6,
         paddingTop: 1,
     },
     skillList: {

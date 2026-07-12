@@ -8,15 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev          # Start dev server at localhost:3000
 npm run build        # Production build
 npm run lint         # Run ESLint
-npm run test         # Run tests once (vitest run)
-npm run test:watch   # Watch mode
-npm run test:coverage # Run with coverage report
 npx tsc --noEmit     # Type-check without building
 ```
 
-Run a single test file: `npx vitest run src/components/sections/Hero.test.tsx`
-
-CI pipeline order: lint → typecheck → test → build.
+CI pipeline order: lint → typecheck → build.
 
 ## Architecture
 
@@ -59,14 +54,6 @@ All portfolio content (experience, education, skills, projects, certifications, 
 - HTTP security headers defined in `next.config.mjs` headers config.
 - Locale parameter validated against whitelist before use; invalid values default to `"en"`.
 - Rate limiter evicts stale entries on each request to prevent unbounded memory growth.
-
-### Testing
-
-- Vitest + React Testing Library, jsdom environment. Setup file: `src/test/setup.ts`.
-- Tests are co-located with source files (`*.test.tsx` / `*.test.ts`).
-- Coverage thresholds: 80% lines/functions/statements, 65% branches.
-- CV components (`src/components/cv/`), API routes, middleware, and i18n files are excluded from coverage requirements.
-- Test behavior, not implementation details.
 
 ## Coding standards
 

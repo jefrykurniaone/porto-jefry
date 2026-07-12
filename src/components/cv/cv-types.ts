@@ -13,7 +13,7 @@ export interface Messages {
         items: Record<string, { bullets: string[] }>;
     };
     education: { title: string; formal: string; informal: string; gpa: string };
-    skills: { title: string };
+    skills: { title: string; categories: Record<string, string> };
     projects: {
         title: string;
         present: string;

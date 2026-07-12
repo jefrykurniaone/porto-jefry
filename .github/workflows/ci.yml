@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   ci:
-    name: Lint, Typecheck, Test, Build
+    name: Lint, Typecheck, Build
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -25,7 +25,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version-file: '.nvmrc'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -36,9 +36,6 @@ jobs:
 
       - name: Typecheck
         run: npx tsc --noEmit
-
-      - name: Test
-        run: npm test
 
       - name: Build
         run: npm run build

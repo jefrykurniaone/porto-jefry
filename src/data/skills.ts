@@ -7,11 +7,9 @@ export const skillCategories: SkillCategory[] = [
     {
         category: 'ai_emerging',
         skills: [
-            'Python',
             'Claude',
             'GitHub Copilot',
             'OpenCode',
-            'LLM Integration',
         ],
     },
     {
@@ -50,7 +48,7 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'cms_platforms',
-        skills: ['Sitefinity'],
+        skills: ['Sitefinity', 'Sitecore'],
     },
     {
         category: 'tools_devops',
@@ -64,7 +62,7 @@ export const skillCategories: SkillCategory[] = [
             'Azure VM',
             'Azure DevOps',
             'IIS',
-            'Katalon',
+            'AWS'
         ],
     },
 ];
