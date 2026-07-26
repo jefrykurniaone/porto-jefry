@@ -2,7 +2,7 @@ import { useTranslations } from 'next-intl';
 import {
     CONTACT_EMAIL,
     CONTACT_PHONE_HREF,
-    CONTACT_PHONE_DISPLAY,
+    CONTACT_PHONE_INTL,
     CONTACT_LINKEDIN_URL,
     CONTACT_LINKEDIN_HANDLE,
     CONTACT_GITHUB_URL,
@@ -65,7 +65,7 @@ export default function About() {
     const nav = useTranslations('nav');
     const chips: ContactChip[] = [
         { href: `mailto:${CONTACT_EMAIL}`, icon: '✉', text: CONTACT_EMAIL, label: t('contact_email'), isExternal: false },
-        { href: CONTACT_PHONE_HREF, icon: '✆', text: CONTACT_PHONE_DISPLAY, label: t('contact_phone'), isExternal: false },
+        { href: CONTACT_PHONE_HREF, icon: '✆', text: CONTACT_PHONE_INTL, label: t('contact_phone'), isExternal: false },
         { href: CONTACT_LINKEDIN_URL, icon: 'in', text: `linkedin/${CONTACT_LINKEDIN_HANDLE}`, label: t('contact_linkedin'), isExternal: true },
         { href: CONTACT_GITHUB_URL, icon: 'gh', text: `github/${CONTACT_GITHUB_HANDLE}`, label: t('contact_github'), isExternal: true },
     ];
@@ -76,12 +76,10 @@ export default function About() {
                 <p className='section-kicker'>01 / {nav('about')}</p>
                 <h2 className='section-title'>{t('title')}</h2>
                 <div className='about-grid'>
-                    <div>
-                        <p className='about-desc'>{t('description')}</p>
-                        <AboutContactChips chips={chips} />
-                    </div>
+                    <p className='about-desc'>{t('description')}</p>
                     <TerminalCard statusLine={t('term_status')} />
                 </div>
+                <AboutContactChips chips={chips} />
             </div>
         </section>
     );

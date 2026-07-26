@@ -6,9 +6,15 @@ interface ProjectCardProps {
     project: ProjectItem;
     period: string;
     description?: string;
+    viewSiteLabel: string;
 }
 
-function ProjectCard({ project, period, description }: Readonly<ProjectCardProps>) {
+function ProjectCard({
+    project,
+    period,
+    description,
+    viewSiteLabel,
+}: Readonly<ProjectCardProps>) {
     return (
         <div className='panel-card panel-card--lift project-card'>
             <p className='card-eyebrow'>{project.company}</p>
@@ -20,6 +26,17 @@ function ProjectCard({ project, period, description }: Readonly<ProjectCardProps
                     <span key={tech} className='chip'>{tech}</span>
                 ))}
             </div>
+            {project.url && (
+                <a
+                    href={project.url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                    aria-label={`${viewSiteLabel}: ${project.name}`}
+                    className='project-card__link'>
+                    {viewSiteLabel}
+                    <span aria-hidden='true'> ↗</span>
+                </a>
+            )}
         </div>
     );
 }
@@ -59,6 +76,7 @@ export default function Projects() {
                                 locale,
                             )}
                             description={resolveProjectDescription(messages, project.id)}
+                            viewSiteLabel={t('view_site')}
                         />
                     ))}
                 </div>

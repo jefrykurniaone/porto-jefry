@@ -142,6 +142,7 @@
   "projects": {
     "title": "Projects Experience",
     "present": "Present",
+    "view_site": "Visit site",
     "items": {
       "heritagesg-website-maintenance": {
         "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."

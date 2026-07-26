@@ -140,6 +140,7 @@
     "projects": {
         "title": "Pengalaman Proyek",
         "present": "Sekarang",
+        "view_site": "Kunjungi situs",
         "items": {
             "heritagesg-website-maintenance": {
                 "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."

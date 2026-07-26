@@ -206,13 +206,17 @@
     font-size: 15.5px;
     line-height: 1.85;
     color: var(--muted);
-    margin: 0 0 30px;
+    margin: 0;
 }
 
+/* Sits below .about-grid rather than inside its first column: the four chips
+   need ~860px to stay on one line, and a single grid column is only ~504px
+   of the 1052px content width. Still wraps on narrow viewports. */
 .contact-chips {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
+    margin-top: 44px;
 }
 
 .contact-chip {
@@ -226,6 +230,7 @@
     border-radius: 8px;
     padding: 9px 14px;
     color: var(--text);
+    white-space: nowrap;
     transition: border-color 0.15s ease;
 }
 
@@ -479,6 +484,30 @@
 .project-card__tech .chip {
     font-size: 10.5px;
     padding: 3px 8px;
+}
+
+/* Live-site link. Only rendered for projects with a public URL, so it sits
+   after the tech chips rather than in the card's fixed header block.
+   Colour comes from the global `a` rule (--accent-ink), which is the
+   AA-contrast-safe accent in both themes — do not hardcode --accent here. */
+.project-card__link {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    align-self: flex-start;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.project-card__link:hover {
+    border-bottom-color: currentColor;
+}
+
+.project-card__link:focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 3px;
+    border-radius: 2px;
 }
 
 /* ── Education & certification ── */

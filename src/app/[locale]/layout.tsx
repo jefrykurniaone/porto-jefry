@@ -10,6 +10,7 @@ import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/utils/constants';
+import PersonJsonLd from '@/components/seo/PersonJsonLd';
 import '@/app/globals.css';
 
 const spaceGrotesk = Space_Grotesk({
@@ -49,13 +50,24 @@ export async function generateMetadata({
             url: `${BASE_URL}/${locale}`,
             title: `${t('name')} – ${t('title')}`,
             description: t('subtitle'),
-            images: [{ url: `${BASE_URL}/cv-photo.webp`, width: 1200, height: 630 }],
+            // Real 1200x630 PNG — see scripts/gen-og-image.mjs. Do not point
+            // this at cv-photo.webp: it is square, and WebP previews render
+            // inconsistently on LinkedIn and Slack.
+            images: [
+                {
+                    url: `${BASE_URL}/og-image.png`,
+                    width: 1200,
+                    height: 630,
+                    type: 'image/png',
+                    alt: `${t('name')} – ${t('title')}`,
+                },
+            ],
         },
         twitter: {
             card: 'summary_large_image',
             title: `${t('name')} – ${t('title')}`,
             description: t('subtitle'),
-            images: [`${BASE_URL}/cv-photo.webp`],
+            images: [`${BASE_URL}/og-image.png`],
         },
     };
 }
@@ -71,6 +83,7 @@ export default async function LocaleLayout({
     if (!routing.locales.includes(locale as 'en' | 'id')) notFound();
     const messages = await getMessages();
     const t = await getTranslations({ locale, namespace: 'nav' });
+    const hero = await getTranslations({ locale, namespace: 'hero' });
     const nonce = (await headers()).get('x-nonce') ?? undefined;
 
     return (
@@ -83,6 +96,7 @@ export default async function LocaleLayout({
                     nonce={nonce}
                     dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
                 />
+                <PersonJsonLd locale={locale} jobTitle={hero('title')} description={hero('subtitle')} />
                 <NextIntlClientProvider messages={messages}>
                     <a href='#main-content' className='skip-link'>
                         {t('skip_to_content')}
