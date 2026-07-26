@@ -15,7 +15,13 @@
     },
     "hero": {
         "greeting": "Halo, Saya",
-        "status_pill": "Terbuka untuk peran remote",
+        "status_pill": "Terbuka untuk remote penuh waktu · freelance",
+        "roles": [
+            "Backend Developer",
+            "Spesialis .NET",
+            "React & Next.js Builder",
+            "Alur Kerja Berbantuan AI"
+        ],
         "name": "Jefry Kurniawan",
         "photo_alt": "Jefry Kurniawan — foto profil",
         "title": "Backend Developer & Spesialis .NET",
@@ -33,12 +39,12 @@
     },
     "about": {
         "title": "Tentang Saya",
-        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar dan terbuka untuk peran remote maupun relokasi, termasuk dengan perusahaan di luar Indonesia.",
+        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar di berbagai zona waktu. Saat ini saya terutama mencari peran remote penuh waktu atau relokasi, termasuk dengan perusahaan di luar Indonesia, dan tetap menerima proyek freelance di samping itu.",
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn",
         "contact_github": "GitHub",
-        "term_status": "terbuka untuk remote & relokasi"
+        "term_status": "remote penuh waktu & relokasi · freelance welcome"
     },
     "experience": {
         "title": "Pengalaman Profesional",
@@ -128,11 +134,13 @@
     "skills": {
         "title": "Keahlian Teknis",
         "ai_badge": "AI",
+        "working_label": "pengalaman terbatas",
+        "working_note": "Chip bergaris penuh sudah dipakai di produksi pada peran dan proyek di bawah. Chip bergaris putus-putus adalah pengalaman terbatas — dipakai di proyek pribadi atau sampingan, belum sampai ke produksi.",
         "categories": {
             "backend": "Backend",
             "frontend": "Frontend",
             "database": "Database",
-            "ai_emerging": "AI & Teknologi Terkini",
+            "ai_workflow": "Alur Kerja Berbantuan AI",
             "cms_platforms": "CMS & Platform",
             "tools_devops": "Alat & DevOps"
         }
@@ -141,7 +149,12 @@
         "title": "Pengalaman Proyek",
         "present": "Sekarang",
         "view_site": "Kunjungi situs",
+        "view_source": "Lihat kode",
         "items": {
+            "porto-jefry-portfolio": {
+                "company": "Proyek Pribadi",
+                "description": "Situs ini: portofolio dwibahasa (EN/ID) dengan Next.js App Router dan TypeScript, memakai sistem design token CSS buatan sendiri, CSP berbasis hash, dan CV PDF yang dibuat langsung dari konten yang sama. Dibangun dengan alur kerja AI-agentic. Kodenya terbuka."
+            },
             "heritagesg-website-maintenance": {
                 "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."
             },
@@ -197,7 +210,7 @@
     },
     "contact": {
         "title": "Hubungi Saya",
-        "description": "Saya terbuka untuk peran baru maupun pekerjaan lepas, termasuk posisi remote dengan tim di luar negeri. Entah Anda punya proyek tertentu atau sekadar ingin ngobrol soal .NET atau AI, kirim saja pesan ke saya.",
+        "description": "Saat ini saya terutama mencari peran remote penuh waktu dengan tim di luar negeri, dan terbuka untuk relokasi. Saya juga menerima proyek freelance. Entah Anda sedang merekrut, punya proyek tertentu, atau sekadar ingin ngobrol soal .NET atau AI, kirim saja pesan ke saya.",
         "email_label": "Kirim Email",
         "phone_label": "Hubungi",
         "linkedin_label": "Profil LinkedIn"

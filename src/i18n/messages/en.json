@@ -15,7 +15,13 @@
   },
   "hero": {
     "greeting": "Hi, I'm",
-    "status_pill": "Open to remote/freelance roles",
+    "status_pill": "Open to full-time remote · freelance welcome",
+    "roles": [
+      "Backend Developer",
+      ".NET Specialist",
+      "React & Next.js Builder",
+      "AI-Assisted Development Workflow"
+    ],
     "name": "Jefry Kurniawan",
     "photo_alt": "Jefry Kurniawan — profile photo",
     "title": "Backend Developer & .NET Specialist",
@@ -33,12 +39,12 @@
   },
   "about": {
     "title": "About Me",
-    "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams and am open to remote/freelance roles or relocation, including with companies outside Indonesia.",
+    "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams across time zones. I'm primarily looking for a full-time remote role or relocation, including with companies outside Indonesia, and I take on freelance projects alongside that.",
     "contact_email": "Email",
     "contact_phone": "Phone",
     "contact_linkedin": "LinkedIn",
     "contact_github": "GitHub",
-    "term_status": "open to remote/freelance roles & relocation"
+    "term_status": "full-time remote & relocation · freelance welcome"
   },
   "experience": {
     "title": "Professional Experience",
@@ -130,11 +136,13 @@
   "skills": {
     "title": "Technical Skills",
     "ai_badge": "AI",
+    "working_label": "Working knowledge",
+    "working_note": "Solid chips are shipped to production in the roles and projects listed below. Dashed chips are working knowledge — used in personal or side work, not yet in production.",
     "categories": {
       "backend": "Backend",
       "frontend": "Frontend",
       "database": "Database",
-      "ai_emerging": "AI & Emerging Tech",
+      "ai_workflow": "AI-Assisted Workflow",
       "cms_platforms": "CMS & Platforms",
       "tools_devops": "Tools & DevOps"
     }
@@ -143,7 +151,12 @@
     "title": "Projects Experience",
     "present": "Present",
     "view_site": "Visit site",
+    "view_source": "View source",
     "items": {
+      "porto-jefry-portfolio": {
+        "company": "Personal Project",
+        "description": "This site: a bilingual (EN/ID) portfolio on Next.js App Router and TypeScript, with a hand-written CSS design-token system, hash-based CSP, and a PDF CV generated on demand from the same content. Built and shipped with an AI-agentic workflow. Source is public."
+      },
       "heritagesg-website-maintenance": {
         "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
       },
@@ -199,7 +212,7 @@
   },
   "contact": {
     "title": "Get In Touch",
-    "description": "I'm open to new roles and freelance work, including remote positions with teams abroad. Whether you have a project in mind or just want to talk shop about .NET or AI, drop me a message.",
+    "description": "I'm primarily looking for a full-time remote role with a team abroad, and I'm open to relocation. I also take on freelance projects. Whether you're hiring, have a project in mind, or just want to talk shop about .NET or AI, drop me a message.",
     "email_label": "Email Me",
     "phone_label": "Call Me",
     "linkedin_label": "LinkedIn Profile"

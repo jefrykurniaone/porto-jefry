@@ -420,6 +420,32 @@
     padding: 5px 10px;
 }
 
+/* Legend for the production/working-knowledge split. */
+.skills-note {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: -6px 0 26px;
+    max-width: 68ch;
+}
+
+.skill-card__sublabel {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 14px 0 8px;
+}
+
+/* Dashed border rather than a colour-only cue, so the distinction survives
+   greyscale printing and does not rely on hue perception. */
+.skill-card__chip--working {
+    border-style: dashed;
+    color: var(--muted);
+    background: transparent;
+}
+
 .ai-badge {
     font-family: var(--font-mono), monospace;
     font-size: 10px;
@@ -486,16 +512,21 @@
     padding: 3px 8px;
 }
 
-/* Live-site link. Only rendered for projects with a public URL, so it sits
-   after the tech chips rather than in the card's fixed header block.
-   Colour comes from the global `a` rule (--accent-ink), which is the
+/* Live-site / source links. Only rendered for projects that have a public URL,
+   so the row sits after the tech chips rather than in the card's fixed header
+   block. Colour comes from the global `a` rule (--accent-ink), which is the
    AA-contrast-safe accent in both themes — do not hardcode --accent here. */
+.project-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 .project-card__link {
     font-family: var(--font-mono), monospace;
     font-size: 12px;
     font-weight: 500;
     text-decoration: none;
-    align-self: flex-start;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease, opacity 0.2s ease;
 }
