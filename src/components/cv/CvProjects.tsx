@@ -1,8 +1,13 @@
-import { View, Text } from '@react-pdf/renderer';
+import { View, Text, Link } from '@react-pdf/renderer';
 import { projects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import { styles } from './cv-styles';
 import { type Messages } from './cv-types';
+
+/** Bare host for print legibility — a PDF CV is often read on paper. */
+function displayUrl(url: string): string {
+    return url.replace(/^https?:\/\//, '').replace(/^www\./, '');
+}
 
 interface ProjectCardProps {
     proj: ProjectItem;
@@ -33,6 +38,11 @@ function ProjectCard({ proj, description, presentLabel, locale }: Readonly<Proje
                     </Text>
                 ))}
             </View>
+            {proj.url && (
+                <Link src={proj.url} style={styles.projectLink}>
+                    {displayUrl(proj.url)}
+                </Link>
+            )}
         </View>
     );
 }

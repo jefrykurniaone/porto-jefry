@@ -28,8 +28,7 @@ export default function CvHeader({ messages, photoSrc }: Readonly<CvHeaderProps>
                         </Link>
                         <Text style={styles.contactItem}>|</Text>
                         <Text style={styles.contactItem}>{CONTACT_PHONE}</Text>
-                    </View>
-                    <View style={[styles.contactRow, styles.contactRowSecond]}>
+                        <Text style={styles.contactItem}>|</Text>
                         <Link style={styles.contactLink} src={LINKEDIN_URL}>
                             {LINKEDIN_DISPLAY}
                         </Link>

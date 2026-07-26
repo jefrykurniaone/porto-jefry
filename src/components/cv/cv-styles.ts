@@ -68,10 +68,9 @@ export const styles = StyleSheet.create({
     contactRow: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 12,
-    },
-    contactRowSecond: {
-        marginTop: 3,
+        // 8pt keeps all four items (370.24pt of Helvetica 8pt text + 6 gaps =
+        // 418.24pt) on one line inside headerLeft's 437.28pt of usable width.
+        gap: 8,
     },
     contactItem: {
         fontSize: 8,
@@ -242,6 +241,12 @@ export const styles = StyleSheet.create({
         color: DARK,
         lineHeight: 1.4,
         marginBottom: 3,
+    },
+    projectLink: {
+        fontSize: 7.5,
+        color: BLUE,
+        textDecoration: 'none',
+        marginTop: 4,
     },
     // Certifications
     certItem: {

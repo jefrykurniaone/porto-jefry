@@ -35,6 +35,7 @@ export const projects: ProjectItem[] = [
         name: 'HeritageSG Website Maintenance',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Mar 2026 – Present',
+        url: 'https://www.heritage.sg',
         tech: [
             'Sitecore',
             'C#',
@@ -50,6 +51,7 @@ export const projects: ProjectItem[] = [
         name: 'Yellow Ribbon Singapore Website',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Jul 2025 – Present',
+        url: 'https://www.yellowribbon.gov.sg',
         tech: TECH_SITEFINITY_DOTNET,
     },
     {
@@ -57,6 +59,7 @@ export const projects: ProjectItem[] = [
         name: 'Public Service Commission Website',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Nov 2022 – Aug 2023',
+        url: 'https://www.psc.gov.sg',
         tech: TECH_SITEFINITY_DOTNET,
     },
     {
@@ -64,13 +67,15 @@ export const projects: ProjectItem[] = [
         name: 'Agency for Science, Technology and Research',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Feb 2023 – Aug 2023',
+        url: 'https://www.a-star.edu.sg',
         tech: TECH_SITEFINITY_DOTNET,
     },
     {
         id: 'defense-science-and-technology-agency',
-        name: 'Defense Science and Technology Agency',
+        name: 'Defence Science and Technology Agency',
         company: 'PT Xtremax Teknologi Indonesia',
         period: 'Mar 2023 – Aug 2023',
+        url: 'https://www.dsta.gov.sg',
         tech: TECH_SITEFINITY_DOTNET,
     },
     {

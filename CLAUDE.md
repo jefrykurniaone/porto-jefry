@@ -5,64 +5,95 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev          # Start dev server at localhost:3000
-npm run build        # Production build
-npm run lint         # Run ESLint
-npx tsc --noEmit     # Type-check without building
+npm run dev          # Dev server at localhost:3000
+npm run build        # Production build (runs prebuild first — see below)
+npm run lint         # ESLint
+npx tsc --noEmit     # Type-check
 ```
 
-CI pipeline order: lint → typecheck → build.
+CI (`.github/workflows/ci.yml`, Node 20) runs lint → typecheck → build on PRs to `main`. **There is no test suite** — the test runner and tests were removed in #43, so "run the tests" means running those three checks. `.eslintrc.json` still carries `*.test.ts` overrides and `/coverage` is still gitignored; both are vestigial.
+
+`npm run prebuild` executes `scripts/gen-build-meta.mjs`, which **rewrites `src/utils/constants.ts`** — it reads the last git commit date and regenerates the file with only `BASE_URL` (preserved verbatim) plus a generated `LAST_MODIFIED_DATE`. Never hand-edit `LAST_MODIFIED_DATE`, and never add other exports to that file — the codegen will delete them.
 
 ## Architecture
 
-**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site built with Next.js 14 App Router, TypeScript, and next-intl. Deployed on Vercel. Styling is a custom token-based CSS design system (no component library): design tokens live in `src/app/globals.css` (`--bg`, `--panel`, `--accent`, …) with dark as the default theme and light overrides via `:root[data-theme="light"]`; component styles are in `src/app/styles/`. Fonts are Space Grotesk (sans) and JetBrains Mono (mono) via `next/font`, exposed as `--font-sans` / `--font-mono`.
+**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site: Next.js 14 App Router, TypeScript, next-intl, deployed on Vercel.
 
 ### Request flow
 
 ```
-Request → src/middleware.ts (i18n redirect + CSP nonce + security headers)
+Request → src/middleware.ts (i18n redirect + CSP nonce + CSP header)
   ↓
-src/app/[locale]/layout.tsx (NextIntlClientProvider + ThemeProvider + Analytics)
+src/app/[locale]/layout.tsx (fonts + theme-init script + NextIntlClientProvider + chrome)
   ↓
-src/app/[locale]/page.tsx (composes all section components)
+src/app/[locale]/page.tsx (composes section components in fixed order)
   ↓
-src/components/sections/*.tsx (consume data from src/data/*.ts and translations from src/i18n/messages/)
+src/components/sections/*.tsx (join src/data/*.ts + src/i18n/messages/*.json)
 ```
 
-### Content model
+`src/app/layout.tsx` is a bare passthrough root layout; all real layout work happens in `[locale]/layout.tsx`. `[locale]/[...rest]/page.tsx` is a catch-all that calls `notFound()`.
 
-All portfolio content (experience, education, skills, projects, certifications, contact) lives as TypeScript objects in `src/data/`. No database — data is version-controlled. Sections import and render this data directly.
+### Content model — the data/messages split
 
-### Internationalization
+This is the most important thing to understand before editing content.
 
-- Locales: `en` (default) and `id` (Indonesian). Configured in `src/i18n/routing.ts`.
-- Middleware detects locale and redirects; all routes are under `/<locale>/`.
-- Server-side messages loaded in `src/i18n/request.ts`. Client messages provided by `NextIntlClientProvider` in locale layout.
-- All user-facing strings must go through `useTranslations()` / `getTranslations()`, never hardcoded.
+Portfolio content is deliberately split across two places, joined by a stable `id`:
 
-### PDF CV generation (`/api/generate-cv`)
+- **`src/data/*.ts`** holds locale-invariant *structure*: ids, company names, roles, institutions, periods, tech-stack arrays, contact URLs. Never translated.
+- **`src/i18n/messages/{en,id}.json`** holds translatable *prose*, keyed by the same id: `experience.items.<id>.bullets`, `projects.items.<id>.description`, `education.items.<id>.degree`, `skills.categories.<category>`.
 
-- GET endpoint; query param `locale` (en | id, defaults to en).
-- Uses `@react-pdf/renderer` to render `CvDocument` (in `src/components/cv/`).
-- Profile photo is read from `public/cv-photo.webp`, converted to JPEG via sharp for PDF compatibility.
-- Rate limit: 5 requests / IP / 60 s — module-level Map (resets on cold start).
-- Rendered PDF is cached per locale at module level; HTTP response sets `Cache-Control: max-age=3600`.
+Sections read the data array, then look up prose with `t.raw('items')[item.id]`. Missing keys fall back gracefully (`?? []`, `?? fallbackDegree(edu)`), so a mismatched id fails silently rather than crashing — check both sides when content goes missing.
+
+Data files: `experience.ts`, `projects.ts`, `education.ts`, `skills.ts`, `contact.ts`. Note that **certifications have no data file** — they live entirely in `messages.certifications`, and the site renders them inside the Education section (`education.combined_title`, `kind_cert`), not as a standalone section.
+
+**Adding a portfolio item** means three coordinated edits: append to the `src/data/*.ts` array, then add the matching id block to *both* `en.json` and `id.json`.
+
+Periods are authored in English in the data files (`'Jul 2025 – Present'`). Components localize them at render time by replacing `'Present'` with `t('present')` and then passing the result through `translatePeriod()` (`src/utils/translate-period.ts`), which maps the four month abbreviations that differ in Indonesian.
+
+### PDF CV (`/api/generate-cv`)
+
+A second renderer over the same content. `src/components/cv/` mirrors the section components using `@react-pdf/renderer` primitives, and it performs the **same data + messages join** — e.g. `CvProjects` imports `projects` from `src/data/projects` and pulls descriptions from the passed-in messages object. Content changes must be reflected in both the web section and its CV counterpart, or the PDF silently drifts from the site.
+
+- GET, query param `locale` (`en` | `id`, whitelist-validated, defaults to `en`).
+- `src/components/cv/cv-types.ts` declares a hand-written `Messages` interface — the subset of the message JSON the CV needs. Renaming a message key breaks this at typecheck.
+- Profile photo: `public/cv-photo.webp` → JPEG via sharp (react-pdf only accepts JPEG/PNG), cached at module level.
+- Rendered PDF cached per locale at module level; rate limit 5 req/IP/60s via an in-memory Map (both reset on cold start — accepted risk, documented inline in the route).
+- `vercel.json` caps the function at `maxDuration: 10`.
+
+### Styling
+
+Hand-written CSS with a design-token system — **no component library and no utility framework in practice**. `tailwindcss` + `@tailwindcss/postcss` are installed and wired in `postcss.config.mjs`/`tailwind.config.ts`, but nothing in `src/` imports Tailwind or uses its classes. Don't start using Tailwind utilities without a deliberate decision.
+
+- Tokens in `src/app/globals.css` (`--bg`, `--panel`, `--accent`, `--navbar-height`, …). Dark is the default; light overrides under `:root[data-theme="light"]`.
+- `globals.css` `@import`s `src/app/styles/layout.css` (nav, drawer, footer, error/404 states) and `src/app/styles/sections.css` (per-section styles, banner-comment delimited).
+- Class naming is BEM-ish: `.skill-card__label`, `.section-band--alt`, plus shared primitives `.container-page`, `.panel-card`, `.chip`, `.section-title`, `.section-kicker`.
+- Fonts: Space Grotesk / JetBrains Mono via `next/font`, exposed as `--font-sans` / `--font-mono`.
+
+### Theming and the CSP hash (footgun)
+
+Theme state lives in `data-theme` on `<html>` plus `localStorage['porto-theme']`, managed by the `useTheme` hook (`src/hooks/use-theme.ts`). There is no ThemeProvider component.
+
+To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT`. Production CSP authorizes that inline script by **sha256 hash**, not nonce, because `x-nonce` is null at runtime on Vercel. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing the `'sha256-…'` value in `buildCsp()` in `src/middleware.ts`, or the site breaks in production only.** Both files carry comments saying so.
 
 ### Security
 
-- CSP with per-request nonce injected in middleware; nonce passed to `<Script>` and `<style>` tags.
-- HTTP security headers defined in `next.config.mjs` headers config.
-- Locale parameter validated against whitelist before use; invalid values default to `"en"`.
-- Rate limiter evicts stale entries on each request to prevent unbounded memory growth.
+- `buildCsp()` in `src/middleware.ts` returns separate dev (allows `unsafe-eval`, ws:) and production (strict, `strict-dynamic`) policies. Middleware attaches CSP on both the redirect and non-redirect paths, and forwards next-intl's `x-middleware-*` headers and cookies onto its own response.
+- Static security headers (`X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, …) come from `next.config.mjs`.
+- Middleware matcher excludes `api`, `_next`, `_vercel`, and any path containing a dot.
 
 ## Coding standards
 
-From `.github/copilot-instructions.md`:
+- **ESLint enforces `max-lines: 300` and `max-lines-per-function: 40` as errors.** This is why components are split into many small sub-components in the same file (`ExperienceRow`, `ProjectCard`, `EducationCard`). When a file grows, extract rather than inline. `sonarjs/no-nested-template-literals` is also an error.
+- Formatting: 4-space indent, single quotes in TS and JSX attributes.
+- Path alias `@/*` → `./src/*`.
+- All user-facing strings go through `useTranslations()` / `getTranslations()` — never hardcoded, and always added to both `en.json` and `id.json`.
+- Client components are explicit (`'use client'`); sections that need no interactivity stay server components.
+- Component props are typed as `Readonly<Props>`.
+- No empty catch blocks — either log with context or leave a comment explaining why the failure is safe to swallow (see `use-theme.ts`).
+- Accessibility: semantic HTML, `alt` text, keyboard navigation, WCAG AA contrast (4.5:1). Focus-trap and scroll-lock hooks exist for the mobile drawer.
 
-- Max 300 lines per file, 40 lines per function.
-- Naming: `camelCase` for variables/functions, `PascalCase` for components/types, `SCREAMING_SNAKE_CASE` for constants.
-- No empty catch blocks; log errors with context.
-- Accessibility: semantic HTML, `alt` text on images, keyboard navigation, WCAG AA contrast (4.5:1).
-- Git: feature branches (`feat/`, `fix/`, `chore/`, `hotfix/`), Conventional Commits, no direct push to `main`.
-- Each GSD phase gets its own branch (branching_strategy: "phase" in `.planning/config.json`). Branch name uses the phase slug.
-- After PR merge: delete both the remote branch (`git push origin --delete <branch>`) and the local branch (`git branch -d <branch>`, or `-D` if it was squash-merged).
+## Git
+
+- Feature branches (`feat/`, `fix/`, `chore/`, `hotfix/`), Conventional Commits, no direct push to `main`. Work lands via squash-merged PRs.
+- After a PR merges, delete both remotes: `git push origin --delete <branch>`, then `git branch -D <branch>` (squash-merge means `-d` usually refuses).
+- `README.md` is unmodified create-next-app boilerplate — it is not a source of truth about this project.
