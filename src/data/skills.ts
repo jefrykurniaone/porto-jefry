@@ -1,35 +1,36 @@
 export interface SkillCategory {
     category: string;
+    /** Shipped to production in a role or project listed on this site. */
     skills: string[];
+    /** Used in personal or side work, but not yet backed by listed work. */
+    working?: string[];
 }
 
+// Ordered by hiring signal: the .NET/data core first, AI workflow last.
 export const skillCategories: SkillCategory[] = [
-    {
-        category: 'ai_emerging',
-        skills: [
-            'Claude',
-            'GitHub Copilot',
-            'OpenCode',
-        ],
-    },
     {
         category: 'backend',
         skills: [
             '.NET',
             '.NET Framework',
-            '.NET 6 / 7 / 8',
             'ASP.NET MVC',
             'ASP.NET Web Forms',
             'ASP.NET Web API',
             'REST API Design',
             'C#',
             'VB.NET',
-            'Node.js',
             'PHP',
             'CodeIgniter',
         ],
+        working: ['.NET 6 / 7 / 8', 'Node.js'],
     },
     {
+        category: 'database',
+        skills: ['Microsoft SQL Server', 'MySQL', 'SSIS', 'SSRS'],
+    },
+    {
+        // TypeScript/React/Next.js are production-backed by the Porto-Jefry
+        // project entry, which ships this site and its PDF CV renderer.
         category: 'frontend',
         skills: [
             'HTML',
@@ -43,10 +44,6 @@ export const skillCategories: SkillCategory[] = [
         ],
     },
     {
-        category: 'database',
-        skills: ['Microsoft SQL Server', 'MySQL', 'SSIS', 'SSRS'],
-    },
-    {
         category: 'cms_platforms',
         skills: ['Sitefinity', 'Sitecore'],
     },
@@ -57,12 +54,14 @@ export const skillCategories: SkillCategory[] = [
             'Visual Studio',
             'VS Code',
             'SSMS',
-            'Swagger / OpenAPI',
             'Postman',
-            'Azure VM',
-            'Azure DevOps',
             'IIS',
-            'AWS'
+            'Azure VM',
         ],
+        working: ['Swagger / OpenAPI', 'Azure DevOps', 'AWS'],
+    },
+    {
+        category: 'ai_workflow',
+        skills: ['Claude', 'GitHub Copilot', 'OpenCode'],
     },
 ];

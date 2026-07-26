@@ -13,11 +13,15 @@ export interface Messages {
         items: Record<string, { bullets: string[] }>;
     };
     education: { title: string; formal: string; informal: string; gpa: string };
-    skills: { title: string; categories: Record<string, string> };
+    skills: {
+        title: string;
+        categories: Record<string, string>;
+        working_note: string;
+    };
     projects: {
         title: string;
         present: string;
-        items: Record<string, { description: string }>;
+        items: Record<string, { description: string; company?: string }>;
     };
     certifications: {
         title: string;

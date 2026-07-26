@@ -1,17 +1,11 @@
 'use client';
 
+import { useMemo } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { useCvDownload } from '@/hooks/use-cv-download';
 import { useTypedRoles } from '@/hooks/use-typed-roles';
 import ParticleCanvas from '@/components/ui/ParticleCanvas';
-
-const ROLES = [
-  'Backend Developer',
-  '.NET Specialist',
-  'React & Next.js Builder',
-  'Vibe Engineer',
-] as const;
 
 interface HeroCtasProps {
   ctaWork: string;
@@ -117,10 +111,29 @@ function scrollToSection(id: string) {
   history.pushState(null, '', `#${id}`);
 }
 
+function HeroAlert({ message }: Readonly<{ message?: string | null }>) {
+  if (!message) return null;
+  return (
+    <p role='alert' aria-live='polite' className='hero__alert'>
+      {message}
+    </p>
+  );
+}
+
+/**
+ * Localised role list for the typewriter. `t.raw()` returns a fresh array on
+ * every render and `useTypedRoles` keys its effect on array identity, so this
+ * has to be memoised or the typewriter restarts continuously.
+ */
+function useHeroRoles(): string[] {
+  const t = useTranslations('hero');
+  return useMemo(() => t.raw('roles') as string[], [t]);
+}
+
 export default function Hero() {
   const t = useTranslations('hero');
   const locale = useLocale();
-  const typed = useTypedRoles(ROLES);
+  const typed = useTypedRoles(useHeroRoles());
   const { isDownloading, errorMessage, handleDownload } = useCvDownload(
     locale,
     t,
@@ -148,11 +161,7 @@ export default function Hero() {
           onDownload={handleDownload}
           onScrollTo={scrollToSection}
         />
-        {errorMessage && (
-          <p role='alert' aria-live='polite' className='hero__alert'>
-            {errorMessage}
-          </p>
-        )}
+        <HeroAlert message={errorMessage} />
       </div>
     </section>
   );

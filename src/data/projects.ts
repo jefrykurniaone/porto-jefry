@@ -1,10 +1,18 @@
 export interface ProjectItem {
     id: string;
     name: string;
+    /**
+     * Employer. For self-directed work there is no company, so the eyebrow is
+     * overridden per-locale via `projects.items.<id>.company` in the message
+     * files — this field is the fallback and must stay locale-invariant.
+     */
     company: string;
     period: string;
     tech: string[];
+    /** Live site. */
     url?: string;
+    /** Public source, when the code itself is the evidence. */
+    repoUrl?: string;
 }
 
 const TECH_SITEFINITY_DOTNET: string[] = [
@@ -30,6 +38,23 @@ const TECH_VBNET_WEBFORMS: string[] = [
 ];
 
 export const projects: ProjectItem[] = [
+    {
+        id: 'porto-jefry-portfolio',
+        name: 'Porto-Jefry',
+        company: 'Personal Project',
+        period: 'Jun 2026 – Present',
+        url: 'https://porto-jefry.vercel.app',
+        repoUrl: 'https://github.com/jefrykurniaone/porto-jefry',
+        tech: [
+            'Next.js',
+            'React',
+            'TypeScript',
+            'next-intl',
+            'CSS',
+            'React PDF',
+            'Vercel',
+        ],
+    },
     {
         id: 'heritagesg-website-maintenance',
         name: 'HeritageSG Website Maintenance',

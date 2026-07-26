@@ -211,6 +211,23 @@ export const styles = StyleSheet.create({
         flexWrap: 'wrap',
         gap: 4,
     },
+    // Working-knowledge tags: dashed border + muted text so the distinction
+    // survives a greyscale print, where a colour-only cue would vanish.
+    tagWorking: {
+        borderWidth: 1,
+        borderColor: BORDER,
+        borderStyle: 'dashed',
+        borderRadius: 3,
+        paddingHorizontal: 5,
+        paddingVertical: 2,
+        fontSize: 7.5,
+        color: MUTED,
+    },
+    skillsNote: {
+        fontSize: 7.5,
+        color: MUTED,
+        marginBottom: 6,
+    },
     // Projects
     projectRow: {
         flexDirection: 'row',

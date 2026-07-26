@@ -12,11 +12,18 @@ function displayUrl(url: string): string {
 interface ProjectCardProps {
     proj: ProjectItem;
     description?: string;
+    company?: string;
     presentLabel: string;
     locale: string;
 }
 
-function ProjectCard({ proj, description, presentLabel, locale }: Readonly<ProjectCardProps>) {
+function ProjectCard({
+    proj,
+    description,
+    company,
+    presentLabel,
+    locale,
+}: Readonly<ProjectCardProps>) {
     const localizedPeriod = translatePeriod(
         proj.period.replace('Present', presentLabel),
         locale,
@@ -26,7 +33,7 @@ function ProjectCard({ proj, description, presentLabel, locale }: Readonly<Proje
         <View style={styles.projectCard}>
             <Text style={styles.projectName}>{proj.name}</Text>
             <Text style={styles.projectMeta}>
-                {proj.company} · {localizedPeriod}
+                {company ?? proj.company} · {localizedPeriod}
             </Text>
             {description && description.length > 0 && (
                 <Text style={styles.projectDesc}>{description}</Text>
@@ -38,11 +45,11 @@ function ProjectCard({ proj, description, presentLabel, locale }: Readonly<Proje
                     </Text>
                 ))}
             </View>
-            {proj.url && (
-                <Link src={proj.url} style={styles.projectLink}>
-                    {displayUrl(proj.url)}
+            {[proj.url, proj.repoUrl].filter(Boolean).map((href) => (
+                <Link key={href} src={href as string} style={styles.projectLink}>
+                    {displayUrl(href as string)}
                 </Link>
-            )}
+            ))}
         </View>
     );
 }
@@ -61,6 +68,7 @@ function ProjectRow({ row, messages, locale }: Readonly<ProjectRowProps>) {
                     key={proj.name}
                     proj={proj}
                     description={messages.projects.items[proj.id]?.description}
+                    company={messages.projects.items[proj.id]?.company}
                     presentLabel={messages.projects.present}
                     locale={locale}
                 />
