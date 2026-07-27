@@ -71,16 +71,20 @@ Hand-written CSS with a design-token system — **no component library and no ut
 - Class naming is BEM-ish: `.skill-card__label`, `.section-band--alt`, plus shared primitives `.container-page`, `.panel-card`, `.chip`, `.section-title`, `.section-kicker`.
 - Fonts: Space Grotesk / JetBrains Mono via `next/font`, exposed as `--font-sans` / `--font-mono`.
 
-### Theming and the CSP hash (footgun)
+### Theming
 
-Theme state lives in `data-theme` on `<html>` plus `localStorage['porto-theme']`, managed by the `useTheme` hook (`src/hooks/use-theme.ts`). There is no ThemeProvider component. The hook reads localStorage through `useSyncExternalStore` rather than a mount effect — `react-hooks/set-state-in-effect` (enabled by `next/core-web-vitals` in Next 16) rejects the `useEffect` + `setState` mount pattern. `ThemeToggle` and `useTypedRoles` use the same approach for their mounted / `prefers-reduced-motion` checks.
+**The theme is rendered server-side. There is no pre-paint inline script and no CSP hash** — if you find notes anywhere claiming otherwise, they are stale.
 
-To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT` via the `ThemeInitScript` sub-component. `headers().get('x-nonce')` resolves to null in the layout, so the tag ships without a nonce and the **sha256 hash** is what authorizes it. `buildCsp()` puts that hash in *both* the dev and production policies — a single `THEME_SCRIPT_HASH` constant. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing it, or the theme script is silently CSP-blocked.** Both files carry comments saying so.
+`[locale]/layout.tsx` reads the `porto-theme` cookie with `cookies()` and renders `data-theme` straight onto `<html>`, so the correct colours are in the first byte of HTML. Shared constants live in `src/utils/theme.ts`. There is no ThemeProvider component.
 
-Two things that look like cleanups but are not:
+`useTheme` (`src/hooks/use-theme.ts`) keeps the cookie, `localStorage`, and the DOM attribute in step. It reads through `useSyncExternalStore` rather than a mount effect, because `react-hooks/set-state-in-effect` (enabled by `next/core-web-vitals` in Next 16) rejects `useEffect` + `setState`. `ThemeToggle` and `useTypedRoles` use the same approach for their mounted / `prefers-reduced-motion` checks.
 
-- **Do not swap the raw `<script>` for `next/script`.** `strategy="beforeInteractive"` only injects into the initial HTML from the *root* layout; from `[locale]/layout.tsx` it degrades to a queued `self.__next_s.push(...)` script that Next runs after hydration starts, which is too late and brings the flash back.
-- React 19 logs `Encountered a script tag while rendering React component` whenever it renders that tag on the client, which a locale switch does. It is dev-only and expected. The `useEffect` in `useTheme` reapplies `data-theme` from the store, so navigation stays correct without the script re-running.
+Two traps in that hook:
+
+- **Never persist the `theme` value returned by `useSyncExternalStore` from an effect.** During hydration it is still the *server* snapshot (always `DEFAULT_THEME`), so writing it clobbers a stored `'light'` with `'dark'` before the client snapshot is ever read. The migration effect reads the cookie and localStorage directly for exactly this reason.
+- Read order in `readTheme()` is cookie → localStorage → DOM → default, and the middle step matters: a visitor from before the cookie existed has their preference only in localStorage, which the server cannot see, so `data-theme` says `'dark'` while they chose `'light'`. They get one flash on the first load after deploy, then the cookie is written and every later render is correct.
+
+This replaced an inline `THEME_INIT_SCRIPT` authorized by a sha256 CSP hash. Do not reintroduce one: React 19 logs `Encountered a script tag while rendering React component` whenever it renders a script tag on the client, which a locale switch does (`LanguageToggle` uses `router.replace`). Moving it to the root layout does not help either — React refuses to render an inline script outside the main document.
 
 ### Security
 
@@ -88,7 +92,8 @@ Two things that look like cleanups but are not:
 - Static security headers (`X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, …) come from `next.config.mjs`.
 - The matcher excludes `api`, `_next`, `_vercel`, and any path containing a dot.
 - Next 16 renamed the `middleware` file convention to `proxy`; `src/proxy.ts` is the same interception point under the new name (the build labels it `ƒ Proxy (Middleware)`).
-- Because the proxy sets a per-request nonce and the layout reads it via `headers()`, `/[locale]` renders dynamically (`ƒ`) rather than being prerendered. It was reported as SSG under Next 14; Next 16's dynamic-API detection is stricter.
+- The app ships **no inline scripts of its own**, so `script-src` needs no `'sha256-…'`. Next's own tags carry the per-request nonce.
+- `/[locale]` sets `export const dynamic = 'force-dynamic'` and this is load-bearing, not a leftover. The proxy mints a fresh nonce per request, and production CSP uses `'strict-dynamic'`, under which host sources like `'self'` are ignored — Next's scripts are authorized *only* by that nonce. Prerendering would freeze one nonce into the HTML and every subsequent request would reject it. Do not "optimize" this route back to static.
 
 ### Dependency overrides (footgun)
 
