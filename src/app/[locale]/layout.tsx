@@ -30,6 +30,24 @@ const jetbrainsMono = JetBrains_Mono({
 // src/proxy.ts buildCsp().
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('porto-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})()`;
 
+/**
+ * Must stay a raw <script>: it has to run during initial HTML parse, before
+ * first paint. `next/script` with `beforeInteractive` only does that in the
+ * root layout — here it degrades to a queued script that Next injects after
+ * hydration starts, which brings the theme flash back.
+ *
+ * React 19 logs "Encountered a script tag while rendering React component"
+ * whenever it renders this on the client, which a locale switch does. That
+ * warning is dev-only and harmless: the script has already done its job at
+ * parse time, and the effect in `useTheme` keeps `data-theme` correct across
+ * client navigations.
+ */
+function ThemeInitScript({ nonce }: Readonly<{ nonce?: string }>) {
+    return (
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
+    );
+}
+
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }
@@ -92,10 +110,7 @@ export default async function LocaleLayout({
             className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
             suppressHydrationWarning>
             <body>
-                <script
-                    nonce={nonce}
-                    dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-                />
+                <ThemeInitScript nonce={nonce} />
                 <PersonJsonLd locale={locale} jobTitle={hero('title')} description={hero('subtitle')} />
                 <NextIntlClientProvider messages={messages}>
                     <a href='#main-content' className='skip-link'>

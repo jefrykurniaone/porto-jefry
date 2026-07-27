@@ -6,14 +6,20 @@ const intlMiddleware = createIntlMiddleware(routing);
 
 const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
+// sha256 of THEME_INIT_SCRIPT in src/app/[locale]/layout.tsx. Both policies
+// carry it: `headers().get('x-nonce')` resolves to null in the layout, so the
+// theme script is emitted without a nonce and the hash is what authorizes it.
+// Any edit to THEME_INIT_SCRIPT — even whitespace — requires recomputing this.
+const THEME_SCRIPT_HASH = "'sha256-1MXRx0kCy3uHCgfa+PdHahiZbeaCWj44cA01CgOMqRc='";
+
 export function buildCsp(nonce: string): string {
     const isDev = process.env.NODE_ENV === 'development';
-    
+
     // Development: relaxed CSP to allow hot reload and eval
     if (isDev) {
         return [
             "default-src 'self'",
-            `script-src 'self' 'unsafe-eval' 'nonce-${nonce}' https://va.vercel-scripts.com`,
+            `script-src 'self' 'unsafe-eval' 'nonce-${nonce}' ${THEME_SCRIPT_HASH} https://va.vercel-scripts.com`,
             `style-src 'self' 'unsafe-inline'`,
             "font-src 'self'",
             "img-src 'self' data: blob:",
@@ -25,7 +31,7 @@ export function buildCsp(nonce: string): string {
     // Production: strict CSP — hash authorizes theme-init inline script (x-nonce is null on Vercel at runtime)
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-1MXRx0kCy3uHCgfa+PdHahiZbeaCWj44cA01CgOMqRc=' https://va.vercel-scripts.com`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' ${THEME_SCRIPT_HASH} https://va.vercel-scripts.com`,
         `style-src 'self' 'unsafe-inline'`,
         "font-src 'self'",
         "img-src 'self' data: blob:",

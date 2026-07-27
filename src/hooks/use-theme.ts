@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useSyncExternalStore } from 'react';
+import { useCallback, useEffect, useSyncExternalStore } from 'react';
 
 export type Theme = 'dark' | 'light';
 
@@ -58,6 +58,15 @@ export function useTheme() {
         readStoredTheme,
         () => 'dark',
     );
+
+    // Reconcile the DOM with the store after hydration. THEME_INIT_SCRIPT
+    // normally wins the race before first paint, but it is a plain inline
+    // script: if CSP rejects it, or React declines to run it on a client
+    // render, `data-theme` would otherwise never be stamped and a stored
+    // 'light' preference would silently render dark.
+    useEffect(() => {
+        applyTheme(theme);
+    }, [theme]);
 
     const toggleTheme = useCallback(() => {
         const next: Theme = readStoredTheme() === 'dark' ? 'light' : 'dark';

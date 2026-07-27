@@ -33,7 +33,7 @@ src/app/[locale]/page.tsx (composes section components in fixed order)
 src/components/sections/*.tsx (join src/data/*.ts + src/i18n/messages/*.json)
 ```
 
-`src/app/layout.tsx` is a bare passthrough root layout; all real layout work happens in `[locale]/layout.tsx`. `[locale]/[...rest]/page.tsx` is a catch-all that calls `notFound()`.
+`src/app/layout.tsx` is a bare passthrough root layout — it returns `children` and nothing else. All real layout work happens in `[locale]/layout.tsx`, which owns `<html>` and `<body>` because both need the resolved locale. **The root layout must not also render `<html>`/`<body>`**: that nests `<html>` inside `<body>`, which React 19 reports as a hydration error (React 18 tolerated it silently). Next supplies its own document shell for the built-in `/_not-found`, so the passthrough does not break it. `[locale]/[...rest]/page.tsx` is a catch-all that calls `notFound()`.
 
 ### Content model — the data/messages split
 
@@ -75,7 +75,12 @@ Hand-written CSS with a design-token system — **no component library and no ut
 
 Theme state lives in `data-theme` on `<html>` plus `localStorage['porto-theme']`, managed by the `useTheme` hook (`src/hooks/use-theme.ts`). There is no ThemeProvider component. The hook reads localStorage through `useSyncExternalStore` rather than a mount effect — `react-hooks/set-state-in-effect` (enabled by `next/core-web-vitals` in Next 16) rejects the `useEffect` + `setState` mount pattern. `ThemeToggle` and `useTypedRoles` use the same approach for their mounted / `prefers-reduced-motion` checks.
 
-To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT`. Production CSP authorizes that inline script by **sha256 hash**, not nonce, because `x-nonce` is null at runtime on Vercel. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing the `'sha256-…'` value in `buildCsp()` in `src/proxy.ts`, or the site breaks in production only.** Both files carry comments saying so.
+To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT` via the `ThemeInitScript` sub-component. `headers().get('x-nonce')` resolves to null in the layout, so the tag ships without a nonce and the **sha256 hash** is what authorizes it. `buildCsp()` puts that hash in *both* the dev and production policies — a single `THEME_SCRIPT_HASH` constant. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing it, or the theme script is silently CSP-blocked.** Both files carry comments saying so.
+
+Two things that look like cleanups but are not:
+
+- **Do not swap the raw `<script>` for `next/script`.** `strategy="beforeInteractive"` only injects into the initial HTML from the *root* layout; from `[locale]/layout.tsx` it degrades to a queued `self.__next_s.push(...)` script that Next runs after hydration starts, which is too late and brings the flash back.
+- React 19 logs `Encountered a script tag while rendering React component` whenever it renders that tag on the client, which a locale switch does. It is dev-only and expected. The `useEffect` in `useTheme` reapplies `data-theme` from the store, so navigation stays correct without the script re-running.
 
 ### Security
 
