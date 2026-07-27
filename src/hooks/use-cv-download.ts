@@ -33,7 +33,6 @@ export function useCvDownload(locale: string, t: TranslateFn): UseCvDownloadRetu
             const status = statusMatch ? statusMatch[1] : 'unknown';
             setErrorMessage(t('cv_error', { status }));
             setTimeout(() => setErrorMessage(null), 5000);
-            // eslint-disable-next-line no-console
             console.error('[CV Download] failed:', err);
         } finally {
             setIsDownloading(false);

@@ -60,7 +60,7 @@ function drawFrame(
     }
 }
 
-function useParticleNetwork(canvasRef: React.RefObject<HTMLCanvasElement>): void {
+function useParticleNetwork(canvasRef: React.RefObject<HTMLCanvasElement | null>): void {
     useEffect(() => {
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
         const canvas = canvasRef.current;

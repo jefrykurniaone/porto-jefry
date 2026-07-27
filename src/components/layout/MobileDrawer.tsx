@@ -12,7 +12,7 @@ interface MobileDrawerProps {
     isOpen: boolean;
     onClose: () => void;
     onNavClick: (id: string) => void;
-    toggleRef: React.RefObject<HTMLButtonElement>;
+    toggleRef: React.RefObject<HTMLButtonElement | null>;
 }
 
 interface DrawerLinksProps {
@@ -38,7 +38,7 @@ function DrawerLinks({ onNavClick }: Readonly<DrawerLinksProps>) {
 }
 
 interface DrawerPanelProps {
-    panelRef: React.RefObject<HTMLDivElement>;
+    panelRef: React.RefObject<HTMLDivElement | null>;
     onClose: () => void;
     onNavClick: (id: string) => void;
 }

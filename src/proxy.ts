@@ -34,7 +34,7 @@ export function buildCsp(nonce: string): string {
     ].join('; ');
 }
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
     const intlResponse = intlMiddleware(request);
     const nonce = Buffer.from(
         crypto.getRandomValues(new Uint8Array(16)),

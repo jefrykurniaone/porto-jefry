@@ -15,7 +15,6 @@ export default function Error({ error, reset }: ErrorProps) {
 
     useEffect(() => {
         // Log error to console for debugging (not exposed to user)
-        // eslint-disable-next-line no-console
         console.error('[Error Boundary]', error);
     }, [error]);
 

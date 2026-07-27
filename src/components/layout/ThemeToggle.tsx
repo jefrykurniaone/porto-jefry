@@ -1,12 +1,16 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from 'react';
 import { useTheme } from '@/hooks/use-theme';
 import { useTranslations } from 'next-intl';
 
 function ThemeTogglePlaceholder() {
     return <div className='icon-btn' style={{ visibility: 'hidden' }} aria-hidden='true' />;
 }
+
+// Never emits: the server/client snapshot pair alone is what flips this from
+// false (server render + hydration) to true (every render after hydration).
+const subscribeNever = () => () => {};
 
 /**
  * Sun/moon toggle button. Renders a hidden placeholder until mounted so the
@@ -15,11 +19,11 @@ function ThemeTogglePlaceholder() {
 export default function ThemeToggle() {
     const { theme, toggleTheme } = useTheme();
     const t = useTranslations('theme');
-    const [isMounted, setIsMounted] = useState(false);
-
-    useEffect(() => {
-        setIsMounted(true);
-    }, []);
+    const isMounted = useSyncExternalStore(
+        subscribeNever,
+        () => true,
+        () => false,
+    );
 
     if (!isMounted) return <ThemeTogglePlaceholder />;
 

@@ -11,18 +11,20 @@ npm run lint         # ESLint
 npx tsc --noEmit     # Type-check
 ```
 
-CI (`.github/workflows/ci.yml`, Node 20) runs lint → typecheck → build on PRs to `main`. **There is no test suite** — the test runner and tests were removed in #43, so "run the tests" means running those three checks. `.eslintrc.json` still carries `*.test.ts` overrides and `/coverage` is still gitignored; both are vestigial.
+CI (`.github/workflows/ci.yml`, Node 20) runs lint → typecheck → build on PRs to `main`. **There is no test suite** — the test runner and tests were removed in #43, so "run the tests" means running those three checks. `/coverage` is still gitignored; that is vestigial.
+
+Next 16 removed the `next lint` command, so `npm run lint` calls `eslint src` directly against `eslint.config.mjs` (flat config). `src` is the deliberate scope — it matches what `next lint` used to cover, and keeps `scripts/` and the root config files out of linting.
 
 `npm run prebuild` executes `scripts/gen-build-meta.mjs`, which **rewrites `src/utils/constants.ts`** — it reads the last git commit date and regenerates the file with only `BASE_URL` (preserved verbatim) plus a generated `LAST_MODIFIED_DATE`. Never hand-edit `LAST_MODIFIED_DATE`, and never add other exports to that file — the codegen will delete them.
 
 ## Architecture
 
-**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site: Next.js 14 App Router, TypeScript, next-intl, deployed on Vercel.
+**Porto-Jefry** is a bilingual (EN/ID) personal portfolio site: Next.js 16 App Router (Turbopack), React 19, TypeScript, next-intl, deployed on Vercel.
 
 ### Request flow
 
 ```
-Request → src/middleware.ts (i18n redirect + CSP nonce + CSP header)
+Request → src/proxy.ts (i18n redirect + CSP nonce + CSP header)
   ↓
 src/app/[locale]/layout.tsx (fonts + theme-init script + NextIntlClientProvider + chrome)
   ↓
@@ -71,15 +73,29 @@ Hand-written CSS with a design-token system — **no component library and no ut
 
 ### Theming and the CSP hash (footgun)
 
-Theme state lives in `data-theme` on `<html>` plus `localStorage['porto-theme']`, managed by the `useTheme` hook (`src/hooks/use-theme.ts`). There is no ThemeProvider component.
+Theme state lives in `data-theme` on `<html>` plus `localStorage['porto-theme']`, managed by the `useTheme` hook (`src/hooks/use-theme.ts`). There is no ThemeProvider component. The hook reads localStorage through `useSyncExternalStore` rather than a mount effect — `react-hooks/set-state-in-effect` (enabled by `next/core-web-vitals` in Next 16) rejects the `useEffect` + `setState` mount pattern. `ThemeToggle` and `useTypedRoles` use the same approach for their mounted / `prefers-reduced-motion` checks.
 
-To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT`. Production CSP authorizes that inline script by **sha256 hash**, not nonce, because `x-nonce` is null at runtime on Vercel. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing the `'sha256-…'` value in `buildCsp()` in `src/middleware.ts`, or the site breaks in production only.** Both files carry comments saying so.
+To avoid a flash before hydration, `[locale]/layout.tsx` inlines `THEME_INIT_SCRIPT`. Production CSP authorizes that inline script by **sha256 hash**, not nonce, because `x-nonce` is null at runtime on Vercel. **Any edit to `THEME_INIT_SCRIPT` — even whitespace — requires recomputing the `'sha256-…'` value in `buildCsp()` in `src/proxy.ts`, or the site breaks in production only.** Both files carry comments saying so.
 
 ### Security
 
-- `buildCsp()` in `src/middleware.ts` returns separate dev (allows `unsafe-eval`, ws:) and production (strict, `strict-dynamic`) policies. Middleware attaches CSP on both the redirect and non-redirect paths, and forwards next-intl's `x-middleware-*` headers and cookies onto its own response.
+- `buildCsp()` in `src/proxy.ts` returns separate dev (allows `unsafe-eval`, ws:) and production (strict, `strict-dynamic`) policies. The proxy attaches CSP on both the redirect and non-redirect paths, and forwards next-intl's `x-middleware-*` headers and cookies onto its own response.
 - Static security headers (`X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, …) come from `next.config.mjs`.
-- Middleware matcher excludes `api`, `_next`, `_vercel`, and any path containing a dot.
+- The matcher excludes `api`, `_next`, `_vercel`, and any path containing a dot.
+- Next 16 renamed the `middleware` file convention to `proxy`; `src/proxy.ts` is the same interception point under the new name (the build labels it `ƒ Proxy (Middleware)`).
+- Because the proxy sets a per-request nonce and the layout reads it via `headers()`, `/[locale]` renders dynamically (`ƒ`) rather than being prerendered. It was reported as SSG under Next 14; Next 16's dynamic-API detection is stricter.
+
+### Dependency overrides (footgun)
+
+`package.json` `overrides` exists to hold `npm audit` at zero. Beyond the `@emnapi/*` pins:
+
+- `postcss: "$postcss"` and `sharp: "$sharp"` hoist the copies nested under `next` (which pins older ones) up to the root versions.
+- `brace-expansion: "5.0.8"` — the DoS advisory covers every version `<=5.0.7`, and there is no backport to the 1.x line that `minimatch@3` would normally use.
+- `minimatch: "^10.2.5"` — forced by the line above. `brace-expansion@5` exports `{ expand }` instead of a callable default, so `minimatch@3` throws `expand is not a function` against it; v10 is the version that consumes v5 natively.
+
+**The minimatch override is only safe because no enabled rule calls minimatch as a function.** `eslint-plugin-import`, `-react`, and `-jsx-a11y` still `require('minimatch')` in the callable v3 style, but only inside rules `next/core-web-vitals` does not turn on (`import/order`, `react/no-danger`, `jsx-a11y/label-has-associated-control`, …). Enabling one of those will crash lint with `minimatch is not a function`. Drop both overrides once `eslint-config-next` ships plugins that depend on `minimatch@10`.
+
+ESLint is pinned to 9, not 10: `eslint-plugin-react@7.37.5` peer-caps at `^9.7` and calls `context.getFilename()`, which ESLint 10 removed.
 
 ## Coding standards
 

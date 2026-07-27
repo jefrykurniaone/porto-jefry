@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useCallback, useSyncExternalStore } from 'react';
 
 export type Theme = 'dark' | 'light';
 
@@ -24,32 +24,50 @@ function applyTheme(theme: Theme): void {
     document.documentElement.dataset.theme = theme;
 }
 
+// Local listeners so a toggle in one component re-renders every other consumer;
+// the 'storage' event covers the theme being changed in another tab.
+const listeners = new Set<() => void>();
+
+function subscribe(onStoreChange: () => void): () => void {
+    const onStorage = (event: StorageEvent) => {
+        if (event.key !== null && event.key !== STORAGE_KEY) return;
+        applyTheme(readStoredTheme());
+        onStoreChange();
+    };
+
+    listeners.add(onStoreChange);
+    window.addEventListener('storage', onStorage);
+
+    return () => {
+        listeners.delete(onStoreChange);
+        window.removeEventListener('storage', onStorage);
+    };
+}
+
 /**
  * Dark-first theme state synced to localStorage ('porto-theme') and the
  * `data-theme` attribute on <html>, which drives the CSS token overrides.
  * The pre-hydration script in the locale layout stamps the attribute before
- * first paint; this hook takes over after mount.
+ * first paint; this hook reads that same storage key as an external store, so
+ * the server snapshot ('dark') matches the server-rendered HTML and the real
+ * value takes over once hydration completes.
  */
 export function useTheme() {
-    const [theme, setThemeState] = useState<Theme>('dark');
-
-    useEffect(() => {
-        const stored = readStoredTheme();
-        setThemeState(stored);
-        applyTheme(stored);
-    }, []);
+    const theme = useSyncExternalStore<Theme>(
+        subscribe,
+        readStoredTheme,
+        () => 'dark',
+    );
 
     const toggleTheme = useCallback(() => {
-        setThemeState((prev) => {
-            const next: Theme = prev === 'dark' ? 'light' : 'dark';
-            try {
-                localStorage.setItem(STORAGE_KEY, next);
-            } catch {
-                // localStorage not available
-            }
-            applyTheme(next);
-            return next;
-        });
+        const next: Theme = readStoredTheme() === 'dark' ? 'light' : 'dark';
+        try {
+            localStorage.setItem(STORAGE_KEY, next);
+        } catch {
+            // localStorage not available
+        }
+        applyTheme(next);
+        listeners.forEach((listener) => listener());
     }, []);
 
     return { theme, toggleTheme };

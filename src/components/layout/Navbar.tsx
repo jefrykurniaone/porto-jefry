@@ -38,7 +38,7 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
 
 interface HamburgerButtonProps {
     isOpen: boolean;
-    toggleRef: React.RefObject<HTMLButtonElement>;
+    toggleRef: React.RefObject<HTMLButtonElement | null>;
     onToggle: () => void;
     label: string;
 }
@@ -59,7 +59,7 @@ function HamburgerButton({ isOpen, toggleRef, onToggle, label }: Readonly<Hambur
 
 function NavControls({ isOpen, toggleRef, onToggle, toggleLabel }: Readonly<{
     isOpen: boolean;
-    toggleRef: React.RefObject<HTMLButtonElement>;
+    toggleRef: React.RefObject<HTMLButtonElement | null>;
     onToggle: () => void;
     toggleLabel: string;
 }>) {

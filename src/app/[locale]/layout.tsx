@@ -27,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 // Stamps data-theme on <html> before first paint (dark is the default).
 // Changing this string requires recomputing the CSP sha256 hash in
-// src/middleware.ts buildCsp().
+// src/proxy.ts buildCsp().
 const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('porto-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})()`;
 
 export function generateStaticParams() {
