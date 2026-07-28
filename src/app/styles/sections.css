@@ -62,7 +62,35 @@
     height: 7px;
     border-radius: 50%;
     background: var(--ok);
+    /* Never squeezed by the label beside it once that label wraps. */
+    flex-shrink: 0;
     animation: pulseDot 2.2s ease infinite;
+}
+
+/* The pill now carries location and time zone as well as availability — the one
+   fact an overseas recruiter needs before anything else, and previously absent
+   from the whole page. That makes it wide enough to wrap on a phone, so it is
+   allowed to: tracking drops to 0.12em (still clear of the Tracking-With-Caps
+   floor) and the padding tightens, which buys back most of a line. */
+@media (max-width: 640px) {
+    .status-pill {
+        max-width: 100%;
+        padding: 7px 13px;
+        letter-spacing: 0.12em;
+        text-align: left;
+        margin-bottom: 26px;
+    }
+
+    /* The hero ran 955px tall inside an 844px viewport, which put the CV button
+       below the fold on the exact device this page is most often read on.
+       Trimming its padding is the cheapest 76px on the page. */
+    .hero {
+        padding: calc(var(--navbar-height) + 28px) 24px 56px;
+    }
+
+    .hero__photo {
+        margin-bottom: 22px;
+    }
 }
 
 .hero__photo {
@@ -156,13 +184,21 @@
     color: var(--cta-text);
 }
 
+/* Matches .btn-outline:disabled. The CV button is primary now, and generating
+   the PDF is a genuinely async wait rather than a blocked action. */
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
 .btn-outline {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     background: transparent;
-    border: 1px solid var(--line);
+    /* No fill, so the border is the only affordance cue — see --line-control. */
+    border: 1px solid var(--line-control);
     color: var(--text);
     text-decoration: none;
     font-family: inherit;
@@ -184,22 +220,41 @@
     cursor: wait;
 }
 
-.hero__alert {
+/* The hero's CV feedback. Styling comes from the shared `.notice` primitive;
+   this only owns placement, which is why it sits outside `.hero__ctas` — inside
+   that flex row a notice would become a fourth button-width column. */
+.hero__notices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
     margin-top: 22px;
-    font-size: 13.5px;
-    color: var(--text);
-    border: 1px solid color-mix(in srgb, #e5484d 55%, var(--line));
-    border-radius: 10px;
-    background: color-mix(in srgb, #e5484d 12%, var(--panel));
-    padding: 12px 18px;
+    max-width: 560px;
 }
 
 /* ── About ── */
+/* min(320px, 100%) rather than a bare 320px: a 360px phone gives this grid a
+   312px content box, and a fixed 320px track would overflow it by 8px — which
+   the html/body `overflow-x: clip` guard then silently cuts off instead of
+   scrolling. The min() lets the track collapse to the container below 368px. */
+/* `center`, not `start`: the terminal is much shorter than the prose column, and
+   pinning it to the top dumped the whole difference into one void beneath the
+   section's signature component. Centring splits that space above and below it,
+   which reads as breathing room rather than as a gap. Single-column (wrapped)
+   rows hold one item each, so this is a no-op below 368px. */
 .about-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 44px;
-    align-items: start;
+    align-items: center;
+}
+
+/* Gap rather than paragraph margins: `p { margin: 0 }` in globals.css is the
+   site-wide reset, and re-adding a margin here would be the one place prose
+   spacing came from the element instead of its container. */
+.about-prose {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
 }
 
 .about-desc {
@@ -252,6 +307,7 @@
     box-shadow: 0 20px 60px color-mix(in srgb, black 25%, transparent), 0 0 40px var(--glow);
     font-family: var(--font-mono), monospace;
     font-size: 13px;
+    transition: background 0.35s ease;
 }
 
 .terminal__bar {
@@ -374,11 +430,13 @@
     flex-shrink: 0;
 }
 
+/* Padding grows the pointer target from 16px to 32px tall; the negative top
+   margin absorbs it so the label stays exactly where it sat before. */
 .exp-more-btn {
     background: transparent;
     border: none;
-    padding: 0;
-    margin: -6px 0 16px;
+    padding: 8px 0;
+    margin: -14px 0 8px;
     font-family: var(--font-mono), monospace;
     font-size: 12px;
     color: var(--accent-ink);
@@ -391,14 +449,21 @@
 }
 
 /* ── Skills ── */
+/* `align-items: start` so each card takes its natural height. Grid items stretch
+   to the tallest in their row by default, which rendered the 2-chip CMS card and
+   the 4-chip Database card as mostly-empty panels beside the 11-chip Backend
+   card. A ragged bottom edge is the honest shape of the content. */
+/* min(300px, 100%), matching .about-grid and .projects-grid. A bare 300px track
+   overflows a 320px viewport by 4px — the container there is 272px — and the
+   html/body `overflow-x: clip` guard then cuts that 4px off silently instead of
+   scrolling, so `documentElement.scrollWidth` still reads clean and only
+   `body.scrollWidth` (324 vs 320) shows it. This grid was the last one missing
+   the guard the other two already carried. */
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: 18px;
-}
-
-.skill-card:hover {
-    border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
+    align-items: start;
 }
 
 .skill-card__head {
@@ -420,13 +485,16 @@
     padding: 5px 10px;
 }
 
-/* Legend for the production/working-knowledge split. */
+/* Legend for the production/working-knowledge split.
+   54ch, not 68ch: `ch` is the width of "0", which in Space Grotesk is wider than
+   the average lowercase letter, so a 68ch cap was measuring out at ~87 real
+   characters per line — well past the comfortable reading measure. */
 .skills-note {
     font-size: 13px;
     line-height: 1.6;
     color: var(--muted);
     margin: -6px 0 26px;
-    max-width: 68ch;
+    max-width: 54ch;
 }
 
 .skill-card__sublabel {
@@ -446,21 +514,43 @@
     background: transparent;
 }
 
+/* Border mixed against --accent-ink, not raw --accent. A 50% raw-accent mix
+   measures 2.35:1 on the dark field but only 1.66:1 on the light one, so the
+   badge kept its outline in dark and all but lost it in light. --accent-ink is
+   the theme-corrected accent, which is exactly what a per-theme border needs. */
 .ai-badge {
     font-family: var(--font-mono), monospace;
     font-size: 10px;
     letter-spacing: 0.14em;
     color: var(--accent-ink);
-    border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent-ink) 62%, transparent);
     border-radius: 999px;
     padding: 3px 9px;
     box-shadow: 0 0 16px var(--glow);
 }
 
 /* ── Projects ── */
+/* Group headings. The section splits into work a stranger can open and work
+   that has no public URL, so each group states which it is before its cards. */
+.project-group__title {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+}
+
+.project-group__note {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 68ch;
+    margin: 0 0 24px;
+}
+
+/* See .about-grid — min() keeps the track from overflowing a sub-368px viewport. */
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
     gap: 18px;
 }
 
@@ -523,12 +613,21 @@
 }
 
 .project-card__link {
+    position: relative;
     font-family: var(--font-mono), monospace;
     font-size: 12px;
     font-weight: 500;
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Vertical-only pointer-target expansion: 18px of text becomes a 34px target
+   without moving the link or reaching across the 16px gap to its neighbour. */
+.project-card__link::after {
+    content: '';
+    position: absolute;
+    inset: -8px 0;
 }
 
 .project-card__link:hover {
@@ -538,7 +637,68 @@
 .project-card__link:focus-visible {
     outline: 2px solid var(--accent-ink);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 6px;
+}
+
+/* Collapsed by default: these nine have no link, no screenshot and nothing a
+   reader can check, so at card weight they buried the six that do. Two dense
+   columns when opened — enough to show the domain range without spending
+   another 3,000px of phone scroll on it. */
+.project-archive {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+}
+
+/* Overrides .exp-more-btn's negative top margin, which exists to absorb its own
+   padding inside a bullet list and would pull this toggle into the note above. */
+.project-archive__toggle {
+    margin: 0;
+}
+
+.project-archive__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: 0 32px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-archive__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+}
+
+/* Deliberately `nowrap`. Wrapping put the period on its own line whenever the
+   name was long, and `space-between` then left-aligned it — so the same list
+   printed the date on the right for "RBBR Super Bank" and on the left, a line
+   down, for "Sustainability TAM (Event Management)". The period is a rail, like
+   `.exp-period`: it holds the right edge on every row and the name wraps
+   underneath itself instead. */
+.project-archive__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 16px;
+}
+
+/* min-width: 0 is what lets a long name wrap. A flex item's default
+   `min-width: auto` floors it at its longest word, which is what pushed the
+   period out of the row in the first place. */
+.project-archive__name {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+    min-width: 0;
+}
+
+.project-archive__head .card-period {
+    flex-shrink: 0;
 }
 
 /* ── Education & certification ── */
@@ -618,9 +778,94 @@
     color: var(--accent-ink);
 }
 
+/* `overflow-wrap: anywhere`, not `word-break: break-all`: both stop a long
+   email or URL from overflowing a 230px card, but break-all takes the break
+   whether or not it is needed, so `jefrykurniaone@gmail.com` splits mid-word
+   even when the line has room. `anywhere` only breaks when nothing else fits. */
 .contact-card__value {
     font-size: 14.5px;
     font-weight: 500;
     color: var(--text);
-    word-break: break-all;
+    overflow-wrap: anywhere;
+}
+
+/* Closes the page. A panel, not a hairline with a button under it: at card
+   weight it reads as the fourth thing on offer rather than as something left
+   unfinished below the other three. No `--lift` — it holds a control, and a
+   card that rises under the pointer while you aim at its button is noise.
+
+   Offer left, action right, and left-aligned against a centred section on
+   purpose: it is the one block here that is a statement with a control rather
+   than a label with a value, and prose with a measure has no business being
+   centred. The `auto` column is sized by the button's own 240px minimum. */
+.contact-cta {
+    margin-top: 44px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 18px 44px;
+    text-align: left;
+}
+
+/* Everywhere else `.cv-action` is a flex column stacking a button over its
+   notice. Here those two want different columns, so the wrapper dissolves and
+   its children become grid items of the panel directly — button beside the
+   offer, notice across the full width beneath both, at a readable measure
+   instead of squeezed into a 240px track. Anything added to CvDownloadAction
+   lands in this grid: place it here too, or it will flow into the next cell. */
+.contact-cta .cv-action {
+    display: contents;
+}
+
+.contact-cta .cv-action > button {
+    width: 100%;
+    min-width: 240px;
+}
+
+.contact-cta .cv-action > .notice {
+    grid-column: 1 / -1;
+}
+
+/* Generating the PDF is work in progress, not an unavailable control. The
+   shared 0.6 dim reads as "blocked" on the page's closing action, so the button
+   stays lit and its glow breathes instead — the same "glow means powered"
+   vocabulary the CTA already speaks, at the one moment it is literally busy. */
+.contact-cta .btn-primary:disabled {
+    opacity: 1;
+    animation: pulseGlow 1.6s ease-in-out infinite;
+}
+
+.contact-cta__title {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text);
+    margin-bottom: 8px;
+}
+
+.contact-cta__lead {
+    font-size: 15.5px;
+    line-height: 1.75;
+    color: var(--muted);
+    max-width: 46ch;
+    margin-bottom: 12px;
+}
+
+.contact-cta__meta {
+    font-family: var(--font-mono), monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    /* The filename is one unbroken token; without this it pushes the 1fr track
+       wide enough to squeeze the action column at tablet widths. */
+    overflow-wrap: anywhere;
+}
+
+/* One column below the same 640px the experience row collapses at. The button
+   keeps `width: 100%` and so spans the panel — the largest touch target on the
+   page, for the visitor most likely to be on a phone. */
+@media (max-width: 640px) {
+    .contact-cta {
+        grid-template-columns: 1fr;
+    }
 }

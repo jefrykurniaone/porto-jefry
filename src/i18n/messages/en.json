@@ -15,7 +15,7 @@
   },
   "hero": {
     "greeting": "Hi, I'm",
-    "status_pill": "Open to full-time remote · freelance welcome",
+    "status_pill": "Indonesia · UTC+7 · Remote, relocation & freelance",
     "roles": [
       "Backend Developer",
       ".NET Specialist",
@@ -27,10 +27,15 @@
     "title": "Backend Developer & .NET Specialist",
     "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
     "cta_work": "View My Work",
-    "cta_cv": "Download CV",
-    "cta_contact": "Contact Me",
-    "downloading_cv": "Generating...",
-    "cv_error": "Failed to generate CV (HTTP {status}). Please try again later."
+    "cta_contact": "Contact Me"
+  },
+  "cv": {
+    "download": "Download CV",
+    "generating": "Generating...",
+    "language_name": "English",
+    "success": "Saved {filename} — {size}, {language}.",
+    "error": "Failed to generate CV (HTTP {status}). Please try again later.",
+    "error_rate_limit": "Too many CV requests from this address. Wait a minute, then try again."
   },
   "notFound": {
     "title": "Page Not Found",
@@ -39,15 +44,23 @@
   },
   "about": {
     "title": "About Me",
-    "description": "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day. At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code. I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams across time zones. I'm primarily looking for a full-time remote role or relocation, including with companies outside Indonesia, and I take on freelance projects alongside that.",
+    "description": [
+      "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day.",
+      "At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code.",
+      "I care about code that the next person can read and change without having to guess what it does. I work comfortably with distributed teams across time zones. I'm primarily looking for a full-time remote role or relocation, including with companies outside Indonesia, and I take on freelance projects alongside that."
+    ],
     "contact_email": "Email",
     "contact_phone": "Phone",
     "contact_linkedin": "LinkedIn",
     "contact_github": "GitHub",
+    "term_whoami": "jefry.kurniawan · backend developer",
+    "term_stack": ".NET · C# · SQL Server · REST APIs",
+    "term_ai": "Claude · GitHub Copilot · OpenCode",
     "term_status": "full-time remote & relocation · freelance welcome"
   },
   "experience": {
     "title": "Professional Experience",
+    "summary": "{roles} roles · since {since}",
     "present": "Present",
     "show_more": "+ {count} more",
     "show_less": "− show less",
@@ -119,22 +132,19 @@
   "education": {
     "title": "Education",
     "combined_title": "Education & Certification",
+    "summary": "{degrees} degrees · {certifications} certification",
     "formal": "Formal Education",
-    "informal": "Informal Education",
     "kind_formal": "Formal",
     "kind_cert": "Certification",
     "gpa": "GPA",
     "items": {
       "widyatama": { "degree": "Bachelor's in Information Systems" },
-      "telkom": { "degree": "Diploma in Informatics Management" },
-      "sman03": { "degree": "Senior High School" },
-      "coding_id": {
-        "degree": ".NET Programmer Class — C#, ASP.NET MVC, Microsoft SQL Server"
-      }
+      "telkom": { "degree": "Diploma in Informatics Management" }
     }
   },
   "skills": {
     "title": "Technical Skills",
+    "summary": "{categories} categories · {production} production · {working} working knowledge",
     "ai_badge": "AI",
     "working_label": "Working knowledge",
     "working_note": "Solid chips are shipped to production in the roles and projects listed below. Dashed chips are working knowledge — used in personal or side work, not yet in production.",
@@ -148,14 +158,23 @@
     }
   },
   "projects": {
-    "title": "Projects Experience",
+    "title": "Selected Work",
+    "summary": "{total} projects · {live} with public URLs",
     "present": "Present",
     "view_site": "Visit site",
     "view_source": "View source",
+    "group_live": "Live public work",
+    "group_live_note": "Sites you can open right now. Government and public-sector work delivered on Sitefinity and Sitecore, plus this portfolio, whose source is public.",
+    "group_archive": "Internal systems",
+    "group_archive_note": "Operational risk, banking, HR and event systems built for internal use. No public URL exists for these — the screens are not mine to publish.",
+    "archive_show": "+ list {count} internal projects",
+    "archive_hide": "− hide internal projects",
+    "cv_group_public": "Public Work (Live URLs)",
+    "cv_group_internal": "Internal Systems (No Public URL)",
     "items": {
       "porto-jefry-portfolio": {
         "company": "Personal Project",
-        "description": "This site: a bilingual (EN/ID) portfolio on Next.js App Router and TypeScript, with a hand-written CSS design-token system, hash-based CSP, and a PDF CV generated on demand from the same content. Built and shipped with an AI-agentic workflow. Source is public."
+        "description": "This site: a bilingual (EN/ID) portfolio on Next.js App Router and TypeScript, with a hand-written CSS design-token system, a strict CSP carrying a per-request nonce, and a PDF CV generated on demand from the same content. Built and shipped with an AI-agentic workflow. Source is public."
       },
       "heritagesg-website-maintenance": {
         "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
@@ -215,7 +234,9 @@
     "description": "I'm primarily looking for a full-time remote role with a team abroad, and I'm open to relocation. I also take on freelance projects. Whether you're hiring, have a project in mind, or just want to talk shop about .NET or AI, drop me a message.",
     "email_label": "Email Me",
     "phone_label": "Call Me",
-    "linkedin_label": "LinkedIn Profile"
+    "linkedin_label": "LinkedIn Profile",
+    "cv_label": "Take it with you",
+    "cv_lead": "Generated on demand from this page's own content — the PDF comes in whichever language you're reading."
   },
   "footer": {
     "built_with": "Designed & shipped with an AI-agentic workflow — Claude · Copilot · OpenCode.",

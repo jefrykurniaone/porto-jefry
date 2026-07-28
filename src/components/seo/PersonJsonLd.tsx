@@ -11,9 +11,9 @@ import {
 
 const FULL_NAME = 'Jefry Kurniawan';
 
-/** Universities only — secondary school adds noise without adding signal. */
+/** Universities only — secondary school has no `major` and adds noise. */
 const alumniOf = education
-    .filter((item) => item.type === 'formal' && item.major)
+    .filter((item) => item.major)
     .map((item) => ({ '@type': 'CollegeOrUniversity', name: item.institution }));
 
 /** Derived from the skills data so the schema can't drift from the site. */
@@ -60,7 +60,7 @@ function buildPersonSchema({ locale, jobTitle, description }: PersonJsonLdProps)
  * block, and HTML's "prepare the script element" algorithm aborts on an
  * unrecognised type *before* reaching the CSP check, so `script-src` never
  * applies. Do NOT add a nonce here — `x-nonce` is null at runtime on Vercel
- * (see the comment in src/middleware.ts) and would break the tag.
+ * (see the comment in src/proxy.ts) and would break the tag.
  */
 export default function PersonJsonLd(props: Readonly<PersonJsonLdProps>) {
     return (

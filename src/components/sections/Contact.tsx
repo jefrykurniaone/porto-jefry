@@ -1,4 +1,6 @@
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
+import CvDownloadAction from '@/components/ui/CvDownloadAction';
+import { cvFileName } from '@/utils/cv';
 import {
     CONTACT_EMAIL,
     CONTACT_PHONE_HREF,
@@ -54,21 +56,68 @@ function buildContactCards(t: TranslateFn): ContactCardItem[] {
 
 export default function Contact() {
     const t = useTranslations('contact');
-    const nav = useTranslations('nav');
     const cards = buildContactCards(t);
 
     return (
-        <section id='contact' className='section-band'>
+        <section
+            id='contact'
+            aria-labelledby='contact-title'
+            className='section-band'>
             <div className='contact-section-inner'>
-                <p className='section-kicker'>06 / {nav('contact')}</p>
-                <h2 className='contact-title'>{t('title')}</h2>
+                {/* Contact keeps its own centred header rather than
+                    SectionHeader: the closing section runs a wider title and a
+                    narrower column to signal an ending. */}
+                <p className='section-kicker'>
+                    <span className='section-kicker__prompt' aria-hidden='true'>$</span>{' '}
+                    mail jefry
+                </p>
+                <h2 id='contact-title' className='contact-title'>{t('title')}</h2>
                 <p className='contact-desc'>{t('description')}</p>
                 <div className='contact-grid'>
                     {cards.map((card) => (
                         <ContactCard key={card.href} {...card} />
                     ))}
                 </div>
+                <ContactCvPanel />
             </div>
         </section>
+    );
+}
+
+/**
+ * The page's closing action. Until this existed the CV lived only in the hero,
+ * ~14,000px above the point where a reader actually decides to take it. Built as
+ * a panel rather than a bare button so the offer is stated rather than implied.
+ *
+ * It is deliberately *not* a fourth contact card. It used to open with the same
+ * mono-uppercase label the three cards above it use, which made the page's most
+ * important click read as a peer of "CALL ME" — and it centred ~500px of content
+ * inside a 900px panel, so the one block that should close the page was also the
+ * only one that failed to fill its own box. Offer on the left, action on the
+ * right, and its own three-rung hierarchy: title, lead, artifact.
+ */
+function ContactCvPanel() {
+    const t = useTranslations('contact');
+    const tCv = useTranslations('cv');
+    const locale = useLocale();
+    return (
+        <div className='panel-card contact-cta'>
+            <div className='contact-cta__offer'>
+                <p className='contact-cta__title'>{t('cv_label')}</p>
+                <p className='contact-cta__lead'>{t('cv_lead')}</p>
+                {/* What the recruiter is about to receive, named before the
+                    click rather than only in the success notice: the exact file
+                    that lands in their Downloads folder, from the same function
+                    that names it there. Neither string is a claim — one is
+                    computed from the locale, the other is the locale. */}
+                <p className='contact-cta__meta'>
+                    {cvFileName(locale)} · {tCv('language_name')}
+                </p>
+            </div>
+            <CvDownloadAction
+                className='cv-action'
+                buttonClassName='btn-primary'
+            />
+        </div>
     );
 }

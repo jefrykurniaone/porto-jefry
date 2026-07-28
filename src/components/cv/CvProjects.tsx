@@ -1,5 +1,5 @@
 import { View, Text, Link } from '@react-pdf/renderer';
-import { projects, type ProjectItem } from '@/data/projects';
+import { projects, hasPublicUrl, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import { styles } from './cv-styles';
 import { type Messages } from './cv-types';
@@ -79,27 +79,94 @@ function ProjectRow({ row, messages, locale }: Readonly<ProjectRowProps>) {
     );
 }
 
+function toRows(items: ProjectItem[]): ProjectItem[][] {
+    const rows: ProjectItem[][] = [];
+    for (let i = 0; i < items.length; i += 2) {
+        rows.push(items.slice(i, i + 2));
+    }
+    return rows;
+}
+
+interface ProjectGroupProps {
+    heading: string;
+    items: ProjectItem[];
+    messages: Pick<Messages, 'projects'>;
+    locale: string;
+    /** Section title, rendered above the heading for the first group only. */
+    sectionTitle?: string;
+}
+
+/**
+ * Binds a heading to its first row and nothing more — the same rule
+ * CvEducation's groups follow. Holding a whole group together builds an atom
+ * taller than a part-used page, which pushes the group over and strands blank
+ * paper behind it.
+ *
+ * The atom and the rows after it are siblings of the section — a fragment, not
+ * a wrapping group View. **Do not wrap them.** A group View that opens near a
+ * page boundary has its height constrained to whatever is left, and because
+ * these cards can shrink, every card in the group is then squeezed into that
+ * gap as a title strip with its own description printed on top of it. Without
+ * the wrapper, `wrap={false}` moves the atom to the next page as intended.
+ */
+function ProjectGroup({
+    heading,
+    items,
+    messages,
+    locale,
+    sectionTitle,
+}: Readonly<ProjectGroupProps>) {
+    const [firstRow, ...rest] = toRows(items);
+    return (
+        <>
+            <View
+                wrap={false}
+                style={sectionTitle ? undefined : styles.projectGroupNext}>
+                {sectionTitle && <Text style={styles.sectionTitle}>{sectionTitle}</Text>}
+                <Text style={styles.subSectionTitle}>{heading}</Text>
+                {firstRow && (
+                    <ProjectRow row={firstRow} messages={messages} locale={locale} />
+                )}
+            </View>
+            {rest.map((row) => (
+                <ProjectRow key={row[0].id} row={row} messages={messages} locale={locale} />
+            ))}
+        </>
+    );
+}
+
 interface CvProjectsProps {
     messages: Pick<Messages, 'projects'>;
     locale: string;
 }
 
+/**
+ * The same two groups the site's Projects section renders, split on the same
+ * `hasPublicUrl` predicate. On paper both groups print in full — there is no
+ * disclosure to hide the internal half behind — so the headings carry the
+ * distinction the site's grouping and note lines carry on screen.
+ */
 export default function CvProjects({ messages, locale }: Readonly<CvProjectsProps>) {
-    const rows: ProjectItem[][] = [];
-    for (let i = 0; i < projects.length; i += 2) {
-        rows.push(projects.slice(i, i + 2));
-    }
+    const { title, cv_group_public, cv_group_internal } = messages.projects;
+    const internal = projects.filter((project) => !hasPublicUrl(project));
 
     return (
         <View style={styles.section}>
-            {/* Title + first row kept together to prevent orphaned heading */}
-            <View wrap={false}>
-                <Text style={styles.sectionTitle}>{messages.projects.title}</Text>
-                {rows[0] && <ProjectRow row={rows[0]} messages={messages} locale={locale} />}
-            </View>
-            {rows.slice(1).map((row) => (
-                <ProjectRow key={row[0].name} row={row} messages={messages} locale={locale} />
-            ))}
+            <ProjectGroup
+                sectionTitle={title}
+                heading={cv_group_public}
+                items={projects.filter(hasPublicUrl)}
+                messages={messages}
+                locale={locale}
+            />
+            {internal.length > 0 && (
+                <ProjectGroup
+                    heading={cv_group_internal}
+                    items={internal}
+                    messages={messages}
+                    locale={locale}
+                />
+            )}
         </View>
     );
 }

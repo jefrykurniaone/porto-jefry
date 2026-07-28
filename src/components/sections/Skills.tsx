@@ -1,7 +1,11 @@
 import { useTranslations } from 'next-intl';
 import { skillCategories, type SkillCategory } from '@/data/skills';
+import SectionHeader from '@/components/ui/SectionHeader';
 
 const AI_CATEGORY = 'ai_workflow';
+
+const countBy = (pick: (cat: SkillCategory) => string[] | undefined) =>
+    skillCategories.reduce((total, cat) => total + (pick(cat)?.length ?? 0), 0);
 
 interface SkillCardProps {
     cat: SkillCategory;
@@ -12,7 +16,7 @@ interface SkillCardProps {
 
 function SkillCard({ cat, label, aiBadge, workingLabel }: Readonly<SkillCardProps>) {
     return (
-        <div className='panel-card skill-card'>
+        <div className='panel-card panel-card--lift skill-card'>
             <div className='skill-card__head'>
                 <h3 className='skill-card__label'>{label}</h3>
                 {cat.category === AI_CATEGORY && (
@@ -28,7 +32,11 @@ function SkillCard({ cat, label, aiBadge, workingLabel }: Readonly<SkillCardProp
             </div>
             {cat.working && cat.working.length > 0 && (
                 <>
-                    <p className='skill-card__sublabel'>{workingLabel}</p>
+                    {/* `#` reads the sublabel as a comment on the list above,
+                        the same code-comment device as the hero's `// Hi, I'm`. */}
+                    <p className='skill-card__sublabel'>
+                        <span aria-hidden='true'>#</span> {workingLabel}
+                    </p>
                     <div className='chip-row'>
                         {cat.working.map((skill) => (
                             <span
@@ -46,13 +54,23 @@ function SkillCard({ cat, label, aiBadge, workingLabel }: Readonly<SkillCardProp
 
 export default function Skills() {
     const t = useTranslations('skills');
-    const nav = useTranslations('nav');
 
     return (
-        <section id='skills' className='section-band section-band--alt'>
+        <section
+            id='skills'
+            aria-labelledby='skills-title'
+            className='section-band section-band--alt'>
             <div className='container-page section-inner'>
-                <p className='section-kicker'>03 / {nav('skills')}</p>
-                <h2 className='section-title'>{t('title')}</h2>
+                <SectionHeader
+                    command='ls --production'
+                    title={t('title')}
+                    titleId='skills-title'
+                    output={t('summary', {
+                        categories: skillCategories.length,
+                        production: countBy((cat) => cat.skills),
+                        working: countBy((cat) => cat.working),
+                    })}
+                />
                 <p className='skills-note'>{t('working_note')}</p>
                 <div className='skills-grid'>
                     {skillCategories.map((cat) => (

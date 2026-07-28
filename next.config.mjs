@@ -4,6 +4,13 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // The CV route reads these from process.cwd() at request time. Static
+    // analysis does not see through join(), so they are declared explicitly —
+    // without this the serverless bundle ships without them and the PDF loses
+    // its photo and falls back to Helvetica.
+    outputFileTracingIncludes: {
+        '/api/generate-cv': ['./public/fonts/**', './public/cv-photo.webp'],
+    },
     async headers() {
         return [
             {

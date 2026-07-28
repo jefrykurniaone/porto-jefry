@@ -3,8 +3,9 @@
 
 /* ── Design tokens (Porto Redesign AI-Focused) ──
    Dark is the default theme; light overrides via :root[data-theme="light"].
-   The pre-hydration script in the locale layout stamps data-theme before
-   first paint, so there is no flash in either theme. */
+   The locale layout reads the `porto-theme` cookie server-side and renders
+   data-theme onto <html>, so the right colours are in the first byte of HTML.
+   There is no pre-paint inline script — do not reintroduce one (see CLAUDE.md). */
 :root {
     /* Single source of truth for the fixed navbar's vertical footprint.
        Consumed by .hero top-clearance and section scroll-margin-top. */
@@ -14,11 +15,16 @@
     --bg2: #0b0b13;
     --panel: #0f0f19;
     --line: rgba(235, 235, 248, 0.09);
+    /* Same hairline, raised to clear 3:1 (WCAG 1.4.11). Reserved for controls
+       whose border is the only thing marking them as interactive — outline and
+       icon buttons. Decorative dividers and card edges keep --line. */
+    --line-control: rgba(235, 235, 248, 0.38);
     --text: #ececf4;
     --muted: #9c9cb0;
     --accent: #9d7bff;
-    --accent-2: #4fd8e8;
     --ok: #3ddc97;
+    --fault: #e5484d;
+    --scrim: rgba(0, 0, 0, 0.55);
     --accent-ink: color-mix(in oklab, var(--accent) 72%, white);
     --glow: color-mix(in srgb, var(--accent) 22%, transparent);
     --cta-text: #0a0a10;
@@ -30,8 +36,13 @@
     --bg2: #efeff6;
     --panel: #ffffff;
     --line: rgba(12, 12, 36, 0.11);
+    --line-control: rgba(12, 12, 36, 0.46);
     --text: #16161f;
     --muted: #5c5c70;
+    /* Ready Green is the one status colour that has to be re-tuned per theme:
+       #3ddc97 sits at 1.8:1 on white, so the availability dot all but vanishes.
+       This value clears 4.96:1 on --panel and 4.64:1 on --bg. */
+    --ok: #0d8055;
     --accent-ink: color-mix(in oklab, var(--accent) 58%, black);
     --glow: color-mix(in srgb, var(--accent) 16%, transparent);
     --cta-text: #ffffff;
@@ -66,7 +77,15 @@
     }
 
     ::selection {
-        background: color-mix(in srgb, #9d7bff 35%, transparent);
+        background: color-mix(in srgb, var(--accent) 35%, transparent);
+    }
+
+    /* One focus ring for the whole site. Components that need a different
+       offset (inset inside the language pill, wider on card links) override
+       this with their own higher-specificity rule. */
+    :focus-visible {
+        outline: 2px solid var(--accent-ink);
+        outline-offset: 2px;
     }
 
     section {
@@ -100,11 +119,24 @@
     0%,
     100% {
         opacity: 1;
-        box-shadow: 0 0 0 0 color-mix(in srgb, #3ddc97 45%, transparent);
+        box-shadow: 0 0 0 0 color-mix(in srgb, var(--ok) 45%, transparent);
     }
     50% {
         opacity: 0.6;
         box-shadow: 0 0 0 6px transparent;
+    }
+}
+
+/* The busy state of the contact section's CV button. Blur and spread only —
+   the glow swells and settles without the element moving or changing colour,
+   so a 1–8s PDF render reads as powered rather than as frozen. */
+@keyframes pulseGlow {
+    0%,
+    100% {
+        box-shadow: 0 6px 30px var(--glow);
+    }
+    50% {
+        box-shadow: 0 6px 44px 4px var(--glow);
     }
 }
 
@@ -116,6 +148,39 @@
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ── Reduced motion ──
+   The two JS animations (typewriter, particle canvas) already skip their work
+   under this query; this is the CSS half of the same policy. Each rule removes
+   motion while preserving the end state — cursors rest visible, the
+   availability dot rests lit, hover still warms the border. Deliberately not a
+   blanket `transition: 0.01ms` kill: the colour and border-colour transitions
+   here are feedback, not motion, and are worth keeping. */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .hero__content,
+    .status-pill__dot,
+    .typed-cursor,
+    .terminal__cursor {
+        animation: none;
+    }
+
+    /* Hover keeps the warmed border and drops the lift. */
+    .panel-card--lift:hover,
+    .btn-primary:hover {
+        transform: none;
+    }
+
+    /* No breathing glow to rest at, so the busy CV button falls back to the
+       shared dim. The "Generating…" label is the cue either way. */
+    .contact-cta .btn-primary:disabled {
+        animation: none;
+        opacity: 0.6;
     }
 }
 
@@ -134,20 +199,46 @@
     border-top: 1px solid var(--line);
 }
 
+/* The 0.35s here, on .panel-card and on the navbar and terminal is the same
+   0.35s <body> uses. Between them they cover essentially the whole viewport, so
+   a theme switch reads as one crossfade instead of a flash with the page field
+   trailing behind it. Deliberately NOT a universal `* { transition: color }`:
+   that would also put a 350ms lag on every link and button hover. */
 .section-band--alt {
     background: var(--bg2);
+    transition: background 0.35s ease;
 }
 
 .section-inner {
     padding: 96px 24px;
 }
 
+/* The kicker is a shell command now, not an uppercase label, so the 0.2em
+   tracking the Tracking-With-Caps Rule requires no longer applies — that rule is
+   about uppercase runs. Code reads tighter; 0.06em keeps `ls -la ~/work` looking
+   like something typed rather than something set. */
 .section-kicker {
     font-family: var(--font-mono), monospace;
     font-size: 12px;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.06em;
     color: var(--accent-ink);
     margin: 0 0 10px;
+}
+
+/* Muted prompt against the accent-ink command — the same relationship the hero
+   already uses between `.hero__typed-prompt` and its typed line. */
+.section-kicker__prompt {
+    color: var(--muted);
+}
+
+/* The command's output. Real counts read from the data arrays, so a recruiter
+   scanning at speed gets the shape of each section before reading any of it. */
+.section-output {
+    font-family: var(--font-mono), monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 14px;
 }
 
 .section-title {
@@ -177,12 +268,52 @@
     border-radius: 12px;
     background: var(--panel);
     padding: 24px;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    /* border-color and transform stay at 0.2s — that pair is hover feedback and
+       must stay snappy. Only the fill joins the theme crossfade. */
+    transition: border-color 0.2s ease, transform 0.2s ease,
+        background-color 0.35s ease;
 }
 
 .panel-card--lift:hover {
     border-color: color-mix(in srgb, var(--accent) 45%, var(--line));
     transform: translateY(-3px);
+}
+
+/* The CV action outside the hero — the contact close and the mobile drawer.
+   Column, so the alert stacks under its own button instead of joining a flex
+   row. Each instance carries its own state; a failure in the drawer must not
+   blank the one in the contact section. */
+.cv-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+/* Feedback for the CV action — the one genuinely async thing on the site, and
+   the highest-stakes click on it. Both tones mix their status token against the
+   hairline and wash it into the panel, so neither reads as a coloured box.
+   Nothing here depends on hue: the copy itself opens with "Saved" or "Failed",
+   which is the non-colour cue. */
+.notice {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--text);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--panel);
+    padding: 12px 18px;
+    text-align: left;
+}
+
+.notice--fault {
+    border-color: color-mix(in srgb, var(--fault) 55%, var(--line));
+    background: color-mix(in srgb, var(--fault) 12%, var(--panel));
+}
+
+.notice--ok {
+    border-color: color-mix(in srgb, var(--ok) 45%, var(--line));
+    background: color-mix(in srgb, var(--ok) 10%, var(--panel));
 }
 
 .visually-hidden {

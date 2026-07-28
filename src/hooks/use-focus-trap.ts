@@ -6,7 +6,7 @@ function handleFocusTrapKeyDown(
     e: KeyboardEvent,
     focusable: HTMLElement[],
     onClose: () => void,
-    toggleRef: RefObject<HTMLButtonElement>
+    toggleRef: RefObject<HTMLButtonElement | null>
 ): void {
     if (e.key === 'Escape') {
         onClose();
@@ -38,8 +38,8 @@ function handleFocusTrapKeyDown(
  */
 export function useFocusTrap(
     isOpen: boolean,
-    menuRef: RefObject<HTMLDivElement>,
-    toggleRef: RefObject<HTMLButtonElement>,
+    menuRef: RefObject<HTMLDivElement | null>,
+    toggleRef: RefObject<HTMLButtonElement | null>,
     onClose: () => void
 ): void {
     useEffect(() => {

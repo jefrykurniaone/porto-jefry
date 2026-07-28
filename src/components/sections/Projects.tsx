@@ -1,6 +1,8 @@
 import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { projects, type ProjectItem } from '@/data/projects';
+import { projects, hasPublicUrl, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
+import SectionHeader from '@/components/ui/SectionHeader';
+import ProjectArchive, { type ProjectSummary } from './ProjectArchive';
 
 interface ProjectLinksProps {
     project: ProjectItem;
@@ -49,6 +51,11 @@ interface ProjectCardProps {
     viewSourceLabel: string;
 }
 
+/**
+ * Card titles are h4: the section's h2 now has an h3 group heading between it
+ * and the cards ("Live public work" / the archive), so dropping a level keeps
+ * the outline contiguous.
+ */
 function ProjectCard({
     project,
     company,
@@ -60,7 +67,7 @@ function ProjectCard({
     return (
         <div className='panel-card panel-card--lift project-card'>
             <p className='card-eyebrow'>{company}</p>
-            <h3 className='project-card__name'>{project.name}</h3>
+            <h4 className='project-card__name'>{project.name}</h4>
             <p className='card-period'>{period}</p>
             {description && <p className='project-card__desc'>{description}</p>}
             <div className='chip-row project-card__tech'>
@@ -97,40 +104,92 @@ function resolveProjectField(
     return typeof value === 'string' && value.length > 0 ? value : undefined;
 }
 
-export default function Projects() {
+interface ResolvedCard {
+    project: ProjectItem;
+    company: string;
+    period: string;
+    description?: string;
+}
+
+/** The data + messages join, resolved once and split into the two groups. */
+function useResolvedProjects(): {
+    live: ResolvedCard[];
+    archive: ProjectSummary[];
+} {
     const t = useTranslations('projects');
-    const nav = useTranslations('nav');
     const locale = useLocale();
     const messages = useMessages();
 
+    const company = (p: ProjectItem) =>
+        resolveProjectField(messages, p.id, 'company') ?? p.company;
+    const period = (p: ProjectItem) =>
+        translatePeriod(p.period.replace('Present', t('present')), locale);
+
+    return {
+        live: projects.filter(hasPublicUrl).map((project) => ({
+            project,
+            company: company(project),
+            period: period(project),
+            description: resolveProjectField(messages, project.id, 'description'),
+        })),
+        archive: projects.filter((p) => !hasPublicUrl(p)).map((p) => ({
+            id: p.id,
+            name: p.name,
+            company: company(p),
+            period: period(p),
+            tech: p.tech,
+        })),
+    };
+}
+
+function LiveProjectGrid({ cards }: Readonly<{ cards: ResolvedCard[] }>) {
+    const t = useTranslations('projects');
     return (
-        <section id='projects' className='section-band'>
+        <div className='projects-grid'>
+            {cards.map((card) => (
+                <ProjectCard
+                    key={card.project.id}
+                    project={card.project}
+                    company={card.company}
+                    period={card.period}
+                    description={card.description}
+                    viewSiteLabel={t('view_site')}
+                    viewSourceLabel={t('view_source')}
+                />
+            ))}
+        </div>
+    );
+}
+
+export default function Projects() {
+    const t = useTranslations('projects');
+    const { live, archive } = useResolvedProjects();
+
+    return (
+        <section
+            id='projects'
+            aria-labelledby='projects-title'
+            className='section-band'>
             <div className='container-page section-inner'>
-                <p className='section-kicker'>04 / {nav('projects')}</p>
-                <h2 className='section-title'>{t('title')}</h2>
-                <div className='projects-grid'>
-                    {projects.map((project) => (
-                        <ProjectCard
-                            key={project.id}
-                            project={project}
-                            company={
-                                resolveProjectField(messages, project.id, 'company') ??
-                                project.company
-                            }
-                            period={translatePeriod(
-                                project.period.replace('Present', t('present')),
-                                locale,
-                            )}
-                            description={resolveProjectField(
-                                messages,
-                                project.id,
-                                'description',
-                            )}
-                            viewSiteLabel={t('view_site')}
-                            viewSourceLabel={t('view_source')}
-                        />
-                    ))}
-                </div>
+                <SectionHeader
+                    command='ls -la ~/work'
+                    title={t('title')}
+                    titleId='projects-title'
+                    output={t('summary', {
+                        total: projects.length,
+                        live: live.length,
+                    })}
+                />
+                <h3 className='project-group__title'>{t('group_live')}</h3>
+                <p className='project-group__note'>{t('group_live_note')}</p>
+                <LiveProjectGrid cards={live} />
+                <ProjectArchive
+                    items={archive}
+                    heading={t('group_archive')}
+                    note={t('group_archive_note')}
+                    showLabel={t('archive_show', { count: archive.length })}
+                    hideLabel={t('archive_hide')}
+                />
             </div>
         </section>
     );

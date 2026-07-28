@@ -15,6 +15,18 @@ export interface ProjectItem {
     repoUrl?: string;
 }
 
+/**
+ * The one split both renderers group on. A public URL is the whole
+ * distinction: it is what a stranger can go and check for themselves.
+ *
+ * It lives with the data rather than in either renderer because the web
+ * section and the PDF have to agree about which projects are verifiable — two
+ * copies of this predicate is exactly how the two views drift apart.
+ */
+export function hasPublicUrl(project: ProjectItem): boolean {
+    return Boolean(project.url ?? project.repoUrl);
+}
+
 const TECH_SITEFINITY_DOTNET: string[] = [
     'Sitefinity',
     'C#',

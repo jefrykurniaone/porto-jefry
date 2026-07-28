@@ -1,8 +1,9 @@
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, getTranslations } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { routing } from '@/i18n/routing';
+import { DEFAULT_THEME, isTheme, THEME_COOKIE } from '@/utils/theme';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/layout/BackToTop';
@@ -25,13 +26,30 @@ const jetbrainsMono = JetBrains_Mono({
     variable: '--font-mono',
 });
 
-// Stamps data-theme on <html> before first paint (dark is the default).
-// Changing this string requires recomputing the CSP sha256 hash in
-// src/middleware.ts buildCsp().
-const THEME_INIT_SCRIPT = `(function(){try{var t=localStorage.getItem('porto-theme');document.documentElement.dataset.theme=t==='light'?'light':'dark'}catch(e){document.documentElement.dataset.theme='dark'}})()`;
+// The proxy mints a fresh CSP nonce per request and production CSP uses
+// 'strict-dynamic', where host sources like 'self' are ignored — so Next's own
+// script tags are only authorized by that per-request nonce. Prerendering would
+// freeze one nonce into the HTML and every later request would reject it, so
+// this route has to render per request. It already did, via a headers() read;
+// this states the requirement instead of depending on that side effect.
+export const dynamic = 'force-dynamic';
 
 export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
+}
+
+// Entry is almost always an external link (LinkedIn, a CV, an application), so
+// the locale pair has to be declared on the page itself — sitemap.ts alone does
+// not stop the wrong locale being served to a recruiter.
+function localeAlternates(locale: string): Metadata['alternates'] {
+    return {
+        canonical: `${BASE_URL}/${locale}`,
+        languages: {
+            en: `${BASE_URL}/en`,
+            id: `${BASE_URL}/id`,
+            'x-default': `${BASE_URL}/en`,
+        },
+    };
 }
 
 export async function generateMetadata({
@@ -45,6 +63,7 @@ export async function generateMetadata({
     return {
         title: `${t('name')} – ${t('title')}`,
         description: t('subtitle'),
+        alternates: localeAlternates(locale),
         openGraph: {
             type: 'website',
             url: `${BASE_URL}/${locale}`,
@@ -84,18 +103,19 @@ export default async function LocaleLayout({
     const messages = await getMessages();
     const t = await getTranslations({ locale, namespace: 'nav' });
     const hero = await getTranslations({ locale, namespace: 'hero' });
-    const nonce = (await headers()).get('x-nonce') ?? undefined;
+    const cookieTheme = (await cookies()).get(THEME_COOKIE)?.value;
+    const theme = isTheme(cookieTheme) ? cookieTheme : DEFAULT_THEME;
 
+    // data-scroll-behavior opts route transitions out of the smooth scrolling
+    // globals.css sets on <html>.
     return (
         <html
             lang={locale}
+            data-theme={theme}
+            data-scroll-behavior='smooth'
             className={`${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
             suppressHydrationWarning>
             <body>
-                <script
-                    nonce={nonce}
-                    dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
-                />
                 <PersonJsonLd locale={locale} jobTitle={hero('title')} description={hero('subtitle')} />
                 <NextIntlClientProvider messages={messages}>
                     <a href='#main-content' className='skip-link'>

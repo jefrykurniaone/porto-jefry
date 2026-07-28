@@ -1,10 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useSyncExternalStore } from 'react';
 
 const TYPE_MS = 62;
 const DELETE_MS = 34;
 const HOLD_MS = 2200;
+const REDUCED_MOTION_QUERY = '(prefers-reduced-motion: reduce)';
+
+function subscribeReducedMotion(onStoreChange: () => void): () => void {
+    const query = window.matchMedia(REDUCED_MOTION_QUERY);
+    query.addEventListener('change', onStoreChange);
+    return () => query.removeEventListener('change', onStoreChange);
+}
 
 type SetTyped = (value: string) => void;
 
@@ -47,15 +54,17 @@ function startTypingLoop(roles: readonly string[], setTyped: SetTyped): () => vo
  */
 export function useTypedRoles(roles: readonly string[]): string {
     const [typed, setTyped] = useState('');
+    const prefersReducedMotion = useSyncExternalStore(
+        subscribeReducedMotion,
+        () => window.matchMedia(REDUCED_MOTION_QUERY).matches,
+        () => false,
+    );
 
     useEffect(() => {
-        if (roles.length === 0) return;
-        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-            setTyped(roles[0]);
-            return;
-        }
+        if (roles.length === 0 || prefersReducedMotion) return;
         return startTypingLoop(roles, setTyped);
-    }, [roles]);
+    }, [roles, prefersReducedMotion]);
 
+    if (prefersReducedMotion && roles.length > 0) return roles[0];
     return typed;
 }

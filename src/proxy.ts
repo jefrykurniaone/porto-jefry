@@ -8,7 +8,7 @@ const REDIRECT_STATUSES = new Set([301, 302, 303, 307, 308]);
 
 export function buildCsp(nonce: string): string {
     const isDev = process.env.NODE_ENV === 'development';
-    
+
     // Development: relaxed CSP to allow hot reload and eval
     if (isDev) {
         return [
@@ -22,10 +22,12 @@ export function buildCsp(nonce: string): string {
         ].join('; ');
     }
 
-    // Production: strict CSP — hash authorizes theme-init inline script (x-nonce is null on Vercel at runtime)
+    // Production: strict CSP. No inline-script hash is needed — the theme is
+    // rendered server-side from a cookie, so the app ships no inline scripts of
+    // its own. Next's own tags carry this per-request nonce.
     return [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-1MXRx0kCy3uHCgfa+PdHahiZbeaCWj44cA01CgOMqRc=' https://va.vercel-scripts.com`,
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com`,
         `style-src 'self' 'unsafe-inline'`,
         "font-src 'self'",
         "img-src 'self' data: blob:",
@@ -34,7 +36,7 @@ export function buildCsp(nonce: string): string {
     ].join('; ');
 }
 
-export default function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
     const intlResponse = intlMiddleware(request);
     const nonce = Buffer.from(
         crypto.getRandomValues(new Uint8Array(16)),

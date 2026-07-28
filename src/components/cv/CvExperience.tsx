@@ -16,8 +16,13 @@ function ExperienceItem({ exp, bullets, presentLabel, locale }: Readonly<Experie
         exp.period.replace('Present', presentLabel),
         locale,
     );
+    // wrap={false} on the whole entry, not just the bullets: role, employer,
+    // and responsibilities are one unit of evidence, and splitting them left
+    // the role heading stranded at the foot of a page with its employer and
+    // bullets overleaf. The tallest entry is ~165pt against 770pt of page, so
+    // this only ever pushes an entry down — it cannot overflow.
     return (
-        <View style={styles.expItem}>
+        <View style={styles.expItem} wrap={false}>
             <View style={styles.expHeader}>
                 <Text style={styles.expRole}>{exp.role}</Text>
                 <Text style={styles.expPeriod}>
@@ -28,7 +33,6 @@ function ExperienceItem({ exp, bullets, presentLabel, locale }: Readonly<Experie
             {bullets.map((b) => (
                 <View
                     key={`${exp.company}-${b.slice(0, 30)}`}
-                    wrap={false}
                     style={styles.bulletRow}>
                     <Text style={styles.bullet}>•</Text>
                     <Text style={styles.bulletText}>{b}</Text>
@@ -53,10 +57,23 @@ interface CvExperienceProps {
 }
 
 export default function CvExperience({ messages, locale }: Readonly<CvExperienceProps>) {
+    const [first, ...rest] = experiences;
+
     return (
         <View style={styles.section}>
-            <Text style={styles.sectionTitle}>{messages.experience.title}</Text>
-            {experiences.map((exp) => (
+            {/* Title + first entry kept together to prevent an orphaned heading */}
+            <View wrap={false}>
+                <Text style={styles.sectionTitle}>{messages.experience.title}</Text>
+                {first && (
+                    <ExperienceItem
+                        exp={first}
+                        bullets={messages.experience.items[first.id]?.bullets ?? []}
+                        presentLabel={messages.experience.present}
+                        locale={locale}
+                    />
+                )}
+            </View>
+            {rest.map((exp) => (
                 <ExperienceItem
                     key={exp.id}
                     exp={exp}

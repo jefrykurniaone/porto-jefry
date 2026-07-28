@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Image from 'next/image';
 import { useCvDownload } from '@/hooks/use-cv-download';
 import { useTypedRoles } from '@/hooks/use-typed-roles';
+import { scrollToSection } from '@/utils/scroll';
 import ParticleCanvas from '@/components/ui/ParticleCanvas';
 
 interface HeroCtasProps {
@@ -17,6 +18,11 @@ interface HeroCtasProps {
   onScrollTo: (id: string) => void;
 }
 
+/**
+ * The CV takes the primary fill: it is the artifact the visitor came for and the
+ * handoff into their own workflow. "View My Work" is a scroll they were going to
+ * make anyway, so it drops to an outline.
+ */
 function HeroCtas({
   ctaWork,
   ctaCv,
@@ -28,22 +34,22 @@ function HeroCtas({
 }: Readonly<HeroCtasProps>) {
   return (
     <div className='hero__ctas'>
+      <button
+        type='button'
+        onClick={onDownload}
+        disabled={isDownloading}
+        className='btn-primary'>
+        {isDownloading ? ctaDownloading : ctaCv}
+      </button>
       <a
         href='#projects'
         onClick={(e) => {
           e.preventDefault();
           onScrollTo('projects');
         }}
-        className='btn-primary'>
+        className='btn-outline'>
         {ctaWork} ↓
       </a>
-      <button
-        type='button'
-        onClick={onDownload}
-        disabled={isDownloading}
-        className='btn-outline'>
-        {isDownloading ? ctaDownloading : ctaCv}
-      </button>
       <a
         href='#contact'
         onClick={(e) => {
@@ -66,6 +72,16 @@ function HeroStatusPill({ statusPill }: Readonly<{ statusPill: string }>) {
   );
 }
 
+interface HeroHeadingProps {
+  statusPill: string;
+  photoAlt: string;
+  greeting: string;
+  name: string;
+  subtitle: string;
+  typed: string;
+  roles: string[];
+}
+
 function HeroHeading({
   statusPill,
   photoAlt,
@@ -73,14 +89,8 @@ function HeroHeading({
   name,
   subtitle,
   typed,
-}: Readonly<{
-  statusPill: string;
-  photoAlt: string;
-  greeting: string;
-  name: string;
-  subtitle: string;
-  typed: string;
-}>) {
+  roles,
+}: Readonly<HeroHeadingProps>) {
   return (
     <>
       <HeroStatusPill statusPill={statusPill} />
@@ -94,29 +104,48 @@ function HeroHeading({
         />
       </div>
       <p className='hero__kicker'>{`// ${greeting}`}</p>
-      <h1 className='hero__name'>{name}</h1>
-      <h2 className='hero__typed'>
+      <h1 id='hero-title' className='hero__name'>{name}</h1>
+      {/* Decorative: the ticker's text is mid-keystroke at any given moment.
+          It used to be an <h2>, which put fragments like "> .NET Spec▌" into
+          the heading outline. Hidden from assistive tech, with the complete
+          role list exposed once, statically, beside it. */}
+      <p className='hero__typed' aria-hidden='true'>
         <span className='hero__typed-prompt'>&gt;</span> {typed}
-        <span className='typed-cursor' aria-hidden='true'>
-          ▌
-        </span>
-      </h2>
+        <span className='typed-cursor'>▌</span>
+      </p>
+      <p className='visually-hidden'>{roles.join(' · ')}</p>
       <p className='hero__subtitle'>{subtitle}</p>
     </>
   );
 }
 
-function scrollToSection(id: string) {
-  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  history.pushState(null, '', `#${id}`);
+interface HeroNoticesProps {
+  errorMessage?: string | null;
+  successMessage?: string | null;
 }
 
-function HeroAlert({ message }: Readonly<{ message?: string | null }>) {
-  if (!message) return null;
+/**
+ * `role='alert'` already implies `aria-live='assertive'`; declaring 'polite'
+ * alongside it is a contradiction some screen readers resolve badly. Success
+ * takes `role='status'` instead — a confirmation is polite news, and an
+ * assertive region would interrupt a reader mid-sentence to announce a file the
+ * visitor just asked for.
+ */
+function HeroNotices({ errorMessage, successMessage }: Readonly<HeroNoticesProps>) {
+  if (!errorMessage && !successMessage) return null;
   return (
-    <p role='alert' aria-live='polite' className='hero__alert'>
-      {message}
-    </p>
+    <div className='hero__notices'>
+      {errorMessage && (
+        <p role='alert' className='notice notice--fault'>
+          {errorMessage}
+        </p>
+      )}
+      {successMessage && (
+        <p role='status' className='notice notice--ok'>
+          {successMessage}
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -132,15 +161,15 @@ function useHeroRoles(): string[] {
 
 export default function Hero() {
   const t = useTranslations('hero');
+  const tCv = useTranslations('cv');
   const locale = useLocale();
-  const typed = useTypedRoles(useHeroRoles());
-  const { isDownloading, errorMessage, handleDownload } = useCvDownload(
-    locale,
-    t,
-  );
+  const roles = useHeroRoles();
+  const typed = useTypedRoles(roles);
+  const { isDownloading, errorMessage, successMessage, handleDownload } =
+    useCvDownload(locale, tCv);
 
   return (
-    <section id='hero' className='hero'>
+    <section id='hero' aria-labelledby='hero-title' className='hero'>
       <ParticleCanvas className='hero__canvas' />
       <div className='hero__grid-overlay' />
       <div className='hero__content'>
@@ -151,17 +180,21 @@ export default function Hero() {
           name={t('name')}
           subtitle={t('subtitle')}
           typed={typed}
+          roles={roles}
         />
         <HeroCtas
           ctaWork={t('cta_work')}
-          ctaCv={t('cta_cv')}
+          ctaCv={tCv('download')}
           ctaContact={t('cta_contact')}
-          ctaDownloading={t('downloading_cv')}
+          ctaDownloading={tCv('generating')}
           isDownloading={isDownloading}
           onDownload={handleDownload}
           onScrollTo={scrollToSection}
         />
-        <HeroAlert message={errorMessage} />
+        <HeroNotices
+          errorMessage={errorMessage}
+          successMessage={successMessage}
+        />
       </div>
     </section>
   );

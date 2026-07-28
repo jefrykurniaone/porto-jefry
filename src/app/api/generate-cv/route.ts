@@ -3,10 +3,12 @@ import { createElement, type ReactElement } from 'react';
 import { NextRequest, NextResponse } from 'next/server';
 import { access, readFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { ipAddress } from '@vercel/functions';
 import CvDocument from '@/components/cv/CvDocument';
+import { cvFileName } from '@/utils/cv';
 import enMessages from '@/i18n/messages/en.json';
 import idMessages from '@/i18n/messages/id.json';
 
@@ -58,10 +60,14 @@ const MESSAGES_MAP: Record<SupportedLocale, typeof enMessages> = {
 const CV_PHOTO_PATH = join(process.cwd(), 'public', 'cv-photo.webp');
 
 const JPEG_QUALITY = 90;
-const CACHE_MAX_AGE_SECONDS = 3600;
+
+interface CachedPdf {
+    bytes: Uint8Array<ArrayBuffer>;
+    etag: string;
+}
 
 // Module-level caches — reset on cold start; one render per locale per process lifetime
-const CV_BUFFER_CACHE = new Map<string, Uint8Array<ArrayBuffer>>();
+const CV_BUFFER_CACHE = new Map<string, CachedPdf>();
 let cachedPhotoSrc: string | undefined;
 let photoSrcResolved = false;
 
@@ -85,12 +91,30 @@ async function getPhotoSrc(): Promise<string | undefined> {
     return cachedPhotoSrc;
 }
 
-function buildPdfHeaders(): HeadersInit {
+// max-age=0 + must-revalidate rather than a long max-age. The expensive work
+// (renderToBuffer) is already cached server-side in CV_BUFFER_CACHE, so a long
+// browser/CDN cache buys nothing except stale CVs: a plain fetch() honours it
+// and will not contact the server at all, which means a content change stays
+// invisible to anyone who downloaded inside the window — including Vercel's
+// edge after a deploy. The ETag keeps repeat downloads cheap via a 304.
+const CACHE_CONTROL = 'public, max-age=0, must-revalidate';
+
+// Locale-suffixed, from the same function the client names the saved file with.
+// The download path overrides this with `link.download`, but anyone who opens
+// the endpoint directly — or fetches it with curl -O — gets whatever is here,
+// and one fixed name meant an ID download silently overwrote an EN one.
+function buildPdfHeaders(etag: string, locale: SupportedLocale): HeadersInit {
     return {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename="Jefry_Kurniawan_CV.pdf"',
-        'Cache-Control': `public, max-age=${CACHE_MAX_AGE_SECONDS}`,
+        'Content-Disposition': `attachment; filename="${cvFileName(locale)}"`,
+        'Cache-Control': CACHE_CONTROL,
+        ETag: etag,
     };
+}
+
+/** Content-derived, so any change to the rendered document invalidates it. */
+function etagFor(bytes: Uint8Array): string {
+    return `"${createHash('sha1').update(bytes).digest('base64url')}"`;
 }
 
 function resolveLocale(rawLocale: string): SupportedLocale {
@@ -112,34 +136,27 @@ function rateLimitGuard(ip: string): NextResponse | null {
     });
 }
 
-async function renderCvResponse(locale: SupportedLocale): Promise<NextResponse> {
-    try {
-        const messages = MESSAGES_MAP[locale];
-        const photoSrc = await getPhotoSrc();
+async function loadCv(locale: SupportedLocale): Promise<CachedPdf> {
+    const cached = CV_BUFFER_CACHE.get(locale);
+    if (cached) return cached;
 
-        const buffer = await renderToBuffer(
-            createElement(CvDocument, {
-                messages,
-                photoSrc,
-                locale,
-            }) as ReactElement<DocumentProps>,
-        );
+    const messages = MESSAGES_MAP[locale];
+    const photoSrc = await getPhotoSrc();
 
-        // Copy into a fresh ArrayBuffer-backed Uint8Array (TypeScript 5.x BodyInit compatibility)
-        const pdfArray = new Uint8Array(buffer.length);
-        pdfArray.set(buffer);
-        CV_BUFFER_CACHE.set(locale, pdfArray);
-        return new NextResponse(pdfArray, {
-            status: 200,
-            headers: buildPdfHeaders(),
-        });
-    } catch (error) {
-        console.error('[generate-cv] Failed to render CV PDF', {
+    const buffer = await renderToBuffer(
+        createElement(CvDocument, {
+            messages,
+            photoSrc,
             locale,
-            error,
-        });
-        return new NextResponse('Internal Server Error', { status: 500 });
-    }
+        }) as ReactElement<DocumentProps>,
+    );
+
+    // Copy into a fresh ArrayBuffer-backed Uint8Array (TypeScript 5.x BodyInit compatibility)
+    const bytes = new Uint8Array(buffer.length);
+    bytes.set(buffer);
+    const entry: CachedPdf = { bytes, etag: etagFor(bytes) };
+    CV_BUFFER_CACHE.set(locale, entry);
+    return entry;
 }
 
 export async function GET(req: NextRequest) {
@@ -151,13 +168,25 @@ export async function GET(req: NextRequest) {
     const rateLimitResponse = rateLimitGuard(ip);
     if (rateLimitResponse) return rateLimitResponse;
 
-    const cached = CV_BUFFER_CACHE.get(locale);
-    if (cached) {
-        return new NextResponse(cached, {
-            status: 200,
-            headers: buildPdfHeaders(),
-        });
-    }
+    try {
+        const { bytes, etag } = await loadCv(locale);
 
-    return renderCvResponse(locale);
+        if (req.headers.get('if-none-match') === etag) {
+            return new NextResponse(null, {
+                status: 304,
+                headers: { 'Cache-Control': CACHE_CONTROL, ETag: etag },
+            });
+        }
+
+        return new NextResponse(bytes, {
+            status: 200,
+            headers: buildPdfHeaders(etag, locale),
+        });
+    } catch (error) {
+        console.error('[generate-cv] Failed to render CV PDF', {
+            locale,
+            error,
+        });
+        return new NextResponse('Internal Server Error', { status: 500 });
+    }
 }
