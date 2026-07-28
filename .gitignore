@@ -43,8 +43,5 @@ _tmp_backup/
 .agents/
 
 # Claude Code local settings
-.claude/settings.local.json
-.github/hooks/impeccable.json
-.impeccable/live/config.json
-.impeccable/design.json
 .impeccable/
+.github/hooks/impeccable.json
