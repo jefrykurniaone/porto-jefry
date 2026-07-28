@@ -6,8 +6,13 @@ import CvExperience from './CvExperience';
 import CvEducation from './CvEducation';
 import CvSkills from './CvSkills';
 import CvProjects from './CvProjects';
-import CvCertifications from './CvCertifications';
 
+/**
+ * Section order mirrors the site: About, Experience, Skills, Projects,
+ * Education & Certification. Education used to sit between Experience and
+ * Skills with a lone Certifications section trailing the whole document, so
+ * the two halves of one credential block sat two pages apart.
+ */
 export default function CvDocument({ messages, photoSrc, locale = 'en' }: Readonly<CvDocumentProps>) {
     return (
         <Document
@@ -19,13 +24,14 @@ export default function CvDocument({ messages, photoSrc, locale = 'en' }: Readon
                 <CvHeader messages={messages} photoSrc={photoSrc} />
                 <View style={styles.section}>
                     <Text style={styles.sectionTitle}>{messages.about.title}</Text>
-                    <Text style={styles.summaryText}>{messages.about.description}</Text>
+                    {messages.about.description.map((paragraph) => (
+                        <Text key={paragraph} style={styles.summaryText}>{paragraph}</Text>
+                    ))}
                 </View>
                 <CvExperience messages={messages} locale={locale} />
-                <CvEducation messages={messages} />
                 <CvSkills messages={messages} />
                 <CvProjects messages={messages} locale={locale} />
-                <CvCertifications messages={messages} />
+                <CvEducation messages={messages} />
             </Page>
         </Document>
     );

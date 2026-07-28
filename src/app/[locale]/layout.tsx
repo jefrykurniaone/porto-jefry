@@ -38,6 +38,20 @@ export function generateStaticParams() {
     return routing.locales.map((locale) => ({ locale }));
 }
 
+// Entry is almost always an external link (LinkedIn, a CV, an application), so
+// the locale pair has to be declared on the page itself — sitemap.ts alone does
+// not stop the wrong locale being served to a recruiter.
+function localeAlternates(locale: string): Metadata['alternates'] {
+    return {
+        canonical: `${BASE_URL}/${locale}`,
+        languages: {
+            en: `${BASE_URL}/en`,
+            id: `${BASE_URL}/id`,
+            'x-default': `${BASE_URL}/en`,
+        },
+    };
+}
+
 export async function generateMetadata({
     params,
 }: {
@@ -49,6 +63,7 @@ export async function generateMetadata({
     return {
         title: `${t('name')} – ${t('title')}`,
         description: t('subtitle'),
+        alternates: localeAlternates(locale),
         openGraph: {
             type: 'website',
             url: `${BASE_URL}/${locale}`,

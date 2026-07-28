@@ -46,7 +46,7 @@ Portfolio content is deliberately split across two places, joined by a stable `i
 
 Sections read the data array, then look up prose with `t.raw('items')[item.id]`. Missing keys fall back gracefully (`?? []`, `?? fallbackDegree(edu)`), so a mismatched id fails silently rather than crashing — check both sides when content goes missing.
 
-Data files: `experience.ts`, `projects.ts`, `education.ts`, `skills.ts`, `contact.ts`. Note that **certifications have no data file** — they live entirely in `messages.certifications`, and the site renders them inside the Education section (`education.combined_title`, `kind_cert`), not as a standalone section.
+Data files: `experience.ts`, `projects.ts`, `education.ts`, `skills.ts`, `contact.ts`. Note that **certifications have no data file** — they live entirely in `messages.certifications`, and the site renders them inside the Education section (`education.combined_title`, `kind_cert`), not as a standalone section. `src/data/education.ts` is **formal education only**; the PDF pairs `CvEducation` (that array) with `CvCertifications` (the messages block). Putting a certification back into the education array prints it twice in the CV — under "Informal Education" and again under "Certifications" — which is exactly the bug that removed it.
 
 **Adding a portfolio item** means three coordinated edits: append to the `src/data/*.ts` array, then add the matching id block to *both* `en.json` and `id.json`.
 
@@ -70,6 +70,17 @@ Hand-written CSS with a design-token system — **no component library and no ut
 - `globals.css` `@import`s `src/app/styles/layout.css` (nav, drawer, footer, error/404 states) and `src/app/styles/sections.css` (per-section styles, banner-comment delimited).
 - Class naming is BEM-ish: `.skill-card__label`, `.section-band--alt`, plus shared primitives `.container-page`, `.panel-card`, `.chip`, `.section-title`, `.section-kicker`.
 - Fonts: Space Grotesk / JetBrains Mono via `next/font`, exposed as `--font-sans` / `--font-mono`.
+
+**The CSS you write is not the CSS that ships.** Turbopack runs Lightning CSS over `globals.css` and its imports on every build — it reorders declarations, rewrites colours (`transparent` → `#0000`), drops redundant gradient keywords, and **resolves vendor prefixes against its own targets**. That last one has already cost a shipped feature: `.site-nav` declared `backdrop-filter` followed by `-webkit-backdrop-filter`, and Lightning CSS collapsed the pair to the last declaration and emitted the WebKit alias alone. Blink never implemented that alias, so the navbar blur was dead in every Chromium browser while Safari looked fine — invisible in review, because the source was correct. The rule now declares the prefixed form **first**, which survives every target set.
+
+After touching any vendor-prefixed property, check the build output rather than the source:
+
+```powershell
+npx next build
+Select-String -Path .next\static\chunks\*.css -Pattern 'backdrop-filter'
+```
+
+Both spellings must be present. `@tailwindcss/postcss` is not the culprit here — it passes the pair through unchanged; the rewrite happens in Turbopack's own pass, so removing Tailwind would not make this go away.
 
 ### Theming
 

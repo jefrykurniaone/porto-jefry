@@ -5,10 +5,17 @@
     left: 0;
     right: 0;
     z-index: 100;
-    backdrop-filter: blur(16px);
+    /* Prefixed FIRST, standard second — this order is load-bearing. Lightning
+       CSS (Turbopack's CSS pass) collapses the pair to the LAST declaration and
+       then re-prefixes; with the standard property first it emits only
+       -webkit-backdrop-filter, which Blink never implemented, so the blur dies
+       in every Chromium browser while Safari keeps it. Verify after touching
+       this rule: the built CSS must contain BOTH spellings. */
     -webkit-backdrop-filter: blur(16px);
+    backdrop-filter: blur(16px);
     background: color-mix(in srgb, var(--bg) 80%, transparent);
     border-bottom: 1px solid var(--line);
+    transition: background 0.35s ease;
 }
 
 .site-nav__inner {
@@ -22,7 +29,15 @@
     gap: 16px;
 }
 
+/* 15px mono is a 20px-tall box, which cleared neither the 44px touch floor nor
+   the 24px WCAG 2.5.8 pointer floor — the one control on the page that cleared
+   nothing. Same trick as .site-nav__link: it grows inside the fixed-height
+   .site-nav__inner row, so the bar does not move. */
 .site-nav__logo {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 2px;
     font-family: var(--font-mono), monospace;
     font-weight: 600;
     font-size: 15px;
@@ -43,7 +58,15 @@
     justify-content: center;
 }
 
+/* 13.5px type is a 17px-tall pointer target. The padding lifts it past the
+   24px WCAG 2.5.8 floor without touching the bar: .site-nav__inner fixes the
+   row at --navbar-height and centres its children, so the links grow inside
+   that box rather than pushing it. */
 .site-nav__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 26px;
+    padding: 5px 0;
     font-size: 13.5px;
     font-weight: 500;
     text-decoration: none;
@@ -74,7 +97,9 @@
     align-items: center;
     justify-content: center;
     background: transparent;
-    border: 1px solid var(--line);
+    /* --line-control, not --line: this button has no fill, so its border is the
+       only thing marking it as interactive and has to clear 3:1 on its own. */
+    border: 1px solid var(--line-control);
     border-radius: 8px;
     color: var(--text);
     cursor: pointer;
@@ -151,9 +176,20 @@
     color: var(--text);
 }
 
+/* Inset, because an outward ring would be clipped by the capsule's
+   `overflow: hidden`. --accent-ink is correct on the inactive segment, which
+   sits on the panel field. */
 .lang-pill__btn:focus-visible {
     outline: 2px solid var(--accent-ink);
     outline-offset: -2px;
+}
+
+/* On the ACTIVE segment the ring lands on the accent fill itself, where
+   --accent-ink measures 1.4:1 (dark) and 1.1:1 (light) — invisible. The CTA ink
+   is the one colour guaranteed to clear contrast against that fill, because it
+   is already the segment's own text colour. */
+.lang-pill__btn[aria-pressed='true']:focus-visible {
+    outline-color: var(--cta-text);
 }
 
 /* ── Mobile drawer ── */
@@ -161,7 +197,7 @@
     position: fixed;
     inset: 0;
     z-index: 140;
-    background: rgba(0, 0, 0, 0.55);
+    background: var(--scrim);
 }
 
 .drawer-panel {
@@ -211,12 +247,48 @@
     text-transform: capitalize;
 }
 
+/* Column: the CV action takes the full width on top, and theme/language keep
+   their own row beneath it. Side by side, three controls in an 18rem drawer left
+   the CV button too narrow to read as the primary thing in the footer. */
 .drawer-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px;
+    border-top: 1px solid var(--line);
+}
+
+.drawer-footer__controls {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 16px;
-    border-top: 1px solid var(--line);
+}
+
+.drawer-cv {
+    align-items: stretch;
+}
+
+/* 44px minimum, like every other control on this phone-only surface. */
+.drawer-cv__btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 12px 18px;
+}
+
+/* The drawer is a phone-only surface, so its controls take the same 44px
+   minimum the drawer links already hold. The navbar keeps the compact 34px
+   icon button and 28px language pill the design system specifies. */
+.drawer-footer .icon-btn {
+    width: 44px;
+    height: 44px;
+}
+
+.drawer-footer .lang-pill {
+    height: 44px;
+}
+
+.drawer-footer .lang-pill__btn {
+    min-width: 46px;
 }
 
 /* ── Footer ── */
@@ -228,6 +300,14 @@
     font-size: 12px;
     color: var(--muted);
     line-height: 2;
+}
+
+/* Closes the page the way the hero opens it. Same prompt device, one step
+   quieter — this is a sign-off, not a heading. */
+.site-footer__prompt {
+    color: var(--accent-ink);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
 }
 
 /* ── Back to top ── */

@@ -1,29 +1,15 @@
 import { StyleSheet } from '@react-pdf/renderer';
+import { fontBody, fontBold } from './cv-fonts';
 
-// ─── Color Constants ──────────────────────────────────────────────────────────
-export const BLUE = '#2563EB';
-export const DARK = '#111827';
-export const MUTED = '#6B7280';
-export const BORDER = '#E5E7EB';
-export const LIGHT_BG = '#F9FAFB';
-
-// ─── Layout Constants ─────────────────────────────────────────────────────────
-export const PHOTO_SIZE = 68;
-
-// ─── Contact Constants (re-exported from shared data) ────────────────────────
-export {
-    CONTACT_EMAIL,
-    CONTACT_PHONE_INTL as CONTACT_PHONE,
-    CONTACT_LINKEDIN_URL as LINKEDIN_URL,
-    CONTACT_LINKEDIN_DISPLAY as LINKEDIN_DISPLAY,
-    CONTACT_GITHUB_URL as GITHUB_URL,
-    CONTACT_GITHUB_DISPLAY as GITHUB_DISPLAY,
-} from '@/data/contact';
+// Colours, PHOTO_SIZE, and the contact re-exports live in cv-tokens and are
+// re-exported here so every cv/* component keeps importing from one place.
+export * from './cv-tokens';
+import { ACCENT, DARK, MUTED, BORDER, LIGHT_BG, PHOTO_SIZE } from './cv-tokens';
 
 // ─── Styles ───────────────────────────────────────────────────────────────────
 export const styles = StyleSheet.create({
     page: {
-        fontFamily: 'Helvetica',
+        ...fontBody,
         fontSize: 9,
         color: DARK,
         backgroundColor: '#FFFFFF',
@@ -35,7 +21,10 @@ export const styles = StyleSheet.create({
     headerSection: {
         marginBottom: 14,
         borderBottomWidth: 2,
-        borderBottomColor: BLUE,
+        // The document's masthead rule and its one deliberate departure from
+        // the site's 1px-hairline-everywhere structure: on paper this is the
+        // only division strong enough to survive a laser printer.
+        borderBottomColor: ACCENT,
         paddingBottom: 10,
     },
     headerRow: {
@@ -55,22 +44,26 @@ export const styles = StyleSheet.create({
     },
     name: {
         fontSize: 22,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: DARK,
         marginBottom: 3,
     },
     titleText: {
         fontSize: 11,
-        color: BLUE,
-        fontFamily: 'Helvetica-Bold',
+        color: ACCENT,
+        ...fontBold,
         marginBottom: 6,
     },
     contactRow: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        // 8pt keeps all four items (370.24pt of Helvetica 8pt text + 6 gaps =
-        // 418.24pt) on one line inside headerLeft's 437.28pt of usable width.
-        gap: 8,
+        // The four items plus three separators measure 405.7pt in Space
+        // Grotesk 8pt against headerLeft's 437.28pt of usable width, so the six
+        // gaps have 31.5pt to share. 4pt spends 24 of it and keeps ~7.6pt of
+        // slack; the old 8pt (tuned for the narrower Helvetica) overflows and
+        // wraps the GitHub handle onto a second line. Re-measure if the face,
+        // the size, or any handle changes.
+        gap: 4,
     },
     contactItem: {
         fontSize: 8,
@@ -78,7 +71,7 @@ export const styles = StyleSheet.create({
     },
     contactLink: {
         fontSize: 8,
-        color: BLUE,
+        color: ACCENT,
         textDecoration: 'none',
     },
     // Section
@@ -87,8 +80,8 @@ export const styles = StyleSheet.create({
     },
     sectionTitle: {
         fontSize: 10,
-        fontFamily: 'Helvetica-Bold',
-        color: BLUE,
+        ...fontBold,
+        color: ACCENT,
         textTransform: 'uppercase',
         letterSpacing: 0.8,
         borderBottomWidth: 1,
@@ -114,7 +107,7 @@ export const styles = StyleSheet.create({
     },
     expRole: {
         fontSize: 10,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: DARK,
         flex: 1,
     },
@@ -125,7 +118,7 @@ export const styles = StyleSheet.create({
     },
     expCompany: {
         fontSize: 9,
-        color: BLUE,
+        color: ACCENT,
         marginBottom: 4,
     },
     bulletRow: {
@@ -172,7 +165,7 @@ export const styles = StyleSheet.create({
     },
     eduInstitution: {
         fontSize: 10,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: DARK,
         flex: 1,
     },
@@ -183,7 +176,7 @@ export const styles = StyleSheet.create({
     },
     eduDegree: {
         fontSize: 9,
-        color: BLUE,
+        color: ACCENT,
     },
     eduGpa: {
         fontSize: 8,
@@ -198,7 +191,7 @@ export const styles = StyleSheet.create({
     },
     skillCategory: {
         fontSize: 9,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: DARK,
         width: 112,
         flexShrink: 0,
@@ -229,6 +222,13 @@ export const styles = StyleSheet.create({
         marginBottom: 6,
     },
     // Projects
+    // The second group opens against the bottom of the first group's last card
+    // rather than against a section title, so it buys its own air: 14pt above
+    // the heading against subSectionTitle's 5pt below it, because a heading
+    // belongs to what follows it.
+    projectGroupNext: {
+        marginTop: 14,
+    },
     projectRow: {
         flexDirection: 'row',
         gap: 6,
@@ -244,7 +244,7 @@ export const styles = StyleSheet.create({
     },
     projectName: {
         fontSize: 9,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: DARK,
         marginBottom: 2,
     },
@@ -261,7 +261,7 @@ export const styles = StyleSheet.create({
     },
     projectLink: {
         fontSize: 7.5,
-        color: BLUE,
+        color: ACCENT,
         textDecoration: 'none',
         marginTop: 4,
     },
@@ -269,16 +269,9 @@ export const styles = StyleSheet.create({
     certItem: {
         marginBottom: 5,
     },
-    certName: {
-        fontSize: 10,
-        fontFamily: 'Helvetica-Bold',
-        color: DARK,
-    },
-    certMeta: {
-        fontSize: 8.5,
-        color: BLUE,
-        marginBottom: 2,
-    },
+    // The certification reuses eduInstitution / eduPeriod / eduDegree for its
+    // name, period, and issuer: it is a group inside Education now, and the row
+    // has to scan against the degree rows directly above it.
     certDesc: {
         fontSize: 8.5,
         color: DARK,
@@ -286,7 +279,7 @@ export const styles = StyleSheet.create({
     },
     subSectionTitle: {
         fontSize: 9,
-        fontFamily: 'Helvetica-Bold',
+        ...fontBold,
         color: MUTED,
         marginBottom: 5,
         textTransform: 'uppercase',

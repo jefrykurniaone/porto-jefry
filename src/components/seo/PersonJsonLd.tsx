@@ -11,9 +11,9 @@ import {
 
 const FULL_NAME = 'Jefry Kurniawan';
 
-/** Universities only — secondary school adds noise without adding signal. */
+/** Universities only — secondary school has no `major` and adds noise. */
 const alumniOf = education
-    .filter((item) => item.type === 'formal' && item.major)
+    .filter((item) => item.major)
     .map((item) => ({ '@type': 'CollegeOrUniversity', name: item.institution }));
 
 /** Derived from the skills data so the schema can't drift from the site. */

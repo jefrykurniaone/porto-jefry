@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'next-intl';
+import { scrollToTop } from '@/utils/scroll';
 
 export default function BackToTop() {
     const t = useTranslations('nav');
@@ -22,16 +23,12 @@ export default function BackToTop() {
         return () => observer.disconnect();
     }, []);
 
-    const handleClick = () => {
-        globalThis.scrollTo({ top: 0, behavior: 'smooth' });
-    };
-
     if (!visible) return null;
 
     return (
         <button
             type='button'
-            onClick={handleClick}
+            onClick={scrollToTop}
             aria-label={t('back_to_top')}
             className='back-to-top'>
             ↑

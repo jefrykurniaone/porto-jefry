@@ -15,7 +15,7 @@
     },
     "hero": {
         "greeting": "Halo, Saya",
-        "status_pill": "Terbuka untuk remote penuh waktu · freelance",
+        "status_pill": "Indonesia · UTC+7 · Remote, relokasi & freelance",
         "roles": [
             "Backend Developer",
             "Spesialis .NET",
@@ -27,10 +27,15 @@
         "title": "Backend Developer & Spesialis .NET",
         "subtitle": "Lebih dari lima tahun membangun API dan sistem dengan data besar untuk klien perbankan, asuransi, dan pemerintahan. Belakangan saya juga memakai React dan Next.js, serta bekerja dengan alur kerja AI agentic coding menggunakan Claude, GitHub Copilot, dan OpenCode.",
         "cta_work": "Lihat Karya Saya",
-        "cta_cv": "Unduh CV",
-        "cta_contact": "Hubungi Saya",
-        "downloading_cv": "Membuat CV...",
-        "cv_error": "Gagal membuat CV (HTTP {status}). Silakan coba lagi nanti."
+        "cta_contact": "Hubungi Saya"
+    },
+    "cv": {
+        "download": "Unduh CV",
+        "generating": "Membuat CV...",
+        "language_name": "Bahasa Indonesia",
+        "success": "Tersimpan {filename} — {size}, {language}.",
+        "error": "Gagal membuat CV (HTTP {status}). Silakan coba lagi nanti.",
+        "error_rate_limit": "Terlalu banyak permintaan CV dari alamat ini. Tunggu satu menit, lalu coba lagi."
     },
     "notFound": {
         "title": "Halaman Tidak Ditemukan",
@@ -39,15 +44,23 @@
     },
     "about": {
         "title": "Tentang Saya",
-        "description": "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari. Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode. Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar di berbagai zona waktu. Saat ini saya terutama mencari peran remote penuh waktu atau relokasi, termasuk dengan perusahaan di luar Indonesia, dan tetap menerima proyek freelance di samping itu.",
+        "description": [
+            "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari.",
+            "Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode.",
+            "Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak. Saya terbiasa bekerja dengan tim yang tersebar di berbagai zona waktu. Saat ini saya terutama mencari peran remote penuh waktu atau relokasi, termasuk dengan perusahaan di luar Indonesia, dan tetap menerima proyek freelance di samping itu."
+        ],
         "contact_email": "Email",
         "contact_phone": "Telepon",
         "contact_linkedin": "LinkedIn",
         "contact_github": "GitHub",
-        "term_status": "remote penuh waktu & relokasi · freelance welcome"
+        "term_whoami": "jefry.kurniawan · developer backend",
+        "term_stack": ".NET · C# · SQL Server · REST APIs",
+        "term_ai": "Claude · GitHub Copilot · OpenCode",
+        "term_status": "full-time remote & relocation · freelance welcome"
     },
     "experience": {
         "title": "Pengalaman Profesional",
+        "summary": "{roles} peran · sejak {since}",
         "present": "Sekarang",
         "show_more": "+ {count} lainnya",
         "show_less": "− sembunyikan",
@@ -119,20 +132,19 @@
     "education": {
         "title": "Pendidikan",
         "combined_title": "Pendidikan & Sertifikasi",
+        "summary": "{degrees} gelar · {certifications} sertifikasi",
         "formal": "Pendidikan Formal",
-        "informal": "Pendidikan Informal",
         "kind_formal": "Formal",
         "kind_cert": "Sertifikasi",
         "gpa": "IPK",
         "items": {
             "widyatama": { "degree": "S1 Sistem Informasi" },
-            "telkom": { "degree": "D3 Manajemen Informatika" },
-            "sman03": { "degree": "SMA" },
-            "coding_id": { "degree": "Kelas Programmer .NET — C#, ASP.NET MVC, Microsoft SQL Server" }
+            "telkom": { "degree": "D3 Manajemen Informatika" }
         }
     },
     "skills": {
         "title": "Keahlian Teknis",
+        "summary": "{categories} kategori · {production} produksi · {working} pengalaman terbatas",
         "ai_badge": "AI",
         "working_label": "pengalaman terbatas",
         "working_note": "Chip bergaris penuh sudah dipakai di produksi pada peran dan proyek di bawah. Chip bergaris putus-putus adalah pengalaman terbatas — dipakai di proyek pribadi atau sampingan, belum sampai ke produksi.",
@@ -146,14 +158,23 @@
         }
     },
     "projects": {
-        "title": "Pengalaman Proyek",
+        "title": "Karya Pilihan",
+        "summary": "{total} proyek · {live} dengan URL publik",
         "present": "Sekarang",
         "view_site": "Kunjungi situs",
         "view_source": "Lihat kode",
+        "group_live": "Karya publik yang bisa dibuka",
+        "group_live_note": "Situs yang bisa Anda buka sekarang juga. Pekerjaan sektor publik dan pemerintahan di Sitefinity dan Sitecore, ditambah portofolio ini yang kodenya terbuka.",
+        "group_archive": "Sistem internal",
+        "group_archive_note": "Sistem risiko operasional, perbankan, HR, dan manajemen acara untuk pemakaian internal. Tidak ada URL publik — tampilannya bukan milik saya untuk dipublikasikan.",
+        "archive_show": "+ tampilkan {count} proyek internal",
+        "archive_hide": "− sembunyikan proyek internal",
+        "cv_group_public": "Karya Publik (URL Aktif)",
+        "cv_group_internal": "Sistem Internal (Tanpa URL Publik)",
         "items": {
             "porto-jefry-portfolio": {
                 "company": "Proyek Pribadi",
-                "description": "Situs ini: portofolio dwibahasa (EN/ID) dengan Next.js App Router dan TypeScript, memakai sistem design token CSS buatan sendiri, CSP berbasis hash, dan CV PDF yang dibuat langsung dari konten yang sama. Dibangun dengan alur kerja AI-agentic. Kodenya terbuka."
+                "description": "Situs ini: portofolio dwibahasa (EN/ID) dengan Next.js App Router dan TypeScript, memakai sistem design token CSS buatan sendiri, CSP ketat dengan nonce per permintaan, dan CV PDF yang dibuat langsung dari konten yang sama. Dibangun dengan alur kerja AI-agentic. Kodenya terbuka."
             },
             "heritagesg-website-maintenance": {
                 "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."
@@ -213,7 +234,9 @@
         "description": "Saat ini saya terutama mencari peran remote penuh waktu dengan tim di luar negeri, dan terbuka untuk relokasi. Saya juga menerima proyek freelance. Entah Anda sedang merekrut, punya proyek tertentu, atau sekadar ingin ngobrol soal .NET atau AI, kirim saja pesan ke saya.",
         "email_label": "Kirim Email",
         "phone_label": "Hubungi",
-        "linkedin_label": "Profil LinkedIn"
+        "linkedin_label": "Profil LinkedIn",
+        "cv_label": "Bawa serta",
+        "cv_lead": "Dibuat langsung dari konten halaman ini — PDF mengikuti bahasa yang sedang Anda baca."
     },
     "footer": {
         "built_with": "Didesain & dibangun dengan alur kerja AI-agentic — Claude · Copilot · OpenCode.",
