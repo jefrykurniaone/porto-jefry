@@ -41,7 +41,7 @@ function saveBlob(blob: Blob, fileName: string): void {
  * failure made a working site look broken, so it gets its own message.
  */
 function messageKeyFor(err: unknown): { key: string; status: string } {
-    const match = err instanceof Error ? err.message.match(/HTTP (\d+)/) : null;
+    const match = err instanceof Error ? /HTTP (\d+)/.exec(err.message) : null;
     const status = match ? match[1] : 'unknown';
     return { key: status === '429' ? 'error_rate_limit' : 'error', status };
 }

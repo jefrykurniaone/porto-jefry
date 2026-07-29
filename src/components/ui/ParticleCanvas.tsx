@@ -5,6 +5,7 @@ import { REDUCED_MOTION_QUERY } from '@/utils/scroll';
 
 const PARTICLE_COUNT = 55;
 const MAX_LINK_DISTANCE = 0.14;
+const MAX_LINK_DISTANCE_SQ = MAX_LINK_DISTANCE * MAX_LINK_DISTANCE;
 const ACCENT_RGB = '157,123,255'; // --accent #9D7BFF
 // Beyond 2x the extra backing-store pixels are invisible but the fill cost is
 // real — a 3x phone would otherwise clear and repaint ~2.1M px every frame.
@@ -21,12 +22,18 @@ interface Point {
     vy: number;
 }
 
+// The field is decorative, so the randomness is not security-relevant — but
+// Math.random() is a Sonar hotspot (S2245) and one getRandomValues() call for
+// the whole field costs nothing at this point count.
 function createPoints(count: number): Point[] {
-    return Array.from({ length: count }, () => ({
-        x: Math.random(),
-        y: Math.random(),
-        vx: (Math.random() - 0.5) * 0.00045,
-        vy: (Math.random() - 0.5) * 0.00045,
+    const seed = new Uint32Array(count * 4);
+    crypto.getRandomValues(seed);
+    const unit = (i: number) => seed[i] / 2 ** 32;
+    return Array.from({ length: count }, (_, i) => ({
+        x: unit(i * 4),
+        y: unit(i * 4 + 1),
+        vx: (unit(i * 4 + 2) - 0.5) * 0.00045,
+        vy: (unit(i * 4 + 3) - 0.5) * 0.00045,
     }));
 }
 
@@ -46,9 +53,11 @@ function buildLinkPaths(pts: Point[], w: number, h: number): (Path2D | null)[] {
         for (let j = i + 1; j < pts.length; j++) {
             const dx = pts[i].x - pts[j].x;
             const dy = pts[i].y - pts[j].y;
-            const d = Math.sqrt(dx * dx + dy * dy);
-            if (d >= MAX_LINK_DISTANCE) continue;
-            const strength = 1 - d / MAX_LINK_DISTANCE;
+            // Compared squared, so the root is only taken for the pairs that
+            // actually link — most of the ~1.5k pairs per frame fail here.
+            const dSq = dx * dx + dy * dy;
+            if (dSq >= MAX_LINK_DISTANCE_SQ) continue;
+            const strength = 1 - Math.sqrt(dSq) / MAX_LINK_DISTANCE;
             const bucket = Math.min(ALPHA_BUCKETS - 1, Math.floor(strength * ALPHA_BUCKETS));
             const path = (buckets[bucket] ??= new Path2D());
             path.moveTo(pts[i].x * w, pts[i].y * h);
@@ -177,5 +186,14 @@ function useParticleNetwork(canvasRef: React.RefObject<HTMLCanvasElement | null>
 export default function ParticleCanvas({ className }: Readonly<{ className?: string }>) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     useParticleNetwork(canvasRef);
-    return <canvas ref={canvasRef} className={className} aria-hidden='true' />;
+    // aria-hidden rides the wrapper, not the canvas: the a11y rules count
+    // <canvas> as interactive, so both aria-hidden (S6825) and role
+    // ='presentation' (S6843) are rejected on it. Hiding the subtree from
+    // assistive tech is equivalent, and the wrapper keeps the caller's class so
+    // positioning is unchanged.
+    return (
+        <div className={className} aria-hidden='true'>
+            <canvas ref={canvasRef} className='particle-canvas__surface' />
+        </div>
+    );
 }
