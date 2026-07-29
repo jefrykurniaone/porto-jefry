@@ -114,7 +114,7 @@ function buildPdfHeaders(etag: string, locale: SupportedLocale): HeadersInit {
 
 /** Content-derived, so any change to the rendered document invalidates it. */
 function etagFor(bytes: Uint8Array): string {
-    return `"${createHash('sha1').update(bytes).digest('base64url')}"`;
+    return `"${createHash('sha256').update(bytes).digest('base64url')}"`;
 }
 
 function resolveLocale(rawLocale: string): SupportedLocale {

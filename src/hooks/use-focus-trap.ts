@@ -16,7 +16,10 @@ function handleFocusTrapKeyDown(
     if (e.key !== 'Tab' || focusable.length === 0) return;
 
     const first = focusable[0];
-    const last = focusable.at(-1);
+    // Asserted non-null: the length guard above rules out the empty case, and
+    // leaving it `HTMLElement | undefined` makes the activeElement comparison
+    // below read as a type mismatch (S3403).
+    const last = focusable.at(-1)!;
 
     if (e.shiftKey) {
         if (document.activeElement === first) {
