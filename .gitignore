@@ -45,3 +45,4 @@ _tmp_backup/
 # Claude Code local settings
 .impeccable/
 .github/hooks/impeccable.json
+.playwright-mcp/
