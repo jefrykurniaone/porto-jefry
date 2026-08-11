@@ -19,8 +19,9 @@ function ExperienceItem({ exp, bullets, presentLabel, locale }: Readonly<Experie
     // wrap={false} on the whole entry, not just the bullets: role, employer,
     // and responsibilities are one unit of evidence, and splitting them left
     // the role heading stranded at the foot of a page with its employer and
-    // bullets overleaf. The tallest entry is ~165pt against 770pt of page, so
-    // this only ever pushes an entry down — it cannot overflow.
+    // bullets overleaf. Even the tallest entry is a fraction of the 770pt page,
+    // so this only ever pushes an entry down — it cannot overflow. Added bullets
+    // and chips eat that margin: check the rendered PDF, do not assume.
     return (
         <View style={styles.expItem} wrap={false}>
             <View style={styles.expHeader}>

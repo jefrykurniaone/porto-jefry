@@ -1,5 +1,5 @@
 import { useTranslations, useLocale, useMessages } from 'next-intl';
-import { projects, hasPublicUrl, isOngoing, type ProjectItem } from '@/data/projects';
+import { partitionProjects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import SectionHeader from '@/components/ui/SectionHeader';
 import ProjectArchive, { type ProjectSummary } from './ProjectArchive';
@@ -151,10 +151,10 @@ function toProjectSummary(
 }
 
 /**
- * The data + messages join, resolved once and split into the three groups.
- * The partition is exhaustive and disjoint, and the order of the two checks
- * matters: this portfolio is ongoing too, but it has a public URL, so ruling
- * out `hasPublicUrl` first keeps it in the live group.
+ * The data + messages join, resolved once over the three groups. The split
+ * itself is `partitionProjects()`'s job, not this hook's — the PDF renders the
+ * same three groups and the two must not be able to disagree about which
+ * project belongs where.
  */
 function useResolvedProjects(): {
     live: ResolvedCard[];
@@ -172,16 +172,12 @@ function useResolvedProjects(): {
         description: (p) => resolveProjectField(messages, p.id, 'description'),
     };
 
+    const { live, progress, archive } = partitionProjects();
+
     return {
-        live: projects
-            .filter(hasPublicUrl)
-            .map((p) => toResolvedCard(p, localize)),
-        progress: projects
-            .filter((p) => !hasPublicUrl(p) && isOngoing(p))
-            .map((p) => toResolvedCard(p, localize)),
-        archive: projects
-            .filter((p) => !hasPublicUrl(p) && !isOngoing(p))
-            .map((p) => toProjectSummary(p, localize)),
+        live: live.map((p) => toResolvedCard(p, localize)),
+        progress: progress.map((p) => toResolvedCard(p, localize)),
+        archive: archive.map((p) => toProjectSummary(p, localize)),
     };
 }
 
@@ -240,7 +236,7 @@ export default function Projects() {
                     title={t('title')}
                     titleId='projects-title'
                     output={t('summary', {
-                        total: projects.length,
+                        total: live.length + progress.length + archive.length,
                         live: live.length,
                     })}
                 />

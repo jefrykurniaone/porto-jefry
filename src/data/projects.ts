@@ -256,3 +256,26 @@ export const projects: ProjectItem[] = [
         tech: ['C#', 'ASP.NET MVC (.NET Framework)', 'SQL Server'],
     },
 ];
+
+/**
+ * The three-way split both renderers show, composed once here rather than as
+ * three filter expressions each view writes for itself. The predicates above
+ * already live in this file so the site and the PDF cannot disagree about a
+ * single project; composing them separately in each renderer would put that
+ * same drift risk back one level up, where nothing fails loudly — a partition
+ * that stops being disjoint just prints a project twice, or drops it.
+ *
+ * Order matters: `isOngoing` is only asked once `hasPublicUrl` has been ruled
+ * out, so ongoing work that does have a live URL stays in the live group.
+ */
+export function partitionProjects(): {
+    live: ProjectItem[];
+    progress: ProjectItem[];
+    archive: ProjectItem[];
+} {
+    return {
+        live: projects.filter(hasPublicUrl),
+        progress: projects.filter((p) => !hasPublicUrl(p) && isOngoing(p)),
+        archive: projects.filter((p) => !hasPublicUrl(p) && !isOngoing(p)),
+    };
+}

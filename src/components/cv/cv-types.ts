@@ -36,7 +36,8 @@ export interface Messages {
          * The three group headings, PDF-only. The site says "Live public work" /
          * "In progress" / "Internal systems" over grids and a disclosure; on paper
          * every group is always visible and there is no note line under them, so
-         * each heading has to carry why its half has no links.
+         * each heading has to carry on its own why its group does or does not
+         * have links to follow.
          */
         cv_group_public: string;
         cv_group_progress: string;

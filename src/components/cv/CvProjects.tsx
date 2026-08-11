@@ -1,5 +1,5 @@
 import { View, Text, Link } from '@react-pdf/renderer';
-import { projects, hasPublicUrl, isOngoing, type ProjectItem } from '@/data/projects';
+import { partitionProjects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import { styles } from './cv-styles';
 import { type Messages } from './cv-types';
@@ -143,25 +143,22 @@ interface CvProjectsProps {
 }
 
 /**
- * The same three groups the site's Projects section renders, split on the same
- * two predicates and in the same order. On paper every group prints in full —
- * there is no disclosure to hide the internal half behind — so the headings
- * carry the distinction the site's grouping and note lines carry on screen.
- *
- * `hasPublicUrl` is ruled out before `isOngoing` is asked, so ongoing work that
- * does have a live URL stays in the public group.
+ * The same three groups the site's Projects section renders, taken from the
+ * same `partitionProjects()` so the two views cannot disagree about which
+ * project belongs where. On paper every group prints in full — there is no
+ * disclosure to hide the internal half behind — so the headings carry the
+ * distinction the site's grouping and note lines carry on screen.
  */
 export default function CvProjects({ messages, locale }: Readonly<CvProjectsProps>) {
     const { title, cv_group_public, cv_group_progress, cv_group_internal } = messages.projects;
-    const progress = projects.filter((project) => !hasPublicUrl(project) && isOngoing(project));
-    const internal = projects.filter((project) => !hasPublicUrl(project) && !isOngoing(project));
+    const { live, progress, archive: internal } = partitionProjects();
 
     return (
         <View style={styles.section}>
             <ProjectGroup
                 sectionTitle={title}
                 heading={cv_group_public}
-                items={projects.filter(hasPublicUrl)}
+                items={live}
                 messages={messages}
                 locale={locale}
             />
