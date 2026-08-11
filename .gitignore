@@ -46,3 +46,6 @@ _tmp_backup/
 .impeccable/
 .github/hooks/impeccable.json
 .playwright-mcp/
+
+# Local planning notes — never ship in a PR
+.plans/
