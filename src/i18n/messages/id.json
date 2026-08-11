@@ -73,7 +73,7 @@
                     "Menulis dan menyetel kueri SQL agar halaman tetap responsif meski datanya besar.",
                     "Menulis unit test dan memperbaiki bug dengan cepat agar situs tetap stabil di produksi.",
                     "Bekerja bersama desainer, tim konten, dan project manager untuk merilis fitur sesuai kebutuhan.",
-                    "Membangun front end headless-CMS dengan Next.js dan TypeScript, merender halaman dari content API menggunakan layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang."
+                    "Membangun front end Next.js dan TypeScript di atas Visor, headless CMS milik Xtremax, yang merender halaman dari content API-nya menggunakan layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang."
                 ]
             },
             "arkamaya-2024": {
@@ -184,7 +184,7 @@
                 "description": "Pekerjaan yang sedang berjalan untuk OSS v2.0, versi berikutnya dari platform Online Single Submission untuk perizinan berusaha di Indonesia, dikerjakan untuk Kementerian Investasi (BKPM). Dimulai pada Agustus 2026 dan tumpukan teknologinya masih dalam pembahasan."
             },
             "xtremax-website-revamp": {
-                "description": "Pembangunan ulang situs korporat Xtremax di atas headless CMS: front end Next.js App Router yang merender halaman dari content API, disusun dari layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang, dengan basis kode yang sama bisa dibangun sebagai aplikasi server-rendered maupun static export."
+                "description": "Pembangunan ulang situs korporat Xtremax di atas Visor, headless CMS milik Xtremax: front end Next.js App Router yang merender halaman dari content API, disusun dari layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang, dengan basis kode yang sama bisa dibangun sebagai aplikasi server-rendered maupun static export."
             },
             "heritagesg-website-maintenance": {
                 "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."

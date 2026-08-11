@@ -19,6 +19,7 @@ export const experiences: ExperienceItem[] = [
             '.NET',
             'Sitefinity',
             'Sitecore',
+            'Visor',
             'SQL Server',
             'RESTful API',
             'Next.js',

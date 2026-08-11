@@ -73,7 +73,7 @@
           "Write and tune SQL queries so pages stay responsive against large datasets.",
           "Write unit tests and fix defects quickly to keep sites stable in production.",
           "Work with designers, content teams, and project managers to ship features that match the brief.",
-          "Build a headless-CMS front end in Next.js and TypeScript, rendering pages from a content API using configurable layouts and reusable widgets."
+          "Build a Next.js and TypeScript front end on Visor, Xtremax's headless CMS, rendering pages from its content API using configurable layouts and reusable widgets."
         ]
       },
       "arkamaya-2024": {
@@ -184,7 +184,7 @@
         "description": "Ongoing work on OSS v2.0, the next version of Indonesia's Online Single Submission platform for business licensing, delivered for the Ministry of Investment (BKPM). The engagement started in August 2026 and the stack is still being settled."
       },
       "xtremax-website-revamp": {
-        "description": "A rebuild of the Xtremax corporate website on a headless CMS: a Next.js App Router front end that renders pages from a content API, assembled from configurable layouts and reusable widgets, with the same codebase building as either a server-rendered app or a static export."
+        "description": "A rebuild of the Xtremax corporate website on Visor, Xtremax's headless CMS: a Next.js App Router front end that renders pages from a content API, assembled from configurable layouts and reusable widgets, with the same codebase building as either a server-rendered app or a static export."
       },
       "heritagesg-website-maintenance": {
         "description": "Ongoing maintenance and feature work on the HeritageSG website, built on Sitecore CMS with C# and .NET Framework MVC."
