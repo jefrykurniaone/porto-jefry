@@ -72,7 +72,8 @@
                     "Menyesuaikan modul dan template Sitefinity sesuai struktur konten dan desain tiap klien.",
                     "Menulis dan menyetel kueri SQL agar halaman tetap responsif meski datanya besar.",
                     "Menulis unit test dan memperbaiki bug dengan cepat agar situs tetap stabil di produksi.",
-                    "Bekerja bersama desainer, tim konten, dan project manager untuk merilis fitur sesuai kebutuhan."
+                    "Bekerja bersama desainer, tim konten, dan project manager untuk merilis fitur sesuai kebutuhan.",
+                    "Membangun front end Next.js dan TypeScript di atas Visor, headless CMS milik Xtremax, yang merender halaman dari content API-nya menggunakan layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang."
                 ]
             },
             "arkamaya-2024": {
@@ -165,16 +166,25 @@
         "view_source": "Lihat kode",
         "group_live": "Karya publik yang bisa dibuka",
         "group_live_note": "Situs yang bisa Anda buka sekarang juga. Pekerjaan sektor publik dan pemerintahan di Sitefinity dan Sitecore, ditambah portofolio ini yang kodenya terbuka.",
+        "group_progress": "Sedang berjalan",
+        "group_progress_note": "Pekerjaan yang sedang saya kerjakan dan belum punya URL publik — masih dalam pengembangan, atau diserahkan ke sistem yang tampilannya bukan milik saya untuk dipublikasikan.",
         "group_archive": "Sistem internal",
         "group_archive_note": "Sistem risiko operasional, perbankan, HR, dan manajemen acara untuk pemakaian internal. Tidak ada URL publik — tampilannya bukan milik saya untuk dipublikasikan.",
         "archive_show": "+ tampilkan {count} proyek internal",
         "archive_hide": "− sembunyikan proyek internal",
         "cv_group_public": "Karya Publik (URL Aktif)",
+        "cv_group_progress": "Sedang Berjalan (Belum Ada URL Publik)",
         "cv_group_internal": "Sistem Internal (Tanpa URL Publik)",
         "items": {
             "porto-jefry-portfolio": {
                 "company": "Proyek Pribadi",
                 "description": "Situs ini: portofolio dwibahasa (EN/ID) dengan Next.js App Router dan TypeScript, memakai sistem design token CSS buatan sendiri, CSP ketat dengan nonce per permintaan, dan CV PDF yang dibuat langsung dari konten yang sama. Dibangun dengan alur kerja AI-agentic. Kodenya terbuka."
+            },
+            "bkpm-oss-v2-0": {
+                "description": "Pekerjaan yang sedang berjalan untuk OSS v2.0, versi berikutnya dari platform Online Single Submission untuk perizinan berusaha di Indonesia, dikerjakan untuk Kementerian Investasi (BKPM). Dimulai pada Agustus 2026 dan tumpukan teknologinya masih dalam pembahasan."
+            },
+            "xtremax-website-revamp": {
+                "description": "Pembangunan ulang situs korporat Xtremax di atas Visor, headless CMS milik Xtremax: front end Next.js App Router yang merender halaman dari content API, disusun dari layout yang bisa dikonfigurasi dan widget yang dapat dipakai ulang, dengan basis kode yang sama bisa dibangun sebagai aplikasi server-rendered maupun static export."
             },
             "heritagesg-website-maintenance": {
                 "description": "Pemeliharaan dan pengembangan fitur berkelanjutan untuk situs HeritageSG, dibangun di Sitecore CMS dengan C# dan .NET Framework MVC."

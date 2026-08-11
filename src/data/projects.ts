@@ -27,6 +27,19 @@ export function hasPublicUrl(project: ProjectItem): boolean {
     return Boolean(project.url ?? project.repoUrl);
 }
 
+/**
+ * Work that is still running and has nothing public to open yet. Derived from
+ * the period rather than a flag on the item, so it cannot contradict the date
+ * printed on the card: the day the period stops saying "Present", the project
+ * drops out of the in-progress group on its own.
+ *
+ * Only meaningful after `hasPublicUrl` has been ruled out — this portfolio is
+ * ongoing too, and it belongs with the live work.
+ */
+export function isOngoing(project: ProjectItem): boolean {
+    return project.period.trimEnd().endsWith('Present');
+}
+
 const TECH_SITEFINITY_DOTNET: string[] = [
     'Sitefinity',
     'C#',
@@ -68,10 +81,32 @@ export const projects: ProjectItem[] = [
         ],
     },
     {
+        id: 'bkpm-oss-v2-0',
+        name: 'BKPM OSS v2.0',
+        company: 'PT Xtremax Teknologi Indonesia',
+        period: 'Aug 2026 – Present',
+        tech: [],
+    },
+    {
+        id: 'xtremax-website-revamp',
+        name: 'Xtremax Website Revamp',
+        company: 'PT Xtremax Teknologi Indonesia',
+        period: 'May 2026 – Present',
+        tech: [
+            'Next.js',
+            'React',
+            'TypeScript',
+            'Directus',
+            'Bootstrap',
+            'Sass',
+            'Lit',
+        ],
+    },
+    {
         id: 'heritagesg-website-maintenance',
         name: 'HeritageSG Website Maintenance',
         company: 'PT Xtremax Teknologi Indonesia',
-        period: 'Mar 2026 – Present',
+        period: 'Mar 2026 – Jul 2026',
         url: 'https://www.heritage.sg',
         tech: [
             'Sitecore',
@@ -87,7 +122,7 @@ export const projects: ProjectItem[] = [
         id: 'yellow-ribbon-singapore-website',
         name: 'Yellow Ribbon Singapore Website',
         company: 'PT Xtremax Teknologi Indonesia',
-        period: 'Jul 2025 – Present',
+        period: 'Jul 2025 – Jul 2026',
         url: 'https://www.yellowribbon.gov.sg',
         tech: TECH_SITEFINITY_DOTNET,
     },
@@ -221,3 +256,26 @@ export const projects: ProjectItem[] = [
         tech: ['C#', 'ASP.NET MVC (.NET Framework)', 'SQL Server'],
     },
 ];
+
+/**
+ * The three-way split both renderers show, composed once here rather than as
+ * three filter expressions each view writes for itself. The predicates above
+ * already live in this file so the site and the PDF cannot disagree about a
+ * single project; composing them separately in each renderer would put that
+ * same drift risk back one level up, where nothing fails loudly — a partition
+ * that stops being disjoint just prints a project twice, or drops it.
+ *
+ * Order matters: `isOngoing` is only asked once `hasPublicUrl` has been ruled
+ * out, so ongoing work that does have a live URL stays in the live group.
+ */
+export function partitionProjects(): {
+    live: ProjectItem[];
+    progress: ProjectItem[];
+    archive: ProjectItem[];
+} {
+    return {
+        live: projects.filter(hasPublicUrl),
+        progress: projects.filter((p) => !hasPublicUrl(p) && isOngoing(p)),
+        archive: projects.filter((p) => !hasPublicUrl(p) && !isOngoing(p)),
+    };
+}

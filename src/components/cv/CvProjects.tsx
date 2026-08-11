@@ -1,5 +1,5 @@
 import { View, Text, Link } from '@react-pdf/renderer';
-import { projects, hasPublicUrl, type ProjectItem } from '@/data/projects';
+import { partitionProjects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import { styles } from './cv-styles';
 import { type Messages } from './cv-types';
@@ -38,13 +38,15 @@ function ProjectCard({
             {description && description.length > 0 && (
                 <Text style={styles.projectDesc}>{description}</Text>
             )}
-            <View style={styles.tagRow}>
-                {proj.tech.map((tech) => (
-                    <Text key={`${proj.name}-${tech}`} style={styles.tag}>
-                        {tech}
-                    </Text>
-                ))}
-            </View>
+            {proj.tech.length > 0 && (
+                <View style={styles.tagRow}>
+                    {proj.tech.map((tech) => (
+                        <Text key={`${proj.name}-${tech}`} style={styles.tag}>
+                            {tech}
+                        </Text>
+                    ))}
+                </View>
+            )}
             {[proj.url, proj.repoUrl].filter(Boolean).map((href) => (
                 <Link key={href} src={href as string} style={styles.projectLink}>
                     {displayUrl(href as string)}
@@ -141,24 +143,33 @@ interface CvProjectsProps {
 }
 
 /**
- * The same two groups the site's Projects section renders, split on the same
- * `hasPublicUrl` predicate. On paper both groups print in full — there is no
+ * The same three groups the site's Projects section renders, taken from the
+ * same `partitionProjects()` so the two views cannot disagree about which
+ * project belongs where. On paper every group prints in full — there is no
  * disclosure to hide the internal half behind — so the headings carry the
  * distinction the site's grouping and note lines carry on screen.
  */
 export default function CvProjects({ messages, locale }: Readonly<CvProjectsProps>) {
-    const { title, cv_group_public, cv_group_internal } = messages.projects;
-    const internal = projects.filter((project) => !hasPublicUrl(project));
+    const { title, cv_group_public, cv_group_progress, cv_group_internal } = messages.projects;
+    const { live, progress, archive: internal } = partitionProjects();
 
     return (
         <View style={styles.section}>
             <ProjectGroup
                 sectionTitle={title}
                 heading={cv_group_public}
-                items={projects.filter(hasPublicUrl)}
+                items={live}
                 messages={messages}
                 locale={locale}
             />
+            {progress.length > 0 && (
+                <ProjectGroup
+                    heading={cv_group_progress}
+                    items={progress}
+                    messages={messages}
+                    locale={locale}
+                />
+            )}
             {internal.length > 0 && (
                 <ProjectGroup
                     heading={cv_group_internal}

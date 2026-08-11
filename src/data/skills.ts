@@ -45,7 +45,7 @@ export const skillCategories: SkillCategory[] = [
     },
     {
         category: 'cms_platforms',
-        skills: ['Sitefinity', 'Sitecore'],
+        skills: ['Sitefinity', 'Sitecore', 'Visor'],
     },
     {
         category: 'tools_devops',
