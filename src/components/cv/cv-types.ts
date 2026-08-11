@@ -33,12 +33,13 @@ export interface Messages {
         title: string;
         present: string;
         /**
-         * The two group headings, PDF-only. The site says "Live public work" /
-         * "Internal systems" over a grid and a disclosure; on paper both groups
-         * are always visible and there is no note line under them, so the
-         * heading itself has to carry why one half has no links.
+         * The three group headings, PDF-only. The site says "Live public work" /
+         * "In progress" / "Internal systems" over grids and a disclosure; on paper
+         * every group is always visible and there is no note line under them, so
+         * each heading has to carry why its half has no links.
          */
         cv_group_public: string;
+        cv_group_progress: string;
         cv_group_internal: string;
         items: Record<string, { description: string; company?: string }>;
     };

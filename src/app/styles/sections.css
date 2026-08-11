@@ -647,6 +647,16 @@
     border-radius: 6px;
 }
 
+/* Same separator the archive brings with it, factored out for the group that now
+   sits between the live grid and the disclosure. Not merged into a shared
+   selector with .project-archive: that rule carries its own comment about why the
+   archive is collapsed, and folding the two would strand it. */
+.project-group--next {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+}
+
 /* Collapsed by default: these nine have no link, no screenshot and nothing a
    reader can check, so at card weight they buried the six that do. Two dense
    columns when opened — enough to show the domain range without spending

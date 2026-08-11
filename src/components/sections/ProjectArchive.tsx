@@ -26,11 +26,13 @@ function ArchiveRow({ item }: Readonly<{ item: ProjectSummary }>) {
                 <p className='card-period'>{item.period}</p>
             </div>
             <p className='card-eyebrow'>{item.company}</p>
-            <div className='chip-row project-card__tech'>
-                {item.tech.map((tech) => (
-                    <span key={tech} className='chip'>{tech}</span>
-                ))}
-            </div>
+            {item.tech.length > 0 && (
+                <div className='chip-row project-card__tech'>
+                    {item.tech.map((tech) => (
+                        <span key={tech} className='chip'>{tech}</span>
+                    ))}
+                </div>
+            )}
         </li>
     );
 }
