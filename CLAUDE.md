@@ -62,6 +62,8 @@ A second renderer over the same content. `src/components/cv/` mirrors the sectio
 - Rendered PDF cached per locale at module level; rate limit 5 req/IP/60s via an in-memory Map (both reset on cold start — accepted risk, documented inline in the route).
 - `vercel.json` caps the function at `maxDuration: 10`.
 
+The endpoint has already broken once in a way that only showed up in production: Next.js 16.2's Turbopack production build traced the `sharp` native addon into the function bundle but not the sibling package carrying the `libvips` shared object that addon dynamically links against, so the module failed to load the first time the route was invoked. The general signature to watch for is a successful build followed by a runtime dynamic-link failure naming a versioned shared-object file, raised from Next's own external-module loader — that pairing means a native package's sibling shared library did not reach the deployed function bundle, not that the dependency is missing from the lockfile (the lockfile carried the correct platform packages the whole time here). It is invisible to local development, to the build, and to CI; only a real deployment surfaces it. Next.js fixed this in 16.3.0 ("Sharp@0.35 tracing fixed", vercel/next.js#94845); the 16.2 line ends at 16.2.12 with no backport, so recovery is an upgrade, not a config change.
+
 ### Styling
 
 Hand-written CSS with a design-token system — **no component library and no utility framework in practice**. `tailwindcss` + `@tailwindcss/postcss` are installed and wired in `postcss.config.mjs`/`tailwind.config.ts`, but nothing in `src/` imports Tailwind or uses its classes. Don't start using Tailwind utilities without a deliberate decision.
@@ -110,7 +112,7 @@ This replaced an inline `THEME_INIT_SCRIPT` authorized by a sha256 CSP hash. Do 
 
 `package.json` `overrides` exists to hold `npm audit` at zero. Beyond the `@emnapi/*` pins:
 
-- `postcss: "$postcss"` and `sharp: "$sharp"` hoist the copies nested under `next` (which pins older ones) up to the root versions.
+- `postcss: "$postcss"` and `sharp: "$sharp"` hoist the copies nested under `next` (which pins older ones) up to the root versions. `sharp` must never be downgraded below 0.35.0 — every version below that inherits four high-severity `libvips` advisories, and downgrading to 0.34.4 is the workaround most widely circulated for the native-module tracing failure described under PDF CV above; it does work, but at the cost of reopening those advisories. `next@16.3.4` itself now declares `sharp: ^0.35.4` as an optional dependency, so the floor is enforced upstream as well as here.
 - `brace-expansion: "5.0.8"` — the DoS advisory covers every version `<=5.0.7`, and there is no backport to the 1.x line that `minimatch@3` would normally use.
 - `minimatch: "^10.2.5"` — forced by the line above. `brace-expansion@5` exports `{ expand }` instead of a callable default, so `minimatch@3` throws `expand is not a function` against it; v10 is the version that consumes v5 natively.
 
