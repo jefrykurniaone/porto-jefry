@@ -134,3 +134,17 @@ ESLint is pinned to 9, not 10: `eslint-plugin-react@7.37.5` peer-caps at `^9.7` 
 - Feature branches (`feat/`, `fix/`, `chore/`, `hotfix/`), Conventional Commits, no direct push to `main`. Work lands via squash-merged PRs.
 - After a PR merges, delete both remotes: `git push origin --delete <branch>`, then `git branch -D <branch>` (squash-merge means `-d` usually refuses).
 - `README.md` is unmodified create-next-app boilerplate — it is not a source of truth about this project.
+
+## Agent skills
+
+### Issue tracker
+
+Issues live in GitHub Issues on `jefrykurniaone/porto-jefry`, driven with the `gh` CLI. See `docs/agents/issue-tracker.md`.
+
+### Triage labels
+
+The five canonical triage roles, each label string equal to its role name. See `docs/agents/triage-labels.md`.
+
+### Domain docs
+
+Single-context: one `CONTEXT.md` plus `docs/adr/` at the repo root, both created lazily. See `docs/agents/domain.md`.
