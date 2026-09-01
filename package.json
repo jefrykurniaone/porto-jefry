@@ -39,9 +39,6 @@
         "@emnapi/core": "1.11.0",
         "@emnapi/runtime": "1.11.0",
         "@emnapi/wasi-threads": "1.2.2",
-        "postcss": "$postcss",
-        "sharp": "$sharp",
-        "brace-expansion": "5.0.8",
-        "minimatch": "^10.2.5"
+        "postcss": "$postcss"
     }
 }
