@@ -14,7 +14,6 @@
     "close_menu": "Close menu"
   },
   "hero": {
-    "greeting": "Hi, I'm",
     "status_pill": "Indonesia · UTC+7 · Remote, relocation & freelance",
     "roles": [
       "Backend Developer",
@@ -27,7 +26,7 @@
     "title": "Backend Developer & .NET Specialist",
     "subtitle": "Over five years building APIs and data-heavy systems for banks, insurers, and government clients. Lately I've added React and Next.js, and work in an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode.",
     "cta_work": "View My Work",
-    "cta_contact": "Contact Me"
+    "scroll_hint": "Scroll"
   },
   "cv": {
     "download": "Download CV",
@@ -44,6 +43,7 @@
   },
   "about": {
     "title": "About Me",
+    "statement": "I like <mark>boring</mark> code.",
     "description": [
       "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day.",
       "At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment. Outside .NET, I build full-stack apps with React and Next.js, and I lean on an AI agentic coding workflow with Claude, GitHub Copilot, and OpenCode to ship faster without losing track of the code.",
@@ -51,12 +51,7 @@
     ],
     "contact_email": "Email",
     "contact_phone": "Phone",
-    "contact_linkedin": "LinkedIn",
-    "contact_github": "GitHub",
-    "term_whoami": "jefry.kurniawan · backend developer",
-    "term_stack": ".NET · C# · SQL Server · REST APIs",
-    "term_ai": "Claude · GitHub Copilot · OpenCode",
-    "term_status": "full-time remote & relocation · freelance welcome"
+    "contact_linkedin": "LinkedIn"
   },
   "experience": {
     "title": "Professional Experience",

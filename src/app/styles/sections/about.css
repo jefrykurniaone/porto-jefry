@@ -1,130 +1,103 @@
-/* ── About ── */
-/* min(320px, 100%) rather than a bare 320px: a 360px phone gives this grid a
-   312px content box, and a fixed 320px track would overflow it by 8px — which
-   the html/body `overflow-x: clip` guard then silently cuts off instead of
-   scrolling. The min() lets the track collapse to the container below 368px. */
-/* `center`, not `start`: the terminal is much shorter than the prose column, and
-   pinning it to the top dumped the whole difference into one void beneath the
-   section's signature component. Centring splits that space above and below it,
-   which reads as breathing room rather than as a gap. Single-column (wrapped)
-   rows hold one item each, so this is a no-op below 368px. */
-.about-grid {
+/* ── Manifesto ──
+   The About section inside the hero stage: a kicker, one oversized statement,
+   then the About paragraphs as Reading text beside a black-and-white photo. On
+   the page theme's own colours, not the hero's. */
+.manifesto {
+    position: relative;
+    padding: clamp(72px, 12vh, 128px) clamp(16px, 5vw, 72px);
+    background: var(--bg);
+    color: var(--text);
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+.manifesto__inner {
+    max-width: 1100px;
+    margin-inline: auto;
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
-    gap: 44px;
-    align-items: center;
+    justify-items: center;
+    gap: clamp(32px, 6vh, 64px);
+}
+
+.manifesto__opener {
+    display: grid;
+    justify-items: center;
+    gap: 28px;
+    text-align: center;
+}
+
+/* A Label: --muted clears 4.5:1 on --bg in both themes (6.8:1 dark, 6.2:1
+   light). The section's name, and its heading for assistive technology. */
+.manifesto__kicker {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.manifesto__statement {
+    font-size: var(--fs-statement);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+    text-wrap: balance;
+}
+
+/* inline-block keeps the highlight inside its own line box: the line grows to
+   hold it. As a plain inline its background is the font's full content area,
+   taller than the 1.1 line height, and paints over the line above. Ink on the
+   accent fill uses --on-accent; the fill is the raw --accent. */
+.manifesto__mark {
+    display: inline-block;
+    line-height: 1;
+    padding: 0.02em 0.12em 0.06em;
+    border-radius: 4px;
+    background: var(--accent);
+    color: var(--on-accent);
+}
+
+.manifesto__body {
+    width: 100%;
+    max-width: 880px;
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 40px;
+    align-items: start;
+}
+
+.manifesto__photo {
+    display: block;
+    width: 180px;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: grayscale(1) contrast(1.05);
 }
 
 /* Gap rather than paragraph margins: `p { margin: 0 }` in globals.css is the
-   site-wide reset, and re-adding a margin here would be the one place prose
-   spacing came from the element instead of its container. */
-.about-prose {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+   site-wide reset. */
+.manifesto__prose {
+    display: grid;
+    gap: 16px;
+    max-width: 62ch;
 }
 
-.about-desc {
-    font-size: 15.5px;
-    line-height: 1.85;
-    color: var(--muted);
-    margin: 0;
+/* Reading text: --reading is 11.4:1 on --bg dark and 10.1:1 light. */
+.manifesto__para {
+    font-size: var(--fs-reading);
+    line-height: 1.75;
+    color: var(--reading);
 }
 
-/* Sits below .about-grid rather than inside its first column: the four chips
-   need ~860px to stay on one line, and a single grid column is only ~504px
-   of the 1052px content width. Still wraps on narrow viewports. */
-.contact-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 44px;
-}
+@media (max-width: 700px) {
+    .manifesto__body {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
 
-.contact-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    font-family: var(--font-mono), monospace;
-    font-size: 12.5px;
-    text-decoration: none;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 9px 14px;
-    color: var(--text);
-    white-space: nowrap;
-    transition: border-color 0.15s ease;
-}
-
-.contact-chip:hover {
-    border-color: var(--accent-ink);
-    color: var(--text);
-}
-
-.contact-chip__icon {
-    color: var(--accent-ink);
-    display: inline-flex;
-}
-
-.terminal {
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    background: var(--panel);
-    overflow: hidden;
-    box-shadow: 0 20px 60px color-mix(in srgb, black 25%, transparent), 0 0 40px var(--glow);
-    font-family: var(--font-mono), monospace;
-    font-size: 13px;
-    transition: background 0.35s ease;
-}
-
-.terminal__bar {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 12px 16px;
-    border-bottom: 1px solid var(--line);
-}
-
-.terminal__dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--muted) 40%, transparent);
-}
-
-.terminal__dot--accent {
-    background: color-mix(in srgb, var(--accent) 70%, transparent);
-}
-
-.terminal__title {
-    margin-left: 10px;
-    font-size: 11.5px;
-    color: var(--muted);
-    letter-spacing: 0.05em;
-}
-
-.terminal__body {
-    padding: 20px 22px;
-    line-height: 2.05;
-}
-
-.terminal__prompt {
-    color: var(--accent-ink);
-}
-
-.terminal__cmd {
-    color: var(--text);
-}
-
-.terminal__out {
-    color: var(--muted);
-}
-
-.terminal__ok {
-    color: var(--ok);
-}
-
-.terminal__cursor {
-    color: var(--accent-ink);
-    animation: blinkCursor 1s step-end infinite;
+    .manifesto__photo {
+        width: 132px;
+    }
 }
