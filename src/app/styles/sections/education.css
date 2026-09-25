@@ -1,0 +1,31 @@
+/* ── Education & certification ── */
+.edu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.edu-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.edu-card__institution {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.edu-card__degree {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0;
+}
+
+.edu-card__gpa {
+    font-family: var(--font-mono), monospace;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin: 0;
+}

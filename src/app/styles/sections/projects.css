@@ -1,0 +1,167 @@
+/* ── Projects ── */
+/* Group headings. The section splits into work a stranger can open and work
+   that has no public URL, so each group states which it is before its cards. */
+.project-group__title {
+    font-size: 19px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+}
+
+.project-group__note {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    max-width: 68ch;
+    margin: 0 0 24px;
+}
+
+/* See .about-grid — min() keeps the track from overflowing a sub-368px viewport. */
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+    gap: 18px;
+}
+
+.project-card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.project-card__name {
+    font-size: 16.5px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: -0.01em;
+    line-height: 1.35;
+}
+
+.project-card__desc {
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: var(--muted);
+    margin: 0;
+    flex: 1;
+}
+
+.project-card__tech {
+    margin-top: 6px;
+    gap: 7px;
+}
+
+.project-card__tech .chip {
+    font-size: 10.5px;
+    padding: 3px 8px;
+}
+
+/* Live-site / source links. Only rendered for projects that have a public URL,
+   so the row sits after the tech chips rather than in the card's fixed header
+   block. Colour comes from the global `a` rule (--accent-ink), which is the
+   AA-contrast-safe accent in both themes — do not hardcode --accent here. */
+.project-card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.project-card__link {
+    position: relative;
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease, opacity 0.2s ease;
+}
+
+/* Vertical-only pointer-target expansion: 18px of text becomes a 34px target
+   without moving the link or reaching across the 16px gap to its neighbour. */
+.project-card__link::after {
+    content: '';
+    position: absolute;
+    inset: -8px 0;
+}
+
+.project-card__link:hover {
+    border-bottom-color: currentColor;
+}
+
+.project-card__link:focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 3px;
+    border-radius: 6px;
+}
+
+/* Same separator the archive brings with it, factored out for the group that now
+   sits between the live grid and the disclosure. Not merged into a shared
+   selector with .project-archive: that rule carries its own comment about why the
+   archive is collapsed, and folding the two would strand it. */
+.project-group--next {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+}
+
+/* Collapsed by default: these nine have no link, no screenshot and nothing a
+   reader can check, so at card weight they buried the six that do. Two dense
+   columns when opened — enough to show the domain range without spending
+   another 3,000px of phone scroll on it. */
+.project-archive {
+    margin-top: 56px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+}
+
+/* Overrides .exp-more-btn's negative top margin, which exists to absorb its own
+   padding inside a bullet list and would pull this toggle into the note above.
+   Compound selector: .exp-more-btn lives in globals.css, after every section
+   import, so a single class here would lose on source order. */
+.exp-more-btn.project-archive__toggle {
+    margin: 0;
+}
+
+.project-archive__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+    gap: 0 32px;
+    margin: 16px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.project-archive__row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 18px 0;
+    border-top: 1px solid var(--line);
+}
+
+/* Deliberately `nowrap`. Wrapping put the period on its own line whenever the
+   name was long, and `space-between` then left-aligned it — so the same list
+   printed the date on the right for "RBBR Super Bank" and on the left, a line
+   down, for "Sustainability TAM (Event Management)". The period is a rail, like
+   `.exp-period`: it holds the right edge on every row and the name wraps
+   underneath itself instead. */
+.project-archive__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 16px;
+}
+
+/* min-width: 0 is what lets a long name wrap. A flex item's default
+   `min-width: auto` floors it at its longest word, which is what pushed the
+   period out of the row in the first place. */
+.project-archive__name {
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0;
+    min-width: 0;
+}
+
+.project-archive__head .card-period {
+    flex-shrink: 0;
+}
