@@ -245,12 +245,9 @@
     color: var(--hero-on-accent);
 }
 
-/* Each selector here must match the specificity of the rule that declares
-   the transition it is meant to kill, or it loses the tie and the property
-   keeps easing under reduced motion. .site-nav__link.site-nav__link--contact
-   (two classes) is the one that previously did not: the single-class
-   .site-nav__link--contact it used to list is less specific than
-   .site-nav__link.site-nav__link--contact above, so it never won. */
+/* Each selector here repeats the selector of the rule whose transition it
+   cancels, so it matches that rule's specificity. A less specific selector
+   loses the tie and the property keeps easing under reduced motion. */
 @media (prefers-reduced-motion: reduce) {
     .site-nav,
     .site-nav__logo,
