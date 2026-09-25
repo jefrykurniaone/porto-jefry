@@ -1,0 +1,644 @@
+<title>JK Hero Prototype</title>
+<!-- PROTOTYPE, throwaway. Answers: which hero color-block scheme, which neutral accent, and which manifesto line.
+     The dot field here is a 2D canvas stand-in; the real build uses WebGL2. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;700&display=swap">
+<style>
+:root {
+    color-scheme: light;
+    --acc-d: #cbb892;
+    --acc-l: #6f5c3a;
+    --bg: #f4f3ef;
+    --text: #151515;
+    --muted: #5d5b56;
+    --body: #3d3b37;
+    --line: #d8d5cd;
+    --ok: #0d8055;
+    --dot: #aaa79f;
+    --accent: var(--acc-l);
+    --on-accent: #ffffff;
+
+    --hero-bg: #1f1f21;
+    --hero-ink: #efeee9;
+    --hero-muted: #a3a19b;
+    --hero-acc: var(--acc-d);
+    --hero-on-acc: #0d0d0e;
+    --hero-ok: #3ddc97;
+    --hero-letter: color-mix(in oklab, var(--hero-acc) 42%, var(--hero-bg));
+
+    --sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', Consolas, monospace;
+    --gutter: clamp(16px, 5vw, 72px);
+    --nav-h: 76px;
+    --marquee-h: 52px;
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --bg: #0d0d0e; --text: #ecebe7; --muted: #9b9993; --body: #c8c6bf; --line: #28282b;
+        --ok: #3ddc97; --dot: #6d6b66; --accent: var(--acc-d); --on-accent: #0d0d0e;
+    }
+}
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0d0d0e; --text: #ecebe7; --muted: #9b9993; --body: #c8c6bf; --line: #28282b;
+    --ok: #3ddc97; --dot: #6d6b66; --accent: var(--acc-d); --on-accent: #0d0d0e;
+}
+/* The prototype's own site-theme switch wins over the viewer's theme. */
+:root[data-site="light"] {
+    color-scheme: light;
+    --bg: #f4f3ef; --text: #151515; --muted: #5d5b56; --body: #3d3b37; --line: #d8d5cd;
+    --ok: #0d8055; --dot: #aaa79f; --accent: var(--acc-l); --on-accent: #ffffff;
+}
+:root[data-site="dark"] {
+    color-scheme: dark;
+    --bg: #0d0d0e; --text: #ecebe7; --muted: #9b9993; --body: #c8c6bf; --line: #28282b;
+    --ok: #3ddc97; --dot: #6d6b66; --accent: var(--acc-d); --on-accent: #0d0d0e;
+}
+:root[data-accent="slate"] { --acc-d: #8fa4b9; --acc-l: #3e5467; }
+:root[data-accent="olive"] { --acc-d: #a9ad80; --acc-l: #52573a; }
+
+/* Scheme A: the hero is the inverse of the site theme. Scheme B keeps the charcoal defaults above. */
+:root[data-scheme="A"][data-site="dark"] {
+    --hero-bg: #e7e5df; --hero-ink: #111112; --hero-muted: #4d4b46;
+    --hero-acc: var(--acc-l); --hero-on-acc: #ffffff; --hero-ok: #0d8055;
+}
+:root[data-scheme="A"][data-site="light"] {
+    --hero-bg: #111113; --hero-ink: #efeee9; --hero-muted: #a3a19b;
+    --hero-acc: var(--acc-d); --hero-on-acc: #0d0d0e; --hero-ok: #3ddc97;
+}
+
+* { box-sizing: border-box; }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- header ---------- */
+.nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    padding: calc(18px + env(safe-area-inset-top, 0px)) var(--gutter) 18px;
+    color: var(--text);
+    transition: color .35s ease;
+}
+.nav.on-hero { color: var(--hero-ink); }
+.nav__logo { font-weight: 700; font-size: 1.35rem; letter-spacing: -0.06em; text-decoration: none; }
+.nav__links { display: flex; align-items: center; gap: clamp(12px, 2.4vw, 28px); }
+.nav__links a { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; text-decoration: none; }
+.nav__cta {
+    padding: 9px 14px; border-radius: 6px;
+    background: var(--accent); color: var(--on-accent);
+    transition: background-color .35s ease, color .35s ease;
+}
+.nav.on-hero .nav__cta { background: var(--hero-acc); color: var(--hero-on-acc); }
+@media (max-width: 560px) { .nav__links .nav__hide-sm { display: none; } }
+
+/* ---------- hero stage ---------- */
+/* The hero's height comes from the revealed manifesto (in flow); the intro screen is overlaid on its first viewport. */
+.hero {
+    position: relative; overflow: hidden;
+    background: var(--hero-bg); color: var(--hero-ink);
+    --screen: max(100vh, 560px);
+}
+/* Letters and copy get their own grid cells so they never sit on top of each other. */
+.hero__grid {
+    position: absolute; top: 0; left: 0; right: 0; height: var(--screen); z-index: 2;
+    display: grid; grid-template-rows: minmax(0, 1fr) auto; gap: 24px;
+    padding: var(--nav-h) var(--gutter) calc(var(--marquee-h) + 28px);
+}
+/* "JK" stays centred in its own row; the copy sits in the row below it, so the two never overlap. */
+.hero__letters {
+    order: 1; min-height: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: min(58vw, 50vh); line-height: .8; letter-spacing: -0.07em;
+    color: var(--hero-letter);
+    pointer-events: none; user-select: none;
+}
+.hero__letters span { display: inline-block; will-change: transform; }
+.hero__content { order: 2; display: grid; gap: 18px; }
+.hero__id, .hero__actions { display: grid; gap: 12px; }
+@media (min-width: 900px) {
+    .hero__content { grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 32px; }
+    .hero__actions { justify-items: end; }
+}
+.pill {
+    display: inline-flex; align-items: center; gap: 10px; width: fit-content; margin: 0;
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .08em; color: var(--hero-muted);
+}
+.pill__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--hero-ok); }
+.hero h1 {
+    margin: 0; font-size: clamp(2.4rem, 5.4vw, 5.6rem); line-height: .95; letter-spacing: -0.035em;
+    text-wrap: balance;
+}
+.ticker { margin: 0; font-family: var(--mono); font-size: clamp(1rem, 1.6vw, 1.25rem); min-height: 1.6em; }
+.ticker__caret {
+    display: inline-block; width: .55em; height: 1.1em; margin-left: 3px; vertical-align: -0.18em;
+    background: currentColor; animation: blink 1s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.ctas { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 6px; }
+.btn {
+    display: inline-flex; align-items: center; padding: 12px 20px; border-radius: 6px;
+    font-weight: 500; text-decoration: none; border: 1px solid transparent;
+}
+.hero .btn--fill { background: var(--hero-acc); color: var(--hero-on-acc); }
+.hero .btn--line { border-color: color-mix(in oklab, var(--hero-ink) 40%, transparent); }
+.hint { font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--hero-muted); }
+.marquee {
+    position: absolute; z-index: 3; left: 0; right: 0; top: calc(var(--screen) - var(--marquee-h)); height: var(--marquee-h);
+    display: flex; align-items: center; overflow: hidden;
+    border-top: 1px solid color-mix(in oklab, var(--hero-ink) 16%, transparent);
+    font-family: var(--mono); font-size: .76rem; text-transform: uppercase; letter-spacing: .14em;
+    color: var(--hero-muted);
+}
+.marquee__track { display: flex; width: max-content; animation: marquee 42s linear infinite; }
+.marquee__track span { padding-inline: 22px; white-space: nowrap; }
+.marquee__track span::after { content: '·'; margin-left: 44px; opacity: .5; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+
+/* The circle opens onto the manifesto opener, so the pin ends on content, never on an empty screen. */
+/* The circle opens onto the whole manifesto: statement and About text land on one screen together. */
+.hero__reveal {
+    position: relative; z-index: 5;
+    min-height: var(--screen);
+    display: grid; align-content: start; justify-items: center; gap: clamp(32px, 6vh, 64px);
+    padding: calc(var(--nav-h) + 5vh) var(--gutter) 12vh;
+    background: var(--bg); color: var(--text);
+    clip-path: circle(0% at 50% 50%);
+}
+.field {
+    position: absolute; inset: 0; pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 80%, transparent);
+    mask-image: linear-gradient(to bottom, #000 80%, transparent);
+}
+.field canvas { width: 100%; height: 100%; display: block; }
+.opener { position: relative; display: grid; gap: 28px; justify-items: center; text-align: center; max-width: 1100px; }
+.kicker { margin: 0; font-family: var(--mono); font-size: .72rem; text-transform: uppercase; letter-spacing: .16em; color: var(--muted); }
+.statement {
+    margin: 0; text-wrap: balance;
+    font-size: clamp(2.4rem, 6.4vw, 6rem); line-height: 1.1; letter-spacing: -0.04em;
+}
+.statement__sub {
+    display: block; margin-top: .45em;
+    font-size: .4em; font-weight: 500; line-height: 1.2; letter-spacing: -0.02em; color: var(--muted);
+}
+/* inline-block keeps the highlight inside its own line box; as a plain inline its background
+   is the font's full content area and paints over the descenders of the line above. */
+.statement mark {
+    display: inline-block; line-height: 1;
+    background: var(--accent); color: var(--on-accent);
+    padding: .02em .12em .06em; border-radius: 4px;
+}
+
+/* ---------- about, inside the revealed manifesto ---------- */
+.about { position: relative; width: 100%; display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 40px; align-items: start; max-width: 880px; margin-inline: auto; }
+.about img { width: 180px; aspect-ratio: 1; object-fit: cover; border-radius: 8px; filter: grayscale(1) contrast(1.05); }
+/* Reading text uses --body (AAA in both themes: 11.4:1 dark, 10.1:1 light); --muted is for short labels only. */
+.about__text { display: grid; gap: 16px; color: var(--body); font-size: 1.0625rem; max-width: 62ch; }
+.about__text p { margin: 0; }
+@media (max-width: 700px) {
+    .about { grid-template-columns: 1fr; }
+    .about img { width: 132px; }
+}
+
+/* ---------- sections below ---------- */
+.block { padding: 14vh var(--gutter); border-top: 1px solid var(--line); }
+.block__inner { max-width: 1100px; margin-inline: auto; display: grid; gap: 40px; }
+.block h2 { margin: 0; font-size: clamp(2.4rem, 6.4vw, 5.4rem); line-height: .95; letter-spacing: -0.04em; }
+.rows { display: grid; }
+.row {
+    display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 24px;
+    padding-block: 26px; border-top: 1px solid var(--line);
+}
+.row__period { font-family: var(--mono); font-size: .8rem; color: var(--muted); font-variant-numeric: tabular-nums; padding-top: 6px; }
+.row__role { font-size: clamp(1.3rem, 2.6vw, 1.9rem); font-weight: 500; line-height: 1.15; letter-spacing: -0.02em; transition: color .2s ease; }
+.row:hover .row__role { color: var(--accent); }
+.row__company { color: var(--muted); margin-top: 4px; }
+@media (max-width: 700px) { .row { grid-template-columns: 1fr; gap: 6px; } }
+.contact__line { margin: 0; font-size: clamp(1.4rem, 3vw, 2.2rem); line-height: 1.2; letter-spacing: -0.02em; max-width: 24ch; }
+.block .btn--fill { background: var(--accent); color: var(--on-accent); width: fit-content; }
+.foot { padding: 28px var(--gutter) 140px; font-family: var(--mono); font-size: .72rem; color: var(--muted); border-top: 1px solid var(--line); }
+
+/* ---------- reduced motion: no pin, the opener sits below the hero as a normal block ---------- */
+.rm .hero { overflow: visible; }
+.rm .hero__grid { position: relative; }
+.rm .marquee { position: relative; top: auto; }
+.rm .hero__reveal { clip-path: none; min-height: 0; }
+.rm .marquee__track, .rm .ticker__caret { animation: none; }
+
+/* ---------- prototype switcher (not part of the design) ---------- */
+.proto {
+    position: fixed; z-index: 100; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%);
+    width: max-content; max-width: calc(100% - 24px);
+    display: grid; gap: 8px; padding: 10px 12px;
+    background: #ffffff; color: #111111; border: 1px solid #cfcfcf; border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .28);
+    font: 12px/1.3 system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+.proto__row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.proto__group { display: flex; align-items: center; gap: 6px; }
+.proto__label { color: #666666; }
+.proto__seg { display: inline-flex; border: 1px solid #cfcfcf; border-radius: 8px; overflow: hidden; }
+.proto__seg button {
+    border: 0; background: transparent; color: #111111; padding: 5px 9px; font: inherit; cursor: pointer;
+}
+.proto__seg button + button { border-left: 1px solid #cfcfcf; }
+.proto__seg button[aria-pressed="true"] { background: #111111; color: #ffffff; }
+.proto__state { display: flex; justify-content: space-between; gap: 12px; color: #444444; }
+.proto__state code { font-family: ui-monospace, Consolas, monospace; }
+.proto__toggle { border: 0; background: none; color: #444444; font: inherit; cursor: pointer; text-decoration: underline; }
+.proto.is-min .proto__row { display: none; }
+</style>
+
+<header class="nav on-hero" id="nav">
+    <a class="nav__logo" href="#hero">JK</a>
+    <nav class="nav__links" aria-label="Primary">
+        <a class="nav__hide-sm" href="#reveal" data-t="navAbout">About</a>
+        <a class="nav__hide-sm" href="#experience" data-t="navExp">Experience</a>
+        <a class="nav__cta" href="#contact" data-t="navContact">Contact</a>
+    </nav>
+</header>
+
+<main>
+    <section class="hero" id="hero" aria-label="Intro">
+        <div class="hero__grid">
+            <div class="hero__content" id="heroContent">
+                <div class="hero__id">
+                    <p class="pill"><span class="pill__dot"></span><span data-t="pill"></span></p>
+                    <h1>Jefry Kurniawan</h1>
+                    <p class="ticker" aria-live="off"><span id="ticker"></span><span class="ticker__caret" aria-hidden="true"></span></p>
+                </div>
+                <div class="hero__actions">
+                    <div class="ctas">
+                        <a class="btn btn--fill" href="#contact" data-t="cv"></a>
+                        <a class="btn btn--line" href="#experience" data-t="work"></a>
+                    </div>
+                    <span class="hint" data-t="hint"></span>
+                </div>
+            </div>
+            <div class="hero__letters" id="letters" aria-hidden="true"><span class="L L--j">J</span><span class="L L--k">K</span></div>
+        </div>
+        <div class="marquee" aria-hidden="true"><div class="marquee__track" id="marquee"></div></div>
+        <div class="hero__reveal" id="reveal">
+            <div class="field" aria-hidden="true"><canvas id="field"></canvas></div>
+            <div class="opener" id="opener">
+                <p class="kicker" data-t="navAbout"></p>
+                <h2 class="statement" id="statement"></h2>
+            </div>
+            <div class="about" id="aboutGrid">
+                <img src="cv-photo.webp" alt="Jefry Kurniawan" width="180" height="180">
+                <div class="about__text" id="aboutText"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="block" id="experience">
+        <div class="block__inner">
+            <h2 class="scramble" data-t="navExp"></h2>
+            <div class="rows" id="rows"></div>
+        </div>
+    </section>
+
+    <section class="block" id="contact">
+        <div class="block__inner">
+            <h2 class="scramble" data-t="navContact"></h2>
+            <p class="contact__line" data-t="contactLine"></p>
+            <a class="btn btn--fill" href="#contact" data-t="contactBtn"></a>
+        </div>
+    </section>
+    <footer class="foot">© 2026 Jefry Kurniawan</footer>
+</main>
+
+<div class="proto" id="proto" role="region" aria-label="Prototype controls">
+    <div class="proto__row" id="protoRow"></div>
+    <div class="proto__state">
+        <code id="protoState"></code>
+        <button class="proto__toggle" id="protoToggle" type="button">Kecilkan</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/ScrambleTextPlugin.min.js"></script>
+<script>
+(() => {
+    const root = document.documentElement;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) { root.classList.add('rm'); }
+
+    const T = {
+        en: {
+            pill: 'Indonesia · UTC+7 · Remote, relocation & freelance',
+            roles: ['Backend Developer', '.NET Specialist', 'React & Next.js Builder', 'AI-Assisted Development Workflow'],
+            cv: 'Download CV', work: 'View my work', hint: '↓ Scroll',
+            navAbout: 'About', navExp: 'Experience', navContact: 'Contact',
+            contactLine: 'Open to full-time remote roles, relocation and freelance projects.',
+            contactBtn: 'Contact me',
+            about: [
+                "I'm a backend developer with over five years in .NET (C# and VB.NET) and Microsoft SQL Server. Most of that work has been production software for banks, insurers, HR platforms, and government agencies: the systems and APIs those organisations rely on day to day.",
+                'At PT Xtremax Teknologi Indonesia I build backend services and REST APIs, and before that I led a small development team through whole project cycles, from technical design to deployment.',
+                'I care about code that the next person can read and change without having to guess what it does.'
+            ],
+            statements: {
+                1: ['I like ', 'boring', ' code.'],
+                4: ['Code the ', 'next person', ' can read.'],
+                14: ['I like ', 'boring', ' code.', 'The kind the next person can read.']
+            }
+        },
+        id: {
+            pill: 'Indonesia · UTC+7 · Remote, relokasi & freelance',
+            roles: ['Backend Developer', 'Spesialis .NET', 'React & Next.js Builder', 'Alur Kerja Berbantuan AI'],
+            cv: 'Unduh CV', work: 'Lihat karya saya', hint: '↓ Scroll',
+            navAbout: 'Tentang', navExp: 'Pengalaman', navContact: 'Kontak',
+            contactLine: 'Terbuka untuk peran remote penuh waktu, relokasi, dan proyek freelance.',
+            contactBtn: 'Hubungi saya',
+            about: [
+                'Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari.',
+                'Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment.',
+                'Saya peduli pada kode yang mudah dibaca dan diubah orang lain tanpa harus menebak-nebak.'
+            ],
+            statements: {
+                1: ['Saya suka kode yang ', 'membosankan', '.'],
+                4: ['Kode yang bisa dibaca ', 'orang berikutnya', '.'],
+                14: ['Saya suka kode yang ', 'membosankan', '.', 'Yang gampang dibaca orang berikutnya.']
+            }
+        }
+    };
+
+    const EXPERIENCE = [
+        { en: 'Jul 2025 – Present', id: 'Jul 2025 – Sekarang', role: 'Software Developer I - Backend', company: 'PT Xtremax Teknologi Indonesia' },
+        { en: 'Dec 2024 – Jul 2025', id: 'Des 2024 – Jul 2025', role: 'Staff Programmer', company: 'PT Arkamaya' },
+        { en: 'Jan 2024 – Jul 2024', id: 'Jan 2024 – Jul 2024', role: 'Technical Lead', company: 'PT Nawa Data Solutions' },
+        { en: 'Oct 2023 – Jan 2024', id: 'Okt 2023 – Jan 2024', role: '.NET Developer – OneRisk Engineer', company: 'PT Nawa Data Solutions' },
+        { en: 'Nov 2022 – Aug 2023', id: 'Nov 2022 – Agu 2023', role: 'Associate Software Engineer (.NET)', company: 'PT Xtremax Teknologi Indonesia' },
+        { en: 'Feb 2020 – Nov 2022', id: 'Feb 2020 – Nov 2022', role: '.NET Developer', company: 'PT Nawa Data Solutions' }
+    ];
+
+    const MARQUEE = ['.NET', 'C#', 'VB.NET', 'SQL Server', 'REST APIs', 'React', 'Next.js', 'TypeScript', 'Claude', 'GitHub Copilot', 'OpenCode', 'PT Xtremax Teknologi Indonesia', 'PT Arkamaya', 'PT Nawa Data Solutions'];
+
+    const CONTROLS = [
+        { key: 'scheme', label: 'Skema hero', options: [['A', 'A · Kebalikan tema'], ['B', 'B · Arang']] },
+        { key: 'accent', label: 'Aksen', options: [['slate', 'Slate'], ['olive', 'Olive'], ['khaki', 'Khaki']] },
+        { key: 'site', label: 'Tema', options: [['dark', 'Gelap'], ['light', 'Terang']] },
+        { key: 'lang', label: 'Bahasa', options: [['id', 'ID'], ['en', 'EN']] }
+    ];
+
+    const STORE = 'jk-prototype-state-v4';
+    let state = { scheme: 'A', accent: 'khaki', site: 'dark', copy: '1', lang: 'id' };
+    try {
+        const saved = JSON.parse(localStorage.getItem(STORE) || 'null');
+        if (saved) { state = { ...state, ...saved }; }
+    } catch (e) { /* storage unavailable: defaults are fine */ }
+
+    const $ = (sel) => document.querySelector(sel);
+
+    // ---- switcher ----
+    const row = $('#protoRow');
+    for (const c of CONTROLS) {
+        const group = document.createElement('div');
+        group.className = 'proto__group';
+        const label = document.createElement('span');
+        label.className = 'proto__label';
+        label.textContent = c.label;
+        const seg = document.createElement('div');
+        seg.className = 'proto__seg';
+        for (const [value, text] of c.options) {
+            const b = document.createElement('button');
+            b.type = 'button';
+            b.textContent = text;
+            b.dataset.key = c.key;
+            b.dataset.value = value;
+            b.addEventListener('click', () => { state[c.key] = value; apply(); });
+            seg.appendChild(b);
+        }
+        group.append(label, seg);
+        row.appendChild(group);
+    }
+    $('#protoToggle').addEventListener('click', () => {
+        const min = $('#proto').classList.toggle('is-min');
+        $('#protoToggle').textContent = min ? 'Tampilkan kontrol' : 'Kecilkan';
+    });
+    document.addEventListener('keydown', (e) => {
+        if (e.target.closest('input, textarea, [contenteditable]')) { return; }
+        if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') { return; }
+        const opts = CONTROLS[0].options.map((o) => o[0]);
+        const i = opts.indexOf(state.scheme);
+        state.scheme = opts[(i + (e.key === 'ArrowRight' ? 1 : opts.length - 1)) % opts.length];
+        apply();
+    });
+
+    // ---- marquee ----
+    const track = $('#marquee');
+    for (const item of [...MARQUEE, ...MARQUEE]) {
+        const s = document.createElement('span');
+        s.textContent = item;
+        track.appendChild(s);
+    }
+
+    // ---- role ticker (same timings as useTypedRoles: 62 / 34 / 2200 ms) ----
+    const ticker = $('#ticker');
+    const tk = { i: 0, c: 0, deleting: false, timer: 0 };
+    function tick() {
+        const roles = T[state.lang].roles;
+        const word = roles[tk.i % roles.length];
+        if (!tk.deleting) {
+            tk.c += 1;
+            ticker.textContent = word.slice(0, tk.c);
+            if (tk.c >= word.length) { tk.deleting = true; tk.timer = setTimeout(tick, 2200); return; }
+            tk.timer = setTimeout(tick, 62);
+            return;
+        }
+        tk.c -= 1;
+        ticker.textContent = word.slice(0, tk.c);
+        if (tk.c <= 0) { tk.deleting = false; tk.i += 1; tk.timer = setTimeout(tick, 320); return; }
+        tk.timer = setTimeout(tick, 34);
+    }
+    function restartTicker() {
+        clearTimeout(tk.timer);
+        if (reduce) { ticker.textContent = T[state.lang].roles.join(' · '); return; }
+        tk.i = 0; tk.c = 0; tk.deleting = false;
+        tick();
+    }
+
+    // ---- copy ----
+    function renderText() {
+        const t = T[state.lang];
+        document.querySelectorAll('[data-t]').forEach((el) => { el.textContent = t[el.dataset.t]; });
+        document.querySelectorAll('.scramble').forEach((el) => { el.dataset.text = t[el.dataset.t]; });
+        const [before, hl, after, sub] = t.statements[state.copy] ?? t.statements[1];
+        const parts = [
+            document.createTextNode(before),
+            Object.assign(document.createElement('mark'), { textContent: hl }),
+            document.createTextNode(after)
+        ];
+        if (sub) { parts.push(Object.assign(document.createElement('span'), { className: 'statement__sub', textContent: sub })); }
+        $('#statement').replaceChildren(...parts);
+        $('#aboutText').replaceChildren(...t.about.map((p) => Object.assign(document.createElement('p'), { textContent: p })));
+        $('#rows').replaceChildren(...EXPERIENCE.map((x) => {
+            const r = document.createElement('article');
+            r.className = 'row reveal';
+            r.innerHTML = '<div class="row__period"></div><div><div class="row__role"></div><div class="row__company"></div></div>';
+            r.querySelector('.row__period').textContent = x[state.lang];
+            r.querySelector('.row__role').textContent = x.role;
+            r.querySelector('.row__company').textContent = x.company;
+            return r;
+        }));
+        root.lang = state.lang;
+    }
+
+    // ---- dot field (2D stand-in for the WebGL2 version) ----
+    const canvas = $('#field');
+    const ctx = canvas.getContext('2d');
+    const small = matchMedia('(max-width: 700px)').matches;
+    const pts = Array.from({ length: small ? 900 : 2000 }, () => ({
+        a: Math.random() * Math.PI * 2,
+        r: 0.9 + Math.random() * 0.9,
+        z: 0.3 + Math.random() * 6,
+        v: 0.22 + Math.random() * 0.22,
+        tint: Math.random() < 0.18
+    }));
+    const field = { w: 0, h: 0, running: false, last: 0, mx: 0.5, my: 0.5, dot: '#777', acc: '#999' };
+    function sizeField() {
+        const dpr = Math.min(devicePixelRatio || 1, 2);
+        field.w = canvas.clientWidth; field.h = canvas.clientHeight;
+        canvas.width = field.w * dpr; canvas.height = field.h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function colorField() {
+        const cs = getComputedStyle(root);
+        field.dot = cs.getPropertyValue('--dot').trim();
+        field.acc = cs.getPropertyValue('--accent').trim();
+    }
+    // Dots almost vanish over the About paragraphs, so a moving dot never sits under a letter.
+    const aboutText = $('#aboutText');
+    function textHole() {
+        const r = aboutText.getBoundingClientRect();
+        const c = canvas.getBoundingClientRect();
+        return { x0: r.left - c.left - 20, y0: r.top - c.top - 16, x1: r.right - c.left + 20, y1: r.bottom - c.top + 16 };
+    }
+    function drawField(t) {
+        const dt = field.last ? Math.min((t - field.last) / 1000, 0.05) : 0;
+        field.last = t;
+        const { w, h } = field;
+        const hole = textHole();
+        ctx.clearRect(0, 0, w, h);
+        const f = Math.min(w, h) * 0.42;
+        const cx = w * (0.5 + (field.mx - 0.5) * 0.14);
+        // Centre the tunnel on the middle of the first screen, between the statement and the About text.
+        const cy = Math.min(h, innerHeight) * (0.48 + (field.my - 0.5) * 0.14);
+        for (const p of pts) {
+            p.z -= p.v * dt;
+            if (p.z < 0.25) { p.z += 6; }
+            p.a += 0.025 * dt;
+            const s = f / p.z;
+            const x = cx + Math.cos(p.a) * p.r * s;
+            const y = cy + Math.sin(p.a) * p.r * s;
+            if (x < -4 || x > w + 4 || y < -4 || y > h + 4) { continue; }
+            const size = Math.min(3.2, 2 / p.z + 0.5);
+            const overText = x > hole.x0 && x < hole.x1 && y > hole.y0 && y < hole.y1;
+            ctx.globalAlpha = Math.max(0, Math.min(1, (6.2 - p.z) / 4)) * (overText ? 0.06 : 0.8);
+            ctx.fillStyle = p.tint ? field.acc : field.dot;
+            ctx.fillRect(x, y, size, size);
+        }
+        ctx.globalAlpha = 1;
+        if (field.running) { requestAnimationFrame(drawField); }
+    }
+    sizeField(); colorField();
+    addEventListener('resize', () => { sizeField(); if (!field.running) { drawField(performance.now()); } });
+    if (matchMedia('(pointer: fine)').matches) {
+        addEventListener('pointermove', (e) => { field.mx = e.clientX / innerWidth; field.my = e.clientY / innerHeight; });
+    }
+    if (reduce) {
+        drawField(0);
+    } else {
+        new IntersectionObserver(([entry]) => {
+            const was = field.running;
+            field.running = entry.isIntersecting;
+            if (field.running && !was) { field.last = 0; requestAnimationFrame(drawField); }
+        }).observe($('#reveal'));
+    }
+
+    // ---- apply state ----
+    let tickerLang = null;
+    function apply() {
+        root.dataset.scheme = state.scheme;
+        root.dataset.accent = state.accent;
+        root.dataset.site = state.site;
+        document.querySelectorAll('.proto__seg button').forEach((b) => {
+            b.setAttribute('aria-pressed', String(state[b.dataset.key] === b.dataset.value));
+        });
+        const names = { A: 'A kebalikan', B: 'B arang', dark: 'gelap', light: 'terang' };
+        $('#protoState').textContent = [names[state.scheme], state.accent, names[state.site], state.lang.toUpperCase()].join(' · ');
+        renderText();
+        colorField();
+        if (reduce) { drawField(0); }
+        if (state.lang !== tickerLang) { tickerLang = state.lang; restartTicker(); }
+        try { localStorage.setItem(STORE, JSON.stringify(state)); } catch (e) { /* storage unavailable */ }
+    }
+    apply();
+
+    // ---- motion ----
+    if (typeof gsap === 'undefined' || reduce) { return; }
+    gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin);
+    const nav = $('#nav');
+    const hero = $('#hero');
+    const letters = $('#letters');
+
+    // Circle grows out of the middle of "JK", measured against the revealed layer's own box.
+    // offsetLeft/Top ignore the letters' transforms, so a refresh mid-animation still measures the rest position.
+    const reveal = $('#reveal');
+    const origin = () => {
+        const x = ((letters.offsetLeft + letters.offsetWidth / 2) / reveal.offsetWidth) * 100;
+        const y = ((letters.offsetTop + letters.offsetHeight / 2) / reveal.offsetHeight) * 100;
+        return x.toFixed(1) + '% ' + y.toFixed(1) + '%';
+    };
+
+    const tl = gsap.timeline({
+        scrollTrigger: {
+            trigger: hero,
+            start: 'top top',
+            end: '+=140%',
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+            snap: { snapTo: 'labelsDirectional', duration: { min: 0.35, max: 0.9 }, delay: 0.05, ease: 'power2.inOut' },
+            onUpdate: (self) => nav.classList.toggle('on-hero', self.progress < 0.75),
+            onLeave: () => nav.classList.remove('on-hero'),
+            onEnterBack: () => nav.classList.add('on-hero')
+        }
+    });
+    tl.addLabel('start', 0)
+        .to('#heroContent', { y: -60, autoAlpha: 0, duration: 0.3, ease: 'none' }, 0)
+        .to('.marquee', { yPercent: 100, autoAlpha: 0, duration: 0.25, ease: 'none' }, 0)
+        .to('.L--j', { xPercent: -75, scale: 1.9, duration: 0.85, ease: 'power1.in' }, 0)
+        .to('.L--k', { xPercent: 75, scale: 1.9, duration: 0.85, ease: 'power1.in' }, 0)
+        .fromTo('#reveal',
+            { clipPath: () => 'circle(0% at ' + origin() + ')' },
+            { clipPath: () => 'circle(150% at ' + origin() + ')', duration: 0.62, ease: 'power2.in' }, 0.28)
+        .fromTo(['#opener', '#aboutGrid'], { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 0.22, stagger: 0.04, ease: 'power2.out' }, 0.72)
+        .addLabel('end', 1);
+
+    ScrollTrigger.batch('.reveal', {
+        start: 'top 92%',
+        once: true,
+        onEnter: (batch) => gsap.from(batch, { y: 28, autoAlpha: 0, duration: 0.7, stagger: 0.08, ease: 'power2.out' })
+    });
+
+    document.querySelectorAll('.scramble').forEach((el) => {
+        ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            onEnter: () => gsap.to(el, { duration: 1.1, scrambleText: { text: el.dataset.text, chars: 'JKEFRYNXTDV#/+*', speed: 0.5 } })
+        });
+    });
+})();
+</script>
