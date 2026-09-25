@@ -15,7 +15,7 @@
     backdrop-filter: blur(16px);
     background: color-mix(in srgb, var(--bg) 80%, transparent);
     border-bottom: 1px solid var(--line);
-    transition: background 0.35s ease;
+    transition: background 0.35s ease, border-color 0.35s ease;
 }
 
 .site-nav__inner {
@@ -75,8 +75,9 @@
 }
 
 /* The one visually emphasised nav target — same anchor, khaki fill instead
-   of a plain label. Compound selector so it survives the shared-primitive
-   cascade note in CLAUDE.md regardless of source order. */
+   of a plain label. Compound selector (two classes) so it beats
+   .site-nav__link's own rules by specificity, not by staying below them in
+   the file. */
 .site-nav__link.site-nav__link--contact {
     padding: 7px 16px;
     border-radius: 6px;
@@ -152,15 +153,13 @@
 }
 
 /* ── Ink flip ──
-   T5 (#72) sets/clears data-header-ink="hero" on <html> via its own
-   IntersectionObserver while the header sits over the inverted hero stage;
-   this file only styles against that attribute — no scroll listener here,
-   and until #72 merges the walk sets the attribute by hand. Transitions are
+   This file only styles against :root[data-header-ink='hero'] — set
+   elsewhere (#72) — and adds no listener of its own. Transitions are
    declared unconditionally (not inside the attribute selector) so the flip
    eases the same way going in and coming out; the reduced-motion block below
-   kills every one of them for "instant" in both directions. Borders keep
-   their own existing 0.15s hover-feedback transition untouched — that pair
-   is unrelated to the ink flip. */
+   kills every one of them for "instant" in both directions. Icon/hamburger
+   borders keep their own existing 0.15s hover-feedback transition
+   untouched — that pair is unrelated to the ink flip. */
 .site-nav__logo,
 .site-nav__link,
 .site-nav .icon-btn,
@@ -174,13 +173,18 @@
 }
 
 /* Elsewhere (no attribute): the theme tokens on the translucent, blurred bar
-   already declared on .site-nav above. Over the hero: the bar goes fully
-   transparent and every text/icon/toggle colour switches to the --hero-*
-   tokens. The backdrop-filter pair stays declared only once, unconditionally,
-   on .site-nav — duplicating it here would risk Lightning CSS re-collapsing
-   the prefixed-first order the build-output check guards. */
+   already declared on .site-nav above. Over the hero (spec: docs/spec-site-
+   chrome-v1.md, "Navbar surface"): the bar is fully transparent, with no
+   blur and no visible bottom border, and every text/icon/toggle colour
+   switches to the --hero-* tokens. border-bottom-color, not
+   border-bottom-width, goes transparent — the bar's height must not move.
+   The blur is turned off with its own prefixed-first pair, the same order
+   as the pair on .site-nav above. */
 :root[data-header-ink='hero'] .site-nav {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
     background: transparent;
+    border-bottom-color: transparent;
 }
 
 :root[data-header-ink='hero'] .site-nav .site-nav__logo,
@@ -241,11 +245,17 @@
     color: var(--hero-on-accent);
 }
 
+/* Each selector here must match the specificity of the rule that declares
+   the transition it is meant to kill, or it loses the tie and the property
+   keeps easing under reduced motion. .site-nav__link.site-nav__link--contact
+   (two classes) is the one that previously did not: the single-class
+   .site-nav__link--contact it used to list is less specific than
+   .site-nav__link.site-nav__link--contact above, so it never won. */
 @media (prefers-reduced-motion: reduce) {
     .site-nav,
     .site-nav__logo,
     .site-nav__link,
-    .site-nav__link--contact,
+    .site-nav__link.site-nav__link--contact,
     .site-nav .icon-btn,
     .site-nav .nav-hamburger,
     .site-nav .lang-pill__btn {
