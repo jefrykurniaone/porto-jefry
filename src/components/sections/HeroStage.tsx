@@ -1,29 +1,37 @@
 'use client';
 
 import { useRef, type ReactNode, type RefObject } from 'react';
-import { gsap, registerMotion, useGSAP, MOTION_OK } from '@/utils/motion';
+import { gsap, registerMotion, ScrollTrigger, useGSAP, MOTION_OK } from '@/utils/motion';
+
+// At module scope, outside any gsap context: registering schedules the call
+// that ends ScrollTrigger's startup phase (ScrollTrigger.js:2116), and a
+// reverted context (React's development double mount) would kill it.
+registerMotion();
+
+/** Viewports where the intro fits one screen; derived in hero.css. */
+const STAGE_FITS = ['(min-width: 900px) and (min-height: 37.5em)', '(min-height: 45em)'];
 
 /**
  * The query that picks the sticky layout in hero.css; keep the two identical.
- * `scripting: enabled` always holds while this code runs, except in a browser
- * that does not know the feature, where CSS keeps the stacked layout: asking
- * for it here keeps the timeline off that layout too. It narrows MOTION_OK, so
- * GSAP still reverts everything built under it when reduced motion turns on.
+ * Each branch narrows MOTION_OK, so GSAP reverts it all when reduced motion
+ * turns on. ANY_MEDIA always matches: one callback serves both layouts.
  */
-const STAGE_MOTION = `${MOTION_OK} and (scripting: enabled)`;
-
-/** Always matches, so one matchMedia callback serves both layouts and re-runs when they swap. */
+const STAGE_MOTION = STAGE_FITS.map((fits) => `${MOTION_OK} and (scripting: enabled) and ${fits}`).join(', ');
 const ANY_MEDIA = 'all';
 
 /** The attribute the navbar styles itself against (layout.css). */
 const INK_ATTRIBUTE = 'data-header-ink';
-const INK_HERO = 'hero';
 /** Below this timeline progress the header still sits over the intro. */
 const INK_FLIP = 0.75;
 
-/** 150% of the reference box always reaches its farthest corner from any centre inside it. */
-const CIRCLE_OPEN = '150%';
-const CIRCLE_CLOSED = '0%';
+/** The ticket's snap: to a label, in the scroll's direction, 0.35–0.9 s, 0.05 s after it ends. */
+const SNAP = { min: 0.35, max: 0.9, delay: 0.05, ease: 'power2.inOut' } as const;
+/** This close to a label (in progress) counts as on it: ScrollTrigger's own tolerance. */
+const ON_LABEL = 1e-3;
+/** Any of these hands the scroll back to the visitor. Passive: never prevented. */
+const TAKEOVER_EVENTS = ['wheel', 'touchstart', 'keydown', 'pointerdown'] as const;
+/** A snap step found this far from where it was set means something else scrolled. */
+const TAKEOVER_PX = 3;
 
 /** Everything the transition moves, found by class inside the stage. */
 const PART_SELECTORS = {
@@ -53,31 +61,20 @@ function readStage(stage: HTMLElement): StageParts | null {
     return parts as StageParts;
 }
 
-/**
- * Sets or clears the ink signal. Reads the live attribute rather than a cached
- * flag, so a write only happens on a real change and React re-rendering <html>
- * cannot leave it stale.
- */
+/** Sets or clears the ink signal, reading the live attribute so a write happens only on change. */
 function setInk(onHero: boolean): void {
     const root = document.documentElement;
     if (root.hasAttribute(INK_ATTRIBUTE) === onHero) {
         return;
     }
     if (onHero) {
-        root.setAttribute(INK_ATTRIBUTE, INK_HERO);
+        root.setAttribute(INK_ATTRIBUTE, 'hero');
     } else {
         root.removeAttribute(INK_ATTRIBUTE);
     }
 }
 
-/**
- * The header is over the intro while both the scroll position and the drawn
- * frame are short of INK_FLIP; before the stage both are 0. Taking the larger
- * of the two matters while the 1s scrub is catching up: jumping past the stage
- * drops the hero ink at once, and scrolling back sets it only once the frame
- * has actually rewound. The non-hero bar has its own backdrop, so erring
- * towards it never costs legibility.
- */
+/** Hero ink while scroll and drawn frame are both short of INK_FLIP; errs to the always-legible bar. */
 function syncInk(timeline: gsap.core.Timeline): void {
     const scrolled = timeline.scrollTrigger?.progress ?? 0;
     setInk(Math.max(scrolled, timeline.progress()) < INK_FLIP);
@@ -96,12 +93,7 @@ function offsetWithin(element: HTMLElement, ancestor: HTMLElement): { left: numb
     return { left, top };
 }
 
-/**
- * The circle, centred between the J and K at the letters' middle height. The
- * offsets ignore the transforms the timeline puts on the letters, so a refresh
- * mid-scroll measures the resting position. The manifesto layer overlaps the
- * screen from the same top-left corner, so px from the screen apply to it.
- */
+/** The circle between J and K at the letters' middle, in px from the screen's corner, which the manifesto shares. */
 function circleAt(radius: string, parts: StageParts): string {
     const j = offsetWithin(parts.letterJ, parts.screen);
     const k = offsetWithin(parts.letterK, parts.screen);
@@ -111,14 +103,14 @@ function circleAt(radius: string, parts: StageParts): string {
 }
 
 /**
- * Spec #64's sequence, in progress units: the timeline is exactly 1 long, so
- * the `start` and `end` labels are progress 0 and 1. Opacity, never autoAlpha,
- * on text: `visibility: hidden` would drop the name and the About prose from
- * the accessibility tree. The buttons are the exception, hidden once the copy
- * has gone so a keyboard user never tabs onto a control nobody can see.
+ * Spec #64's sequence in progress units (the timeline is exactly 1 long).
+ * Opacity on text keeps it in the accessibility tree; only the buttons hide.
+ * Two fromTo tweens, not one staggered: that re-renders only its first target.
+ * The circle opens to 150%, which reaches the farthest corner from any centre.
  */
 function addSequence(timeline: gsap.core.Timeline, parts: StageParts): void {
     const circle = (radius: string) => () => circleAt(radius, parts);
+    const rise = { opacity: 1, y: 0, duration: 0.22, ease: 'power2.out', immediateRender: true };
     timeline
         .addLabel('start', 0)
         .to(parts.band, { y: -60, opacity: 0, duration: 0.3 }, 0)
@@ -126,26 +118,87 @@ function addSequence(timeline: gsap.core.Timeline, parts: StageParts): void {
         .to(parts.marquee, { yPercent: 100, opacity: 0, duration: 0.25 }, 0)
         .to(parts.letterJ, { xPercent: -75, scale: 1.9, duration: 0.85, ease: 'power1.in' }, 0)
         .to(parts.letterK, { xPercent: 75, scale: 1.9, duration: 0.85, ease: 'power1.in' }, 0)
-        .fromTo(
-            parts.manifesto,
-            { clipPath: circle(CIRCLE_CLOSED) },
-            { clipPath: circle(CIRCLE_OPEN), duration: 0.62, ease: 'power2.in' },
-            0.28,
-        )
-        .fromTo(
-            [parts.opener, parts.body],
-            { opacity: 0, y: 40 },
-            { opacity: 1, y: 0, duration: 0.22, stagger: 0.06, ease: 'power2.out' },
-            0.72,
-        )
+        .fromTo(parts.manifesto, { clipPath: circle('0%') },
+            { clipPath: circle('150%'), duration: 0.62, ease: 'power2.in' }, 0.28)
+        .fromTo(parts.opener, { opacity: 0, y: 40 }, rise, 0.72)
+        .fromTo(parts.body, { opacity: 0, y: 40 }, rise, 0.78)
         .addLabel('end', 1);
 }
 
+/** Scrolls from where the page rests to the label the scroll was heading for. */
+function snapTween(trigger: ScrollTrigger, at: number, stop: () => void): gsap.core.Tween {
+    const to = trigger.direction > 0 ? 1 : 0;
+    const proxy = { y: trigger.scroll() };
+    let last = proxy.y;
+    return gsap.to(proxy, {
+        y: trigger.start + to * (trigger.end - trigger.start),
+        duration: gsap.utils.clamp(SNAP.min, SNAP.max, Math.abs(to - at) * SNAP.max),
+        ease: SNAP.ease,
+        onUpdate: () => {
+            if (Math.abs(window.scrollY - last) > TAKEOVER_PX) {
+                stop();
+                return;
+            }
+            last = proxy.y;
+            window.scrollTo({ top: proxy.y, behavior: 'instant' });
+        },
+    });
+}
+
+/** The snap for a scroll that ended at `endedAt`, if the page is still there and inside the stage. */
+function settleAt(trigger: ScrollTrigger, endedAt: number, stop: () => void): gsap.core.Tween | undefined {
+    const at = (endedAt - trigger.start) / (trigger.end - trigger.start);
+    const inside = at > ON_LABEL && at < 1 - ON_LABEL;
+    return trigger.scroll() === endedAt && inside ? snapTween(trigger, at, stop) : undefined;
+}
+
 /**
- * Scrubs the transition across the stage. Nothing is pinned: hero.css holds
- * the layers with `position: sticky` and reserves the scroll distance in the
- * server HTML (ADR 0001). The range runs from the stage's top to the `#about`
- * marker's, so the timeline ends exactly where an `#about` arrival lands.
+ * Snaps only a scroll that ended inside the stage: `scrollend` fires once no
+ * update is pending and the gesture is released, so one passing through ends
+ * outside the range. One cut short by a ScrollTrigger refresh
+ * (ScrollTrigger.js:500–551) is left alone. No `scrollend`, no snap.
+ */
+function snapOnScrollEnd(trigger: ScrollTrigger): () => void {
+    if (!('onscrollend' in window)) {
+        return () => undefined;
+    }
+    let pending: gsap.core.Tween | undefined;
+    let tween: gsap.core.Tween | undefined;
+    let interrupted = false;
+    const stop = () => {
+        pending?.kill();
+        tween?.kill();
+        pending = tween = undefined;
+    };
+    const markInterrupted = () => { interrupted ||= ScrollTrigger.isScrolling(); };
+    const onScrollEnd = () => {
+        const skip = interrupted || Boolean(tween?.isActive());
+        const endedAt = trigger.scroll();
+        interrupted = false;
+        pending?.kill();
+        pending = skip ? undefined : gsap.delayedCall(SNAP.delay, () => {
+            tween = settleAt(trigger, endedAt, stop);
+        });
+    };
+    window.addEventListener('scrollend', onScrollEnd);
+    ScrollTrigger.addEventListener('refreshInit', markInterrupted);
+    for (const type of TAKEOVER_EVENTS) {
+        window.addEventListener(type, stop, { passive: true });
+    }
+    return () => {
+        stop();
+        window.removeEventListener('scrollend', onScrollEnd);
+        ScrollTrigger.removeEventListener('refreshInit', markInterrupted);
+        for (const type of TAKEOVER_EVENTS) {
+            window.removeEventListener(type, stop);
+        }
+    };
+}
+
+/**
+ * Scrubs the transition across the stage; hero.css holds the layers by sticky
+ * (ADR 0001), nothing is pinned. The range ends at the `#about` marker's top,
+ * exactly where an `#about` arrival lands.
  */
 function playStage(stage: HTMLElement, parts: StageParts): () => void {
     const timeline: gsap.core.Timeline = gsap.timeline({
@@ -157,17 +210,9 @@ function playStage(stage: HTMLElement, parts: StageParts): () => void {
             endTrigger: parts.marker,
             end: 'top top',
             scrub: 1,
-            snap: {
-                snapTo: 'labelsDirectional',
-                duration: { min: 0.35, max: 0.9 },
-                delay: 0.05,
-                ease: 'power2.inOut',
-            },
             invalidateOnRefresh: true,
             onUpdate: () => syncInk(timeline),
-            // A refresh lands the frame on the scroll position at once instead
-            // of scrubbing there over a second, so arriving by anchor (a hash
-            // on load, a locale switch) shows the revealed manifesto directly.
+            // Land on the scroll position at once rather than scrub there.
             onRefresh: (self) => {
                 self.endAnimation();
                 syncInk(timeline);
@@ -175,28 +220,23 @@ function playStage(stage: HTMLElement, parts: StageParts): () => void {
         },
     });
     addSequence(timeline, parts);
-    return () => setInk(false);
+    // A timeline's first refresh waits a tick behind a one-shot update() (ScrollTrigger.js:1934–1947);
+    // call it now, filled, so every block shows its state for this scroll from the first frame.
+    const trigger = timeline.scrollTrigger;
+    trigger?.update();
+    const stopSnap = trigger ? snapOnScrollEnd(trigger) : () => undefined;
+    return () => {
+        stopSnap();
+        setInk(false);
+    };
 }
 
-function navbarHeight(): number {
-    const raw = getComputedStyle(document.documentElement).getPropertyValue('--navbar-height');
-    return Number.parseFloat(raw) || 0;
-}
-
-/**
- * The stacked layout's ink: set while the intro still covers the whole navbar,
- * that is while it reaches below the bar's bottom edge. The root is the
- * viewport minus the bar, so the intro intersects it exactly then.
- */
+/** Stacked layout's ink: set while the intro reaches below the navbar's bottom edge. */
 function followIntro(screen: HTMLElement): () => void {
+    const navbar = getComputedStyle(document.documentElement).getPropertyValue('--navbar-height');
     const observer = new IntersectionObserver(
-        (entries) => {
-            const latest = entries.at(-1);
-            if (latest) {
-                setInk(latest.isIntersecting);
-            }
-        },
-        { rootMargin: `-${navbarHeight()}px 0px 0px 0px` },
+        (entries) => setInk(entries.at(-1)?.isIntersecting ?? false),
+        { rootMargin: `-${Number.parseFloat(navbar) || 0}px 0px 0px 0px` },
     );
     observer.observe(screen);
     return () => {
@@ -205,15 +245,9 @@ function followIntro(screen: HTMLElement): () => void {
     };
 }
 
-/**
- * One matchMedia callback, re-run whenever the layout swaps: the timeline
- * under the sticky layout, the intro observer under the stacked one. Scoped by
- * useGSAP, so unmounting (a locale switch) kills the ScrollTrigger, reverts
- * every inline style, disconnects the observer and clears the ink signal.
- */
+/** Timeline when sticky, intro observer when stacked; useGSAP undoes either on unmount (a locale switch). */
 function useStageMotion(stageRef: RefObject<HTMLElement | null>): void {
     useGSAP(() => {
-        registerMotion();
         const stage = stageRef.current;
         const parts = stage ? readStage(stage) : null;
         if (!stage || !parts) {
@@ -235,22 +269,10 @@ interface HeroStageProps {
 }
 
 /**
- * The hero stage: the intro screen, then the manifesto. Everything inside is
- * rendered by its own component and handed in as slots, so the server-rendered
- * parts (marquee, manifesto) stay server components under a client wrapper.
- *
- * hero.css picks one of two layouts at first paint, from media queries alone:
- *
- * - Stacked (reduced motion, no JavaScript): the screen, then the manifesto.
- * - Sticky: both layers held in place while the stage scrolls through a
- *   reserved distance, the manifesto clipped to a zero circle over the intro
- *   until the timeline opens it.
- *
- * The stage owns both anchors: `id="hero"` on itself, and `id="about"` on an
- * empty marker between the two layers. Stacked, the marker sits on the
- * manifesto's top edge. Sticky, it sits where the timeline ends, so every
- * `#about` arrival lands on the revealed manifesto. The hold element after the
- * manifesto is the reserved scroll distance.
+ * The intro screen, then the manifesto, as slots so the server parts stay
+ * server components; hero.css picks stacked or sticky at first paint. The
+ * empty `#about` marker sits on the manifesto's top edge when stacked and where
+ * the timeline ends when sticky; the hold element is the reserved scroll.
  */
 export default function HeroStage({ intro, marquee, children }: Readonly<HeroStageProps>) {
     const stageRef = useRef<HTMLElement>(null);

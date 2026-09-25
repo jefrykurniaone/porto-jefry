@@ -247,12 +247,37 @@
     }
 }
 
+/* ScrollTrigger refreshes on the window's load event even while the page is
+   scrolling: it jumps to 0 and back (ScrollTrigger.js:500–551, forced because
+   the event object arrives as its `force` argument), which aborts any smooth
+   scroll in flight. Opening a URL with a #hash starts exactly such a scroll
+   under the site's `scroll-behavior: smooth`, and the page would stop short of
+   the section. Instant, the jump happens in one step with nothing in flight to
+   abort. Only where ScrollTrigger can run; scripted scrolls (navbar, back to
+   top) pass their own behavior and stay smooth. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    html:has(.hero-stage) {
+        scroll-behavior: auto;
+    }
+}
+
 /* ── Sticky scroll transition (ADR 0001) ──
    Chosen here at first paint, never by a script: the server HTML already has
    the final height, so a #hash lands correctly before hydration and nothing
-   shifts after it. HeroStage.tsx builds its timeline under the same query;
-   keep the two identical. Without `scripting` (no JavaScript) the stacked
-   layout stays, so the manifesto is never left clipped with nothing to open it.
+   shifts after it. HeroStage.tsx builds its timeline under the same query
+   (STAGE_MOTION); keep the two identical. Without `scripting` (no JavaScript)
+   the stacked layout stays, so the manifesto is never left clipped.
+
+   The sticky screen cannot grow, so the query also requires a viewport tall
+   enough for the intro's content: 76 (top padding) + letters (0.8 of
+   min(58vw, 50vh)) + 24 + copy band + 28 + marquee 52.2. Computed per width
+   from the shipped Space Grotesk and JetBrains Mono advances and line metrics
+   (it reproduces the 548px measured at 844 x 390), in both locales, the
+   tallest content that must fit is 566px from 900px wide, where the band is
+   one row, and 679px below (at 332px, where the buttons wrap and the ticker
+   reserves two lines). Hence 37.5em (600px) and 45em (720px), in em so a
+   larger default font size, which grows the rem-sized copy, raises the bar.
+   Anything shorter keeps the stacked screen, which grows to fit.
 
    The screen and the manifesto are both sticky at the top and overlap exactly:
    the screen is one screen tall, and the manifesto is pulled up by the same
@@ -262,7 +287,8 @@
    ends (HeroStage takes the marker's top as the ScrollTrigger's end). The
    screen stays held behind the manifesto until their bottoms meet, and after
    that the two scroll away together. */
-@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) and (min-width: 900px) and (min-height: 37.5em),
+    (prefers-reduced-motion: no-preference) and (scripting: enabled) and (min-height: 45em) {
     .hero-stage {
         --stage-hold: 140vh;
         /* Seen only where the stuck screen falls short of the viewport, as when
@@ -271,10 +297,9 @@
         transition: background 0.35s ease;
     }
 
-    /* Exactly one screen, so the manifesto's pull-up below matches it. The
-       giant letters grow past its edges; the clip keeps them inside. Unlike
-       the stacked screen it cannot grow, so on a viewport shorter than the
-       intro's content (a landscape phone) the band's lower edge is cut off. */
+    /* Exactly one screen, so the manifesto's pull-up below matches it; the
+       query above guarantees the intro fits. The giant letters grow past its
+       edges; the clip keeps them inside. */
     .hero-stage__screen {
         position: sticky;
         top: 0;
