@@ -7,52 +7,113 @@
 @import './styles/sections/education.css';
 @import './styles/sections/contact.css';
 
-/* ── Design tokens (Porto Redesign AI-Focused) ──
+/* ── Design tokens (khaki palette, ticket #70 / spec #63) ──
    Dark is the default theme; light overrides via :root[data-theme="light"].
    The locale layout reads the `porto-theme` cookie server-side and renders
    data-theme onto <html>, so the right colours are in the first byte of HTML.
-   There is no pre-paint inline script — do not reintroduce one (see CLAUDE.md). */
+   There is no pre-paint inline script — do not reintroduce one (see CLAUDE.md).
+   Values are the two tables in docs/spec-visual-foundation-v1.md; do not
+   hand-tune a value here without updating that spec first. */
 :root {
     /* Single source of truth for the fixed navbar's vertical footprint.
        Consumed by .hero top-clearance and section scroll-margin-top. */
     --navbar-height: 64px;
 
-    --bg: #07070c;
-    --bg2: #0b0b13;
-    --panel: #0f0f19;
-    --line: rgba(235, 235, 248, 0.09);
-    /* Same hairline, raised to clear 3:1 (WCAG 1.4.11). Reserved for controls
-       whose border is the only thing marking them as interactive — outline and
-       icon buttons. Decorative dividers and card edges keep --line. */
-    --line-control: rgba(235, 235, 248, 0.38);
-    --text: #ececf4;
-    --muted: #9c9cb0;
-    --accent: #9d7bff;
+    --bg: #0d0d0e;
+    /* One tonal step off --bg, neutral (no blue/purple tint) — was #0b0b13. */
+    --bg2: #131313;
+    /* Another step up from --bg2 for raised surfaces — was #0f0f19. */
+    --panel: #181818;
+    --line: #28282b;
+    /* Same hairline colour family, raised to clear 3:1 (WCAG 1.4.11).
+       Reserved for controls whose border is the only thing marking them as
+       interactive — outline and icon buttons. Decorative dividers and card
+       edges keep --line. Neutralised from rgba(235, 235, 248, 0.38) — only the
+       blue-shifted blue channel changed (248 -> 235); same R/G channels and
+       alpha, so the composited contrast against --bg is unchanged at ~3.16:1. */
+    --line-control: rgba(235, 235, 235, 0.38);
+    --text: #ecebe7;
+    /* Reading text (new) — AAA, 11.4:1 on --bg. Defined here, not yet applied
+       to any prose rule; the restyle tickets point existing text at it. */
+    --reading: #c8c6bf;
+    /* The Label colour. */
+    --muted: #9b9993;
+    --accent: #cbb892;
+    /* Ink on the accent fill (new). */
+    --on-accent: #0d0d0e;
     --ok: #3ddc97;
     --fault: #e5484d;
     --scrim: rgba(0, 0, 0, 0.55);
-    --accent-ink: color-mix(in oklab, var(--accent) 72%, white);
+    --accent-ink: #cbb892;
+    /* Dot field colour (new). */
+    --dot: #6d6b66;
     --glow: color-mix(in srgb, var(--accent) 22%, transparent);
-    --cta-text: #0a0a10;
     --cta-bg: var(--accent);
+    --cta-text: var(--on-accent);
+
+    /* ── Hero inverse (new) ── always the opposite polarity of the page theme,
+       so both the hero stage and the header can read it without knowing which
+       theme is active. Dark site -> light hero. */
+    --hero-bg: #e7e5df;
+    --hero-ink: #111112;
+    --hero-label: #4d4b46;
+    --hero-accent: #6f5c3a;
+    --hero-on-accent: #ffffff;
+    --hero-ok: #0d8055;
+    /* Decorative giant-letter tint; the same mix rule in both themes. */
+    --hero-letter: color-mix(in oklab, var(--hero-accent) 42%, var(--hero-bg));
+
+    /* ── Type scale (new) ── named display steps, read from the approved
+       prototype (git show origin/prototype/ui-redesign-hero, primary source
+       for numbers only). Defined, not yet applied anywhere — "the layout does
+       not change" (ticket #70); the restyle tickets point rules at these. */
+    --fs-letters: min(58vw, 50vh);
+    --fs-name: clamp(2.4rem, 5.4vw, 5.6rem);
+    --fs-statement: clamp(2.4rem, 6.4vw, 6rem);
+    --fs-section: clamp(2.4rem, 6.4vw, 5.4rem);
+    --fs-lead: clamp(1.4rem, 3vw, 2.2rem);
+    /* 17px, exactly the prototype's .about__text ("Reading text ... AAA in
+       both themes"). Chose the rem form to match the prototype's own source. */
+    --fs-reading: 1.0625rem;
 }
 
 :root[data-theme='light'] {
-    --bg: #f7f7fb;
-    --bg2: #efeff6;
+    --bg: #f4f3ef;
+    /* One tonal step off --bg, neutral — was #efeff6. */
+    --bg2: #ece9e2;
     --panel: #ffffff;
-    --line: rgba(12, 12, 36, 0.11);
-    --line-control: rgba(12, 12, 36, 0.46);
-    --text: #16161f;
-    --muted: #5c5c70;
+    --line: #d8d5cd;
+    /* Neutralised from rgba(12, 12, 36, 0.46) — only the blue-shifted blue
+       channel changed (36 -> 12); contrast against --bg holds at ~3.16:1. */
+    --line-control: rgba(12, 12, 12, 0.46);
+    --text: #151515;
+    /* Reading text (new) — AAA, 10.1:1 on --bg. */
+    --reading: #3d3b37;
+    --muted: #5d5b56;
+    --accent: #6f5c3a;
+    /* Ink on the accent fill (new). */
+    --on-accent: #ffffff;
     /* Ready Green is the one status colour that has to be re-tuned per theme:
        #3ddc97 sits at 1.8:1 on white, so the availability dot all but vanishes.
        This value clears 4.96:1 on --panel and 4.64:1 on --bg. */
     --ok: #0d8055;
-    --accent-ink: color-mix(in oklab, var(--accent) 58%, black);
+    /* Accent ink is darker than the fill on light — the fill would only reach
+       5.8:1 as text. 8.4:1 on --bg, 9.3:1 on white. */
+    --accent-ink: #54452b;
+    /* Dot field colour (new). */
+    --dot: #aaa79f;
     --glow: color-mix(in srgb, var(--accent) 16%, transparent);
-    --cta-text: #ffffff;
-    --cta-bg: color-mix(in oklab, var(--accent) 62%, black);
+    --cta-bg: var(--accent);
+    --cta-text: var(--on-accent);
+
+    /* ── Hero inverse (new) ── light site -> dark hero. */
+    --hero-bg: #111113;
+    --hero-ink: #efeee9;
+    --hero-label: #a3a19b;
+    --hero-accent: #cbb892;
+    --hero-on-accent: #0d0d0e;
+    --hero-ok: #3ddc97;
+    --hero-letter: color-mix(in oklab, var(--hero-accent) 42%, var(--hero-bg));
 }
 
 @layer base {
