@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
+import DotField from '@/components/ui/DotField';
 
 /**
  * The highlighted word in the statement. An inline-block, not a plain inline:
@@ -24,8 +25,9 @@ function ManifestoProse({ paragraphs }: Readonly<{ paragraphs: string[] }>) {
 
 /**
  * The manifesto: the About section as one oversized statement, then the About
- * prose and the profile photo in black and white. A server component, so the
- * prose ships as HTML. It carries no `id`: `HeroStage` owns the `#about` anchor.
+ * prose and the profile photo in black and white, over the dot field. A server
+ * component, so the prose ships as HTML. It carries no `id`: `HeroStage` owns
+ * the `#about` anchor.
  */
 export default function About() {
     const t = useTranslations('about');
@@ -34,6 +36,7 @@ export default function About() {
 
     return (
         <section aria-labelledby='about-title' className='manifesto'>
+            <DotField />
             <div className='manifesto__inner'>
                 <header className='manifesto__opener'>
                     <h2 id='about-title' className='manifesto__kicker'>{tNav('about')}</h2>
