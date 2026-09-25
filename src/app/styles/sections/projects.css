@@ -115,17 +115,9 @@
 
 /* Overrides .exp-more-btn's negative top margin, which exists to absorb its own
    padding inside a bullet list and would pull this toggle into the note above.
-   CASCADE NOTE (ticket #68): .exp-more-btn now lives in globals.css's shared
-   primitives, which — because @import must precede all other rules — is always
-   later in the cascade than this file. Both selectors are single classes
-   (equal specificity), so source order decides the winner. Before this split,
-   .exp-more-btn (Experience, earlier in sections.css) lost to this rule
-   (Projects, later in the same file); after the split, .exp-more-btn
-   (globals.css, always after every @import) now wins instead, which would
-   apply the shared button's negative top margin here unless a widened or
-   scoped selector is introduced. Flagged, not fixed, per the ticket's
-   instruction not to introduce a new selector; see the PR report. */
-.project-archive__toggle {
+   Compound selector: .exp-more-btn lives in globals.css, after every section
+   import, so a single class here would lose on source order. */
+.exp-more-btn.project-archive__toggle {
     margin: 0;
 }
 
