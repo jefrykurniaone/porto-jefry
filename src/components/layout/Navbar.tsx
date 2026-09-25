@@ -21,7 +21,11 @@ function DesktopNavLinks({ onNavClick }: Readonly<NavLinksProps>) {
                     key={key}
                     href={`#${key}`}
                     onClick={(e) => { e.preventDefault(); onNavClick(key); }}
-                    className='site-nav__link'>
+                    className={
+                        key === 'contact'
+                            ? 'site-nav__link site-nav__link--contact'
+                            : 'site-nav__link'
+                    }>
                     {t(key)}
                 </a>
             ))}
@@ -139,7 +143,7 @@ export default function Navbar() {
             <nav className='site-nav'>
                 <div className='site-nav__inner'>
                     <a href='#hero' aria-label={t('logo_label')} className='site-nav__logo'>
-                        JK<span className='site-nav__logo-accent'>_</span>
+                        JK
                     </a>
                     <DesktopNavLinks onNavClick={navigateTo} />
                     <NavControls

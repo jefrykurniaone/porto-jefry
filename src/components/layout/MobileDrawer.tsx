@@ -33,7 +33,11 @@ function DrawerLinks({ onNavClick }: Readonly<DrawerLinksProps>) {
                     <a
                         href={`#${key}`}
                         onClick={(e) => { e.preventDefault(); onNavClick(key); }}
-                        className='drawer-link'>
+                        className={
+                            key === 'contact'
+                                ? 'drawer-link drawer-link--contact'
+                                : 'drawer-link'
+                        }>
                         {t(key)}
                     </a>
                 </li>
