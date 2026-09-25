@@ -1,172 +1,241 @@
-/* ── Hero ── */
-.hero {
+/* ── Hero stage ──
+   The intro screen and the manifesto, stacked. This is the layout reduced-motion
+   and no-JS visitors keep; the scroll transition builds on it. The intro sits on
+   the --hero-* colours, the inverse of the page theme. The manifesto's own rules
+   live in about.css. */
+.hero-stage {
+    position: relative;
+}
+
+/* The first screen: intro above, marquee along the bottom edge. A grid rather
+   than a flex column because a grid honours min-height when it sizes its 1fr
+   row, so the intro fills the screen and still grows past it when its content
+   needs more room. */
+.hero-stage__screen {
+    /* Accent-coloured text, links and the focus ring on this surface. */
+    --accent-ink: var(--hero-accent);
+    --hero-gutter: clamp(16px, 5vw, 72px);
     position: relative;
     box-sizing: border-box;
     min-height: 100vh; /* fallback for browsers without svh support */
     min-height: 100svh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    background: var(--hero-bg);
+    color: var(--hero-ink);
+    transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* The anchor for #about in the stacked layout: the manifesto's top edge. */
+.hero-stage__manifesto {
+    scroll-margin-top: var(--navbar-height);
+}
+
+/* ── Intro ──
+   Letters and copy band are separate grid rows, so they never overlap. The
+   letters row is `1fr`, whose minimum is its content: when the screen is too
+   short for both, the screen grows instead of the band sliding under the
+   letters. */
+.hero-intro {
+    box-sizing: border-box;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 24px;
+    padding: calc(var(--navbar-height) + 12px) var(--hero-gutter) 28px;
+}
+
+.hero-intro__letters {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
-    text-align: center;
-    padding: calc(var(--navbar-height) + 66px) 24px 90px;
-}
-
-.hero__canvas {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
+    font-size: var(--fs-letters);
+    font-weight: 700;
+    line-height: 0.8;
+    letter-spacing: -0.07em;
+    color: var(--hero-letter);
     pointer-events: none;
+    user-select: none;
 }
 
-.hero__grid-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background-image: linear-gradient(var(--line) 1px, transparent 1px),
-        linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size: 56px 56px;
-    mask-image: radial-gradient(ellipse 85% 70% at 50% 42%, black 25%, transparent 78%);
-    -webkit-mask-image: radial-gradient(ellipse 85% 70% at 50% 42%, black 25%, transparent 78%);
+/* Boxes of their own, so the transition can move each letter separately. */
+.hero-intro__letter {
+    display: inline-block;
 }
 
-.hero__content {
-    position: relative;
-    z-index: 2;
-    max-width: 860px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeUp 0.8s ease both;
+.hero-intro__band {
+    display: grid;
+    gap: 18px;
+}
+
+.hero-intro__id,
+.hero-intro__actions {
+    display: grid;
+    gap: 12px;
+    align-content: end;
+}
+
+/* Identity on the left, actions on the right, from 900px wide. */
+@media (min-width: 900px) {
+    .hero-intro__band {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: end;
+        gap: 32px;
+    }
+
+    .hero-intro__actions {
+        justify-items: end;
+    }
 }
 
 .status-pill {
+    /* pulseDot's ring reads --ok; keep it the hero's green. */
+    --ok: var(--hero-ok);
     display: inline-flex;
     align-items: center;
-    gap: 9px;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 7px 16px;
+    gap: 10px;
+    width: fit-content;
     font-family: var(--font-mono), monospace;
-    font-size: 11px;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--muted);
-    background: color-mix(in srgb, var(--panel) 60%, transparent);
-    margin-bottom: 34px;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    line-height: 1.5;
+    color: var(--hero-label);
 }
 
 .status-pill__dot {
-    width: 7px;
-    height: 7px;
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
-    background: var(--ok);
+    background: var(--hero-ok);
     /* Never squeezed by the label beside it once that label wraps. */
     flex-shrink: 0;
     animation: pulseDot 2.2s ease infinite;
 }
 
-/* The pill now carries location and time zone as well as availability — the one
-   fact an overseas recruiter needs before anything else, and previously absent
-   from the whole page. That makes it wide enough to wrap on a phone, so it is
-   allowed to: tracking drops to 0.12em (still clear of the Tracking-With-Caps
-   floor) and the padding tightens, which buys back most of a line. */
-@media (max-width: 640px) {
-    .status-pill {
-        max-width: 100%;
-        padding: 7px 13px;
-        letter-spacing: 0.12em;
-        text-align: left;
-        margin-bottom: 26px;
-    }
-
-    /* The hero ran 955px tall inside an 844px viewport, which put the CV button
-       below the fold on the exact device this page is most often read on.
-       Trimming its padding is the cheapest 76px on the page. */
-    .hero {
-        padding: calc(var(--navbar-height) + 28px) 24px 56px;
-    }
-
-    .hero__photo {
-        margin-bottom: 22px;
-    }
-}
-
-.hero__photo {
-    width: 116px;
-    height: 116px;
-    border-radius: 50%;
-    overflow: hidden;
-    margin-bottom: 30px;
-    box-shadow: 0 0 0 1px var(--line), 0 0 54px var(--glow);
-}
-
-.hero__photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-.hero__kicker {
-    font-family: var(--font-mono), monospace;
-    font-size: 13px;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--accent-ink);
-    margin: 0 0 14px;
-}
-
-.hero__name {
-    font-size: clamp(46px, 8vw, 84px);
+.hero-intro__name {
+    font-size: var(--fs-name);
     font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.02;
-    margin: 0 0 20px;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
     text-wrap: balance;
 }
 
-.hero__typed {
+.hero-intro__ticker {
     font-family: var(--font-mono), monospace;
     font-weight: 500;
-    font-size: clamp(15px, 2.4vw, 21px);
-    color: var(--accent-ink);
-    margin: 0 0 24px;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.6;
+    /* Reserves the line while a role is erased, so the band never jumps. */
     min-height: 1.6em;
 }
 
-.hero__typed-prompt {
-    color: var(--muted);
+/* Below 360px the longest role wraps; reserve both lines so typing it does not
+   push the band and shrink the letters row on every keystroke. */
+@media (max-width: 360px) {
+    .hero-intro__ticker {
+        min-height: 3.2em;
+    }
 }
 
 .typed-cursor {
-    animation: blinkCursor 1s step-end infinite;
+    margin-left: 2px;
     color: var(--accent-ink);
+    animation: blinkCursor 1s step-end infinite;
 }
 
-.hero__subtitle {
-    font-size: 16px;
-    line-height: 1.75;
-    color: var(--muted);
-    max-width: 620px;
-    margin: 0 0 40px;
-}
-
-.hero__ctas {
+/* The shared buttons read their colours from tokens, so the hero re-points the
+   tokens here rather than overriding the button rules, which come later in the
+   cascade (globals.css). Scoped to the button row only: the CV notices keep the
+   page's own --text on their own --panel fill. The outline border mixes the ink
+   to 52%, which clears 3:1 against --hero-bg in both themes. */
+.hero-intro__ctas {
+    --cta-bg: var(--hero-accent);
+    --cta-text: var(--hero-on-accent);
+    --text: var(--hero-ink);
+    --line-control: color-mix(in oklab, var(--hero-ink) 52%, transparent);
+    --glow: color-mix(in srgb, var(--hero-accent) 22%, transparent);
     display: flex;
-    gap: 14px;
     flex-wrap: wrap;
-    justify-content: center;
+    gap: 12px;
+    margin-top: 6px;
 }
 
-/* The hero's CV feedback. Styling comes from the shared `.notice` primitive;
-   this only owns placement, which is why it sits outside `.hero__ctas` — inside
-   that flex row a notice would become a fourth button-width column. */
-.hero__notices {
-    display: flex;
-    flex-direction: column;
+/* The CV feedback. Placement only; the look is the shared `.notice`. */
+.hero-intro__notices {
+    display: grid;
     gap: 12px;
-    margin-top: 22px;
     max-width: 560px;
+}
+
+.hero-intro__hint {
+    font-family: var(--font-mono), monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--hero-label);
+}
+
+.hero-intro__hint-arrow {
+    color: var(--hero-accent);
+}
+
+/* ── Marquee ──
+   Constant speed in pixels per second without measuring in the browser: the
+   font size is fixed in px and the font is monospaced, so HeroMarquee computes
+   one copy's width in em on the server and writes it to --marquee-length. The
+   duration is that width in px divided by --marquee-speed. The track holds the
+   list twice and slides by -50%, one copy, so the loop is seamless even if the
+   estimate is off by a fallback font; only the speed would drift.
+   CHAR_EM and ITEM_PADDING_EM in HeroMarquee.tsx mirror the font size, the
+   letter-spacing and the item padding below. */
+.hero-marquee {
+    /* px per second */
+    --marquee-speed: 60;
+    overflow: hidden;
+    padding-block: 16px;
+    border-top: 1px solid color-mix(in oklab, var(--hero-ink) 16%, transparent);
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--hero-label);
+}
+
+.hero-marquee__track {
+    display: flex;
+    width: max-content;
+    animation-name: heroMarquee;
+    /* One copy is --marquee-length em at 12px per em. */
+    animation-duration: calc(var(--marquee-length) * 12s / var(--marquee-speed));
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.hero-marquee__item {
+    position: relative;
+    padding-inline: 2em;
+    white-space: nowrap;
+}
+
+/* Out of flow, so the separator adds nothing to the width HeroMarquee counts. */
+.hero-marquee__item::after {
+    content: '·';
+    position: absolute;
+    right: 0;
+    transform: translateX(50%);
+    opacity: 0.5;
+}
+
+@keyframes heroMarquee {
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+/* The strip holds still; its first items stay readable in place. The pill dot
+   and the ticker cursor are stilled by globals.css's reduced-motion block. */
+@media (prefers-reduced-motion: reduce) {
+    .hero-marquee__track {
+        animation: none;
+    }
 }

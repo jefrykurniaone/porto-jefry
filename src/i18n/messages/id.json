@@ -14,7 +14,6 @@
         "close_menu": "Tutup menu"
     },
     "hero": {
-        "greeting": "Halo, Saya",
         "status_pill": "Indonesia · UTC+7 · Remote, relokasi & freelance",
         "roles": [
             "Backend Developer",
@@ -27,7 +26,7 @@
         "title": "Backend Developer & Spesialis .NET",
         "subtitle": "Lebih dari lima tahun membangun API dan sistem dengan data besar untuk klien perbankan, asuransi, dan pemerintahan. Belakangan saya juga memakai React dan Next.js, serta bekerja dengan alur kerja AI agentic coding menggunakan Claude, GitHub Copilot, dan OpenCode.",
         "cta_work": "Lihat Karya Saya",
-        "cta_contact": "Hubungi Saya"
+        "scroll_hint": "Scroll"
     },
     "cv": {
         "download": "Unduh CV",
@@ -44,6 +43,7 @@
     },
     "about": {
         "title": "Tentang Saya",
+        "statement": "Saya suka kode yang <mark>membosankan</mark>.",
         "description": [
             "Saya backend developer dengan pengalaman lebih dari lima tahun di .NET (C# dan VB.NET) dan Microsoft SQL Server. Sebagian besar pekerjaan saya berupa software produksi untuk perbankan, asuransi, platform HR, dan instansi pemerintah: sistem dan API yang mereka andalkan setiap hari.",
             "Di PT Xtremax Teknologi Indonesia saya membangun layanan backend dan REST API, dan sebelumnya saya memimpin tim pengembang kecil melalui siklus proyek secara penuh, dari desain teknis sampai deployment. Di luar .NET, saya membangun aplikasi full-stack dengan React dan Next.js, dan mengandalkan alur kerja AI agentic coding dengan Claude, GitHub Copilot, dan OpenCode untuk bekerja lebih cepat tanpa kehilangan kendali atas kode.",
@@ -51,12 +51,7 @@
         ],
         "contact_email": "Email",
         "contact_phone": "Telepon",
-        "contact_linkedin": "LinkedIn",
-        "contact_github": "GitHub",
-        "term_whoami": "jefry.kurniawan · developer backend",
-        "term_stack": ".NET · C# · SQL Server · REST APIs",
-        "term_ai": "Claude · GitHub Copilot · OpenCode",
-        "term_status": "full-time remote & relocation · freelance welcome"
+        "contact_linkedin": "LinkedIn"
     },
     "experience": {
         "title": "Pengalaman Profesional",
