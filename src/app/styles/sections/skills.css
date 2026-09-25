@@ -32,10 +32,16 @@
     gap: 10px;
 }
 
+/* An h3, so screen-reader heading navigation still lands on every category
+   (Experience's `.exp-role` and Education's `.edu-institution` keep the same
+   per-row heading) — "Label" in CONTEXT.md is a visual role, not an element.
+   Every property that differs from the browser's h3 default is set here, so
+   nothing but `margin: 0` needs the `.section-title`/`h1,h2,h3,p` resets. */
 .skill-row__label {
     font-family: var(--font-mono), monospace;
     font-size: 13px;
     font-weight: 600;
+    line-height: 1.3;
     letter-spacing: 0.02em;
     color: var(--muted);
     margin: 0;

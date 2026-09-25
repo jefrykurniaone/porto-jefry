@@ -36,7 +36,7 @@ function SkillRow({ cat, label, aiBadge, workingLabel }: Readonly<SkillRowProps>
     return (
         <div className='skill-row'>
             <div className='skill-row__meta'>
-                <p className='skill-row__label'>{label}</p>
+                <h3 className='skill-row__label'>{label}</h3>
                 {cat.category === AI_CATEGORY && (
                     <span className='ai-badge'>{aiBadge}</span>
                 )}
