@@ -1,53 +1,55 @@
 import { useTranslations } from 'next-intl';
 import { skillCategories, type SkillCategory } from '@/data/skills';
 import SectionHeader from '@/components/ui/SectionHeader';
+import Reveal from '@/components/ui/Reveal';
 
 const AI_CATEGORY = 'ai_workflow';
 
 const countBy = (pick: (cat: SkillCategory) => string[] | undefined) =>
     skillCategories.reduce((total, cat) => total + (pick(cat)?.length ?? 0), 0);
 
-interface SkillCardProps {
+interface SkillItemListProps {
+    items: string[];
+    /** Quieter styling for the "working knowledge" list, never colour alone —
+        it always follows its own `working_label` heading. */
+    quiet?: boolean;
+}
+
+function SkillItemList({ items, quiet }: Readonly<SkillItemListProps>) {
+    return (
+        <ul className={quiet ? 'skill-list skill-list--working' : 'skill-list'}>
+            {items.map((skill) => (
+                <li key={skill}>{skill}</li>
+            ))}
+        </ul>
+    );
+}
+
+interface SkillRowProps {
     cat: SkillCategory;
     label: string;
     aiBadge: string;
     workingLabel: string;
 }
 
-function SkillCard({ cat, label, aiBadge, workingLabel }: Readonly<SkillCardProps>) {
+function SkillRow({ cat, label, aiBadge, workingLabel }: Readonly<SkillRowProps>) {
     return (
-        <div className='panel-card panel-card--lift skill-card'>
-            <div className='skill-card__head'>
-                <h3 className='skill-card__label'>{label}</h3>
+        <div className='skill-row'>
+            <div className='skill-row__meta'>
+                <h3 className='skill-row__label'>{label}</h3>
                 {cat.category === AI_CATEGORY && (
                     <span className='ai-badge'>{aiBadge}</span>
                 )}
             </div>
-            <div className='chip-row'>
-                {cat.skills.map((skill) => (
-                    <span key={skill} className='chip skill-card__chip'>
-                        {skill}
-                    </span>
-                ))}
+            <div>
+                <SkillItemList items={cat.skills} />
+                {cat.working && cat.working.length > 0 && (
+                    <>
+                        <p className='skill-row__working-label'>{workingLabel}</p>
+                        <SkillItemList items={cat.working} quiet />
+                    </>
+                )}
             </div>
-            {cat.working && cat.working.length > 0 && (
-                <>
-                    {/* `#` reads the sublabel as a comment on the list above,
-                        the same code-comment device as the hero's `// Hi, I'm`. */}
-                    <p className='skill-card__sublabel'>
-                        <span aria-hidden='true'>#</span> {workingLabel}
-                    </p>
-                    <div className='chip-row'>
-                        {cat.working.map((skill) => (
-                            <span
-                                key={skill}
-                                className='chip skill-card__chip skill-card__chip--working'>
-                                {skill}
-                            </span>
-                        ))}
-                    </div>
-                </>
-            )}
         </div>
     );
 }
@@ -59,10 +61,9 @@ export default function Skills() {
         <section
             id='skills'
             aria-labelledby='skills-title'
-            className='section-band section-band--alt'>
+            className='section-band'>
             <div className='container-page section-inner'>
                 <SectionHeader
-                    command='ls --production'
                     title={t('title')}
                     titleId='skills-title'
                     output={t('summary', {
@@ -72,9 +73,9 @@ export default function Skills() {
                     })}
                 />
                 <p className='skills-note'>{t('working_note')}</p>
-                <div className='skills-grid'>
+                <Reveal className='skill-rows'>
                     {skillCategories.map((cat) => (
-                        <SkillCard
+                        <SkillRow
                             key={cat.category}
                             cat={cat}
                             label={t(`categories.${cat.category}`)}
@@ -82,7 +83,7 @@ export default function Skills() {
                             workingLabel={t('working_label')}
                         />
                     ))}
-                </div>
+                </Reveal>
             </div>
         </section>
     );
