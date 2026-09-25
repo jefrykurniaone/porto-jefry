@@ -331,25 +331,20 @@
     padding: 0 24px;
 }
 
+/* Sections are separated by this hairline alone. `.section-band--alt` no longer
+   changes the background — every section sits on the page's --bg — and has no
+   rule of its own; the class is left in markup until #80 retires it. */
 .section-band {
     border-top: 1px solid var(--line);
-}
-
-/* The 0.35s here, on .panel-card and on the navbar and terminal is the same
-   0.35s <body> uses. Between them they cover essentially the whole viewport, so
-   a theme switch reads as one crossfade instead of a flash with the page field
-   trailing behind it. Deliberately NOT a universal `* { transition: color }`:
-   that would also put a 350ms lag on every link and button hover. */
-.section-band--alt {
-    background: var(--bg2);
-    transition: background 0.35s ease;
 }
 
 .section-inner {
     padding: 96px 24px;
 }
 
-/* The kicker is a shell command now, not an uppercase label, so the 0.2em
+/* Contact's own header is the last user of the kicker (SectionHeader no longer
+   renders one); these two rules go when Contact is restyled (#79).
+   The kicker is a shell command now, not an uppercase label, so the 0.2em
    tracking the Tracking-With-Caps Rule requires no longer applies — that rule is
    about uppercase runs. Code reads tighter; 0.06em keeps `ls -la ~/work` looking
    like something typed rather than something set. */
@@ -367,36 +362,79 @@
     color: var(--muted);
 }
 
-/* The command's output. Real counts read from the data arrays, so a recruiter
-   scanning at speed gets the shape of each section before reading any of it. */
-.section-output {
-    font-family: var(--font-mono), monospace;
-    font-size: 11.5px;
-    letter-spacing: 0.08em;
-    color: var(--muted);
-    margin: 0 0 14px;
-}
-
-.section-title {
-    font-size: clamp(28px, 4vw, 40px);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+/* SectionHeader: the display title, then the summary Label under it. */
+.section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
     margin: 0 0 44px;
 }
 
+/* The summary Label. Real counts read from the data arrays, so a recruiter
+   scanning at speed gets the shape of each section before reading any of it. */
+.section-output {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0;
+}
+
+/* `overflow-wrap` breaks a single word wider than a 320px column (the English
+   "Certifications" at the clamp floor) instead of letting it overflow. */
+.section-title {
+    font-size: var(--fs-section);
+    font-weight: 700;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+    overflow-wrap: break-word;
+    margin: 0;
+}
+
+/* ScrambleTitle. The real-text layer is in flow and sets the box; the glyph
+   layer is absolutely placed over it, so the scramble cannot shift layout. The
+   glyph layer is empty at rest, and only while the tween fills it is the real
+   text made transparent — colour, not visibility, so the heading's accessible
+   name stays the real title throughout. */
+.scramble-title {
+    position: relative;
+    display: block;
+}
+
+.scramble-title__glyphs {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* The glyph set has no spaces, so an unresolved run is one long word;
+       let it wrap inside the title's box rather than run off the side. */
+    overflow-wrap: anywhere;
+}
+
+.scramble-title__glyphs:not(:empty) + .scramble-title__text {
+    color: transparent;
+}
+
+/* A plain Label list item: no pill box. Items are spaced by the row's gap. */
 .chip {
     font-family: var(--font-mono), monospace;
-    font-size: 11px;
+    font-size: 12px;
+    letter-spacing: 0.02em;
     color: var(--muted);
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    padding: 4px 9px;
 }
 
 .chip-row {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 6px 18px;
+}
+
+/* The list reset for a `ul.chip-row` of `li.chip`. Zero specificity, so it only
+   beats the user-agent list styles and never a section's own margin on the row,
+   which this block would otherwise override by coming later in the cascade. */
+:where(.chip-row) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
 }
 
 /* Card eyebrow/period pair. Originally Projects-only, also used by Education's
