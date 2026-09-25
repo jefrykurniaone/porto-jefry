@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { experiences, type ExperienceItem } from '@/data/experience';
 import { translatePeriod } from '@/utils/translate-period';
 import SectionHeader from '@/components/ui/SectionHeader';
+import Reveal from '@/components/ui/Reveal';
 
 const MAX_BULLETS = 3;
 
@@ -69,7 +70,7 @@ function ExpandableBullets({ bullets }: Readonly<{ bullets: string[] }>) {
 function ExperienceRow({ exp, bullets, period }: Readonly<ExperienceRowProps>) {
     return (
         <div className='exp-row'>
-            <div>
+            <div className='exp-row__meta'>
                 <p className='exp-period'>{period}</p>
                 {LOCATIONS_VARY && (
                     <p className='exp-location'>{exp.location}</p>
@@ -80,11 +81,11 @@ function ExperienceRow({ exp, bullets, period }: Readonly<ExperienceRowProps>) {
                 <p className='exp-company'>{exp.company}</p>
                 <ExpandableBullets bullets={bullets} />
                 {exp.tech && (
-                    <div className='chip-row'>
+                    <ul className='chip-row'>
                         {exp.tech.map((tech) => (
-                            <span key={tech} className='chip'>{tech}</span>
+                            <li key={tech} className='chip'>{tech}</li>
                         ))}
-                    </div>
+                    </ul>
                 )}
             </div>
         </div>
@@ -104,7 +105,6 @@ export default function Experience() {
             className='section-band'>
             <div className='container-page section-inner'>
                 <SectionHeader
-                    command='history --work'
                     title={t('title')}
                     titleId='experience-title'
                     output={t('summary', {
@@ -112,7 +112,7 @@ export default function Experience() {
                         since: translatePeriod(careerStart(), locale),
                     })}
                 />
-                <div>
+                <Reveal className='exp-rows'>
                     {experiences.map((exp) => (
                         <ExperienceRow
                             key={exp.id}
@@ -124,7 +124,7 @@ export default function Experience() {
                             )}
                         />
                     ))}
-                </div>
+                </Reveal>
             </div>
         </section>
     );
