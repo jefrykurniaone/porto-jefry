@@ -1,8 +1,8 @@
 # Spec — section restyle (ruled rows, open project grid, scrambling titles, reveal)
 
 - **Spec issue**: [#66](https://github.com/jefrykurniaone/porto-jefry/issues/66)
-- **Execution map**: pending, added when the map is published
-- **Tickets**: pending, added when the tickets are published
+- **Execution map**: [#82](https://github.com/jefrykurniaone/porto-jefry/issues/82)
+- **Tickets**: [#76](https://github.com/jefrykurniaone/porto-jefry/issues/76) · [#77](https://github.com/jefrykurniaone/porto-jefry/issues/77) · [#78](https://github.com/jefrykurniaone/porto-jefry/issues/78) · [#79](https://github.com/jefrykurniaone/porto-jefry/issues/79) · [#80](https://github.com/jefrykurniaone/porto-jefry/issues/80)
 - **Run**: `ui-redesign`
 - **Version**: v1, copied from the spec issue on 2026-09-25
 

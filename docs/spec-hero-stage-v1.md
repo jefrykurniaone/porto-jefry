@@ -1,8 +1,8 @@
 # Spec — hero stage and manifesto (sticky scroll transition, JK mark, dot field)
 
 - **Spec issue**: [#64](https://github.com/jefrykurniaone/porto-jefry/issues/64)
-- **Execution map**: pending, added when the map is published
-- **Tickets**: pending, added when the tickets are published
+- **Execution map**: [#82](https://github.com/jefrykurniaone/porto-jefry/issues/82)
+- **Tickets**: [#71](https://github.com/jefrykurniaone/porto-jefry/issues/71) · [#72](https://github.com/jefrykurniaone/porto-jefry/issues/72) · [#73](https://github.com/jefrykurniaone/porto-jefry/issues/73)
 - **Run**: `ui-redesign`
 - **Version**: v1, copied from the spec issue on 2026-09-25
 

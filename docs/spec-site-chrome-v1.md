@@ -1,8 +1,8 @@
 # Spec — site chrome restyle (JK navbar with ink flip, one-row footer)
 
 - **Spec issue**: [#65](https://github.com/jefrykurniaone/porto-jefry/issues/65)
-- **Execution map**: pending, added when the map is published
-- **Tickets**: pending, added when the tickets are published
+- **Execution map**: [#82](https://github.com/jefrykurniaone/porto-jefry/issues/82)
+- **Tickets**: [#74](https://github.com/jefrykurniaone/porto-jefry/issues/74) · [#75](https://github.com/jefrykurniaone/porto-jefry/issues/75)
 - **Run**: `ui-redesign`
 - **Version**: v1, copied from the spec issue on 2026-09-25
 

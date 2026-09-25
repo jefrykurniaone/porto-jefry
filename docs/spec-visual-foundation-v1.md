@@ -1,8 +1,8 @@
 # Spec — visual foundation for the ui-redesign run (palette, type scale, motion setup, stylesheet split)
 
 - **Spec issue**: [#63](https://github.com/jefrykurniaone/porto-jefry/issues/63)
-- **Execution map**: pending, added when the map is published
-- **Tickets**: pending, added when the tickets are published
+- **Execution map**: [#82](https://github.com/jefrykurniaone/porto-jefry/issues/82)
+- **Tickets**: [#68](https://github.com/jefrykurniaone/porto-jefry/issues/68) · [#69](https://github.com/jefrykurniaone/porto-jefry/issues/69) · [#70](https://github.com/jefrykurniaone/porto-jefry/issues/70) · [#81](https://github.com/jefrykurniaone/porto-jefry/issues/81)
 - **Run**: `ui-redesign`
 - **Version**: v1, copied from the spec issue on 2026-09-25
 
