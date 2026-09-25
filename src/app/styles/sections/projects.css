@@ -1,6 +1,6 @@
 /* ── Projects ── */
 /* Group headings. The section splits into work a stranger can open and work
-   that has no public URL, so each group states which it is before its cards. */
+   that has no public URL, so each group states which it is before its items. */
 .project-group__title {
     font-size: 19px;
     font-weight: 600;
@@ -16,56 +16,92 @@
     margin: 0 0 24px;
 }
 
-/* See .about-grid — min() keeps the track from overflowing a sub-368px viewport. */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
     gap: 18px;
 }
 
-.project-card {
+/* Open item, no box: a hairline rule on top of each one, the same "ruled, not
+   boxed" treatment .exp-row gives Experience. */
+.project-item {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
 }
 
-.project-card__name {
-    font-size: 16.5px;
-    font-weight: 600;
+.project-item__title {
+    font-size: var(--fs-lead);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
     margin: 0;
-    letter-spacing: -0.01em;
-    line-height: 1.35;
+    transition: color 0.2s ease;
 }
 
-.project-card__desc {
-    font-size: 13.5px;
-    line-height: 1.65;
+/* Hover only where hover exists, matching .exp-role: a tap on a link inside
+   the item must not leave the title stuck in the accent colour on a touch
+   screen. */
+@media (hover: hover) {
+    .project-item:hover .project-item__title {
+        color: var(--accent-ink);
+    }
+}
+
+/* Period and company as Labels, directly under the title. */
+.project-item__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    margin: 0;
+}
+
+.project-item__period,
+.project-item__company {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
     color: var(--muted);
+    font-variant-numeric: tabular-nums;
     margin: 0;
-    flex: 1;
 }
 
-.project-card__tech {
-    margin-top: 6px;
+.project-item__company {
+    letter-spacing: 0.04em;
+}
+
+/* Reading text: read in full, so it takes the AAA --reading colour and the
+   reading size, not the Label grey — see .exp-bullet. */
+.project-item__desc {
+    font-size: var(--fs-reading);
+    line-height: 1.65;
+    color: var(--reading);
+    max-width: 60ch;
+    margin: 0;
+}
+
+.project-item__tech {
+    margin-top: 2px;
     gap: 7px;
 }
 
-.project-card__tech .chip {
+.project-item__tech .chip {
     font-size: 10.5px;
     padding: 3px 8px;
 }
 
 /* Live-site / source links. Only rendered for projects that have a public URL,
-   so the row sits after the tech chips rather than in the card's fixed header
-   block. Colour comes from the global `a` rule (--accent-ink), which is the
+   so the row sits after the tech chips rather than in a fixed header block.
+   Colour comes from the global `a` rule (--accent-ink), which is the
    AA-contrast-safe accent in both themes — do not hardcode --accent here. */
-.project-card__links {
+.project-item__links {
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
 }
 
-.project-card__link {
+.project-item__link {
     position: relative;
     font-family: var(--font-mono), monospace;
     font-size: 12px;
@@ -77,17 +113,17 @@
 
 /* Vertical-only pointer-target expansion: 18px of text becomes a 34px target
    without moving the link or reaching across the 16px gap to its neighbour. */
-.project-card__link::after {
+.project-item__link::after {
     content: '';
     position: absolute;
     inset: -8px 0;
 }
 
-.project-card__link:hover {
+.project-item__link:hover {
     border-bottom-color: currentColor;
 }
 
-.project-card__link:focus-visible {
+.project-item__link:focus-visible {
     outline: 2px solid var(--accent-ink);
     outline-offset: 3px;
     border-radius: 6px;
@@ -104,9 +140,7 @@
 }
 
 /* Collapsed by default: these nine have no link, no screenshot and nothing a
-   reader can check, so at card weight they buried the six that do. Two dense
-   columns when opened — enough to show the domain range without spending
-   another 3,000px of phone scroll on it. */
+   reader can check, so at full item weight they buried the six that do. */
 .project-archive {
     margin-top: 56px;
     padding-top: 40px;
@@ -121,47 +155,60 @@
     margin: 0;
 }
 
+/* The archive takes the row style instead of the live grid's multi-column
+   tracks: a plain full-width stack, one row per item, like .exp-rows. */
 .project-archive__list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
-    gap: 0 32px;
+    display: flex;
+    flex-direction: column;
     margin: 16px 0 0;
     padding: 0;
     list-style: none;
 }
 
 .project-archive__row {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    padding: 18px 0;
+    display: grid;
+    grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+    gap: 4px 24px;
+    padding: 20px 0;
     border-top: 1px solid var(--line);
 }
 
-/* Deliberately `nowrap`. Wrapping put the period on its own line whenever the
-   name was long, and `space-between` then left-aligned it — so the same list
-   printed the date on the right for "RBBR Super Bank" and on the left, a line
-   down, for "Sustainability TAM (Event Management)". The period is a rail, like
-   `.exp-period`: it holds the right edge on every row and the name wraps
-   underneath itself instead. */
-.project-archive__head {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 6px 16px;
+@media (max-width: 640px) {
+    .project-archive__row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 6px;
+    }
 }
 
-/* min-width: 0 is what lets a long name wrap. A flex item's default
-   `min-width: auto` floors it at its longest word, which is what pushed the
-   period out of the row in the first place. */
+.project-archive__period {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+}
+
 .project-archive__name {
     font-size: 16px;
     font-weight: 600;
     letter-spacing: -0.01em;
-    margin: 0;
-    min-width: 0;
+    margin: 0 0 4px;
 }
 
-.project-archive__head .card-period {
-    flex-shrink: 0;
+.project-archive__company {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--muted);
+    margin: 0 0 10px;
+}
+
+.project-archive__tech {
+    margin-top: 2px;
+    gap: 7px;
+}
+
+.project-archive__tech .chip {
+    font-size: 10.5px;
+    padding: 3px 8px;
 }

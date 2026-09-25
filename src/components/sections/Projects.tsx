@@ -2,6 +2,7 @@ import { useTranslations, useLocale, useMessages } from 'next-intl';
 import { partitionProjects, type ProjectItem } from '@/data/projects';
 import { translatePeriod } from '@/utils/translate-period';
 import SectionHeader from '@/components/ui/SectionHeader';
+import Reveal from '@/components/ui/Reveal';
 import ProjectArchive, { type ProjectSummary } from './ProjectArchive';
 
 interface ProjectLinksProps {
@@ -25,7 +26,7 @@ function ProjectLinks({
     if (links.length === 0) return null;
 
     return (
-        <div className='project-card__links'>
+        <div className='project-item__links'>
             {links.map((link) => (
                 <a
                     key={link.href}
@@ -33,11 +34,25 @@ function ProjectLinks({
                     target='_blank'
                     rel='noopener noreferrer'
                     aria-label={`${link.label}: ${project.name}`}
-                    className='project-card__link'>
+                    className='project-item__link'>
                     {link.label}
                     <span aria-hidden='true'> ↗</span>
                 </a>
             ))}
+        </div>
+    );
+}
+
+/** Period and company as Labels, directly under the title — same role as
+ * `.exp-period` / `.exp-company` in the Experience row. */
+function ProjectMeta({
+    period,
+    company,
+}: Readonly<{ period: string; company: string }>) {
+    return (
+        <div className='project-item__meta'>
+            <p className='project-item__period'>{period}</p>
+            <p className='project-item__company'>{company}</p>
         </div>
     );
 }
@@ -55,6 +70,10 @@ interface ProjectCardProps {
  * Card titles are h4: the section's h2 now has an h3 group heading between it
  * and the cards (live public work / in progress / the archive), so dropping a
  * level keeps the outline contiguous.
+ *
+ * The item itself carries no box: a hairline rule on top marks it off, the
+ * title takes the lead size and picks up --accent-ink on hover, the
+ * description is Reading text, and period/company/stack are Labels.
  */
 function ProjectCard({
     project,
@@ -65,17 +84,16 @@ function ProjectCard({
     viewSourceLabel,
 }: Readonly<ProjectCardProps>) {
     return (
-        <div className='panel-card panel-card--lift project-card'>
-            <p className='card-eyebrow'>{company}</p>
-            <h4 className='project-card__name'>{project.name}</h4>
-            <p className='card-period'>{period}</p>
-            {description && <p className='project-card__desc'>{description}</p>}
+        <div className='project-item'>
+            <h4 className='project-item__title'>{project.name}</h4>
+            <ProjectMeta period={period} company={company} />
+            {description && <p className='project-item__desc'>{description}</p>}
             {project.tech.length > 0 && (
-                <div className='chip-row project-card__tech'>
+                <ul className='chip-row project-item__tech'>
                     {project.tech.map((tech) => (
-                        <span key={tech} className='chip'>{tech}</span>
+                        <li key={tech} className='chip'>{tech}</li>
                     ))}
-                </div>
+                </ul>
             )}
             <ProjectLinks
                 project={project}
@@ -184,7 +202,7 @@ function useResolvedProjects(): {
 function ProjectGrid({ cards }: Readonly<{ cards: ResolvedCard[] }>) {
     const t = useTranslations('projects');
     return (
-        <div className='projects-grid'>
+        <Reveal className='projects-grid'>
             {cards.map((card) => (
                 <ProjectCard
                     key={card.project.id}
@@ -196,7 +214,7 @@ function ProjectGrid({ cards }: Readonly<{ cards: ResolvedCard[] }>) {
                     viewSourceLabel={t('view_source')}
                 />
             ))}
-        </div>
+        </Reveal>
     );
 }
 
@@ -232,7 +250,6 @@ export default function Projects() {
             className='section-band'>
             <div className='container-page section-inner'>
                 <SectionHeader
-                    command='ls -la ~/work'
                     title={t('title')}
                     titleId='projects-title'
                     output={t('summary', {
