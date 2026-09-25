@@ -243,10 +243,7 @@
         "cv_label": "Bawa serta",
         "cv_lead": "Dibuat langsung dari konten halaman ini — PDF mengikuti bahasa yang sedang Anda baca."
     },
-    "footer": {
-        "built_with": "Didesain & dibangun dengan alur kerja AI-agentic — Claude · Copilot · OpenCode.",
-        "rights": "Semua hak dilindungi."
-    },
+    "footer": {},
     "theme": {
         "toggle_dark": "Beralih ke mode gelap",
         "toggle_light": "Beralih ke mode terang"

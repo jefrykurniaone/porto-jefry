@@ -243,10 +243,7 @@
     "cv_label": "Take it with you",
     "cv_lead": "Generated on demand from this page's own content — the PDF comes in whichever language you're reading."
   },
-  "footer": {
-    "built_with": "Designed & shipped with an AI-agentic workflow — Claude · Copilot · OpenCode.",
-    "rights": "All rights reserved."
-  },
+  "footer": {},
   "theme": {
     "toggle_dark": "Switch to dark mode",
     "toggle_light": "Switch to light mode"
