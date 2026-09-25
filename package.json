@@ -14,9 +14,11 @@
         "lint": "eslint src"
     },
     "dependencies": {
+        "@gsap/react": "^2.1.2",
         "@react-pdf/renderer": "^4.5.1",
         "@vercel/analytics": "^2.0.1",
         "@vercel/functions": "^3.7.0",
+        "gsap": "^3.15.0",
         "next": "^16.3.4",
         "next-intl": "^4.11.1",
         "react": "^19.2.8",
