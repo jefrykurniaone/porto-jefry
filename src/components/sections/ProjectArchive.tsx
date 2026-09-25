@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Reveal from '@/components/ui/Reveal';
 
 export interface ProjectSummary {
     id: string;
@@ -18,21 +19,26 @@ interface ProjectArchiveProps {
     hideLabel: string;
 }
 
+/**
+ * The row style: a Label rail (period) on the left, name/company/stack on the
+ * right — the same shape as `.exp-row`, minus the meta-column hover the live
+ * cards get, since archive items have nothing to link to.
+ */
 function ArchiveRow({ item }: Readonly<{ item: ProjectSummary }>) {
     return (
         <li className='project-archive__row'>
-            <div className='project-archive__head'>
+            <p className='project-archive__period'>{item.period}</p>
+            <div>
                 <h4 className='project-archive__name'>{item.name}</h4>
-                <p className='card-period'>{item.period}</p>
+                <p className='project-archive__company'>{item.company}</p>
+                {item.tech.length > 0 && (
+                    <ul className='chip-row project-archive__tech'>
+                        {item.tech.map((tech) => (
+                            <li key={tech} className='chip'>{tech}</li>
+                        ))}
+                    </ul>
+                )}
             </div>
-            <p className='card-eyebrow'>{item.company}</p>
-            {item.tech.length > 0 && (
-                <div className='chip-row project-card__tech'>
-                    {item.tech.map((tech) => (
-                        <span key={tech} className='chip'>{tech}</span>
-                    ))}
-                </div>
-            )}
         </li>
     );
 }
@@ -43,6 +49,11 @@ function ArchiveRow({ item }: Readonly<{ item: ProjectSummary }>) {
  * rather than as more full-weight cards: at equal weight these nine diluted the
  * six with live public URLs, which are the only project evidence a stranger can
  * actually verify. Same `aria-expanded` pattern as the experience bullets.
+ *
+ * The list mounts only while open, so `Reveal` collects its rows fresh each
+ * time it opens rather than depending on a scroll trigger armed before the
+ * archive existed in the DOM; its CSS resting state is fully visible either
+ * way, so opening it never depends on the reveal having run.
  */
 export default function ProjectArchive({
     items,
@@ -67,11 +78,11 @@ export default function ProjectArchive({
                 {isOpen ? hideLabel : showLabel}
             </button>
             {isOpen && (
-                <ul className='project-archive__list'>
+                <Reveal as='ul' className='project-archive__list'>
                     {items.map((item) => (
                         <ArchiveRow key={item.id} item={item} />
                     ))}
-                </ul>
+                </Reveal>
             )}
         </div>
     );
