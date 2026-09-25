@@ -1,44 +1,7 @@
-/* ── Skills ── */
-/* `align-items: start` so each card takes its natural height. Grid items stretch
-   to the tallest in their row by default, which rendered the 2-chip CMS card and
-   the 4-chip Database card as mostly-empty panels beside the 11-chip Backend
-   card. A ragged bottom edge is the honest shape of the content. */
-/* min(300px, 100%), matching .about-grid and .projects-grid. A bare 300px track
-   overflows a 320px viewport by 4px — the container there is 272px — and the
-   html/body `overflow-x: clip` guard then cuts that 4px off silently instead of
-   scrolling, so `documentElement.scrollWidth` still reads clean and only
-   `body.scrollWidth` (324 vs 320) shows it. This grid was the last one missing
-   the guard the other two already carried. */
-.skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    gap: 18px;
-    align-items: start;
-}
-
-.skill-card__head {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 16px;
-}
-
-.skill-card__label {
-    font-size: 15px;
-    font-weight: 600;
-    margin: 0;
-    letter-spacing: 0.01em;
-}
-
-.skill-card__chip {
-    font-size: 11.5px;
-    padding: 5px 10px;
-}
-
-/* Legend for the production/working-knowledge split.
-   54ch, not 68ch: `ch` is the width of "0", which in Space Grotesk is wider than
-   the average lowercase letter, so a 68ch cap was measuring out at ~87 real
-   characters per line — well past the comfortable reading measure. */
+/* ── Skills ──
+   Ruled rows, matching the Experience row shape: a hairline on top of each
+   row, the category name as a Label in a narrow left column, its items as an
+   inline list on the right. No card box, no alternating band. */
 .skills-note {
     font-size: 13px;
     line-height: 1.6;
@@ -47,21 +10,35 @@
     max-width: 54ch;
 }
 
-.skill-card__sublabel {
-    font-family: var(--font-mono), monospace;
-    font-size: 10.5px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 14px 0 8px;
+.skill-row {
+    display: grid;
+    grid-template-columns: minmax(170px, 220px) minmax(0, 1fr);
+    gap: 24px;
+    padding: 30px 0;
+    border-top: 1px solid var(--line);
 }
 
-/* Dashed border rather than a colour-only cue, so the distinction survives
-   greyscale printing and does not rely on hue perception. */
-.skill-card__chip--working {
-    border-style: dashed;
+@media (max-width: 640px) {
+    .skill-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 10px;
+    }
+}
+
+.skill-row__meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.skill-row__label {
+    font-family: var(--font-mono), monospace;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
     color: var(--muted);
-    background: transparent;
+    margin: 0;
 }
 
 /* Border mixed against --accent-ink, not raw --accent. A 50% raw-accent mix
@@ -77,4 +54,46 @@
     border-radius: 999px;
     padding: 3px 9px;
     box-shadow: 0 0 16px var(--glow);
+}
+
+/* A real list, so a screen reader hears items, not punctuation. The middle
+   dot is presentational, drawn with `li + li::before` rather than joined
+   into the text. */
+.skill-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.skill-list li {
+    font-size: 15px;
+    color: var(--text);
+}
+
+.skill-list li + li::before {
+    content: '\00b7';
+    margin: 0 10px;
+    color: var(--muted);
+}
+
+/* The "working knowledge" list: quieter through its own heading and a
+   smaller size, never through colour alone (WCAG 1.4.1). */
+.skill-row__working-label {
+    font-family: var(--font-mono), monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 16px 0 8px;
+}
+
+.skill-list--working li {
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.skill-list--working li + li::before {
+    color: var(--muted);
 }
