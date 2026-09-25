@@ -1,9 +1,10 @@
 /* ── Hero stage ──
    The intro screen and the manifesto, stacked. This is the layout reduced-motion
-   and no-JS visitors keep; the scroll transition builds on it. The intro sits on
-   the --hero-* colours, the inverse of the page theme. The manifesto's own rules
-   live in about.css. */
+   and no-JS visitors keep; the sticky scroll transition at the end of this file
+   builds on it. The intro sits on the --hero-* colours, the inverse of the page
+   theme. The manifesto's own rules live in about.css. */
 .hero-stage {
+    /* The containing block of the #about marker in the sticky layout. */
     position: relative;
 }
 
@@ -26,9 +27,15 @@
     transition: background 0.35s ease, color 0.35s ease;
 }
 
-/* The anchor for #about in the stacked layout: the manifesto's top edge. */
-.hero-stage__manifesto {
+/* The #about anchor: an empty block between the two layers, so in the stacked
+   layout it sits on the manifesto's top edge and lands it under the navbar. */
+.hero-stage__marker {
     scroll-margin-top: var(--navbar-height);
+}
+
+/* The scroll distance the sticky layout reserves; nothing to reserve here. */
+.hero-stage__hold {
+    display: none;
 }
 
 /* ── Intro ──
@@ -237,5 +244,99 @@
 @media (prefers-reduced-motion: reduce) {
     .hero-marquee__track {
         animation: none;
+    }
+}
+
+/* ScrollTrigger refreshes on the window's load event even while the page is
+   scrolling: it jumps to 0 and back (ScrollTrigger.js:500–551, forced because
+   the event object arrives as its `force` argument), which aborts any smooth
+   scroll in flight. Opening a URL with a #hash starts exactly such a scroll
+   under the site's `scroll-behavior: smooth`, and the page would stop short of
+   the section. Instant, the jump happens in one step with nothing in flight to
+   abort. Only where ScrollTrigger can run; scripted scrolls (navbar, back to
+   top) pass their own behavior and stay smooth. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) {
+    html:has(.hero-stage) {
+        scroll-behavior: auto;
+    }
+}
+
+/* ── Sticky scroll transition (ADR 0001) ──
+   Chosen here at first paint, never by a script: the server HTML already has
+   the final height, so a #hash lands correctly before hydration and nothing
+   shifts after it. HeroStage.tsx builds its timeline under the same query
+   (STAGE_MOTION); keep the two identical. Without `scripting` (no JavaScript)
+   the stacked layout stays, so the manifesto is never left clipped.
+
+   The sticky screen cannot grow, so the query also requires a viewport tall
+   enough for the intro's content: 76 (top padding) + letters (0.8 of
+   min(58vw, 50vh)) + 24 + copy band + 28 + marquee 52.2. Computed per width
+   from the shipped Space Grotesk and JetBrains Mono advances and line metrics
+   (it reproduces the 548px measured at 844 x 390), in both locales, the
+   tallest content that must fit is 566px from 900px wide, where the band is
+   one row, and 679px below (at 332px, where the buttons wrap and the ticker
+   reserves two lines). Hence 37.5em (600px) and 45em (720px), in em so a
+   larger default font size, which grows the rem-sized copy, raises the bar.
+   Anything shorter keeps the stacked screen, which grows to fit.
+
+   The screen and the manifesto are both sticky at the top and overlap exactly:
+   the screen is one screen tall, and the manifesto is pulled up by the same
+   amount. The hold element after them adds --stage-hold of scroll, which is
+   exactly how long the manifesto stays held, since a sticky box cannot leave
+   its parent. The #about marker sits at that same offset, where the timeline
+   ends (HeroStage takes the marker's top as the ScrollTrigger's end). The
+   screen stays held behind the manifesto until their bottoms meet, and after
+   that the two scroll away together. */
+@media (prefers-reduced-motion: no-preference) and (scripting: enabled) and (min-width: 900px) and (min-height: 37.5em),
+    (prefers-reduced-motion: no-preference) and (scripting: enabled) and (min-height: 45em) {
+    .hero-stage {
+        --stage-hold: 140vh;
+        /* Seen only where the stuck screen falls short of the viewport, as when
+           a mobile toolbar retracts: the intro's own colour, so no seam. */
+        background: var(--hero-bg);
+        transition: background 0.35s ease;
+    }
+
+    /* Exactly one screen, so the manifesto's pull-up below matches it; the
+       query above guarantees the intro fits. The giant letters grow past its
+       edges; the clip keeps them inside. */
+    .hero-stage__screen {
+        position: sticky;
+        top: 0;
+        height: 100svh;
+        overflow: clip;
+    }
+
+    .hero-stage__marker {
+        position: absolute;
+        top: var(--stage-hold);
+        inset-inline: 0;
+        scroll-margin-top: 0;
+    }
+
+    /* On top of the screen, hidden inside a zero circle until the timeline
+       opens it from the letters' centre. At least one large viewport tall so
+       the open circle covers the screen whatever the toolbar does, and a grid
+       so the manifesto section stretches to fill it. */
+    .hero-stage__manifesto {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        display: grid;
+        min-height: 100lvh;
+        margin-top: -100svh;
+        clip-path: circle(0 at 50% 50%);
+    }
+
+    /* A page loaded at #about scrolls to the marker before the timeline
+       exists; show the revealed manifesto the anchor promises rather than the
+       intro. Once the timeline runs, its inline clip-path wins. */
+    .hero-stage__marker:target + .hero-stage__manifesto {
+        clip-path: none;
+    }
+
+    .hero-stage__hold {
+        display: block;
+        height: var(--stage-hold);
     }
 }
