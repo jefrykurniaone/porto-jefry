@@ -1,0 +1,80 @@
+/* ── Skills ── */
+/* `align-items: start` so each card takes its natural height. Grid items stretch
+   to the tallest in their row by default, which rendered the 2-chip CMS card and
+   the 4-chip Database card as mostly-empty panels beside the 11-chip Backend
+   card. A ragged bottom edge is the honest shape of the content. */
+/* min(300px, 100%), matching .about-grid and .projects-grid. A bare 300px track
+   overflows a 320px viewport by 4px — the container there is 272px — and the
+   html/body `overflow-x: clip` guard then cuts that 4px off silently instead of
+   scrolling, so `documentElement.scrollWidth` still reads clean and only
+   `body.scrollWidth` (324 vs 320) shows it. This grid was the last one missing
+   the guard the other two already carried. */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: 18px;
+    align-items: start;
+}
+
+.skill-card__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.skill-card__label {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    letter-spacing: 0.01em;
+}
+
+.skill-card__chip {
+    font-size: 11.5px;
+    padding: 5px 10px;
+}
+
+/* Legend for the production/working-knowledge split.
+   54ch, not 68ch: `ch` is the width of "0", which in Space Grotesk is wider than
+   the average lowercase letter, so a 68ch cap was measuring out at ~87 real
+   characters per line — well past the comfortable reading measure. */
+.skills-note {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+    margin: -6px 0 26px;
+    max-width: 54ch;
+}
+
+.skill-card__sublabel {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 14px 0 8px;
+}
+
+/* Dashed border rather than a colour-only cue, so the distinction survives
+   greyscale printing and does not rely on hue perception. */
+.skill-card__chip--working {
+    border-style: dashed;
+    color: var(--muted);
+    background: transparent;
+}
+
+/* Border mixed against --accent-ink, not raw --accent. A 50% raw-accent mix
+   measures 2.35:1 on the dark field but only 1.66:1 on the light one, so the
+   badge kept its outline in dark and all but lost it in light. --accent-ink is
+   the theme-corrected accent, which is exactly what a per-theme border needs. */
+.ai-badge {
+    font-family: var(--font-mono), monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--accent-ink);
+    border: 1px solid color-mix(in srgb, var(--accent-ink) 62%, transparent);
+    border-radius: 999px;
+    padding: 3px 9px;
+    box-shadow: 0 0 16px var(--glow);
+}

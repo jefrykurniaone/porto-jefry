@@ -1,5 +1,11 @@
 @import './styles/layout.css';
-@import './styles/sections.css';
+@import './styles/sections/hero.css';
+@import './styles/sections/about.css';
+@import './styles/sections/experience.css';
+@import './styles/sections/skills.css';
+@import './styles/sections/projects.css';
+@import './styles/sections/education.css';
+@import './styles/sections/contact.css';
 
 /* ── Design tokens (Porto Redesign AI-Focused) ──
    Dark is the default theme; light overrides via :root[data-theme="light"].
@@ -151,6 +157,74 @@
     }
 }
 
+/* ── Shared primitives: primary/outline buttons ──
+   Originally the hero's, now also the mobile drawer's and the contact CV
+   panel's, so this pair moved here rather than staying in hero.css (ticket
+   #68). Placed BEFORE the reduced-motion query below, on purpose: that query's
+   `.btn-primary:hover { transform: none; }` has to win over this file's own
+   `.btn-primary:hover { transform: translateY(-2px); }` when reduced motion is
+   active, and with equal specificity that only holds if this block stays
+   earlier in the cascade than the media query. */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--cta-bg);
+    color: var(--cta-text);
+    border: none;
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    box-shadow: 0 6px 30px var(--glow);
+    cursor: pointer;
+    transition: transform 0.15s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    color: var(--cta-text);
+}
+
+/* Matches .btn-outline:disabled. The CV button is primary now, and generating
+   the PDF is a genuinely async wait rather than a blocked action. */
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+.btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: transparent;
+    /* No fill, so the border is the only affordance cue — see --line-control. */
+    border: 1px solid var(--line-control);
+    color: var(--text);
+    text-decoration: none;
+    font-family: inherit;
+    font-weight: 600;
+    font-size: 15px;
+    padding: 14px 28px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: border-color 0.15s ease;
+}
+
+.btn-outline:hover {
+    border-color: var(--accent-ink);
+    color: var(--text);
+}
+
+.btn-outline:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
 /* ── Reduced motion ──
    The two JS animations (typewriter, particle canvas) already skip their work
    under this query; this is the CSS half of the same policy. Each rule removes
@@ -261,6 +335,55 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
+}
+
+/* Card eyebrow/period pair. Originally Projects-only, also used by Education's
+   cards (ticket #68) — company/institution eyebrow and a mono period line. */
+.card-eyebrow {
+    font-family: var(--font-mono), monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0;
+}
+
+.card-period {
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    color: var(--accent-ink);
+    margin: 0;
+}
+
+/* The canvas fills its aria-hidden wrapper (currently `.hero__canvas`, from
+   ParticleCanvas's caller). Shared because the class is applied inside
+   `src/components/ui/ParticleCanvas.tsx` itself (ticket #68), not inside any
+   one section file. */
+.particle-canvas__surface {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* The "show more" / "show N more" disclosure toggle. Originally Experience's,
+   also used by the Projects archive (ticket #68). See projects.css's
+   `.project-archive__toggle` for a cascade-order note this move creates.
+   Padding grows the pointer target from 16px to 32px tall; the negative top
+   margin absorbs it so the label stays exactly where it sat before. */
+.exp-more-btn {
+    background: transparent;
+    border: none;
+    padding: 8px 0;
+    margin: -14px 0 8px;
+    font-family: var(--font-mono), monospace;
+    font-size: 12px;
+    color: var(--accent-ink);
+    cursor: pointer;
+    letter-spacing: 0.06em;
+}
+
+.exp-more-btn:hover {
+    color: var(--text);
 }
 
 .panel-card {
