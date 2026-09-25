@@ -46,10 +46,6 @@
     color: var(--text);
 }
 
-.site-nav__logo-accent {
-    color: var(--accent-ink);
-}
-
 .site-nav__links {
     display: none;
     align-items: center;
@@ -76,6 +72,21 @@
 
 .site-nav__link:hover {
     color: var(--text);
+}
+
+/* The one visually emphasised nav target — same anchor, khaki fill instead
+   of a plain label. Compound selector so it survives the shared-primitive
+   cascade note in CLAUDE.md regardless of source order. */
+.site-nav__link.site-nav__link--contact {
+    padding: 7px 16px;
+    border-radius: 6px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font-weight: 600;
+}
+
+.site-nav__link.site-nav__link--contact:hover {
+    color: var(--on-accent);
 }
 
 .site-nav__controls {
@@ -137,6 +148,108 @@
 
     .nav-hamburger {
         display: none;
+    }
+}
+
+/* ── Ink flip ──
+   T5 (#72) sets/clears data-header-ink="hero" on <html> via its own
+   IntersectionObserver while the header sits over the inverted hero stage;
+   this file only styles against that attribute — no scroll listener here,
+   and until #72 merges the walk sets the attribute by hand. Transitions are
+   declared unconditionally (not inside the attribute selector) so the flip
+   eases the same way going in and coming out; the reduced-motion block below
+   kills every one of them for "instant" in both directions. Borders keep
+   their own existing 0.15s hover-feedback transition untouched — that pair
+   is unrelated to the ink flip. */
+.site-nav__logo,
+.site-nav__link,
+.site-nav .icon-btn,
+.site-nav .nav-hamburger,
+.site-nav .lang-pill__btn {
+    transition: color 0.35s ease;
+}
+
+.site-nav__link.site-nav__link--contact {
+    transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+/* Elsewhere (no attribute): the theme tokens on the translucent, blurred bar
+   already declared on .site-nav above. Over the hero: the bar goes fully
+   transparent and every text/icon/toggle colour switches to the --hero-*
+   tokens. The backdrop-filter pair stays declared only once, unconditionally,
+   on .site-nav — duplicating it here would risk Lightning CSS re-collapsing
+   the prefixed-first order the build-output check guards. */
+:root[data-header-ink='hero'] .site-nav {
+    background: transparent;
+}
+
+:root[data-header-ink='hero'] .site-nav .site-nav__logo,
+:root[data-header-ink='hero'] .site-nav .icon-btn,
+:root[data-header-ink='hero'] .site-nav .nav-hamburger {
+    color: var(--hero-ink);
+}
+
+:root[data-header-ink='hero'] .site-nav .site-nav__link {
+    color: var(--hero-label);
+}
+
+:root[data-header-ink='hero'] .site-nav .site-nav__link:hover {
+    color: var(--hero-ink);
+}
+
+/* --hero-ink at 50% clears 3:1 (WCAG 1.4.11) against --hero-bg in both
+   themes — the same non-text floor --line-control clears against --bg. */
+:root[data-header-ink='hero'] .site-nav .icon-btn,
+:root[data-header-ink='hero'] .site-nav .lang-pill {
+    border-color: color-mix(in srgb, var(--hero-ink) 50%, transparent);
+}
+
+:root[data-header-ink='hero'] .site-nav .icon-btn:hover {
+    border-color: var(--hero-accent);
+}
+
+:root[data-header-ink='hero'] .site-nav .lang-pill__btn {
+    color: var(--hero-label);
+}
+
+:root[data-header-ink='hero'] .site-nav .lang-pill__btn[aria-pressed='false']:hover {
+    color: var(--hero-ink);
+}
+
+:root[data-header-ink='hero'] .site-nav .lang-pill__btn[aria-pressed='true'] {
+    background: var(--hero-accent);
+    color: var(--hero-on-accent);
+}
+
+:root[data-header-ink='hero'] .site-nav .lang-pill__btn[aria-pressed='true']:focus-visible {
+    outline-color: var(--hero-on-accent);
+}
+
+/* Every other focus ring inside the bar — links, icon buttons, the
+   hamburger, the logo, the inactive pill segment — falls back to this one,
+   the same pattern as the sitewide default it overrides. */
+:root[data-header-ink='hero'] .site-nav :focus-visible {
+    outline-color: var(--hero-accent);
+}
+
+:root[data-header-ink='hero'] .site-nav .site-nav__link.site-nav__link--contact {
+    background: var(--hero-accent);
+    color: var(--hero-on-accent);
+}
+
+:root[data-header-ink='hero'] .site-nav .site-nav__link.site-nav__link--contact:hover {
+    color: var(--hero-on-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .site-nav,
+    .site-nav__logo,
+    .site-nav__link,
+    .site-nav__link--contact,
+    .site-nav .icon-btn,
+    .site-nav .nav-hamburger,
+    .site-nav .lang-pill__btn {
+        transition: none;
     }
 }
 
@@ -245,6 +358,17 @@
     color: var(--text);
     text-decoration: none;
     text-transform: capitalize;
+}
+
+/* Same emphasis as the navbar's Contact button — same anchor, khaki fill. */
+.drawer-link.drawer-link--contact {
+    justify-content: center;
+    margin-top: 6px;
+    padding: 0 18px;
+    background: var(--accent);
+    color: var(--on-accent);
+    border-radius: 8px;
+    font-weight: 600;
 }
 
 /* Column: the CV action takes the full width on top, and theme/language keep
