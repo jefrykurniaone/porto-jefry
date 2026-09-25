@@ -4,10 +4,29 @@
    the page theme's own colours, not the hero's. */
 .manifesto {
     position: relative;
+    /* Its own stacking context, so the dot field's negative z-index paints
+       above this background and below the content. */
+    isolation: isolate;
     padding: clamp(72px, 12vh, 128px) clamp(16px, 5vw, 72px);
     background: var(--bg);
     color: var(--text);
     transition: background 0.35s ease, color 0.35s ease;
+}
+
+/* The dot field (DotField.tsx) fills the section behind the text. Absolute,
+   so it adds nothing to the section's size, and it never takes the pointer. */
+.dot-field {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.dot-field__canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .manifesto__inner {
