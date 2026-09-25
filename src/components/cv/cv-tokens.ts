@@ -8,24 +8,24 @@
 // The `color-mix()` and `rgba()` the stylesheet uses are resolved here because
 // @react-pdf/renderer takes plain colours only.
 
-/** --accent-ink: color-mix(in oklab, #9d7bff 58%, black). 9.95:1 on paper.
- *  The Ink Rule — raw --accent (#9d7bff) is a fill, never a text colour, and
- *  would fail contrast on white. */
-export const ACCENT = '#49377a';
+/** Light theme --accent-ink, 9.3:1 on white (8.4:1 on --bg). The Ink Rule —
+ *  raw --accent (light #6f5c3a) is a fill, and would only reach 5.8:1 as
+ *  text, so accent-coloured text uses accent-ink instead. */
+export const ACCENT = '#54452b';
 
-/** --text */
-export const DARK = '#16161f';
+/** Light theme --text. */
+export const DARK = '#151515';
 
-/** --muted */
-export const MUTED = '#5c5c70';
+/** Light theme --muted (the Label colour), 6.1:1 AA. */
+export const MUTED = '#5d5b56';
 
-/** --line: rgba(12, 12, 36, 0.11) composited on white. */
-export const BORDER = '#e4e4e7';
+/** Light theme --line. */
+export const BORDER = '#d8d5cd';
 
-/** --bg. The page itself is --panel (#ffffff), so tinted blocks sit one tonal
- *  step below it — the same panel-over-field relationship the site uses,
- *  inverted for paper. */
-export const LIGHT_BG = '#f7f7fb';
+/** Light theme --bg. The page itself is --panel (#ffffff), so tinted blocks
+ *  sit one tonal step below it — the same panel-over-field relationship the
+ *  site uses, inverted for paper. */
+export const LIGHT_BG = '#f4f3ef';
 
 // ─── Layout Constants ─────────────────────────────────────────────────────────
 export const PHOTO_SIZE = 68;
