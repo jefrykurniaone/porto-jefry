@@ -1,4 +1,6 @@
 import { useLocale, useTranslations } from 'next-intl';
+import SectionHeader from '@/components/ui/SectionHeader';
+import Reveal from '@/components/ui/Reveal';
 import CvDownloadAction from '@/components/ui/CvDownloadAction';
 import { cvFileName } from '@/utils/cv';
 import {
@@ -9,29 +11,33 @@ import {
     CONTACT_LINKEDIN_DISPLAY,
 } from '@/data/contact';
 
-interface ContactCardItem {
+interface ContactRowItem {
     label: string;
     href: string;
     value: string;
     isExternal: boolean;
 }
 
-function ContactCard({ label, href, value, isExternal }: Readonly<ContactCardItem>) {
+/** One ruled row: the entry's Label in the left column, its live link on the
+ * right — the same shape `.exp-row` and `.skill-row` use elsewhere. */
+function ContactRow({ label, href, value, isExternal }: Readonly<ContactRowItem>) {
     return (
-        <a
-            href={href}
-            target={isExternal ? '_blank' : undefined}
-            rel={isExternal ? 'noopener noreferrer' : undefined}
-            className='panel-card panel-card--lift contact-card'>
-            <span className='contact-card__label'>{label}</span>
-            <span className='contact-card__value'>{value}</span>
-        </a>
+        <div className='contact-row'>
+            <p className='contact-row__label'>{label}</p>
+            <a
+                href={href}
+                target={isExternal ? '_blank' : undefined}
+                rel={isExternal ? 'noopener noreferrer' : undefined}
+                className='contact-row__value'>
+                {value}
+            </a>
+        </div>
     );
 }
 
 type TranslateFn = (key: string) => string;
 
-function buildContactCards(t: TranslateFn): ContactCardItem[] {
+function buildContactRows(t: TranslateFn): ContactRowItem[] {
     return [
         {
             label: t('email_label'),
@@ -54,62 +60,22 @@ function buildContactCards(t: TranslateFn): ContactCardItem[] {
     ];
 }
 
-export default function Contact() {
-    const t = useTranslations('contact');
-    const cards = buildContactCards(t);
-
-    return (
-        <section
-            id='contact'
-            aria-labelledby='contact-title'
-            className='section-band'>
-            <div className='contact-section-inner'>
-                {/* Contact keeps its own centred header rather than
-                    SectionHeader: the closing section runs a wider title and a
-                    narrower column to signal an ending. */}
-                <p className='section-kicker'>
-                    <span className='section-kicker__prompt' aria-hidden='true'>$</span>{' '}
-                    mail jefry
-                </p>
-                <h2 id='contact-title' className='contact-title'>{t('title')}</h2>
-                <p className='contact-desc'>{t('description')}</p>
-                <div className='contact-grid'>
-                    {cards.map((card) => (
-                        <ContactCard key={card.href} {...card} />
-                    ))}
-                </div>
-                <ContactCvPanel />
-            </div>
-        </section>
-    );
-}
-
 /**
- * The page's closing action. Until this existed the CV lived only in the hero,
- * ~14,000px above the point where a reader actually decides to take it. Built as
- * a panel rather than a bare button so the offer is stated rather than implied.
- *
- * It is deliberately *not* a fourth contact card. It used to open with the same
- * mono-uppercase label the three cards above it use, which made the page's most
- * important click read as a peer of "CALL ME" — and it centred ~500px of content
- * inside a 900px panel, so the one block that should close the page was also the
- * only one that failed to fill its own box. Offer on the left, action on the
- * right, and its own three-rung hierarchy: title, lead, artifact.
+ * The page's closing action: the offer on the left, the CV download on the
+ * right, ruled off from the entries above by a hairline rather than a panel.
+ * `CvDownloadAction` owns the busy/success/error states; this only frames it.
  */
 function ContactCvPanel() {
     const t = useTranslations('contact');
     const tCv = useTranslations('cv');
     const locale = useLocale();
     return (
-        <div className='panel-card contact-cta'>
+        <Reveal className='contact-cta'>
             <div className='contact-cta__offer'>
                 <p className='contact-cta__title'>{t('cv_label')}</p>
                 <p className='contact-cta__lead'>{t('cv_lead')}</p>
-                {/* What the recruiter is about to receive, named before the
-                    click rather than only in the success notice: the exact file
-                    that lands in their Downloads folder, from the same function
-                    that names it there. Neither string is a claim — one is
-                    computed from the locale, the other is the locale. */}
+                {/* The exact file the download hands the visitor, named before
+                    the click, from the same function that names it there. */}
                 <p className='contact-cta__meta'>
                     {cvFileName(locale)} · {tCv('language_name')}
                 </p>
@@ -118,6 +84,29 @@ function ContactCvPanel() {
                 className='cv-action'
                 buttonClassName='btn-primary'
             />
-        </div>
+        </Reveal>
+    );
+}
+
+export default function Contact() {
+    const t = useTranslations('contact');
+    const rows = buildContactRows(t);
+
+    return (
+        <section
+            id='contact'
+            aria-labelledby='contact-title'
+            className='section-band'>
+            <div className='container-page section-inner'>
+                <SectionHeader title={t('title')} titleId='contact-title' />
+                <p className='contact-desc'>{t('description')}</p>
+                <Reveal className='contact-rows'>
+                    {rows.map((row) => (
+                        <ContactRow key={row.href} {...row} />
+                    ))}
+                </Reveal>
+                <ContactCvPanel />
+            </div>
+        </section>
     );
 }
