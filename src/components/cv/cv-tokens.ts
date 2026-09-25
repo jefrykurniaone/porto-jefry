@@ -19,8 +19,7 @@ export const DARK = '#151515';
 /** Light theme --muted (the Label colour), 6.1:1 AA. */
 export const MUTED = '#5d5b56';
 
-/** Light theme --line. Now an opaque hex rather than an alpha colour
- *  composited on white — no compositing math needed here any more. */
+/** Light theme --line. */
 export const BORDER = '#d8d5cd';
 
 /** Light theme --bg. The page itself is --panel (#ffffff), so tinted blocks

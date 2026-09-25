@@ -7,52 +7,51 @@
 @import './styles/sections/education.css';
 @import './styles/sections/contact.css';
 
-/* ── Design tokens (khaki palette, ticket #70 / spec #63) ──
+/* ── Design tokens ──
    Dark is the default theme; light overrides via :root[data-theme="light"].
    The locale layout reads the `porto-theme` cookie server-side and renders
    data-theme onto <html>, so the right colours are in the first byte of HTML.
    There is no pre-paint inline script — do not reintroduce one (see CLAUDE.md).
-   Values are the two tables in docs/spec-visual-foundation-v1.md; do not
-   hand-tune a value here without updating that spec first. */
+   Every text/background pairing here is a measured WCAG contrast pair, not an
+   arbitrary choice — see docs/spec-visual-foundation-v1.md for the ratios
+   each one is required to clear. */
 :root {
     /* Single source of truth for the fixed navbar's vertical footprint.
        Consumed by .hero top-clearance and section scroll-margin-top. */
     --navbar-height: 64px;
 
     --bg: #0d0d0e;
-    /* One tonal step off --bg, neutral (no blue/purple tint) — was #0b0b13. */
+    /* One tonal step off --bg, neutral — no blue or purple tint. */
     --bg2: #131313;
-    /* Another step up from --bg2 for raised surfaces — was #0f0f19. */
+    /* Another step up from --bg2, for raised surfaces such as cards. */
     --panel: #181818;
     --line: #28282b;
-    /* Same hairline colour family, raised to clear 3:1 (WCAG 1.4.11).
-       Reserved for controls whose border is the only thing marking them as
-       interactive — outline and icon buttons. Decorative dividers and card
-       edges keep --line. Neutralised from rgba(235, 235, 248, 0.38) — only the
-       blue-shifted blue channel changed (248 -> 235); same R/G channels and
-       alpha, so the composited contrast against --bg is unchanged at ~3.16:1. */
+    /* Clears 3:1 (WCAG 1.4.11) against --bg — 3.14:1 here — for controls
+       whose border is the only thing marking them as interactive, i.e.
+       outline and icon buttons. Decorative dividers and card edges keep
+       --line instead. */
     --line-control: rgba(235, 235, 235, 0.38);
     --text: #ecebe7;
-    /* Reading text (new) — AAA, 11.4:1 on --bg. Defined here, not yet applied
-       to any prose rule; the restyle tickets point existing text at it. */
+    /* Reading text — AAA, 11.4:1 on --bg. The colour for long-form prose,
+       distinct from --muted's short labels. */
     --reading: #c8c6bf;
     /* The Label colour. */
     --muted: #9b9993;
     --accent: #cbb892;
-    /* Ink on the accent fill (new). */
+    /* Ink on the accent fill. */
     --on-accent: #0d0d0e;
     --ok: #3ddc97;
     --fault: #e5484d;
     --scrim: rgba(0, 0, 0, 0.55);
     --accent-ink: #cbb892;
-    /* Dot field colour (new). */
+    /* Dot field colour. */
     --dot: #6d6b66;
     --glow: color-mix(in srgb, var(--accent) 22%, transparent);
     --cta-bg: var(--accent);
     --cta-text: var(--on-accent);
 
-    /* ── Hero inverse (new) ── always the opposite polarity of the page theme,
-       so both the hero stage and the header can read it without knowing which
+    /* ── Hero inverse ── always the opposite polarity of the page theme, so
+       both the hero stage and the header can read it without knowing which
        theme is active. Dark site -> light hero. */
     --hero-bg: #e7e5df;
     --hero-ink: #111112;
@@ -63,35 +62,37 @@
     /* Decorative giant-letter tint; the same mix rule in both themes. */
     --hero-letter: color-mix(in oklab, var(--hero-accent) 42%, var(--hero-bg));
 
-    /* ── Type scale (new) ── named display steps, read from the approved
-       prototype (git show origin/prototype/ui-redesign-hero, primary source
-       for numbers only). Defined, not yet applied anywhere — "the layout does
-       not change" (ticket #70); the restyle tickets point rules at these. */
+    /* ── Type scale ── named display steps for the redesign's headline
+       sizes: the giant hero letters, the hero name, the manifesto statement,
+       section titles, and a lead line, each a fluid clamp() with tight
+       negative tracking. */
     --fs-letters: min(58vw, 50vh);
     --fs-name: clamp(2.4rem, 5.4vw, 5.6rem);
     --fs-statement: clamp(2.4rem, 6.4vw, 6rem);
     --fs-section: clamp(2.4rem, 6.4vw, 5.4rem);
     --fs-lead: clamp(1.4rem, 3vw, 2.2rem);
-    /* 17px, exactly the prototype's .about__text ("Reading text ... AAA in
-       both themes"). Chose the rem form to match the prototype's own source. */
+    /* Reading text size — 17px. */
     --fs-reading: 1.0625rem;
 }
 
 :root[data-theme='light'] {
     --bg: #f4f3ef;
-    /* One tonal step off --bg, neutral — was #efeff6. */
+    /* One tonal step off --bg, neutral. */
     --bg2: #ece9e2;
     --panel: #ffffff;
     --line: #d8d5cd;
-    /* Neutralised from rgba(12, 12, 36, 0.46) — only the blue-shifted blue
-       channel changed (36 -> 12); contrast against --bg holds at ~3.16:1. */
+    /* Clears 3:1 (WCAG 1.4.11) against --bg — 3.15:1 here — for controls
+       whose border is the only thing marking them as interactive, i.e.
+       outline and icon buttons. Decorative dividers and card edges keep
+       --line instead. */
     --line-control: rgba(12, 12, 12, 0.46);
     --text: #151515;
-    /* Reading text (new) — AAA, 10.1:1 on --bg. */
+    /* Reading text — AAA, 10.1:1 on --bg. The colour for long-form prose,
+       distinct from --muted's short labels. */
     --reading: #3d3b37;
     --muted: #5d5b56;
     --accent: #6f5c3a;
-    /* Ink on the accent fill (new). */
+    /* Ink on the accent fill. */
     --on-accent: #ffffff;
     /* Ready Green is the one status colour that has to be re-tuned per theme:
        #3ddc97 sits at 1.8:1 on white, so the availability dot all but vanishes.
@@ -100,13 +101,13 @@
     /* Accent ink is darker than the fill on light — the fill would only reach
        5.8:1 as text. 8.4:1 on --bg, 9.3:1 on white. */
     --accent-ink: #54452b;
-    /* Dot field colour (new). */
+    /* Dot field colour. */
     --dot: #aaa79f;
     --glow: color-mix(in srgb, var(--accent) 16%, transparent);
     --cta-bg: var(--accent);
     --cta-text: var(--on-accent);
 
-    /* ── Hero inverse (new) ── light site -> dark hero. */
+    /* ── Hero inverse ── light site -> dark hero. */
     --hero-bg: #111113;
     --hero-ink: #efeee9;
     --hero-label: #a3a19b;
