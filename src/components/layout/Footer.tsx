@@ -1,23 +1,16 @@
-import { useTranslations } from 'next-intl';
-
 /**
- * The copyright is not the closing thought. Legal boilerplate was the last thing
- * on a page whose whole job is to read as a person worth hiring, so it moves up
- * and the human line closes.
+ * One row: the wordmark that opens the page in the navbar on one side, the
+ * copyright line on the other.
  */
 export default function Footer() {
-    const t = useTranslations('footer');
     const year = new Date().getFullYear();
 
     return (
         <footer id='site-footer' className='site-footer'>
-            <p className='site-footer__prompt'>
-                <span aria-hidden='true'>$</span> exit
-            </p>
-            <p>
-                &copy; {year} Jefry Kurniawan. {t('rights')}
-            </p>
-            <p>{t('built_with')}</p>
+            <div className='site-footer__inner'>
+                <span className='site-footer__logo'>JK</span>
+                <p className='site-footer__copyright'>&copy; {year} Jefry Kurniawan</p>
+            </div>
         </footer>
     );
 }
