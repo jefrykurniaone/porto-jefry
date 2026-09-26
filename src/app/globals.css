@@ -290,11 +290,12 @@
 /* ── Reduced motion ──
    The typewriter already skips its work under this query, and the dot field
    draws one still frame under it; this is the CSS half of the same policy.
-   Each rule removes motion while preserving the end state — cursors rest
-   visible, the availability dot rests lit, hover still warms the border.
-   Deliberately not a blanket `transition: 0.01ms` kill: the colour and
-   border-colour transitions here are feedback, not motion, and are worth
-   keeping. */
+   `html` drops smooth scrolling, the status dot and typed cursor stop
+   animating and rest visible, the primary button's hover drops its lift, and
+   the busy CV button drops its glow animation and dims. Deliberately not a
+   blanket `transition: 0.01ms` kill: the colour and border-colour
+   transitions elsewhere in the stylesheet are feedback, not motion, and are
+   worth keeping. */
 @media (prefers-reduced-motion: reduce) {
     html {
         scroll-behavior: auto;
