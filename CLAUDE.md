@@ -26,7 +26,7 @@ Next 16 removed the `next lint` command, so `npm run lint` calls `eslint src` di
 ```
 Request → src/proxy.ts (i18n redirect + CSP nonce + CSP header)
   ↓
-src/app/[locale]/layout.tsx (fonts + theme-init script + NextIntlClientProvider + chrome)
+src/app/[locale]/layout.tsx (fonts + NextIntlClientProvider + chrome)
   ↓
 src/app/[locale]/page.tsx (composes section components in fixed order)
   ↓
@@ -69,8 +69,9 @@ The endpoint has already broken once in a way that only showed up in production:
 Hand-written CSS with a design-token system — **no component library and no utility framework in practice**. `tailwindcss` + `@tailwindcss/postcss` are installed and wired in `postcss.config.mjs`/`tailwind.config.ts`, but nothing in `src/` imports Tailwind or uses its classes. Don't start using Tailwind utilities without a deliberate decision.
 
 - Tokens in `src/app/globals.css` (`--bg`, `--panel`, `--accent`, `--navbar-height`, …). Dark is the default; light overrides under `:root[data-theme="light"]`.
-- `globals.css` `@import`s `src/app/styles/layout.css` (nav, drawer, footer, error/404 states) and `src/app/styles/sections.css` (per-section styles, banner-comment delimited).
-- Class naming is BEM-ish: `.skill-card__label`, `.section-band--alt`, plus shared primitives `.container-page`, `.panel-card`, `.chip`, `.section-title`, `.section-kicker`.
+- `globals.css` `@import`s `src/app/styles/layout.css` (nav, drawer, footer, error/404 states), then one stylesheet per section under `src/app/styles/sections/`: `hero.css`, `about.css`, `experience.css`, `skills.css`, `projects.css`, `education.css`, `contact.css`. Shared primitives live in `globals.css` itself, **after every section `@import`**: a section overriding one needs a compound selector to win the cascade, not a plain rule — the precedent is `.exp-more-btn.project-archive__toggle` in `projects.css`.
+- Class naming is BEM-ish: `.skill-row__label`, `.manifesto__statement`. Shared primitives (all in `globals.css`) are `.container-page`, `.section-band`, `.section-header` / `.section-title` (rendered by `SectionHeader`), `.scramble-title` (rendered by `ScrambleTitle`), `.chip` / `.chip-row`, `.btn-primary` / `.btn-outline`, `.exp-more-btn`, `.cv-action`, `.notice`. `Reveal` (`src/components/ui/Reveal.tsx`) is a shared primitive too, but a client component rather than a class — it batches scroll-triggered fade-ups. `.panel-card`, `.section-kicker` and `.section-band--alt` no longer exist.
+- The token contract: text uses `--accent-ink`; ink on an accent *fill* uses `--on-accent`; `--accent` itself is for fills only, never text directly. Reading text (About's prose, experience bullets, project descriptions) uses `--reading` at `--fs-reading` and must clear **AAA, 7:1** in both themes; Labels (periods, company names, kickers, tags) use `--muted` and must clear **AA, 4.5:1**; titles use `--text`.
 - Fonts: Space Grotesk / JetBrains Mono via `next/font`, exposed as `--font-sans` / `--font-mono`.
 
 **The CSS you write is not the CSS that ships.** Turbopack runs Lightning CSS over `globals.css` and its imports on every build — it reorders declarations, rewrites colours (`transparent` → `#0000`), drops redundant gradient keywords, and **resolves vendor prefixes against its own targets**. That last one has already cost a shipped feature: `.site-nav` declared `backdrop-filter` followed by `-webkit-backdrop-filter`, and Lightning CSS collapsed the pair to the last declaration and emitted the WebKit alias alone. Blink never implemented that alias, so the navbar blur was dead in every Chromium browser while Safari looked fine — invisible in review, because the source was correct. The rule now declares the prefixed form **first**, which survives every target set.
@@ -83,6 +84,48 @@ Select-String -Path .next\static\chunks\*.css -Pattern 'backdrop-filter'
 ```
 
 Both spellings must be present. `@tailwindcss/postcss` is not the culprit here — it passes the pair through unchanged; the rewrite happens in Turbopack's own pass, so removing Tailwind would not make this go away.
+
+### Motion
+
+The single motion module is `src/utils/motion.ts`. Import `gsap`, `ScrollTrigger` and `useGSAP` from this module only, never from `gsap` or `@gsap/react` directly. It deliberately has **no `'use client'`**: it registers `ScrollTrigger`, `ScrambleTextPlugin` and `useGSAP` itself, once, when the module evaluates in the browser (`typeof window !== 'undefined'`).
+
+Rules, from the module's own doc comment:
+
+- **Never call `gsap.registerPlugin` anywhere else** — not in a component, an effect, `useGSAP`, or a `gsap.context`. Registering inside one of those attaches ScrollTrigger's core-init timer to that context; reverting the context before the timer fires — a React StrictMode double-mount under `next dev`, or any unmount within 0.5s in production — kills the call and leaves ScrollTrigger's `_startup` flag stuck at `1` for the rest of the page's life, which disables snapping and scrub smoothing.
+- Call `useGSAP` only from `'use client'` components.
+- Create every tween and `ScrollTrigger` inside `gsap.matchMedia().add(MOTION_OK, ...)` (`MOTION_OK` is `'(prefers-reduced-motion: no-preference)'`), so GSAP reverts it by itself when the visitor turns reduced motion on.
+
+Right after registering, the module calls `ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,resize' })`, which drops only the forced `load` refresh — ScrollTrigger's own default list also refreshes on `load`, which can land in the middle of a smooth scroll and snap it back to 0.
+
+**Trap**: `ScrollTrigger.config()` throws if it runs before ScrollTrigger's core init, because `_autoRefresh` is undefined until then, and core init is deferred to `DOMContentLoaded` whenever `document.body` is missing. It is safe here only because `motion.ts` is a Turbopack module factory that evaluates on `require`, triggered by flight data that sits after `<body>` in the HTML (the chunk `<script async>` tags themselves are in `<head>`). **Importing `motion.ts` from anything evaluated earlier would break this.** `registerMotion()` does not exist — do not reintroduce it.
+
+### Hero stage
+
+`HeroStage.tsx` (`src/components/sections/HeroStage.tsx`) holds the intro screen in place while its transition plays using CSS `position: sticky` on a server-rendered wrapper whose height already reserves the scroll distance — **never a GSAP pin** (`docs/adr/0001-hero-stage-holds-by-sticky-not-pin.md`). A pin's spacer is inserted at hydration, which would lengthen the page after the browser has already scrolled to a `#hash`.
+
+The sticky layout is chosen in `hero.css` by `(prefers-reduced-motion: no-preference) and (scripting: enabled)` plus a fit query (`(min-width: 900px) and (min-height: 37.5em)`, or `(min-height: 45em)`); `STAGE_MOTION` in `HeroStage.tsx` repeats the identical query, and the two must change together. Every other case — reduced motion, no JS, a short landscape screen — gets the stacked layout, which grows to fit its content instead.
+
+`#about` is an empty `div.hero-stage__marker`, positioned at the offset where the sticky transition ends (in the stacked layout it sits on the manifesto's own top edge instead). The scroll snap to it is `HeroStage`'s own, on the `scrollend` event, not a ScrollTrigger snap. GSAP writes the manifesto's reveal as an inline `clip-path` style on `.hero-stage__manifesto`; the dot field (below) watches that same inline style to know when to animate.
+
+The ink signal is `data-header-ink="hero"`, set on `<html>` by `HeroStage` (sticky layout) or by an `IntersectionObserver` on the intro screen (stacked layout), and consumed by the navbar in `layout.css` (`:root[data-header-ink='hero'] .site-nav …`).
+
+Under `(prefers-reduced-motion: no-preference) and (scripting: enabled)` — the same condition that picks the sticky layout — `html:has(.hero-stage) { scroll-behavior: auto }` makes a `#hash` page load land on its target in one step instead of a smooth scroll that could stop short; scripted scrolls (navbar links, back-to-top) pass `behavior` explicitly and stay smooth.
+
+### Dot field
+
+`src/components/ui/DotField.tsx` (measurement, scheduling, observers) and `src/components/ui/dot-field-gl.ts` (the WebGL2 context, shaders, scene and draw) render the point tunnel behind the manifesto. It mounts as `.dot-field` inside About's `section.manifesto` (`src/components/sections/About.tsx`).
+
+The animation loop runs only while the canvas intersects the viewport, the document is visible, reduced motion is off, and the inline `clip-path` on `.hero-stage__manifesto` is not a zero-radius circle — a `MutationObserver` watches that inline style. Budget: 10,000 points, or 4,000 under `(max-width: 700px), (pointer: coarse)`.
+
+**Text avoidance**: the quiet zone is the `.manifesto__prose` box plus 18px on every side, with the field's alpha capped inside it, so the dots never fight the Reading text for contrast.
+
+**Fallback**: without WebGL2, `openContext()` returns `null`, the canvas stays blank, and nothing is logged.
+
+### Site chrome
+
+The navbar (`src/components/layout/Navbar.tsx`) reads the `data-header-ink` attribute described under Hero stage to flip its own colours over the inverted hero — every rule is scoped to `:root[data-header-ink='hero'] .site-nav …` in `layout.css`; the mobile drawer does not read the attribute. The footer (`src/components/layout/Footer.tsx`) is one row — `footer.site-footer > div.site-footer__inner` with the "JK" wordmark and a copyright line — and the `footer` message namespace no longer exists. `BackToTop` (`src/components/layout/BackToTop.tsx`) appears once an `IntersectionObserver` on the `#about` marker reports the page has scrolled past it.
+
+The redesign also removed the terminal-styled elements, and nothing brings them back: the section headers' `$ cat …` terminal-prompt kicker and its hard-coded `command` prop (`docs/spec-section-restyle-v1.md`, "Section header"); the footer's `$ exit` prompt and its "built with" line (`docs/spec-site-chrome-v1.md`, "Footer"); and the About section's decorative terminal card (`docs/spec-hero-stage-v1.md`: "The terminal card and the contact chips are removed").
 
 ### Theming
 
@@ -136,7 +179,7 @@ ESLint is pinned to 9, not 10: `eslint-plugin-react@7.37.5` peer-caps at `^9.7` 
 - Client components are explicit (`'use client'`); sections that need no interactivity stay server components.
 - Component props are typed as `Readonly<Props>`.
 - No empty catch blocks — either log with context or leave a comment explaining why the failure is safe to swallow (see `use-theme.ts`).
-- Accessibility: semantic HTML, `alt` text, keyboard navigation, WCAG AA contrast (4.5:1). Focus-trap and scroll-lock hooks exist for the mobile drawer.
+- Accessibility: semantic HTML, `alt` text, keyboard navigation. Reading text (long-form prose) clears WCAG AAA, 7:1; Labels (short supporting text — periods, kickers, tags) clear AA, 4.5:1 — both in either theme (see Styling's token contract). Focus-trap and scroll-lock hooks exist for the mobile drawer.
 
 ## Git
 
@@ -157,3 +200,13 @@ The five canonical triage roles, each label string equal to its role name. See `
 ### Domain docs
 
 Single-context: one `CONTEXT.md` plus `docs/adr/` at the repo root, both created lazily. See `docs/agents/domain.md`.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
