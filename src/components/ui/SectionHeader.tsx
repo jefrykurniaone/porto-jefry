@@ -1,11 +1,6 @@
 import ScrambleTitle from '@/components/ui/ScrambleTitle';
 
 interface SectionHeaderProps {
-    /**
-     * Ignored. The terminal-prompt kicker it fed is gone; the prop stays
-     * optional only until every caller has dropped it, then it is removed (#80).
-     */
-    command?: string;
     /** Localized section name. Also the accessible name of the section. */
     title: string;
     /** Id for the `<section aria-labelledby>` that wraps this header. */
