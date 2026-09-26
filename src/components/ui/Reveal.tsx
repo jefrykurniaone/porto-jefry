@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useRef, type ReactNode } from 'react';
-import { gsap, registerMotion, ScrollTrigger, useGSAP, MOTION_OK } from '@/utils/motion';
+import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '@/utils/motion';
 
 /** Each item rises this far, in px, as it fades in. */
 const RISE = 28;
@@ -65,7 +65,6 @@ export default function Reveal({ children, as = 'div', className }: Readonly<Rev
     }, []);
 
     useGSAP(() => {
-        registerMotion();
         const root = rootRef.current;
         if (!root) {
             return;

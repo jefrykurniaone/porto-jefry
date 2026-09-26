@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
-import { gsap, registerMotion, useGSAP, MOTION_OK } from '@/utils/motion';
+import { gsap, useGSAP, MOTION_OK } from '@/utils/motion';
 
 /** The glyphs the title resolves out of: the owner's initials plus code punctuation. */
 const SCRAMBLE_CHARS = 'JKEFRYNXTDV#/+*';
@@ -62,7 +62,6 @@ export default function ScrambleTitle({ text }: Readonly<ScrambleTitleProps>) {
 
     useGSAP(
         () => {
-            registerMotion();
             const root = rootRef.current;
             const glyphs = glyphsRef.current;
             if (!root || !glyphs) {
