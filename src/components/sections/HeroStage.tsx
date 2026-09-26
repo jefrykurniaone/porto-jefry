@@ -1,12 +1,7 @@
 'use client';
 
 import { useRef, type ReactNode, type RefObject } from 'react';
-import { gsap, registerMotion, ScrollTrigger, useGSAP, MOTION_OK } from '@/utils/motion';
-
-// At module scope, outside any gsap context: registering schedules the call
-// that ends ScrollTrigger's startup phase (ScrollTrigger.js:2116), and a
-// reverted context (React's development double mount) would kill it.
-registerMotion();
+import { gsap, ScrollTrigger, useGSAP, MOTION_OK } from '@/utils/motion';
 
 /** Viewports where the intro fits one screen; derived in hero.css. */
 const STAGE_FITS = ['(min-width: 900px) and (min-height: 37.5em)', '(min-height: 45em)'];
