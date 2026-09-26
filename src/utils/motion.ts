@@ -10,10 +10,10 @@
  *   that context: reverting the context before the 0.5s timer fires -- a
  *   React StrictMode double-mount under `next dev`, or any unmount within
  *   half a second in production -- kills the call, and ScrollTrigger's
- *   `_startup` flag then stays `1` for the rest of the page's life, which
- *   blocks every future snap. `registerMotion()` is kept only so existing
- *   call sites still compile; it is an idempotent no-op and never needs to
- *   be called.
+ *   `_startup` flag then stays `1` for the rest of the page's life. That
+ *   disables snapping (ScrollTrigger.js:1744) and scrub smoothing
+ *   (ScrollTrigger.js:1704 -- a `scrub: <number>` trigger jumps instead of
+ *   easing; `HeroStage` uses `scrub: 1`).
  * - Create every tween and ScrollTrigger inside
  *   `gsap.matchMedia().add(MOTION_OK, ...)`, so GSAP reverts it by itself when
  *   the visitor turns reduced motion on.
@@ -29,22 +29,15 @@ export const MOTION_OK = '(prefers-reduced-motion: no-preference)';
 
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger, ScrambleTextPlugin, useGSAP);
-    // Next's own DOMContentLoaded/load pair (ScrollTrigger.js:2146) forces a
-    // refresh: both reach `_refreshAll` with a truthy DOM event as `force`,
-    // which skips the "defer while scrolling" guard at ScrollTrigger.js:484.
-    // `load` can fire long after DOMContentLoaded -- late enough to land in
-    // the middle of a navbar click's smooth scroll and snap it back to 0.
-    // Dropping only `load` keeps DOMContentLoaded (fires before a visitor
-    // could have clicked anything), `resize` and `visibilitychange`.
+    // ScrollTrigger's own default auto-refresh list forces a refresh on both
+    // DOMContentLoaded and load (ScrollTrigger.js:2136-2146): both reach
+    // `_refreshAll` with a truthy DOM event as `force`, which skips the
+    // "defer while scrolling" guard at ScrollTrigger.js:484. `load` can fire
+    // long after DOMContentLoaded -- late enough to land in the middle of a
+    // navbar click's smooth scroll and snap it back to 0. Dropping only
+    // `load` keeps DOMContentLoaded (fires before a visitor could have
+    // clicked anything), `resize` and `visibilitychange`.
     ScrollTrigger.config({ autoRefreshEvents: 'visibilitychange,DOMContentLoaded,resize' });
-}
-
-/**
- * No-op kept only so existing call sites still compile: registration happens
- * above, at module evaluation. Calling this is harmless and never required.
- */
-export function registerMotion(): void {
-    // Intentionally empty -- see the module doc comment.
 }
 
 export { gsap, ScrollTrigger, useGSAP };
