@@ -39,3 +39,24 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  audit:
+    name: Production dependency audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Audit full tree (report only)
+        continue-on-error: true
+        run: npm audit --package-lock-only
+
+      - name: Audit production dependencies (blocking)
+        run: npm audit --omit=dev --audit-level=low --package-lock-only
