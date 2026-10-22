@@ -2,10 +2,11 @@
 
 - **Spec issue**: [#101](https://github.com/jefrykurniaone/porto-jefry/issues/101)
 - **Execution map**: [#104](https://github.com/jefrykurniaone/porto-jefry/issues/104)
-- **Tickets**: [#102](https://github.com/jefrykurniaone/porto-jefry/issues/102) version move · [#103](https://github.com/jefrykurniaone/porto-jefry/issues/103) CI audit job
+- **Tickets**: [#102](https://github.com/jefrykurniaone/porto-jefry/issues/102) version move · [#107](https://github.com/jefrykurniaone/porto-jefry/issues/107) `next` 16.4.1 · [#103](https://github.com/jefrykurniaone/porto-jefry/issues/103) CI audit job
 - **Run**: `vuln-gate`
 - **Version**: v1
 - **As of**: 2026-10-23, `main` at `a45fd01`. A point-in-time copy of the spec item; the item is the one written copy, and delivery notes are written there first.
+- **Regenerated**: 2026-10-23 at the run's close, `main` at `d608d39`, from the spec item carrying its delivery notes.
 
 ---
 
@@ -33,8 +34,8 @@ The one exception is the low-severity development-server advisory. A malicious w
 
 The audit read zero on 2026-09-01, when the dep-health run closed (PR #62). Every advisory above was published between 2026-09-18 and 2026-10-07, and nothing noticed:
 
-- CI runs lint, typecheck and build only.
-- Dependabot alerts are disabled on the repository.
+- CI ran lint, typecheck and build only. *(Delivery 2026-10-23: #103 added the `audit` job.)*
+- Dependabot alerts were disabled on the repository. *(Delivery 2026-10-23: alerts and security updates enabled, S5.)*
 - The dep-health run (map #57) put CI-based advisory monitoring explicitly out of scope. This spec reverses that decision.
 
 From the owner's perspective: the site's dependencies drift into known-vulnerable versions silently, and the first signal is someone running `npm audit` by hand.
@@ -60,7 +61,7 @@ Non-goals:
 
 - A full-tree audit of zero. `braces` has no patch, so it stays, and it is documented.
 - Catching advisories published while no pull request is open through CI itself. No scheduled run is added; Dependabot owns that case.
-- Moving to Next.js 16.4.
+- Moving to Next.js 16.4. *(Reversed 2026-10-23 for 16.4.1 only, by owner decision: see Delivery notes and #107.)*
 - Scanning the project's own source code.
 
 ## User stories
@@ -78,14 +79,14 @@ Non-goals:
 
 **Versions.**
 
-- `next` and `eslint-config-next` resolve to exactly 16.3.8 in the lockfile, and `sharp` to 0.35.5.
-- The declared ranges in the manifest rise to `^16.3.8` and `^0.35.5`. The manifest states the security floor, and the lockfile pins the patch.
-- Why 16.3.8: it is the smallest release that closes all seven `next` advisories. Moving to 16.4 is a separate decision with its own risk.
+- `next` and `eslint-config-next` resolve to exactly 16.3.8 in the lockfile, and `sharp` to 0.35.5. *(Delivered by #102, then superseded by #107: `next` and `eslint-config-next` now resolve to exactly 16.4.1.)*
+- The declared ranges in the manifest rise to `^16.3.8` and `^0.35.5`. The manifest states the security floor, and the lockfile pins the patch. *(Superseded: `^16.4.1` and `^0.35.5`.)*
+- Why 16.3.8: it is the smallest release that closes all seven `next` advisories. Moving to 16.4 is a separate decision with its own risk. *(Reversed 2026-10-23. Two advisories published during the run are patched only in 16.4.1, so the owner took that separate decision. See Delivery notes.)*
 
 **Transitive patches.**
 
 - `source-map-js` moves to 1.2.2, and `brace-expansion` to 1.1.21 and 5.0.12. Both are refreshed within the ranges their parents already declare.
-- No blanket refresh of the whole tree. Under the new caret range it would pull `next` 16.4.x, contradicting the version decision.
+- No blanket refresh of the whole tree. Under the new caret range it would pull `next` 16.4.x, contradicting the version decision. *(Still holds at `^16.4.1`, where a blanket refresh would pull 16.4.2 or later.)*
 - No new override, and the existing overrides (`postcss: "$postcss"` and the three `@emnapi/*` pins) are unchanged.
 - Why: this follows the repository's remedy order. First a refreshed parent, then the project's own declared range, and an override only as the last resort.
 
@@ -130,7 +131,7 @@ Non-goals:
 
 - **The CI description**: the audit job, its scope and threshold, and the unpatched-advisory procedure.
 - **The dependency-overrides section**:
-  - the floors `next` ≥ 16.3.8 and `sharp` ≥ 0.35.5;
+  - the floors `next` ≥ 16.3.8 and `sharp` ≥ 0.35.5; *(superseded: `next` ≥ 16.4.1)*
   - the version citations that the move makes stale;
   - a corrected claim about what the audit reads;
   - the `braces` note, dated.
@@ -153,13 +154,13 @@ Prior art: the dep-health run (map #57) checked the CV endpoint against both the
 
 - On `main` after the run, the blocking audit command exits 0. Against `main`'s lockfile at `a45fd01` it exits non-zero.
 - The full-tree audit on `main` after the run reports only GHSA-vfj7-8cjw-p6xm (`braces`, and the four packages listed through it).
-- `next` and `eslint-config-next` resolve to 16.3.8, and `sharp` to 0.35.5, with exactly one copy of `sharp`. The manifest declares `^16.3.8` and `^0.35.5`, and the overrides block is unchanged.
+- `next` and `eslint-config-next` resolve to 16.3.8, and `sharp` to 0.35.5, with exactly one copy of `sharp`. The manifest declares `^16.3.8` and `^0.35.5`, and the overrides block is unchanged. *(Superseded: 16.4.1 and `^16.4.1`. The rest holds.)*
 - The pull request carrying the CI change shows a separate `audit` check that passes, and its log contains the full-tree report.
 - On the preview deployment of the version-move pull request, `/api/generate-cv?locale=en` and `?locale=id` each return `200` with content type `application/pdf`.
 - The repository's vulnerability-alerts endpoint returns `204`, and automated security fixes report `enabled: true`.
 - The repository guidance on `main`:
   - describes the audit job, its scope and its threshold;
-  - states the floors `next` ≥ 16.3.8 and `sharp` ≥ 0.35.5;
+  - states the floors `next` ≥ 16.3.8 and `sharp` ≥ 0.35.5; *(superseded: `next` ≥ 16.4.1)*
   - records the `braces` exception with its date;
   - states the unpatched-advisory procedure;
   - no longer claims the full audit reads zero.
@@ -167,7 +168,7 @@ Prior art: the dep-health run (map #57) checked the CV endpoint against both the
 
 ## Out of scope
 
-- Moving to Next.js 16.4.
+- Moving to Next.js 16.4. *(Reversed 2026-10-23 for 16.4.1 only, #107. 16.4.2 and later remain out of scope.)*
 - Code scanning (CodeQL), the dependency-review action, a scheduled workflow, and Dependabot version-update configuration.
 - Branch protection or required status checks on `main`.
 - Moving CI off Node 20, which is end-of-life (Vercel already runs the site on 24.x).
@@ -181,3 +182,32 @@ Prior art: the dep-health run (map #57) checked the CV endpoint against both the
 - Every audit in this run is read from the lockfile (`--package-lock-only`), never from the installed tree. The maintainer's local `node_modules` has been observed stale against the lockfile before.
 - When `braces` publishes a patch, an in-range refresh should clear it. The report-only step is where that becomes visible.
 - Dependabot security pull requests will target `main` and run the new `audit` job like any other pull request.
+
+## Delivery notes
+
+Delivered 2026-10-23 by run `vuln-gate` (map #104). `main` ended at `d608d39`.
+
+| Ticket | What landed | Pull request | Merge commit |
+|---|---|---|---|
+| #102 | `next` and `eslint-config-next` 16.3.4 → 16.3.8, `sharp` 0.35.4 → 0.35.5, `source-map-js` 1.2.2, `brace-expansion` 1.1.21 / 5.0.12. The *Dependency overrides* guidance was refreshed. | #106 | `d142b40` |
+| #107 | `next` and `eslint-config-next` 16.3.8 → 16.4.1. Filed during the run; see below. | #108 | `eb0a650` |
+| #103 | CI `audit` job, plus the CI guidance and the unpatched-advisory procedure | #109 | `d608d39` |
+
+**The run reversed one decision.**
+
+- After #102 merged, the gate on `main` at `d142b40` found the production audit red again.
+- The cause was two `next` advisories published 2026-10-22T15:50–15:52Z: GHSA-2464-fhr4-w9xw (critical, the libvips bug through Image Optimization) and GHSA-p3m5-59mp-jv5r (high, a Server Actions denial of service). Both are patched only in 16.4.1, with no 16.3.x backport.
+- Neither was reachable. `sharp` was already 0.35.5, which is the first advisory's workaround, and `src/` has no Server Action.
+- Following this spec's own procedure, the least-binding remedy was a raised declared range. The owner decided to move to exactly 16.4.1, against the "no 16.4" non-goal (#107; decision comment on this item). 16.4.2 and later stay out of scope.
+
+**Seams.**
+
+- **S1:** the blocking audit exits 0 on `main` at `d608d39`. Against the lockfile at `a45fd01` it exits 1: `3 vulnerabilities (2 high, 1 critical)`, from `next`, `sharp` and `source-map-js`.
+- **S2:** lint, typecheck and build pass on every branch and after every merge. The built CSS carries both `backdrop-filter` spellings.
+- **S3:** PR #109's `Production dependency audit` check passed on its own. Its report step printed `braces` GHSA-vfj7-8cjw-p6xm and exited 1 without failing the job.
+- **S4:**
+  - #106's preview `dpl_3n2EaBuzHweapHJgvLP138SHHAFu` and #108's preview `dpl_GXNsoWrmhwFB7CLGfnmGNAN5PkvE` each served `/api/generate-cv` in both locales: `200`, `application/pdf`, body `%PDF-1.3`, with no runtime errors.
+  - Production `dpl_BSkLjM4ZtwAsGLvuDGCnmgAF9kfP` (`d608d39`, aliased `porto-jefry.vercel.app`) passed the same check.
+- **S5:** `vulnerability-alerts` answered `204`, and `automated-security-fixes` answered `{"enabled":true,"paused":false}`. No Dependabot pull request was open at the close.
+
+**State at the close.** The full-tree audit on `main` reports only `braces` GHSA-vfj7-8cjw-p6xm, with `micromatch`, `fast-glob`, `@next/eslint-plugin-next` and `eslint-config-next` listed through it.
