@@ -11,7 +11,11 @@ npm run lint         # ESLint
 npx tsc --noEmit     # Type-check
 ```
 
-CI (`.github/workflows/ci.yml`, Node 20) runs lint → typecheck → build on PRs to `main`. **There is no test suite** — the test runner and tests were removed in #43, so "run the tests" means running those three checks. `/coverage` is still gitignored; that is vestigial.
+CI (`.github/workflows/ci.yml`, Node 20) runs two parallel jobs on PRs to `main` and pushes to `main`. `ci` runs lint → typecheck → build. `audit` runs `npm audit --omit=dev --audit-level=low --package-lock-only`: **it fails on a production-dependency advisory of any severity**, reads only the lockfile, and installs nothing. Its full-tree `npm audit --package-lock-only` report never fails the job, so development-only advisories are shown but never block. Drift between pull requests is caught by Dependabot alerts and security updates, not by a scheduled run.
+
+When `audit` fails on a production advisory with no patch, first measure whether the vulnerable code is reachable. Then take the least-binding remedy, in this order: a refreshed parent, a raised declared range, an override, replacing or removing the dependency. Make an exception only as a deliberate, recorded decision at that time; never weaken the gate in advance.
+
+**There is no test suite** — the test runner and tests were removed in #43, so "run the tests" means running the `ci` checks. `/coverage` is still gitignored; that is vestigial.
 
 Next 16 removed the `next lint` command, so `npm run lint` calls `eslint src` directly against `eslint.config.mjs` (flat config). `src` is the deliberate scope — it matches what `next lint` used to cover, and keeps `scripts/` and the root config files out of linting.
 
