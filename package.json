@@ -11,7 +11,8 @@
         "prebuild": "node scripts/gen-build-meta.mjs",
         "build": "next build",
         "start": "next start",
-        "lint": "eslint src"
+        "lint": "eslint src",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@react-pdf/renderer": "^4.5.1",

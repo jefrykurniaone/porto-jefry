@@ -28,14 +28,31 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # `--ignore-scripts` keeps every dependency's install script out of the
+      # runner (githubactions:S6505). Three packages declare one, and none is
+      # load-bearing here, because each ships its linux-x64 binary as an
+      # optional dependency that `package-lock.json` already resolves:
+      #
+      #   - `@swc/core@1.16.1` (`postinstall`, via `next-intl`) checks that
+      #     the native binding loads and installs `@swc/wasm` if it does not.
+      #   - `@parcel/watcher@2.6.0` (`install`, via `next-intl`) runs
+      #     `node-gyp rebuild` only when `npm_config_build_from_source=true`.
+      #   - `unrs-resolver@1.12.2` (`postinstall`, development only, via
+      #     `eslint-config-next`) is a fallback for a binding that did not
+      #     resolve.
+      #
+      # Vercel's own install is not affected by this flag.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Lint
         run: npm run lint
 
+      # Through `npm run`, not `npx`: `npx` fetches whatever version `latest`
+      # resolves to when the local `tsc` is missing, and runs its install
+      # scripts (githubactions:S6505, githubactions:S8543).
       - name: Typecheck
-        run: npx tsc --noEmit
+        run: npm run typecheck
 
       - name: Build
         run: npm run build
