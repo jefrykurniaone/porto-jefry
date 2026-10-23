@@ -39,9 +39,17 @@ If `Analyse` starts failing with nothing in the diff to explain it, check that s
 ## No coverage report
 
 The test suite was removed in #43, so the `sonar` job sends no coverage report and has no `npm ci`
-step. If tests come back, the coverage report has to be produced in the `ci` job and handed to
-`sonar` as an artifact, as `inventaris-aset-ppm` does, so that `SONAR_TOKEN` never enters a job that
-runs third-party install scripts.
+step.
+
+A missing report does not switch the coverage condition off. Sonar cannot tell "not instrumented"
+from "not covered", and it still counts every changed JavaScript and TypeScript line as uncovered:
+PR #112 failed the gate at 0.0% coverage on new code the first time it touched a script.
+`sonar.coverage.exclusions=**/*` therefore takes every file out of coverage scope, because nothing is
+instrumented.
+
+If tests come back, narrow that line to what the test runner does not instrument, produce the
+coverage report in the `ci` job and hand it to `sonar` as an artifact, as `inventaris-aset-ppm` does,
+so that `SONAR_TOKEN` never enters a job that runs third-party install scripts.
 
 ## The editor and the server do not report the same things
 
