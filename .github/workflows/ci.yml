@@ -28,14 +28,31 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      # `--ignore-scripts` keeps every dependency's install script out of the
+      # runner (githubactions:S6505). Three packages declare one, and none is
+      # load-bearing here, because each ships its linux-x64 binary as an
+      # optional dependency that `package-lock.json` already resolves:
+      #
+      #   - `@swc/core@1.16.1` (`postinstall`, via `next-intl`) checks that
+      #     the native binding loads and installs `@swc/wasm` if it does not.
+      #   - `@parcel/watcher@2.6.0` (`install`, via `next-intl`) runs
+      #     `node-gyp rebuild` only when `npm_config_build_from_source=true`.
+      #   - `unrs-resolver@1.12.2` (`postinstall`, development only, via
+      #     `eslint-config-next`) is a fallback for a binding that did not
+      #     resolve.
+      #
+      # Vercel's own install is not affected by this flag.
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --ignore-scripts
 
       - name: Lint
         run: npm run lint
 
+      # Through `npm run`, not `npx`: `npx` fetches whatever version `latest`
+      # resolves to when the local `tsc` is missing, and runs its install
+      # scripts (githubactions:S6505, githubactions:S8543).
       - name: Typecheck
-        run: npx tsc --noEmit
+        run: npm run typecheck
 
       - name: Build
         run: npm run build
@@ -60,3 +77,36 @@ jobs:
 
       - name: Audit production dependencies (blocking)
         run: npm audit --omit=dev --audit-level=low --package-lock-only
+
+  sonar:
+    name: SonarQube Cloud
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    # Derived from the secret without exposing it: an expression in `env` may
+    # read `secrets`, a step-level `if` may not. The workflow stays green
+    # before the secret exists, and a pull request from a fork, which never
+    # sees secrets, takes the same path. A job of its own, with no `npm ci`,
+    # so the token never shares an environment with install scripts.
+    env:
+      HAS_SONAR_TOKEN: ${{ secrets.SONAR_TOKEN != '' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          # A shallow clone degrades new-code detection, which is what the
+          # pull request gate is measured on.
+          fetch-depth: 0
+
+      # Pinned to a commit rather than a tag: a tag can move. `v8.3.0`.
+      - name: Analyse
+        if: env.HAS_SONAR_TOKEN == 'true'
+        uses: SonarSource/sonarqube-scan-action@d209202bc7d53ff1cc128f7f907dac145c9d6ae9
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+      - name: Report that analysis was skipped
+        if: env.HAS_SONAR_TOKEN != 'true'
+        run: echo "::warning title=SonarQube Cloud not analysed::SONAR_TOKEN is not set, so this commit was not analysed. See docs/sonarcloud-analysis.md."

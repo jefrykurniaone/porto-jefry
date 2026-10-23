@@ -12,7 +12,7 @@
  */
 
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -23,6 +23,17 @@ const CONSTANTS_PATH = join(REPO_ROOT, 'src', 'utils', 'constants.ts');
 const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
 
 /**
+ * git by absolute path, in directories only an administrator can write to. A
+ * bare `git` is resolved through PATH and runs whichever `git` comes first,
+ * including one planted in a writable PATH entry (javascript:S4036).
+ * `/usr/bin/git` is where the system package installs it on Amazon Linux
+ * (Vercel's build image), Ubuntu (the CI runner) and macOS; the second entry is
+ * Git for Windows' system-wide install. A machine with git anywhere else, such
+ * as a per-user Git for Windows, gets the fallback date below.
+ */
+const GIT_CANDIDATES = ['/usr/bin/git', 'C:\\Program Files\\Git\\cmd\\git.exe'];
+
+/**
  * Derive the last git commit date (YYYY-MM-DD) via `git log -1 --format=%cs`.
  * Falls back to today's date if git is unavailable or returns an unexpected value
  * (T-04-04: safe fallback so the build never breaks).
@@ -30,8 +41,17 @@ const DATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
  * @returns {string} Date string in YYYY-MM-DD format
  */
 function getLastCommitDate() {
+    const git = GIT_CANDIDATES.find((candidate) => existsSync(candidate));
+    if (!git) {
+        process.stderr.write(
+            '[gen-build-meta] WARNING: git not found at ' +
+            `${GIT_CANDIDATES.join(' or ')}; falling back to current date.\n`
+        );
+        return new Date().toISOString().slice(0, 10);
+    }
+
     try {
-        const raw = execFileSync('git', ['log', '-1', '--format=%cs'], {
+        const raw = execFileSync(git, ['log', '-1', '--format=%cs'], {
             cwd: REPO_ROOT,
             encoding: 'utf8',
         }).trim();

@@ -8,10 +8,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev          # Dev server at localhost:3000
 npm run build        # Production build (runs prebuild first — see below)
 npm run lint         # ESLint
-npx tsc --noEmit     # Type-check
+npm run typecheck    # Type-check (tsc --noEmit)
 ```
 
-CI (`.github/workflows/ci.yml`, Node 20) runs two parallel jobs on PRs to `main` and pushes to `main`. `ci` runs lint → typecheck → build. `audit` runs `npm audit --omit=dev --audit-level=low --package-lock-only`: **it fails on a production-dependency advisory of any severity**, reads only the lockfile, and installs nothing. Its full-tree `npm audit --package-lock-only` report never fails the job, so development-only advisories are shown but never block. Drift between pull requests is caught by Dependabot alerts and security updates, not by a scheduled run.
+CI (`.github/workflows/ci.yml`, Node 20) runs three parallel jobs on PRs to `main` and pushes to `main`. `ci` runs lint → typecheck → build. `sonar` runs SonarQube Cloud with `sonar.qualitygate.wait=true`, so a failed quality gate fails the job; it is the authority on Sonar findings, and `docs/sonarcloud-analysis.md` covers its token, Automatic Analysis and the skipped-scan path. Read it when the `sonar` job fails or before changing `sonar-project.properties`. `audit` runs `npm audit --omit=dev --audit-level=low --package-lock-only`: **it fails on a production-dependency advisory of any severity**, reads only the lockfile, and installs nothing. Its full-tree `npm audit --package-lock-only` report never fails the job, so development-only advisories are shown but never block. Drift between pull requests is caught by Dependabot alerts and security updates, not by a scheduled run.
 
 When `audit` fails on a production advisory with no patch, first measure whether the vulnerable code is reachable. Then take the least-binding remedy, in this order: a refreshed parent, a raised declared range, an override, replacing or removing the dependency. Make an exception only as a deliberate, recorded decision at that time; never weaken the gate in advance.
 
