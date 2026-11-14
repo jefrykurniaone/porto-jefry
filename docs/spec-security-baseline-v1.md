@@ -6,6 +6,7 @@
 - **Run**: `security-baseline`
 - **Version**: v1
 - **As of**: 2026-11-14, `main` at `615f263`. A point-in-time copy of the spec item; the item is the one written copy, and delivery notes are written there first.
+- **Regenerated**: 2026-11-14 at the run's close, `main` at `9742482`, from the spec item carrying its delivery notes.
 
 ---
 
@@ -18,19 +19,19 @@ As the site's owner, I have switched on Dependabot alerts, Dependabot security u
 - **A production dependency carries a high-severity advisory.**
   - `zod` 4.1.11 carries GHSA-mrhx-c7xc-m3w5: memory exhaustion while validating oversized constrained collections. The first patched version is 4.6.6.
   - It is pinned exactly by `@vercel/cli-config` 0.2.4. That package is reached through `@vercel/oidc` 3.8.5 from `@vercel/functions` 3.9.5, which the CV download route uses to read the caller's IP address.
-  - Dependabot alert #2 has been open since 2026-11-01. Dependabot's security update failed that day with `security_update_not_possible`, because no release of `@vercel/functions` accepted a patched `zod` yet.
-  - The production audit in CI fails on any severity. It is red on the current lockfile, so the next pull request of any kind fails it.
+  - Dependabot alert #2 has been open since 2026-11-01. Dependabot's security update failed that day with `security_update_not_possible`, because no release of `@vercel/functions` accepted a patched `zod` yet. *(Delivery 2026-11-14: #114 fixed it, and alert #2 read `fixed` at 10:32:44Z.)*
+  - The production audit in CI fails on any severity. It is red on the current lockfile, so the next pull request of any kind fails it. *(Delivery 2026-11-14: #114 cleared it, and the production audit reads 0 on `main`.)*
 - **CI and the deployment run different Node.js majors.**
-  - CI tests on Node 20, which reached end of life on 2026-04-30.
-  - The package's engine range is the open `>=20.9.0`. Vercel deploys an open range on the latest major it offers. As of 2026-11-14 it offers 26.x (the default), 24.x and 22.x. Production therefore almost certainly runs Node 26, three majors from what CI tests.
-  - The deployed major will move again, unannounced, the next time Vercel changes its default.
-- **Nothing proposes routine updates.** There is no Dependabot version-update configuration. Packages and Actions age until an advisory forces a move. For example, the workflow still uses `actions/checkout` and `actions/setup-node` v4, while v7 is current.
-- **Nothing reviews the dependencies a pull request adds.** The production audit sees only the production scope of the resulting tree. A pull request can bring in a vulnerable development tool without anyone noticing.
-- **`main` requires one check only, `SonarQube Cloud`.** A pull request whose build job or production audit is red can still be merged.
-- **Development-scoped alerts are dismissed automatically.** GitHub's preset auto-triage rule *Dismiss low impact issues for development-scoped dependencies* is on, which is the default for public repositories. It dismissed the `braces` alert on 2026-10-22. A dismissed alert receives no security-update pull request, yet that pull request is the fix path on the day a patch exists.
+  - CI tests on Node 20, which reached end of life on 2026-04-30. *(Delivery 2026-11-14: #116 moved CI to Node 26 through `node-version-file: package.json`.)*
+  - The package's engine range is the open `>=20.9.0`. Vercel deploys an open range on the latest major it offers. As of 2026-11-14 it offers 26.x (the default), 24.x and 22.x. Production therefore almost certainly runs Node 26, three majors from what CI tests. *(Delivery 2026-11-14: confirmed. Runtime logs of production deployments from before #116 already read `runtime=nodejs26.x`, while the project setting read `24.x`.)*
+  - The deployed major will move again, unannounced, the next time Vercel changes its default. *(Delivery 2026-11-14: #116 pinned it with `engines.node` `26.x`. Vercel's build log now says the project setting "will not apply".)*
+- **Nothing proposes routine updates.** There is no Dependabot version-update configuration. Packages and Actions age until an advisory forces a move. For example, the workflow still uses `actions/checkout` and `actions/setup-node` v4, while v7 is current. *(Delivery 2026-11-14: #117 added `.github/dependabot.yml`, and Dependabot opened #128 to #130 on its merge.)*
+- **Nothing reviews the dependencies a pull request adds.** The production audit sees only the production scope of the resulting tree. A pull request can bring in a vulnerable development tool without anyone noticing. *(Delivery 2026-11-14: #115 added `Review dependency changes`.)*
+- **`main` requires one check only, `SonarQube Cloud`.** A pull request whose build job or production audit is red can still be merged. *(Delivery 2026-11-14: #118 made it four required checks, with strict on.)*
+- **Development-scoped alerts are dismissed automatically.** GitHub's preset auto-triage rule *Dismiss low impact issues for development-scoped dependencies* is on, which is the default for public repositories. It dismissed the `braces` alert on 2026-10-22. A dismissed alert receives no security-update pull request, yet that pull request is the fix path on the day a patch exists. *(Delivery 2026-11-14: switching it off is handed to the owner past the close. The setting has no API, so the run could not read it. No alert was dismissed during the run.)*
 - **The repository guidance is stale on the full tree.**
   - It says the full tree carries `braces` (GHSA-vfj7-8cjw-p6xm). That advisory was **withdrawn** on 2026-10-23, although `braces` 3.0.3 is still in the lockfile.
-  - It does not mention `minimatch` GHSA-g3hv-75wg-m249: moderate, denial of service, development-only, patched only in 11.0.1. The full tree now carries it through `typescript-eslint` and `eslint-plugin-sonarjs`. The latest release of each still requires `minimatch` ^10, so no upgrade path exists.
+  - It does not mention `minimatch` GHSA-g3hv-75wg-m249: moderate, denial of service, development-only, patched only in 11.0.1. The full tree now carries it through `typescript-eslint` and `eslint-plugin-sonarjs`. The latest release of each still requires `minimatch` ^10, so no upgrade path exists. *(Delivery 2026-11-14: #119 rewrote both statements in `CLAUDE.md`. At the close the latest releases were `typescript-eslint` 8.72.2 and `eslint-plugin-sonarjs` 4.2.2, still on `^10`.)*
 
 ## Solution
 
@@ -87,10 +88,10 @@ From the owner's point of view, once this run is delivered:
 
 **`zod`: raise the direct parent's floor.**
 
-- `@vercel/functions` is declared at `^3.11.3`. Version 3.11.3 was published 2026-11-13. It reaches `@vercel/oidc` 4.0.9, which reaches `@vercel/cli-config` 0.4.0, which declares `zod` ^4.6.6.
+- `@vercel/functions` is declared at `^3.11.3`. Version 3.11.3 was published 2026-11-13. It reaches `@vercel/oidc` 4.0.9, which reaches `@vercel/cli-config` 0.4.0, which declares `zod` ^4.6.6. *(Delivery 2026-11-14: confirmed in the lockfile. #119 also measured that 3.10.6 already resolves `@vercel/cli-config` 0.3.6 with `zod ^4.6.6`, so `^3.11.3` is the chosen floor, not the smallest one that clears.)*
 - The guidance's remedy order is: a refreshed parent, then a raised declared range, then an override, then replacing or removing the dependency. A refreshed parent already resolves this advisory. The range is raised as well, so the lockfile can never resolve the vulnerable chain again. This follows the precedent of the `next` floor.
 - Only `@vercel/functions` is moved, by name. No blanket refresh: `next` stays 16.4.1 and `sharp` stays 0.35.5. No override.
-- The development copy of `zod` comes through `eslint-plugin-react-hooks`, which declares `^3.25.0 || ^4.0.0`. It is expected to deduplicate onto the patched version.
+- The development copy of `zod` comes through `eslint-plugin-react-hooks`, which declares `^3.25.0 || ^4.0.0`. It is expected to deduplicate onto the patched version. *(Delivery 2026-11-14: confirmed. The lockfile holds a single `zod` entry, 4.6.7.)*
 - *Rejected:* removing the dependency and reading the client IP header directly. It would delete the whole chain, but the remedy order puts removal last, and a refreshed parent is enough.
 
 **Node 26 everywhere, declared once.**
@@ -155,14 +156,14 @@ ignore:
 - "Require branches to be up to date before merging" is on. The owner's bypass is unchanged. No other rule in the ruleset changes.
 - Renaming any of these jobs silently detaches it from protection, and the guidance says so.
 - The dependency review is skipped on pushes to `main`. A skipped job reports as passing, which is acceptable because a push to `main` is already past review.
-- On Dependabot's pull requests, the SonarQube Cloud job takes its documented skip path, because Dependabot cannot read Actions secrets, and reports success. This is accepted, as in `inventaris-aset-ppm`. The analysis on the push to `main` still covers what they change. `SONAR_TOKEN` is not added to Dependabot secrets.
+- On Dependabot's pull requests, the SonarQube Cloud job takes its documented skip path, because Dependabot cannot read Actions secrets, and reports success. This is accepted, as in `inventaris-aset-ppm`. The analysis on the push to `main` still covers what they change. `SONAR_TOKEN` is not added to Dependabot secrets. *(Delivery 2026-11-14: observed on Dependabot's #128: `Analyse` skipped, the skip-path step ran, and the job reported success.)*
 
 **`minimatch` is accepted, and its alert is not dismissed.**
 
 - GHSA-g3hv-75wg-m249 is development-only. It is a denial of service triggered by attacker-controlled glob patterns, and every pattern here comes from the repository's own ESLint and TypeScript configuration.
 - No override. Forcing major 11 under parents that require ^10 risks breaking lint.
 - **Removal condition:** a release of `typescript-eslint` and of `eslint-plugin-sonarjs` that accepts `minimatch` ≥ 11.0.1. Dependabot proposes it on its own.
-- As of 2026-11-14 this repository has no Dependabot alert for it yet. If one appears, it is not dismissed.
+- As of 2026-11-14 this repository has no Dependabot alert for it yet. If one appears, it is not dismissed. *(Delivery 2026-11-14: alert #3 opened at 10:32:44Z, when #114 merged. It is open and not dismissed.)*
 
 **The auto-triage preset is switched off by the owner.** Switching it off is a repository setting in the web interface with no API, so it is a step handed to the owner after the run. The guidance records why it is off.
 
@@ -183,9 +184,9 @@ There is no test suite. It was removed in #43. Every seam is a system-level obse
     - `GET /api/generate-cv?locale=en` and `?locale=id` return `200`, `application/pdf`, and a complete document (`%PDF` … `%%EOF`);
     - the runtime log shows no error from that route;
     - the build log shows Node 26.
-  - Through Playwright MCP, `/en` and `/id` render with no console error.
+  - Through Playwright MCP, `/en` and `/id` render with no console error. *(Delivery 2026-11-14: production read 0. #116's preview logged one error per page, from Vercel's preview toolbar blocked by the CSP. That error appears on previews only, predates the run, and is filed as #126.)*
   - *Catches:* deployment-only breakage from moving `@vercel/functions` or the Node major.
-  - *Misses:* nothing in scope. It needs the Vercel MCP server to be authenticated in the executing session.
+  - *Misses:* nothing in scope. It needs the Vercel MCP server to be authenticated in the executing session. *(Delivery 2026-11-14: authentication was not enough. The connection also needed team access, which the owner approved through `authorize_team_access` at the start of the run.)*
 - **S4: GitHub configuration, read through `gh api`.**
   - The ruleset's required contexts and strict flag.
   - The "Dependabot Updates" workflow runs after the version-update configuration lands.
@@ -242,3 +243,65 @@ There is no test suite. It was removed in #43. Every seam is a system-level obse
   - optionally, make Node 26 the local default.
 - **Local runtime:** Node 26.13.1 was installed through nvm on 2026-11-14. The nvm default stays 24, so the run's sessions select 26 explicitly.
 
+## Delivery notes
+
+Delivered on 2026-11-14 by run `security-baseline` (map #120), in solo shape. `main` ended at `9742482`.
+
+| Ticket | What landed | Pull request | Merge commit |
+|---|---|---|---|
+| #114 | `@vercel/functions` `^3.11.3`, moved by name. The lockfile chain: `@vercel/functions` 3.11.3, `@vercel/oidc` 4.0.9, `@vercel/cli-config` 0.4.0, `zod` 4.6.7 (the only entry), and `xdg-app-paths` down from 5.5.1 to 5.1.0, pinned exactly by cli-config 0.4.0. | #122 | `dc2a21d` |
+| #115 | A `dependency-review` job (`Review dependency changes`) appended to `ci.yml`. | #123 | `7a23d0d` |
+| (mirror) | `docs/spec-security-baseline-v1.md` | #121 | `a2577f8` |
+| #116 | `engines.node` `26.x`, `@types/node` `^26` (26.6.6, `undici-types` 8.9.0), and `node-version-file: package.json` in `ci` and `audit`. | #125 | `3212785` |
+| #118 | Ruleset 16191697 requires the four contexts (`integration_id` 15368) with strict on. No file changed. | n/a | n/a |
+| #117 | `.github/dependabot.yml`. | #127 | `4167617` |
+| #119 | `CLAUDE.md` *Commands* and *Dependency overrides*, plus `docs/sonarcloud-analysis.md`. | #131 | `9742482` |
+
+**Seams**
+
+- **S1, the lockfile audit, on `main` at `9742482`:**
+  - `npm audit --omit=dev --audit-level=low --package-lock-only` exits 0 with `found 0 vulnerabilities`.
+  - `npm audit --package-lock-only` lists only `minimatch` GHSA-g3hv-75wg-m249 and seven entries through it: five `@typescript-eslint/*` packages, `typescript-eslint` and `eslint-plugin-sonarjs`. That is 8 moderate.
+  - Dependabot alert #2 (`zod`) read `fixed` at 2026-11-14T10:32:44Z.
+- **S2, the completion gate on Node 26:**
+  - Locally under Node 26.13.1, the gate passed on every branch, and on `origin/main` after every merge, each time in a fresh worktree.
+  - In CI after #116, `setup-node` logged `Resolved package.json as 26.x` and `node: v26.13.1` in both jobs that set up Node.
+- **S3, the deployed function:**
+  - Previews:
+    - #114's preview `dpl_w674W1muCR4vcKsAnCzr3XWfUCRx` and #116's preview `dpl_DrcmcSLXQ5JdQDXd7futMX9ApCeV` each served `/api/generate-cv` in both locales, cold: `200`, `application/pdf`, `%PDF-1.3` … `%%EOF`. `get_runtime_errors` showed nothing from that route.
+    - On #116's preview the build log showed the `engines` warning selecting Node `26.x` over the project setting `24.x`.
+  - Production of `3212785`, `dpl_HTEh6FJxiU5Wr1zZc2KVtyroePmV`, passed the same checks. Playwright found the hero heading on `/en` and `/id` with **0** console errors.
+  - The close check on the production deployment of the run's last merge is recorded on map #120.
+- **S4, GitHub configuration:**
+  - The ruleset was verified three times:
+    1. the orchestrator's re-read and diff;
+    2. a fresh-context `scout-opus-high` verification, PASS on all five checks;
+    3. live on #127 and #131. Each listed the four contexts as required, read `BLOCKED` until they were green, and merged under them without the bypass.
+  - The "Dependabot Updates" version-update runs for `github_actions` (43587431878) and `npm_and_yarn` (43587431081) succeeded with no configuration error.
+  - `Review dependency changes` passed on every run pull request.
+
+**What the run found that the spec did not predict**
+
+- **Vercel MCP needed team access**, not only authentication. The first call returned `403`, and the owner approved a consent link from `authorize_team_access`.
+- **Dependabot alert #3** (`minimatch`, development scope) opened when #114 merged. It is open and not dismissed.
+- **Dependabot's pull requests pass `SonarQube Cloud` through the skip path.** This was observed on #128: `Analyse` was skipped, `Report that analysis was skipped` succeeded, and the job succeeded.
+- **#116's preview logged one console error per page.** Vercel's preview toolbar (`vercel.live`) was blocked by the app's CSP, which sets `default-src 'self'` and no `frame-src`. The error appears on previews only, the CSP code predates the run, and it is filed as #126. Production read 0.
+- **CI's Turbopack build intermittently failed** to resolve `next/font/google` font files. It happened on #122 and on #121, and a `--failed` re-run cleared it. Filed as #124.
+- **`@vercel/functions` 3.10.6 would already have cleared the advisory**, as #119 measured: it resolves `@vercel/cli-config` 0.3.6, which declares `zod ^4.6.6`. `^3.11.3` is the floor this spec chose, not the smallest one that clears.
+- **Dependabot's security-update job for `minimatch` keeps ending in `security_update_not_possible`**, because no patched release fits its parents. This is expected while the acceptance stands.
+
+**Dependabot pull requests opened during the run**, handed to the owner and never merged by the run:
+
+- #128 is the github-actions group, 3 updates.
+- #129 is the `next` group, 2 updates. Check its preview's CV endpoint before merging.
+- #130 is the minor-and-patch group, 9 updates.
+
+All three were green on the four required checks at the close.
+
+**Handed to the owner past the close**
+
+1. Switch off the auto-triage preset *Dismiss low impact issues for development-scoped dependencies*, under Settings → Code security → Dependabot rules. It has no API.
+2. Watch the repository with *Custom → Security alerts*.
+3. Handle #128, #129 and #130.
+4. Optionally, run `nvm alias default 26`.
+5. Triage #124 and #126.
