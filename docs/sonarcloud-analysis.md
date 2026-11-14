@@ -10,7 +10,7 @@ job of [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 | Organization | `jefry-kurniawan` |
 | Project key | `jefrykurniaone_porto-jefry` |
 | Dashboard | <https://sonarcloud.io/dashboard?id=jefrykurniaone_porto-jefry> |
-| Action | `SonarSource/sonarqube-scan-action`, pinned to the commit for `v8.3.0` |
+| Action | `SonarSource/sonarqube-scan-action`, pinned to a commit; the trailing comment on that `uses:` line in `ci.yml` names its release |
 | Secret | `SONAR_TOKEN`, in the repository's Actions secrets |
 | Quality gate | `Sonar way`, measured on new code; `sonar.qualitygate.wait=true` turns a failed gate into a red job |
 
