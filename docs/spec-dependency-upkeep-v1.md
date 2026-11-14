@@ -6,6 +6,7 @@
 - **Run**: `upkeep-2026-11`
 - **Version**: v1
 - **As of**: 2026-11-14, `main` at `2a5743a`. A point-in-time copy of the spec item; the item is the one written copy, and delivery notes are written there first.
+- **Regenerated**: 2026-11-14 at the run's close, `main` at `81bcb85`, from the spec item carrying its delivery notes.
 
 ---
 
@@ -15,12 +16,12 @@ The facts below hold as of 2026-11-14, with `main` at `2a5743a`.
 
 As the site's owner, I want the dependency tree current and the repository's guidance to describe it truthfully. Three things stand in the way.
 
-**Three Dependabot pull requests are green but cannot merge.** Each passes all six checks: the four required ones plus `Vercel` and `Vercel Preview Comments`. Each is marked `BEHIND`, because the "Protect main" ruleset requires a branch to contain the current `main` before it merges.
+**Three Dependabot pull requests are green but cannot merge.** Each passes all six checks: the four required ones plus `Vercel` and `Vercel Preview Comments`. Each is marked `BEHIND`, because the "Protect main" ruleset requires a branch to contain the current `main` before it merges. *(Delivery 2026-11-14: all three merged, in the order below: #128 as `34736d3`, #129 as `7d2770e`, #130 as `5ac61c9`.)*
 
-- **#128** bumps the `github-actions` group: `actions/checkout` 4 → 7, plus `actions/setup-node` and `SonarSource/sonarqube-scan-action`. It touches only the CI workflow.
+- **#128** bumps the `github-actions` group: `actions/checkout` 4 → 7, plus `actions/setup-node` and `SonarSource/sonarqube-scan-action`. It touches only the CI workflow. *(Delivery 2026-11-14: `actions/checkout` and `actions/setup-node` moved from v4 to v7. The Sonar pin moved from v8.3.0 to v8.4.1 (`e805d87`), and its first scan on `main` passed. The comment above the pin in `ci.yml`, and `docs/sonarcloud-analysis.md`, still say `v8.3.0`, filed as #144.)*
 - **#129** bumps the `next` group: `next` and `eslint-config-next` 16.4.1 → 16.4.6.
-  - 16.4.5 carries security fixes.
-  - 16.4.6 compresses route-handler responses automatically, which reaches the PDF CV endpoint.
+  - 16.4.5 carries security fixes. *(Delivery 2026-11-14: these are seven moderate repository advisories on `vercel/next.js`. They were not in GitHub's global advisory database, so `npm audit` does not list them. `CLAUDE.md` now sets the `next` floor at 16.4.5.)*
+  - 16.4.6 compresses route-handler responses automatically, which reaches the PDF CV endpoint. *(Delivery 2026-11-14: after #129 the CV endpoint still returned a valid PDF in both locales, on the preview and on production: 128,056 bytes for `en` and 127,609 bytes for `id`. The sizes were unchanged through #130.)*
   - The repository's guidance requires checking this group's preview, CV endpoint included, before merging.
 - **#130** bumps the `minor-and-patch` group, nine packages:
   - `react` and `react-dom` 19.2.8 → 19.3.1, with their type packages;
@@ -29,17 +30,17 @@ As the site's owner, I want the dependency tree current and the repository's gui
   - `postcss` 8.5.26 → 8.5.32;
   - `tailwindcss` and `@tailwindcss/postcss` 4.3.3 → 4.3.5.
 
-Merging any one of them puts the others behind again. Updating a branch with the forge's update button adds the owner's merge commit to it, and Dependabot then stops maintaining that branch.
+Merging any one of them puts the others behind again. Updating a branch with the forge's update button adds the owner's merge commit to it, and Dependabot then stops maintaining that branch. *(Delivery 2026-11-14: observed. `@dependabot rebase` brought each one up to date. The first such comment on #129 drew no thumbs-up and started no job, and a second comment rebased it.)*
 
-**One Dependabot alert stays open.** Alert #3 is `minimatch` GHSA-g3hv-75wg-m249: denial of service through globparts amplification, medium severity, development scope, affected range `>=7.0.0 <11.0.1`.
+**One Dependabot alert stays open.** Alert #3 is `minimatch` GHSA-g3hv-75wg-m249: denial of service through globparts amplification, medium severity, development scope, affected range `>=7.0.0 <11.0.1`. *(Delivery 2026-11-14: still open at the close, as intended. Dependabot's security-update job for it fails with `security_update_not_possible`.)*
 
 - `minimatch` 10.2.6 arrives through two parents:
-  - `@typescript-eslint/typescript-estree` 8.69.0, under `typescript-eslint`, under `eslint-config-next`, which declares `^10.2.2`;
+  - `@typescript-eslint/typescript-estree` 8.69.0, under `typescript-eslint`, under `eslint-config-next`, which declares `^10.2.2`; *(Delivery 2026-11-14: unchanged after #129 and #130. `eslint-config-next@16.4.6` still brings `typescript-eslint@8.69.0`.)*
   - `eslint-plugin-sonarjs`, which declares `^10.2.6` in 4.2.2.
 - Both upstreams have already moved to `minimatch` 11 on their main branches:
   - `typescript-eslint` merged its minimatch 11.0.1 update as PR #13145 on 2026-11-10, and its canary `8.72.3-alpha.8` declares `^11.0.1`. Its latest stable, 8.72.2 (2026-11-09), still declares `^10.2.2`.
-  - SonarJS's repository pins `minimatch` 11.0.5 (PR #8360, 2026-11-11). Its latest plugin release, 4.2.2 (2026-09-28), still declares `^10.2.6`.
-- The production audit reads zero. The full-tree audit lists only this chain.
+  - SonarJS's repository pins `minimatch` 11.0.5 (PR #8360, 2026-11-11). Its latest plugin release, 4.2.2 (2026-09-28), still declares `^10.2.6`. *(Delivery 2026-11-14: unchanged at the close. The stable releases, `typescript-eslint` 8.72.2 and `eslint-plugin-sonarjs` 4.2.2, still declare `^10`. The canary 8.72.3-alpha.8 declares `^11.0.1`.)*
+- The production audit reads zero. The full-tree audit lists only this chain. *(Delivery 2026-11-14: re-measured after #130 and at the close (`81bcb85`). The production audit reads 0. The full-tree audit lists 8 moderate entries, all from this one advisory.)*
 
 **The guidance will be stale.** After these merges and the run's other two specs, the repository's guidance misstates:
 
@@ -48,7 +49,7 @@ Merging any one of them puts the others behind again. Updating a branch with the
 - the state of the `minimatch` advisory;
 - how fonts are loaded;
 - the preview security policy;
-- how to land Dependabot's monthly pull requests.
+- how to land Dependabot's monthly pull requests. *(Delivery 2026-11-14: #139 (#147, merge `81bcb85`) rewrote each of these in `CLAUDE.md`.)*
 
 ## Solution
 
@@ -87,19 +88,19 @@ The three Dependabot pull requests land one after another. Each is rebased by De
 - **Branches are updated by commenting `@dependabot rebase`**, never with the forge's update button.
   - *Why:* the button adds the owner's merge commit, after which Dependabot no longer rebases or recreates the pull request.
 - **Preview walks:**
-  - #129 and #130 each get a walk on their rebased preview before merging. Both pages must render with zero console errors, and the CV endpoint must return a valid PDF in both locales.
-  - #128 needs no walk: its own CI run, executed by the updated workflow, is its proof.
+  - #129 and #130 each get a walk on their rebased preview before merging. Both pages must render with zero console errors, and the CV endpoint must return a valid PDF in both locales. *(Delivery 2026-11-14: both passed: #129 on `dpl_BHePqakQ3mUWjzUcXtDt332eyu7w`, #130 on `dpl_FY88u4c7g9HM2vvNYRXAdszCr1nB`. The CV was checked by `web_fetch_vercel_url` and by an in-browser fetch.)*
+  - #128 needs no walk: its own CI run, executed by the updated workflow, is its proof. *(Delivery 2026-11-14: its run logged `actions/checkout@v7` and `actions/setup-node@v7`. Sonar took its skip path on the pull request and ran the new pin on `main`.)*
   - The walks come after the preview-toolbar spec has merged, so that a clean console is a valid requirement.
 - **Alert #3 waits for upstream.**
   - The fix arrives in one of two ways once the latest stable releases of both parents declare `minimatch` `^11`:
     - a Dependabot security-update pull request;
     - an `npm update` that names `typescript-eslint`, `@typescript-eslint/typescript-estree` and `eslint-plugin-sonarjs`.
-  - A tracking issue, owned by the site's owner and outside this run, carries that trigger and the steps.
+  - A tracking issue, owned by the site's owner and outside this run, carries that trigger and the steps. *(Delivery 2026-11-14: this is #136, assigned to the owner.)*
   - *Why not a scoped override:* the owner chose on 2026-11-14 to wait for upstream releases rather than override them. Two facts are recorded so that the choice is not relitigated blind. Both parents call only `minimatch()`, `new Minimatch()` and `.match()`, all of which minimatch 11 keeps. An override would have had to be scoped to the two parents, because a top-level one would also force the version-3 copies under `eslint-plugin-import`, `eslint-plugin-react` and `eslint-plugin-jsx-a11y`.
   - The alert is never dismissed: a dismissed alert gets no security-update pull request.
 - **The guidance is rewritten in one ticket, after every merge**, so that it is measured once against the final tree. It is docs-only.
   - Every figure is measured on the ticket's branch at writing time.
-  - Each override is measured by comparing the resolved tree with and without it. One that no longer changes the tree is reported, and the orchestrator files a follow-up issue to remove it.
+  - Each override is measured by comparing the resolved tree with and without it. One that no longer changes the tree is reported, and the orchestrator files a follow-up issue to remove it. *(Delivery 2026-11-14: `@emnapi/wasi-threads` no longer changes the tree, filed as #145. The measurement also found that the `@emnapi/runtime` pin holds `@img/sharp-wasm32` below its declared `^1.11.3`, filed as #146. The bundled copies under `@tailwindcss/oxide-wasm32-wasi` are beyond any override's reach.)*
   - The guidance records the outcomes of the run's other two specs: self-hosted fonts and the preview-only policy.
 
 ## Testing decisions
@@ -119,12 +120,12 @@ The repository has no test suite.
 
 ## Success criteria
 
-- [ ] #128, #129 and #130 are merged, in that order, each on an up-to-date tip with all four required checks green.
-- [ ] #129's and #130's previews passed their walks before merging. The deployment ids and results are posted on the map.
-- [ ] After the last merge, the production audit reads zero, and the full-tree audit lists only the `minimatch` chain.
-- [ ] The guidance's versions, floors, override reasons, advisory state, font loading, preview policy and Dependabot routine match measurements taken after the merges.
-- [ ] A tracking issue for alert #3 exists, carries the trigger and steps, and is assigned to the owner.
-- [ ] Every override that no longer changes the tree has a follow-up issue.
+- [x] #128, #129 and #130 are merged, in that order, each on an up-to-date tip with all four required checks green. *(PASS: `34736d3`, `7d2770e`, `5ac61c9`.)*
+- [x] #129's and #130's previews passed their walks before merging. The deployment ids and results are posted on the map. *(PASS. Posted on map #140.)*
+- [x] After the last merge, the production audit reads zero, and the full-tree audit lists only the `minimatch` chain. *(PASS: 0 in production, and 8 entries of the one `minimatch` advisory in the full tree.)*
+- [x] The guidance's versions, floors, override reasons, advisory state, font loading, preview policy and Dependabot routine match measurements taken after the merges. *(PASS: #147, after one accuracy rework.)*
+- [x] A tracking issue for alert #3 exists, carries the trigger and steps, and is assigned to the owner. *(PASS: #136.)*
+- [x] Every override that no longer changes the tree has a follow-up issue. *(PASS: #145.)*
 
 ## Out of scope
 
@@ -132,10 +133,10 @@ The repository has no test suite.
 - Dependabot automation, merge queues, and changes to the ruleset.
 - Removing or adding overrides; raising or lowering declared ranges by hand.
 - `.github/dependabot.yml` changes.
-- Any pull request Dependabot opens during the run other than #128, #129 and #130. Each is recorded on the map and left to the owner.
+- Any pull request Dependabot opens during the run other than #128, #129 and #130. Each is recorded on the map and left to the owner. *(Delivery 2026-11-14: Dependabot opened none during the run.)*
 
 ## Further notes
 
 - Decided with the owner on 2026-11-14: wait for upstream on `minimatch` (option (b) of three); land the pull requests as above; one guidance ticket at the end; measure overrides and report rather than remove them.
-- `typescript-eslint` has released on Mondays: 8.72.0 on 2026-10-19, 8.72.1 on 2026-10-26, 8.72.2 on 2026-11-09. The next stable release may be the first to accept `minimatch` 11. `eslint-plugin-sonarjs` has no release date.
+- `typescript-eslint` has released on Mondays: 8.72.0 on 2026-10-19, 8.72.1 on 2026-10-26, 8.72.2 on 2026-11-09. The next stable release may be the first to accept `minimatch` 11. `eslint-plugin-sonarjs` has no release date. *(Delivery 2026-11-14: no new stable `typescript-eslint` release by the close.)*
 
