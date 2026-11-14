@@ -22,10 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # The Node version comes from `engines.node` in package.json, which Vercel
+      # reads too, so changing the Node major means editing that one field.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: package.json
           cache: 'npm'
 
       # `--ignore-scripts` keeps every dependency's install script out of the
@@ -66,10 +68,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # The Node version comes from `engines.node` in package.json, which Vercel
+      # reads too, so changing the Node major means editing that one field.
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version-file: package.json
 
       - name: Audit full tree (report only)
         continue-on-error: true
