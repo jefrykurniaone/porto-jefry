@@ -104,10 +104,10 @@ jobs:
           # pull request gate is measured on.
           fetch-depth: 0
 
-      # Pinned to a commit rather than a tag: a tag can move. `v8.3.0`.
+      # Pinned to a commit rather than a tag: a tag can move. The trailing comment on the `uses:` line names the release; Dependabot rewrites it.
       - name: Analyse
         if: env.HAS_SONAR_TOKEN == 'true'
-        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65
+        uses: SonarSource/sonarqube-scan-action@e805d875275f728fac1885b413934be6d7c63f65 # v8.4.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
