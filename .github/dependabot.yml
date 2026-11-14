@@ -1,0 +1,48 @@
+# Dependabot version updates. Security updates are switched on in the
+# repository settings, not in this file, and they keep working as they do today.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+    # A dependency joins the first group it matches, which is why `next` comes
+    # first: `minor-and-patch` matches every name, so listed first it would take
+    # `next`, `eslint-config-next` and `sharp` before the `next` group saw them.
+    # The `exclude-patterns` entry repeats the three names for the same reason.
+    groups:
+      # `next`, `eslint-config-next` and `sharp` get their own pull request.
+      # Next.js 16.2 once broke the deployed `sharp` bundle in a way that only a
+      # real deployment showed (see the PDF CV section of CLAUDE.md), so the
+      # preview of this pull request is checked before it merges.
+      next:
+        applies-to: version-updates
+        patterns: [next, eslint-config-next, sharp]
+        update-types: [minor, patch]
+      minor-and-patch:
+        applies-to: version-updates
+        patterns: ["*"]
+        exclude-patterns: [next, eslint-config-next, sharp]
+        update-types: [minor, patch]
+    # Major updates are a person's decision, so version updates never propose
+    # them. `update-types` under `ignore` filters version updates only: security
+    # updates still arrive for every open alert, major or not.
+    ignore:
+      - dependency-name: "*"
+        update-types: [version-update:semver-major]
+    # The prefix carries the scope itself, so development dependencies do not
+    # get `chore(deps-dev)`.
+    commit-message:
+      prefix: "chore(deps)"
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+    # Workflows reference actions by major tag (`actions/checkout@v4`), so only a
+    # major update moves them, and this entry therefore does not ignore majors.
+    groups:
+      github-actions:
+        applies-to: version-updates
+        patterns: ["*"]
+    commit-message:
+      prefix: "chore(deps)"
