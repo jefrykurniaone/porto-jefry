@@ -22,18 +22,39 @@ export function buildCsp(nonce: string): string {
         ].join('; ');
     }
 
-    // Production: strict CSP. No inline-script hash is needed — the theme is
-    // rendered server-side from a cookie, so the app ships no inline scripts of
-    // its own. Next's own tags carry this per-request nonce.
-    return [
+    return buildProductionCsp(nonce, isVercelPreview());
+}
+
+// Vercel injects its toolbar, an iframe from vercel.live, into preview
+// deployments only, so previews need the sources Vercel documents for it
+// (vercel.com/docs/vercel-toolbar/managing-toolbar). Previews sit behind
+// Vercel Authentication, which bounds who receives the wider policy. The
+// comparison is exact on purpose so that it fails closed: an unset, unknown
+// or 'production' value yields the unchanged production policy.
+function isVercelPreview(): boolean {
+    return process.env.VERCEL_ENV === 'preview';
+}
+
+// Production: strict CSP. No inline-script hash is needed — the theme is
+// rendered server-side from a cookie, so the app ships no inline scripts of
+// its own. Next's own tags carry this per-request nonce. With `toolbar` off
+// the output is exactly the production policy; with it on, the toolbar's
+// sources are appended to their directives and frame-src is added.
+function buildProductionCsp(nonce: string, toolbar: boolean): string {
+    const add = (sources: string): string => (toolbar ? ` ${sources}` : '');
+    const directives = [
         "default-src 'self'",
-        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com`,
-        `style-src 'self' 'unsafe-inline'`,
-        "font-src 'self'",
-        "img-src 'self' data: blob:",
-        "connect-src 'self' https://vitals.vercel-insights.com",
+        `script-src 'self' 'nonce-${nonce}' 'strict-dynamic' https://va.vercel-scripts.com${add('https://vercel.live')}`,
+        `style-src 'self' 'unsafe-inline'${add('https://vercel.live')}`,
+        `font-src 'self'${add('https://vercel.live https://assets.vercel.com')}`,
+        `img-src 'self' data: blob:${add('https://vercel.live https://vercel.com')}`,
+        `connect-src 'self' https://vitals.vercel-insights.com${add('https://vercel.live wss://ws-us3.pusher.com')}`,
         "frame-ancestors 'none'",
-    ].join('; ');
+    ];
+    if (toolbar) {
+        directives.push("frame-src 'self' https://vercel.live");
+    }
+    return directives.join('; ');
 }
 
 export default function proxy(request: NextRequest) {
