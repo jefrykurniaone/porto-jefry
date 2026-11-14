@@ -68,6 +68,12 @@ warning that the commit was not analysed. A pull request from a fork always take
 secrets are not exposed to it. A green CI run is therefore **not** proof that analysis happened:
 check the `Analyse` step.
 
+## Dependabot's pull requests take the skip path
+
+Dependabot cannot read Actions secrets, so on its pull requests `secrets.SONAR_TOKEN` is empty, `HAS_SONAR_TOKEN` is `false`, and the `sonar` job takes the skip path above: the `Analyse` step is skipped, the warning step runs, and the job reports success. The `SonarQube Cloud` check that the "Protect main" ruleset requires is therefore satisfied, and the analysis on the push to `main` covers what those pull requests change.
+
+`SONAR_TOKEN` is deliberately **not** a Dependabot secret. The token grants analysis access to every project in the organization, and the push to `main` already analyses what a merged Dependabot pull request changes.
+
 ## Setting it up again from scratch
 
 1. Create the project on SonarQube Cloud and bind it to the GitHub repository.
