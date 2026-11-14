@@ -110,3 +110,31 @@ jobs:
       - name: Report that analysis was skipped
         if: env.HAS_SONAR_TOKEN != 'true'
         run: echo "::warning title=SonarQube Cloud not analysed::SONAR_TOKEN is not set, so this commit was not analysed. See docs/sonarcloud-analysis.md."
+
+  # Pull requests only: a push has no base to diff against, and the production
+  # audit above already covers the tree a push produces. Both scopes are
+  # listed because the action's default is `runtime` alone, and a development
+  # dependency with a high advisory is worth stopping too. `never` for the
+  # summary comment, because any other value needs `pull-requests: write`,
+  # which this job does not hold. It judges only the dependencies a pull
+  # request adds or changes, so the accepted `minimatch` chain, already in the
+  # tree, does not trip it. The job's `name` is a required-check context:
+  # renaming it detaches it from the ruleset.
+  dependency-review:
+    name: Review dependency changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'pull_request'
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Review dependency changes
+        uses: actions/dependency-review-action@v5
+        with:
+          fail-on-severity: high
+          fail-on-scopes: runtime, development
+          comment-summary-in-pr: never
