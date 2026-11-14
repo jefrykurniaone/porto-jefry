@@ -7,23 +7,37 @@ import { DEFAULT_THEME, isTheme, THEME_COOKIE } from '@/utils/theme';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import BackToTop from '@/components/layout/BackToTop';
-import { Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import localFont from 'next/font/local';
 import { Analytics } from '@vercel/analytics/next';
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/utils/constants';
 import PersonJsonLd from '@/components/seo/PersonJsonLd';
 import '@/app/globals.css';
 
-const spaceGrotesk = Space_Grotesk({
-    subsets: ['latin'],
-    weight: ['400', '500', '600', '700'],
+// Self-hosted so the build never downloads fonts. Each file is the Latin-subset
+// variable WOFF2 that the Google Fonts CSS2 API serves to desktop Chrome,
+// retrieved 2026-11-14 (take the WOFF2 the `/* latin */` block points at):
+//   https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&display=swap
+//   https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400..600&display=swap
+// The files sit in src/app/fonts, not public/fonts: next.config.mjs traces
+// public/fonts into the CV function, and the raw files need no public path.
+// Each family's OFL text sits beside its file.
+const spaceGrotesk = localFont({
+    src: '../fonts/SpaceGrotesk-latin-wght.woff2',
+    weight: '400 700',
+    style: 'normal',
+    display: 'swap',
     variable: '--font-sans',
+    adjustFontFallback: 'Arial',
 });
 
-const jetbrainsMono = JetBrains_Mono({
-    subsets: ['latin'],
-    weight: ['400', '500', '600'],
+const jetbrainsMono = localFont({
+    src: '../fonts/JetBrainsMono-latin-wght.woff2',
+    weight: '400 600',
+    style: 'normal',
+    display: 'swap',
     variable: '--font-mono',
+    adjustFontFallback: 'Arial',
 });
 
 // The proxy mints a fresh CSP nonce per request and production CSP uses
