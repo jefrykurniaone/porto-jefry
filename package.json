@@ -37,6 +37,18 @@
         "typescript": "^5"
     },
     "overrides": {
-        "postcss": "$postcss"
+        "postcss": "$postcss",
+        "eslint-plugin-sonarjs": {
+            "minimatch": "^11.0.1"
+        },
+        "eslint": {
+            "minimatch": "^3.1.5"
+        },
+        "@eslint/config-array": {
+            "minimatch": "^3.1.5"
+        },
+        "@eslint/eslintrc": {
+            "minimatch": "^3.1.5"
+        }
     }
 }
