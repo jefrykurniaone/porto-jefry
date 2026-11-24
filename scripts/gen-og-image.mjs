@@ -31,7 +31,7 @@ const NAME = 'Jefry Kurniawan';
 const TITLE = 'Backend Developer · .NET Specialist';
 const STACK = '.NET  ·  C#  ·  SQL Server  ·  REST APIs  ·  React';
 const NOTE = '5+ years · Singapore public-sector &amp; fintech · Remote-ready (GMT+7)';
-const SITE = 'porto-jefry.vercel.app';
+const SITE = 'jefry-kurniawan.dev';
 
 const FONT = 'Segoe UI, Helvetica Neue, Arial, sans-serif';
 const MONO = 'Consolas, DejaVu Sans Mono, Courier New, monospace';
