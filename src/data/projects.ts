@@ -68,7 +68,7 @@ export const projects: ProjectItem[] = [
         name: 'Porto-Jefry',
         company: 'Personal Project',
         period: 'Jun 2026 – Present',
-        url: 'https://porto-jefry.vercel.app',
+        url: 'https://www.jefry-kurniawan.dev',
         repoUrl: 'https://github.com/jefrykurniaone/porto-jefry',
         tech: [
             'Next.js',

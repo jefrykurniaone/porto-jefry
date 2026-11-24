@@ -2,6 +2,9 @@ import createNextIntlPlugin from 'next-intl/plugin';
 
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+const LEGACY_HOST = 'porto-jefry.vercel.app';
+const CANONICAL_ORIGIN = 'https://www.jefry-kurniawan.dev';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     // The CV route reads these from process.cwd() at request time. Static
@@ -10,6 +13,16 @@ const nextConfig = {
     // its photo and falls back to Helvetica.
     outputFileTracingIncludes: {
         '/api/generate-cv': ['./public/fonts/**', './public/cv-photo.webp'],
+    },
+    async redirects() {
+        return [
+            {
+                source: '/:path*',
+                has: [{ type: 'host', value: LEGACY_HOST }],
+                destination: `${CANONICAL_ORIGIN}/:path*`,
+                permanent: true,
+            },
+        ];
     },
     async headers() {
         return [

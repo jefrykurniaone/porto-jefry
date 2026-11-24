@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://porto-jefry.vercel.app/sitemap.xml
+Sitemap: https://www.jefry-kurniawan.dev/sitemap.xml

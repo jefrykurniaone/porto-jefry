@@ -52,10 +52,10 @@ Constraints future work must preserve:
 - **PDF CV stays in sync.** Content changes land in both the web section and its `src/components/cv/` counterpart, or the PDF silently drifts from the site.
 - **Fast and accessible.** WCAG AA contrast, keyboard navigation, strict CSP with a per-request nonce, and acceptable performance on a mid-range Android over an Indonesian mobile network.
 - Technical: Next.js 16 App Router on Vercel, `maxDuration: 10` on the CV function, in-memory CV cache and rate limit that reset on cold start.
+- Domain: the canonical URL is `https://www.jefry-kurniawan.dev` (custom domain since 2026-11-24). The apex `jefry-kurniawan.dev` and the old `porto-jefry.vercel.app` both redirect permanently to it.
 
 Undecided / not established:
 
-- No custom domain — the canonical URL is `https://porto-jefry.vercel.app`.
 - No blog, case-study pages, or per-project detail routes exist; whether the site should grow them is open.
 - Whether freelance work deserves its own surface is undecided.
 

@@ -76,6 +76,15 @@ A second renderer over the same content. `src/components/cv/` mirrors the sectio
 
 The endpoint has already broken once in a way that only showed up in production: Next.js 16.2's Turbopack production build traced the `sharp` native addon into the function bundle but not the sibling package carrying the `libvips` shared object that addon dynamically links against, so the module failed to load the first time the route was invoked. The general signature to watch for is a successful build followed by a runtime dynamic-link failure naming a versioned shared-object file, raised from Next's own external-module loader — that pairing means a native package's sibling shared library did not reach the deployed function bundle, not that the dependency is missing from the lockfile (the lockfile carried the correct platform packages the whole time here). It is invisible to local development, to the build, and to CI; only a real deployment surfaces it. Next.js fixed this in 16.3.0 ("Sharp@0.35 tracing fixed", vercel/next.js#94845); the 16.2 line ends at 16.2.12 with no backport, so recovery is an upgrade, not a config change.
 
+### Domain
+
+The production site is `https://www.jefry-kurniawan.dev` (since 2026-11-24). `BASE_URL` in `src/utils/constants.ts` carries it into canonical and hreflang links, Open Graph, JSON-LD and the sitemap; `public/robots.txt`, `src/data/projects.ts` and the footer of `public/og-image.png` (`scripts/gen-og-image.mjs`) spell it out on their own, so **a host change touches all of them**. Two hosts redirect to it with a 308:
+
+- the apex `jefry-kurniawan.dev`, by the Vercel project's domain settings (DNS is on Vercel's nameservers);
+- the old `porto-jefry.vercel.app`, by the host-matched rule in `redirects()` in `next.config.mjs`. Vercel cannot delete a project's production `.vercel.app` alias, so the redirect is how it stays retired. Preview hosts (`porto-jefry-git-…`, `porto-jefry-<hash>-…`) do not match it and keep serving their deployment.
+
+`public/og-image.png` was patched on 2026-11-24 by redrawing only its footer strip, because rerunning the script on Linux swaps the Windows fonts (Segoe UI, Consolas) the card was drawn with and changes every line. Regenerate the whole card on Windows.
+
 ### Styling
 
 Hand-written CSS with a design-token system — **no component library and no utility framework in practice**. `tailwindcss` + `@tailwindcss/postcss` are installed and wired in `postcss.config.mjs`/`tailwind.config.ts`, but nothing in `src/` imports Tailwind or uses its classes. Don't start using Tailwind utilities without a deliberate decision.
